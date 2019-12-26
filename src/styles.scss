@@ -1,0 +1,439 @@
+@import "@angular/material/prebuilt-themes/deeppurple-amber.css";
+/* You can add global styles to this file, and also import other style files */
+/* Primary Styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  font-size: 1em;
+  color: #333;
+}
+
+h1 {
+  font-size: 1.4em;
+}
+
+em {
+  font-style: normal;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Layout */
+// .s-layout {
+//   display: flex;
+//   width: 100%;
+//   min-height: 100vh;
+// }
+
+// .s-layout__content {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   flex: 1;
+// }
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.navbar-brand {
+  img {
+    max-height: 60px;
+  }
+}
+#main-wrapper {
+  width: 100%;
+  height: calc(100% - 70px);
+  overflow: auto;
+  margin-top: 70px;
+}
+
+/* ******************************************** *
+ * * * * * * * * *  SIDEBAR * * * * * * * * * * *
+ * ******************************************** */
+$compact-sidebar-width: 70px;
+$full-sidebar-width: 240px;
+
+.fix-sidebar {
+  .left-sidebar {
+    position: absolute;
+  }
+}
+.mini-sidebar {
+  .sidebar-nav {
+    padding: 5px;
+  }
+}
+.show-sidebar {
+  .sidebar-overlay {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}
+.left-sidebar {
+  position: absolute;
+  width: 240px;
+  height: 100%;
+  top: 0px;
+  z-index: 20;
+  padding-top: 70px;
+  background: #fff;
+  -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
+  .scroll-sidebar {
+    padding-bottom: 60px;
+    padding-top: 20px;
+    .sidebar-nav {
+      background: #fff;
+      padding: 0px;
+      ul {
+        margin: 0px;
+        padding: 0px;
+        li {
+          list-style: none;
+          margin-bottom: 10px;
+          a {
+            color: #fafafa;
+            padding: 13px 40px 13px 20px;
+            display: block;
+            font-size: 15px;
+            white-space: nowrap;
+            transition: 0.25s;
+            i,
+            svg {
+              width: 50px;
+              height: 27px;
+              font-size: 21px;
+              display: inline-block;
+              vertical-align: middle;
+              color: #fafafa;
+            }
+            &:hover {
+              background-color: rgba(255, 255, 255, 0.15);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .mini-sidebar {
+    .page-wrapper {
+      margin-left: 0px;
+    }
+    .left-sidebar {
+      position: absolute;
+      left: -240px;
+      transition: left 0.15s linear;
+    }
+    &.show-sidebar {
+      .left-sidebar {
+        left: 0px;
+      }
+    }
+  }
+}
+@media (min-width: 768px) {
+  .mini-sidebar {
+    .sidebar-toggler,
+    .sidebar-overlay {
+      display: none;
+    }
+    .page-wrapper,
+    .footer {
+      margin-left: $compact-sidebar-width;
+    }
+    .left-sidebar {
+      width: $compact-sidebar-width;
+      transition: all 0.15s ease-out;
+      &:hover {
+        width: $full-sidebar-width;
+      }
+    }
+  }
+}
+@media (min-width: 1170px) {
+  .mini-sidebar {
+    .left-sidebar {
+      width: $full-sidebar-width;
+    }
+    .page-wrapper,
+    .footer {
+      margin-left: $full-sidebar-width;
+    }
+  }
+}
+
+/*******************
+ Topbar
+*******************/
+.topbar {
+  background-color: #fff;
+  position: relative;
+  z-index: 50;
+  -webkit-box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.5);
+}
+.topbar .top-navbar {
+  min-height: 70px;
+  padding: 0px 15px 0 0;
+}
+.topbar .top-navbar .dropdown-toggle::after {
+  display: none;
+}
+.topbar .top-navbar .navbar-header {
+  line-height: 65px;
+  text-align: center;
+}
+.topbar .top-navbar .navbar-header .navbar-brand {
+  margin-right: 0px;
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+.topbar .top-navbar .navbar-header .navbar-brand .light-logo {
+  display: none;
+}
+.topbar .top-navbar .navbar-header .navbar-brand b {
+  line-height: 70px;
+  display: inline-block;
+}
+.topbar .top-navbar .navbar-nav > .nav-item > .nav-link {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  font-size: 19px;
+  line-height: 50px;
+}
+.topbar .top-navbar .navbar-nav > .nav-item.show {
+  background: rgba(0, 0, 0, 0.05);
+}
+.topbar .profile-pic {
+  width: 30px;
+  border-radius: 100%;
+}
+.topbar .dropdown-menu {
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  border-color: rgba(120, 130, 140, 0.13);
+}
+.topbar .dropdown-menu .dropdown-item {
+  padding: 7px 1.5rem;
+}
+.topbar ul.dropdown-user {
+  padding: 0px;
+  width: 270px;
+}
+.topbar ul.dropdown-user li {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+}
+.topbar ul.dropdown-user li.divider {
+  height: 1px;
+  margin: 9px 0;
+  overflow: hidden;
+  background-color: rgba(120, 130, 140, 0.13);
+}
+.topbar ul.dropdown-user li .dw-user-box {
+  padding: 10px 15px;
+}
+.topbar ul.dropdown-user li .dw-user-box .u-img {
+  width: 80px;
+  display: inline-block;
+  vertical-align: top;
+}
+.topbar ul.dropdown-user li .dw-user-box .u-img img {
+  width: 100%;
+  border-radius: 5px;
+}
+.topbar ul.dropdown-user li .dw-user-box .u-text {
+  display: inline-block;
+  padding-left: 10px;
+}
+.topbar ul.dropdown-user li .dw-user-box .u-text h4 {
+  margin: 0px;
+}
+.topbar ul.dropdown-user li .dw-user-box .u-text p {
+  margin-bottom: 2px;
+  font-size: 14px;
+}
+.topbar ul.dropdown-user li .dw-user-box .u-text .btn {
+  color: #ffffff;
+  padding: 5px 10px;
+  display: inline-block;
+}
+.topbar ul.dropdown-user li .dw-user-box .u-text .btn:hover {
+  background: #e6294b;
+}
+.topbar ul.dropdown-user li a {
+  padding: 9px 15px;
+  display: block;
+  color: #67757c;
+}
+.topbar ul.dropdown-user li a:hover {
+  background: #f2f4f8;
+  color: #009efb;
+  text-decoration: none;
+}
+
+.top-navbar .navbar-header {
+  // width: 60px;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .navbar-toggleable-sm .navbar-collapse {
+    display: -webkit-box !important;
+    display: -webkit-flex !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+    width: 100%;
+  }
+  .navbar-toggleable-sm {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+@keyframes slideDown {
+  0% {
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes slideRight {
+  0% {
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+@keyframes slideLeft {
+  0% {
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+// .cdk-overlay-pane{
+//   transform: translateY(-150%);
+//   animation: slideDown 0.25s forwards 0s ease-in;
+//   animation: slideDown 0.35s forwards 0s ease-in;
+// }
+// .cdk-overlay-container > * {
+//   transition: none;
+// }
+// this makes the .modal visible
+.sshow {
+  display: block;
+}
+// this makes the element hidden/invisible
+.hhidden {
+  display: none;
+}
+// this holds the CSS display of the modal
+.mmodal {
+  // makes it hover above all elements
+  z-index: 1000;
+  position: fixed;
+  top: 30px;
+  bottom: 0;
+  left: 300px;
+  width: 500px;
+}
+.mmodal-body {
+  background: #fff;
+  margin: 40px;
+  padding: 20px;
+}
+// backdrop color
+.mmodal-background {
+  // should be below the .modal but above all other elements
+  z-index: 900;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #000;
+  // makes the below elements visible to a degree.
+  opacity: 0.95;
+}
+
+// <div class="custom-modal-container">
+//   <div class="custom-modal-container custom-modal-overlay">
+//     <div class="custom-modal push-right">
+//       <div class="custom-modal-header">
+//         <div class="title">Teste Header</div>
+//       </div>
+//       <div class="custom-modal-body">
+//         Teste Body
+//       </div>
+//       <div class="custom-modal-footer">
+//         Teste Footer
+//       </div>
+//     </div>
+//   </div>
+// </div>
+
+.full-width-nav-tabs {
+  border-bottom: 1px solid #dee2e6;
+  background-color: #f8f9fa;
+  .nav-tabs .nav-link.active {
+    background-color: transparent;
+  }
+  .nav-tabs .nav-link {
+    border: 0px;
+    border-radius: 0 !important;
+  }
+  .nav-link.active {
+    border-bottom: solid 2px #1976d2;
+  }
+}

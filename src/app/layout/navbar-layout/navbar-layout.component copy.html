@@ -1,0 +1,100 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-faded header-navbar height-60">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" data-toggle="collapse" class="navbar-toggle d-lg-none float-left">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="fal fa-bars fa-lg"></span>
+      </button>
+      <span class="d-lg-none navbar-right navbar-collapse-toggle m-2">
+        <ul class="navbar-nav">
+          <li class="dropdown nav-item">
+            <a id="user-info-dropdown" href="#" data-toggle="dropdown" class="nav-link position-relative p-0">
+              <img th:if="${authorizedUser.avatar} == null" th:src="@{/assets/img/portrait/avatars/avatar.png}"
+                class="img-thumbnail rounded-circle" width="45"
+                th:alt="${authorizedUser.firstName + ' ' + authorizedUser.lastName}">
+              <img th:if="${authorizedUser.avatar} != null" th:src="${authorizedUser.avatar}"
+                class="img-thumbnail rounded-circle" width="45"
+                th:alt="${authorizedUser.firstName + ' ' + authorizedUser.lastName}">
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right text-left p-0"
+              aria-labelledby="user-info-dropdown" ngbdropdownmenu="">
+              <a th:href="${'/usuarios/' + authorizedUser.id}"
+                class="dropdown-header dropdown-item text-center mt-0 pt-3">
+                <h6 th:text="${authorizedUser.firstName + ' ' + authorizedUser.lastName}" class="text-dark m-0">
+                </h6>
+                <small th:text="${authorizedUser.email}" class="text-muted text-lowercase">
+                </small>
+              </a>
+
+              <!-- CONFIGURAÇÕES DA CONTA -->
+              <div class="dropdown-divider m-0"></div>
+              <a th:href="${'/usuarios/' + authorizedUser.id}" class="dropdown-item py-1">
+                <i class="fas fa-user-cog"></i> <span class="ml-1">Configurações da Conta</span>
+              </a>
+
+              <!-- CONFIGURAÇÕES DA CONTABILIDADE -->
+              <div th:if="${authorizedUser.getType()} == 1" class="dropdown-divider m-0"></div>
+              <a th:if="${authorizedUser.type == 1}"
+                th:href="${'/contabilidade/' + authorizedUser.organization.externalId}" class="dropdown-item py-1">
+                <i class="fas fa-money-check-edit-alt"></i>
+                <span class="ml-1">Configurações da Contabilidade </span>
+              </a>
+
+              <!-- Sair -->
+              <div class="dropdown-divider m-0"></div>
+              <a th:href="${'/logout'}" class="dropdown-item py-1">
+                <i class="fas fa-sign-out-alt"></i><span class="ml-2">Sair</span>
+              </a>
+            </div>
+          </li>
+        </ul>
+      </span>
+    </div>
+    <div class="navbar-container">
+      <!-- id="navbarSupportedContent" -->
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+          <li class="dropdown nav-item">
+            <a id="user-info-dropdown" href="#" data-toggle="dropdown" class="nav-link position-relative p-0">
+              <img th:if="${authorizedUser.avatar} == null" th:src="@{/assets/img/portrait/avatars/avatar.png}"
+                class="img-thumbnail rounded-circle" width="45"
+                th:alt="${authorizedUser.firstName + ' ' + authorizedUser.lastName}">
+              <img th:if="${authorizedUser.avatar} != null" th:src="${authorizedUser.avatar}"
+                class="img-thumbnail rounded-circle" width="45"
+                th:alt="${authorizedUser.firstName + ' ' + authorizedUser.lastName}">
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right text-left p-0"
+              aria-labelledby="user-info-dropdown" ngbdropdownmenu="">
+              <a th:href="${'/usuarios/' + authorizedUser.id}"
+                class="dropdown-header dropdown-item text-center mt-0 pt-3">
+                <h6 th:text="${authorizedUser.firstName + ' ' + authorizedUser.lastName}" class="text-dark m-0">
+                </h6>
+                <small th:text="${authorizedUser.email}" class="text-muted text-lowercase">
+                </small>
+              </a>
+
+              <!-- CONFIGURAÇÕES DA CONTA -->
+              <div class="dropdown-divider m-0"></div>
+              <a th:href="${'/usuarios/' + authorizedUser.id}" class="dropdown-item py-1">
+                <i class="fas fa-user-cog"></i> <span class="ml-1">Configurações da Conta</span>
+              </a>
+
+              <!-- CONFIGURAÇÕES DA CONTABILIDADE -->
+              <div th:if="${authorizedUser.getType()} == 1" class="dropdown-divider m-0"></div>
+              <a th:if="${authorizedUser.getType()} == 1"
+                th:href="${'/contabilidade/' + authorizedUser.organization.externalId}" class="dropdown-item py-1">
+                <i class="fas fa-money-check-edit-alt"></i> <span class="ml-1">Configurações da Contabilidade</span>
+              </a>
+
+              <!-- Sair -->
+              <div class="dropdown-divider m-0"></div>
+              <a th:href="${'/logout'}" class="dropdown-item py-1">
+                <i class="fas fa-sign-out-alt"></i><span class="ml-2">Sair</span>
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

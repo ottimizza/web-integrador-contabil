@@ -1,0 +1,50 @@
+<!-- 
+<div [class]="theme">
+  <div class="mat-app-background">
+    <app-nav></app-nav>
+
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+
+    <app-footer></app-footer>
+  </div>
+</div>
+
+ -->
+<!-- st-container st-effect-1 st-menu-open -->
+<!-- [ngClass]="[sidebarEffect, { 'st-menu-open': sidebarOpened }]" -->
+<!-- [class.stmenuopen]="sidebarOpened" -->
+<!-- <div id="st-container" class="st-container" [class.st-menu-open]="sidebarOpened" [ngClass]="[sidebarEffect]">
+
+  <app-sidebar-layout [effect]="sidebarEffect" [opened]="sidebarOpened"></app-sidebar-layout>
+
+  <div class="st-pusher" (click)="sidebarOpened ? toggleSidebar(sidebarEffect): 0">
+    <div class="st-content">
+      <div class="st-content-inner">
+
+        <button class="w-100" data-effect="st-effect-1"
+          (click)="toggleSidebar('st-effect-1'); $event.stopPropagation();">
+          <span class="text-left">st-effect-1</span>
+          <span class="text-right">Slide in on top</span>
+        </button>
+        <button class="w-100" data-effect="st-effect-4"
+          (click)="toggleSidebar('st-effect-4'); $event.stopPropagation();">
+          <span class="text-left">st-effect-4</span>
+          <span class="text-right">Slide along</span>
+        </button>
+
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+
+</div> -->
+
+
+<div class="s-layout">
+  <!-- Content -->
+  <main class="s-layout__content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

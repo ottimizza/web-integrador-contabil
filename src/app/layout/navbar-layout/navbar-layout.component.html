@@ -1,0 +1,36 @@
+<header class="topbar is_stuck" style="position: absolute; top: 0px; width: 100%;">
+  <nav class="navbar top-navbar navbar-toggleable-sm navbar-light">
+    <div class="navbar-header">
+      <app-brand [src]="logo || DEFAULT_LOGO" classes="px-5" class="text-center">
+      </app-brand>
+    </div>
+    <div class="navbar-collapse">
+      <ul class="navbar-nav mr-auto mt-md-0">
+        <li class="nav-item px-3">
+          <a class="nav-link sidebar-toggler hidden-md-up text-muted waves-effect waves-dark" (click)="toggleSidebar()">
+            <i class="fa fa-bars fa-md"></i>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav my-lg-0">
+        <li class="nav-item dropdown">
+          <a [matMenuTriggerFor]="menu" class="cursor-pointer">
+            <img class="img-thumbnail rounded-circle"
+              [src]="currentUser.avatar || './assets/images/Portrait_Placeholder.png'" width="45" height="45"
+              onError="this.src='./assets/images/Portrait_Placeholder.png';">
+          </a>
+          <mat-menu #menu="matMenu">
+            <a [routerLink]="['/dashboard/users/', currentUser.id]"
+              class="dropdown-header dropdown-item text-center mt-0 py-3">
+              <h6 class="text-dark m-0">{{currentUser.firstName + ' ' + currentUser.lastName}}</h6>
+              <small class="text-muted text-lowercase">{{ currentUser.email }}</small>
+            </a>
+            <a mat-menu-item (click)="logout()">
+              <i class="fas fa-sign-out-alt" aria-hidden="true"></i>&nbsp;&nbsp;<span>Sair</span>
+            </a>
+          </mat-menu>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

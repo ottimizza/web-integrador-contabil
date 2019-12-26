@@ -1,0 +1,88 @@
+<div>
+  <div class="bar textbar rightpos">
+
+    <i class="fal fa-filter icon" id="filter" (click)="openFilterDialog()"></i>
+
+    <a [routerLink]="['/dashboard', 'index']">Última digitação {{ local }}</a>
+
+  </div>
+  <div class="bar greybar rightpos fullHeight" *ngIf="!inputSelector">
+
+    <div *ngFor="let transacao of transacoes">
+
+      <ott-item *ngIf="transacao == transacoes[0]; else common" [transacao]="transacao" main="true" (click)="redirect()"></ott-item>
+      <ng-template #common>
+        <ott-item [transacao]="transacao"></ott-item>
+      </ng-template>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modalFilter" *ngIf="inputSelector">
+
+  <div class="titleField">
+    <h2>Filtro</h2>
+  </div>
+
+  <br>
+
+  <div class="contentField row">
+
+    <div class="businessField col-6">
+      <div class="inputField">
+        <label for="business">Empresa:</label>
+        <div class="space"></div>
+        <input id="business" type="text" (keyup)="defineLocalizationText()" [(ngModel)]="business">
+      </div>
+      <br>
+      <div class="tableField">
+        <select (change)="defineBusiness($event)">
+          <option *ngIf="filteredBusiness().length">Escolha uma opção</option>
+          <option *ngFor="let fb of filteredBusiness()" [value]="fb.fornecedor">{{ fb.fornecedor }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="reportField col-6">
+      <div class="inputField">
+        <label for="report">Planilha:</label>
+        <div class="space"></div>
+        <input type="text" id="report" (keyup)="defineLocalizationText()" [(ngModel)]="report">
+      </div>
+      <br>
+      <div class="tableField">
+        <select>
+          <option></option>
+          <option>Não implementado</option>
+          <option>Não implementado</option>
+          <option>Não implementado</option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+
+  <hr>
+
+  <div class="buttonField">
+    <button (click)="filter()" class="btn btn-success">Filtrar</button>
+  </div>
+
+</div>
+
+
+<!--
+new ModalFilter(
+  new TitleField('Filtro'),
+
+  new ContentField(
+    new BusinessField(new InputField(), new TableField()),
+    new ReportField(new InputField(), new TableField())
+  ),
+
+  new ButtonField()
+); -->

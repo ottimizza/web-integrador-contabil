@@ -1,0 +1,16 @@
+<div class="custom-modal-container">
+  <div #overlay class="custom-modal-container custom-modal-overlay" (click)="close();$event.stopPropagation();">
+    <div class="custom-modal push-right">
+      <div class="custom-modal-header">
+        <div class="title">Teste Header</div>
+      </div>
+      <div class="custom-modal-body">
+        <ng-content></ng-content>
+      </div>
+
+      <div class="custom-modal-footer">
+        Teste Footer
+      </div>
+    </div>
+  </div>
+</div>

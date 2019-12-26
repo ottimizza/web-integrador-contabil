@@ -1,0 +1,50 @@
+<form *ngIf="transacao">
+
+    <div class="row">
+        <!-- <ott-tinfo titulo="Conta" [valor]="transacao.conta" ativado="true" class="col-6"></ott-tinfo> -->
+        <div class="form-group col-4">
+            <strong>Conta:</strong>
+            <input type="text" [(ngModel)]="conta" name="conta">
+        </div>
+        <div class="col-8">
+          <div class="row w-100 m-0">
+            <input type="button" class="btn btn-info col mx-2" value="Fornecedor" (click)="fornecedor()">
+            <input type="button" class="btn btn-info col mx-2" value="Outras" (click)="outras()">
+            <input type="button" class="btn btn-info col mx-2" value="Ignorar" (click)="ignorar()">
+            <input type="button" class="btn btn-info col mx-2" value="Pular" (click)="pular()">
+          </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <ott-tinfo titulo="Fornecedor" [valor]="transacao.fornecedor" class="col-8"></ott-tinfo>
+        <ott-tinfo titulo="Banco" [valor]="transacao.banco" class="col-4"></ott-tinfo>
+    </div>
+
+    <div class="row">
+        <ott-tinfo titulo="Data" [valor]="transacao.data" class="col-4"></ott-tinfo>
+        <ott-tinfo titulo="Valor" [valor]=transacao.valor class="col-4"></ott-tinfo>
+        <ott-tinfo titulo="Documento" [valor]="transacao.documento" class="col-4"></ott-tinfo>
+    </div>
+
+    <div class="row">
+        <ott-tinfo titulo="Complemento" [valor]="transacao.complemento" class="col-4"></ott-tinfo>
+        <ott-tinfo titulo="Inexistente" class="col-4"></ott-tinfo>
+        <ott-tinfo titulo="Inexistente" class="col-4"></ott-tinfo>
+    </div>
+
+    <div class="row">
+        <ott-tinfo titulo="Inexistente" class="col-4"></ott-tinfo>
+        <ott-tinfo titulo="Inexistente" class="col-4"></ott-tinfo>
+        <ott-tinfo titulo="Inexistente" class="col-4"></ott-tinfo>
+    </div>
+
+    <div class="row">
+        <ott-tinfo titulo="Inexistente" class="col-4"></ott-tinfo>
+        <ott-tinfo titulo="Inexistente" class="col-4"></ott-tinfo>
+        <ott-tinfo titulo="Inexistente" class="col-4"></ott-tinfo>
+    </div>
+
+
+</form>
