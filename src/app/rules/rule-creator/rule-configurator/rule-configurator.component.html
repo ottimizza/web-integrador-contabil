@@ -1,0 +1,27 @@
+<div class="row mr-1">
+
+  <!-- <p>
+    {{ text() }}
+    <select>
+      <option value="contém">contém</option>
+      <option value="igual">é igual a</option>
+      <option value="inicia">inicia com</option>
+      <option value="termina">termina com</option>
+    </select>
+    {{ property }}
+    <i class="fal fa-times-circle fa-2x"></i>
+  </p> -->
+  <p class="col-2">{{ text() }}</p>
+  <select class="col-3" (change)="select($event)" id="selector">
+    <option value="igual">é igual a</option>
+    <option value="inicia">inicia com</option>
+    <option value="contém">contém</option>
+    <option value="não contém">não contém</option>
+  </select>
+  <p class="col-7">
+    {{ content }}
+    <i class="fal fa-times-circle fa-2x" (click)="turnOff()"></i>
+  </p>
+
+</div>
+

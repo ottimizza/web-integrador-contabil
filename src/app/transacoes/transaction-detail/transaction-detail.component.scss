@@ -21,9 +21,11 @@ input[type="button"] {
 }
 
 .form-group input {
+  padding: 0 10px;
   border-radius: 3px;
   width: 100%;
   border: solid 3px rgb(122, 122, 122);
+  font-family: sans-serif;
 }
 
 .form-group strong {

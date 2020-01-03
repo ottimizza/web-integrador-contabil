@@ -8,6 +8,7 @@ import { AuthGuard } from '@app/guard/auth.guard';
 import { NoAuthGuard } from '@app/guard/no-auth.guard';
 import { TransactionModule } from './transacoes/transaction.module';
 import { TransactionListComponent } from './transacoes/transaction-list/transaction-list.component';
+import { RuleCreatorComponent } from './rules/rule-creator/rule-creator.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,24 @@ const routes: Routes = [
         component: TransactionListComponent,
         pathMatch: 'full',
         canActivate: [AuthGuard]
+      }
+    ]
+  },
+  {
+    path: 'regras',
+    component: ContentLayoutComponent,
+    canActivate: [AuthGuard], // Should be replaced with actual auth guard
+    children: [
+      {
+        path: 'nova',
+        component: RuleCreatorComponent,
+        pathMatch: 'full',
+        canActivate: [AuthGuard]
+      },
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'nova'
       }
     ]
   },

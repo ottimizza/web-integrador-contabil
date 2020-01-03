@@ -1,0 +1,9 @@
+{
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "type.tsdk": "node_modules/type/lib",
+  "prettier.singleQuote": true,
+  "prettier.jsxSingleQuote": true,
+  "type.preferences.quoteStyle": "single",
+  "java.preferences.quoteStyle": "single"
+}

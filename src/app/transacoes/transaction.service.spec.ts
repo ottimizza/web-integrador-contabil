@@ -1,9 +1,9 @@
-import { TransactionService } from './transaction.service'
+import { TransactionService } from './transaction.service';
 import { Transacao } from './transacao/transacao';
 import { TestHelper } from '../test-helpers/test-helpers';
-       
+
 describe('Service: Transaction', () => {
-    
+
     let service: TransactionService;
     let transacaoTeste: Transacao;
 
@@ -18,15 +18,17 @@ describe('Service: Transaction', () => {
             .getAll()
             .subscribe(array => {
                 expect(array.length).toBe(4);
-                array.forEach(transacao => expect(typeof transacao).toBe(typeof transacaoTeste))
+                array.forEach(transacao => expect(typeof transacao).toBe(typeof transacaoTeste));
             });
     });
 
     it('Deve retornar uma transação', () => {
-        let array: number[] = [];
+        const array: number[] = [];
 
-        for(let i=0; i<101; i++){
-            if(service.getById(i)) array.push(i);
+        for (let i = 0; i < 101; i++) {
+            if (service.getById(i)) {
+              array.push(i);
+            }
         }
 
         expect(typeof service.getById(array[Math.round(Math.random() * 3)])).toBe(typeof transacaoTeste);
@@ -43,7 +45,7 @@ describe('Service: Transaction', () => {
 
         transacao.conta = 'Uma conta de testes qualquer';
 
-        expect(service.update(transacao.id, 'Uma conta de testes qualquer')).toEqual(transacao)
+        expect(service.update(transacao.id, 'Uma conta de testes qualquer')).toEqual(transacao);
     });
 
     it('Deve remover uma transação', () => {
@@ -53,9 +55,9 @@ describe('Service: Transaction', () => {
             .getAll()
             .subscribe(array => {
                 id = array[Math.round(Math.random() * 3)].id;
-                quant = array.length
+                quant = array.length;
             });
-        
+
         expect(service.remove(id).length).toBe(quant - 1);
     });
 

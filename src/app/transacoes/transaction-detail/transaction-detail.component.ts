@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { TransactionService } from '../transaction.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Transacao } from '../transacao/transacao';
@@ -27,13 +27,6 @@ export class TransactionDetailComponent implements OnInit {
     });
   }
 
-  private _excluir() {
-    const array = this._transactionService.remove(
-      this._transactionService.getCurrentId()
-    );
-
-    this._router.navigate(['dashboard', array.length ? array[0].id : 'index']);
-  }
 
   fornecedor() {
     this._naoSeEsqueceDeApagar();
@@ -44,11 +37,21 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   ignorar() {
+    this._transactionService.update(this.id, 'IGNORAR');
     this._excluir();
     this.conta = null;
   }
 
-  pular() {}
+  pular() {
+    this._excluir();
+    this.conta = null;
+  }
+
+  private _excluir() {
+    const array = this._transactionService.remove(parseInt(this.id.toString()));
+
+    this._router.navigate(['dashboard', array.length ? array[0].id : 'index']);
+  }
 
   // TEMPORARIO
   private _naoSeEsqueceDeApagar() {

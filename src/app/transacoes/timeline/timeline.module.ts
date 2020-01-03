@@ -4,6 +4,7 @@ import { TimelineComponent } from './timeline.component';
 import { RouterModule } from '@angular/router';
 import { TimelineItemComponent } from './timeline-item/timeline-item.component';
 import { FormsModule } from '@angular/forms';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
     declarations: [
@@ -16,7 +17,8 @@ import { FormsModule } from '@angular/forms';
     imports: [
         CommonModule,
         RouterModule,
-        FormsModule
+        FormsModule,
+        MatProgressBarModule
     ]
 })
 export class TimeLineModule {}
