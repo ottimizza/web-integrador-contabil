@@ -1,0 +1,47 @@
+<div class="page-wrapper">
+  <a [routerLink]="['/regras', 'nova_regra']">Regras / Nova regra</a>
+</div>
+
+<div class="main-wrapper">
+
+  <div *ngIf="rules.length; else info" class="mb-4">
+    <div *ngFor="let rule of rules; let i = index" >
+
+      <app-rule-configurator
+        [continue]="rule != rules[rules.length-1]"
+        [name]="rule.name"
+        [selectorPreset]="rule.selectorPreset"
+        [property]="rule.property"
+        [isFirst]="rule == rules[0]"
+        [id]="i"
+        (situation)="onSelect($event)"
+        (close)="onClose($event)">
+      </app-rule-configurator>
+
+    </div>
+    <span class>Conta:</span>
+    <div></div>
+    <input type="text" [(ngModel)]="conta" name="conta" class="form-control w-25">
+    <button class="btn btn-primary ml-3" (click)="save()">Salvar</button>
+  </div>
+
+  <ng-template #info>
+    <div class="row m-0 mb-4"><h3>Favor selecionar condições desejadas</h3></div>
+  </ng-template>
+
+  <div class="row mr-1 mb-2">
+    <app-chips title="Valor" [property]="transaction.valor.toString()" (valueEmitter)="onDevolve($event)" class="col-6"></app-chips>
+    <app-chips title="Data" [property]="transaction.data" (valueEmitter)="onDevolve($event)" class="col-6"></app-chips>
+  </div>
+  <div class="row mr-1 mb-2">
+    <app-chips title="Banco" [property]="transaction.banco" (valueEmitter)="onDevolve($event)" class="col-6"></app-chips>
+    <app-chips title="Documento" [property]="transaction.documento" (valueEmitter)="onDevolve($event)" class="col-6"></app-chips>
+  </div>
+  <div class="row mr-1 mb-2">
+    <app-chips title="Fornecedor" [property]="transaction.fornecedor" (valueEmitter)="onDevolve($event)" class="col-12"></app-chips>
+  </div>
+  <div class="row mr-1 mb-2">
+    <app-chips title="Complemento" [property]="transaction.complemento" (valueEmitter)="onDevolve($event)" class="col-12"></app-chips>
+  </div>
+
+</div>

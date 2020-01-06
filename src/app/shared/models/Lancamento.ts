@@ -25,7 +25,7 @@ export class Lancamento {
     private _cnpjEmpresa: string,
     private _cnpjContabilidade: string,
     private _idRoteiro: string
-  ) {}
+  ) { }
 }
 
 export enum TipoMovimento {
@@ -215,6 +215,7 @@ export class LancamentoBuilder {
       this._documento,
       this._descricao,
       this._centroCusto,
+      // this._arquivo,
       this._tipoPlanilha,
       this._tipoLancamento,
       this._tipoMovimento,

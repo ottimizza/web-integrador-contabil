@@ -1,5 +1,5 @@
 <div>
-  <div class="bar textbar rightpos">
+  <div class="page-wrapper">
 
     <i class="fal fa-filter icon" id="filter" (click)="openFilterDialog()"></i>
 
@@ -7,6 +7,8 @@
 
   </div>
   <div class="bar greybar rightpos fullHeight" *ngIf="!inputSelector">
+
+    <mat-progress-bar mode="determinate" [value]="percentage"></mat-progress-bar>
 
     <div *ngFor="let transacao of transacoes">
 
@@ -25,7 +27,7 @@
 <div class="modalFilter" *ngIf="inputSelector">
 
   <div class="titleField">
-    <h2>Filtro</h2>
+    <h3>Insira a empresa e a planilha que deseja filtrar</h3>
   </div>
 
   <br>
@@ -73,16 +75,3 @@
   </div>
 
 </div>
-
-
-<!--
-new ModalFilter(
-  new TitleField('Filtro'),
-
-  new ContentField(
-    new BusinessField(new InputField(), new TableField()),
-    new ReportField(new InputField(), new TableField())
-  ),
-
-  new ButtonField()
-); -->

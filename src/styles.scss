@@ -65,6 +65,7 @@ body {
     max-height: 60px;
   }
 }
+
 #main-wrapper {
   width: 100%;
   height: calc(100% - 70px);
@@ -148,7 +149,8 @@ $full-sidebar-width: 240px;
 
 @media (max-width: 767px) {
   .mini-sidebar {
-    .page-wrapper {
+    .page-wrapper,
+    .main-wrapper {
       margin-left: 0px;
     }
     .left-sidebar {
@@ -165,11 +167,12 @@ $full-sidebar-width: 240px;
 }
 @media (min-width: 768px) {
   .mini-sidebar {
-    .sidebar-toggler,
-    .sidebar-overlay {
-      display: none;
-    }
+    // .sidebar-toggler,
+    // .sidebar-overlay {
+    //   display: none;
+    // }
     .page-wrapper,
+    .main-wrapper,
     .footer {
       margin-left: $compact-sidebar-width;
     }
@@ -188,6 +191,7 @@ $full-sidebar-width: 240px;
       width: $full-sidebar-width;
     }
     .page-wrapper,
+    .main-wrapper,
     .footer {
       margin-left: $full-sidebar-width;
     }

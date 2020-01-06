@@ -4,17 +4,17 @@ export class GeradorTransacoes {
   static transacoes: Transacao[] = [];
 
   static arrayAleatorio(): Transacao[] {
-    if (this.transacoes.length < 4) {
+    if (!this.transacoes.length) {
       for (let i = 0; this.transacoes.length < 4; i++) {
         this.transacoes.push(
           new Transacao(
             Math.round(Math.random() * 100),
-            new Date(Math.round(Math.random() * 1575913620161)),
+            new Date(Math.round(Math.random() * new Date().getTime())),
             parseFloat((Math.random() * 10000).toFixed(2)),
             'Fornecedor Fake',
             '111.222.333-44',
             'Banco do Brasil',
-            'Lorem ipsum.'
+            'Imagine um complemento TOP aqui'
           )
         );
       }

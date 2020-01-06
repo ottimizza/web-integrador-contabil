@@ -1,0 +1,7 @@
+<span>{{ title }}:</span>
+
+<div class="disabledStyle">
+  <mat-chip-list>
+    <mat-chip *ngFor="let prop of props" (click)="devolve(title, prop)">{{ prop }}</mat-chip>
+  </mat-chip-list>
+</div>

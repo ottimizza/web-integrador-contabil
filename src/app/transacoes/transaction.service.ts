@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { GeradorTransacoes } from '../fake-api/gerador-transacoes';
+import { Transacao } from './transacao/transacao';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +21,5 @@ export class TransactionService {
 
   remove(id: number) {
     return GeradorTransacoes.removerTransacao(id);
-  }
-
-  //TEMPORÁRIO
-  getCurrentId() {
-    return GeradorTransacoes.arrayAleatorio()[0].id;
   }
 }

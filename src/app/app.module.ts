@@ -23,6 +23,8 @@ import { HttpErrorInterceptor, ErrorInterceptorProvider } from '@app/interceptor
 import { NavbarLayoutModule } from './layout/navbar-layout/navbar-layout.module';
 import { DragDropDirective } from '@shared/directives/drag-drop.directive';
 import { TransactionModule } from './transacoes/transaction.module';
+import { MatDialogModule } from '@angular/material/dialog';
+import { RulesModule } from './rules/rules-module';
 
 @NgModule({
   declarations: [
@@ -56,8 +58,10 @@ import { TransactionModule } from './transacoes/transaction.module';
     BreadcrumbModule,
 
     // Entry Components
-    TransactionModule
+    TransactionModule,
 
+    // Rules Components
+    RulesModule
   ],
   providers: [
     ErrorInterceptorProvider
