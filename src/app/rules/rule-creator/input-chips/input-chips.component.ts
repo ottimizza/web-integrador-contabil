@@ -40,6 +40,10 @@ export class InputChipsComponent implements OnInit {
     this.valueEmitter.emit({name, property, selectorPreset});
   }
 
+  devolveAll() {
+    this.valueEmitter.emit({ name: this.title, property: this.property, selectorPreset: 0 });
+  }
+
   private _verifyWord(words: string[]) {
     const list = [
       '-',
@@ -67,14 +71,10 @@ export class InputChipsComponent implements OnInit {
       'às'
     ];
 
-    const returningArray: string[] = [];
-
-    words.forEach(word => {
-      if (!list.includes(word.toLowerCase())) {
-        returningArray.push(word);
-      }
+    return words.filter(word => {
+      return !list.includes(word.toLowerCase());
     });
-    return returningArray;
+
   }
 }
 

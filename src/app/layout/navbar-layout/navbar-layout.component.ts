@@ -43,6 +43,18 @@ export class NavbarLayoutComponent implements OnInit {
     });
   }
 
+  public altToggleSidebar() {
+    const sidebar = this.document.querySelector('.left-sidebar');
+
+    if (sidebar.classList.contains('alt-collapsed')) {
+      sidebar.classList.remove('alt-collapsed');
+      sidebar.classList.add('un-alt-collapsed');
+    } else {
+      sidebar.classList.remove('un-alt-collapsed');
+      sidebar.classList.add('alt-collapsed');
+    }
+  }
+
   ngOnInit() {
     this.storageService.onStorage(AuthenticationService.STORAGE_KEY_USERINFO, (result: any) => {
       this.currentUser = User.fromLocalStorage();

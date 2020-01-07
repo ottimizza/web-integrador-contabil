@@ -24,13 +24,14 @@ input[type="button"] {
   padding: 0 10px;
   border-radius: 3px;
   width: 100%;
-  border: solid 3px rgb(122, 122, 122);
+  border: solid 3px rgb(214, 0, 0);
   font-family: sans-serif;
 }
 
 .form-group strong {
   font-size: 2vh;
   font-weight: bold;
+  color: rgb(214, 0, 0)
 }
 
 @media (max-width: 767px) {

@@ -24,6 +24,10 @@ export class RuleCreatorComponent implements OnInit {
     console.log(this.conditions);
     console.log(this.conta);
     this.conta = null;
+    this.clear();
+  }
+
+  clear() {
     this.rules = [];
     this.conditions = [];
   }

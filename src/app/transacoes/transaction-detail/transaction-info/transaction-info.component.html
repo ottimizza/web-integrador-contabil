@@ -1,7 +1,7 @@
 <div class="form-group">
     <span>{{ titulo }}:</span>
     <div class="input">
-        <input type="text" readonly [value]="valor" *ngIf="!ativado; else activated">
+        <input type="text" disabled [value]="valor" *ngIf="!ativado; else activated">
         <ng-template #activated>
             <input type="text" [value]="valor" name="conteudo">
         </ng-template>

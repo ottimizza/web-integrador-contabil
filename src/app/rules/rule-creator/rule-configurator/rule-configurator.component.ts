@@ -31,6 +31,7 @@ export class RuleConfiguratorComponent implements OnInit {
   @Output() situation = new EventEmitter();
   @Output() close = new EventEmitter();
 
+  // tslint:disable-next-line: variable-name
   constructor(@Inject(DOCUMENT) private _document: Document) {}
 
   ngOnInit(): void {
@@ -56,7 +57,7 @@ export class RuleConfiguratorComponent implements OnInit {
   }
 
   get content() {
-    let content = `"${StringCutterUtils.cut(this.property, 45)}"`;
+    let content = `"${StringCutterUtils.cut(this.property, 40)}"`;
     if (this.continue) {
       content += ',';
     } else {

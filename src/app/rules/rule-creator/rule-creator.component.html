@@ -19,29 +19,65 @@
       </app-rule-configurator>
 
     </div>
+    <div class="row m-0 mb-3">
+      <i title="Esvaziar lista" id="trashcan" (click)="clear()" class="fal fa-trash-alt fa-2x text-right"></i>
+    </div>
     <span class>Conta:</span>
     <div></div>
     <input type="text" [(ngModel)]="conta" name="conta" class="form-control w-25">
     <button class="btn btn-primary ml-3" (click)="save()">Salvar</button>
+
+    <hr>
   </div>
 
   <ng-template #info>
     <div class="row m-0 mb-4"><h3>Favor selecionar condições desejadas</h3></div>
   </ng-template>
 
-  <div class="row mr-1 mb-2">
-    <app-chips title="Valor" [property]="transaction.valor.toString()" (valueEmitter)="onDevolve($event)" class="col-6"></app-chips>
-    <app-chips title="Data" [property]="transaction.data" (valueEmitter)="onDevolve($event)" class="col-6"></app-chips>
+  <div class="mb-4">
+    <div class="row mr-1 mb-2">
+      <app-chips title="Valor" [property]="transaction.valor.toString()" (valueEmitter)="onDevolve($event)" class="col-6"></app-chips>
+      <app-chips title="Data" [property]="transaction.data" (valueEmitter)="onDevolve($event)" class="col-6"></app-chips>
+    </div>
+    <div class="row mr-1 mb-2">
+      <app-chips title="Banco" [property]="transaction.banco" (valueEmitter)="onDevolve($event)" class="col-6"></app-chips>
+      <app-chips title="Documento" [property]="transaction.documento" (valueEmitter)="onDevolve($event)" class="col-6"></app-chips>
+    </div>
+    <div class="row mr-1 mb-2">
+      <app-chips title="Fornecedor" [property]="transaction.fornecedor" (valueEmitter)="onDevolve($event)" class="col-12"></app-chips>
+    </div>
+    <div class="row mr-1 mb-2">
+      <app-chips title="Complemento" [property]="transaction.complemento" (valueEmitter)="onDevolve($event)" class="col-12"></app-chips>
+    </div>
   </div>
-  <div class="row mr-1 mb-2">
-    <app-chips title="Banco" [property]="transaction.banco" (valueEmitter)="onDevolve($event)" class="col-6"></app-chips>
-    <app-chips title="Documento" [property]="transaction.documento" (valueEmitter)="onDevolve($event)" class="col-6"></app-chips>
-  </div>
-  <div class="row mr-1 mb-2">
-    <app-chips title="Fornecedor" [property]="transaction.fornecedor" (valueEmitter)="onDevolve($event)" class="col-12"></app-chips>
-  </div>
-  <div class="row mr-1 mb-2">
-    <app-chips title="Complemento" [property]="transaction.complemento" (valueEmitter)="onDevolve($event)" class="col-12"></app-chips>
+
+  <div *ngIf="rules.length" class="mt-4">
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th>Empresa</th>
+            <th>Valor</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Aind não implementado</td>
+            <td>Aind não implementado</td>
+            <td>Aind não implementado</td>
+          </tr>
+          <tr>
+            <td>Aind não implementado</td>
+            <td>Aind não implementado</td>
+            <td>Aind não implementado</td>
+          </tr>
+          <tr>
+            <td>Aind não implementado</td>
+            <td>Aind não implementado</td>
+            <td>Aind não implementado</td>
+          </tr>
+        </tbody>
+      </table>
   </div>
 
 </div>

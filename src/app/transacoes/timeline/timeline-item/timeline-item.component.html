@@ -1,4 +1,4 @@
-<div class="transacao">
+<div class="transacao" [title]="transacao.fornecedor">
 
     <div *ngIf="main; else common"  class="bold">
         <strong>{{ transacao.data }}</strong>

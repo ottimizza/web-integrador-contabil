@@ -1,5 +1,5 @@
-import { TestHelper } from './test-helpers'
-import { Transacao } from '../transacoes/transacao/transacao'
+import { TestHelper } from './test-helpers';
+import { Transacao } from '../../transacoes/transacao/transacao';
 
 describe('Class: TestHelper', () => {
 
@@ -7,4 +7,4 @@ describe('Class: TestHelper', () => {
         expect(TestHelper.randomTransaction() instanceof Transacao).toBeTruthy();
     });
 
-})
+});

@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { TransactionService } from '../transaction.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Transacao } from '../transacao/transacao';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'ott-tdetail',
@@ -16,7 +17,8 @@ export class TransactionDetailComponent implements OnInit {
   constructor(
     private _transactionService: TransactionService,
     private _route: ActivatedRoute,
-    private _router: Router
+    private _router: Router,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {

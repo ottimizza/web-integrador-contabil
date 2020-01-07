@@ -1,6 +1,6 @@
 import { TransactionService } from './transaction.service';
 import { Transacao } from './transacao/transacao';
-import { TestHelper } from '../test-helpers/test-helpers';
+import { TestHelper } from '../shared/test-helpers/test-helpers';
 
 describe('Service: Transaction', () => {
 

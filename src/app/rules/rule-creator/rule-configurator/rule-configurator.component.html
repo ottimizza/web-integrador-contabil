@@ -19,10 +19,10 @@
     <option value="contém">contém</option>
     <option value="não contém">não contém</option>
   </select>
-  <div class="col-4 mt-2">
-    <p class="">{{ content }}</p>
+  <div class="col-5 mt-2">
+    <p [title]="property">{{ content }}</p>
   </div>
-  <i class="fal fa-times-circle fa-2x col" (click)="turnOff()"></i>
+  <i class="fal fa-times-circle fa-2x col" title="Remover" (click)="turnOff()"></i>
 
 </div>
 
