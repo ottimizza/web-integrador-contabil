@@ -3,6 +3,7 @@ import { TransactionService } from '../transaction.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Transacao } from '../transacao/transacao';
 import { MatDialog } from '@angular/material/dialog';
+import { RuleCreatorComponent } from './rule-creator/rule-creator.component';
 
 @Component({
   selector: 'ott-tdetail',
@@ -35,6 +36,10 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   outras() {
+    const dialogRef = this.dialog.open(RuleCreatorComponent, {
+      width: '85%',
+      data: {transacao: this.transacao}
+    });
     this._naoSeEsqueceDeApagar();
   }
 

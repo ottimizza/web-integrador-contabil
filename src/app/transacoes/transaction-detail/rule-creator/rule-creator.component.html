@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Criar regra</h1>
+<div mat-dialog-content>
+  <p>Selecione as condições da regra</p>
+  <div>
+    <app-chips title="Data" [property]="data.transacao.data"></app-chips>
+    <app-chips title="Valor" [property]="data.transacao.valor"></app-chips>
+    <app-chips title="Fornecedor" [property]="data.transacao.fornecedor"></app-chips>
+    <app-chips title="Documento" [property]="data.transacao.documento"></app-chips>
+    <app-chips title="Banco" [property]="data.transacao.banco"></app-chips>
+    <app-chips title="Complemento" [property]="data.transacao.complemento"></app-chips>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data.regra" cdkFocusInitial class="btn btn-outline-info mr-3">Ok</button>
+  <button mat-button (click)="onNoClick()" class="btn btn-outline-danger">Cancelar</button>
+</div>

@@ -24,7 +24,6 @@ import { NavbarLayoutModule } from './layout/navbar-layout/navbar-layout.module'
 import { DragDropDirective } from '@shared/directives/drag-drop.directive';
 import { TransactionModule } from './transacoes/transaction.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { RulesModule } from './rules/rules-module';
 
 @NgModule({
   declarations: [
@@ -58,10 +57,7 @@ import { RulesModule } from './rules/rules-module';
     BreadcrumbModule,
 
     // Entry Components
-    TransactionModule,
-
-    // Rules Components
-    RulesModule
+    TransactionModule
   ],
   providers: [
     ErrorInterceptorProvider

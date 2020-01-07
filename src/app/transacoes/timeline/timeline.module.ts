@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TimelineComponent } from './timeline.component';
 import { RouterModule } from '@angular/router';
-import { TimelineItemComponent } from './timeline-item/timeline-item.component';
 import { FormsModule } from '@angular/forms';
+
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+
+import { TimelineComponent } from './timeline.component';
 
 @NgModule({
     declarations: [
-        TimelineComponent,
-        TimelineItemComponent
+        TimelineComponent
     ],
     exports: [
         TimelineComponent

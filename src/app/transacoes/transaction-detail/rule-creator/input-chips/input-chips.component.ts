@@ -10,7 +10,7 @@ export class InputChipsComponent implements OnInit {
   @Input() title: string;
   @Input() property: string;
   @Output() valueEmitter = new EventEmitter();
-  props: string[];
+  props: string[] = [];
 
   ngOnInit(): void {
     if (this.property) {
@@ -20,6 +20,8 @@ export class InputChipsComponent implements OnInit {
         const doc1: string[] = this.property.split('-')[0].split('.');
         doc1.push(this.property.split('-')[1]);
         this.props = this._verifyWord(doc1);
+      } else if (this.title === 'Valor') {
+        this.props.push(this.property);
       } else {
         this.props = this._verifyWord(this.property.split(' '));
       }
@@ -38,10 +40,6 @@ export class InputChipsComponent implements OnInit {
     }
 
     this.valueEmitter.emit({name, property, selectorPreset});
-  }
-
-  devolveAll() {
-    this.valueEmitter.emit({ name: this.title, property: this.property, selectorPreset: 0 });
   }
 
   private _verifyWord(words: string[]) {
@@ -71,10 +69,14 @@ export class InputChipsComponent implements OnInit {
       'às'
     ];
 
-    return words.filter(word => {
-      return !list.includes(word.toLowerCase());
-    });
+    const returningArray: string[] = [];
 
+    words.forEach(word => {
+      if (!list.includes(word.toLowerCase())) {
+        returningArray.push(word);
+      }
+    });
+    return returningArray;
   }
 }
 

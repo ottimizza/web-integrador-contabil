@@ -6,7 +6,12 @@
     <a [routerLink]="['/dashboard', 'index']">Última digitação {{ local }}</a>
 
   </div>
-  <div class="bar greybar rightpos fullHeight" *ngIf="!inputSelector">
+
+  <div class="main-wrapper p-0">
+    <mat-progress-bar mode="determinate" [value]="percentage"></mat-progress-bar>
+  </div>
+
+  <!-- <div class="bar greybar rightpos fullHeight" *ngIf="!inputSelector">
 
     <mat-progress-bar mode="determinate" [value]="percentage"></mat-progress-bar>
 
@@ -19,7 +24,7 @@
 
     </div>
   </div>
-</div>
+</div> -->
 
 
 
