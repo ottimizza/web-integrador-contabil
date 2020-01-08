@@ -2,6 +2,6 @@
 
 <div class="disabledStyle">
   <mat-chip-list>
-    <mat-chip *ngFor="let prop of props" (click)="devolve(title, prop)">{{ prop }}</mat-chip>
+    <mat-chip *ngFor="let prop of props" (click)="select(props.indexOf(prop), title)" [id]="props.indexOf(prop) + title">{{ prop }}</mat-chip>
   </mat-chip-list>
 </div>

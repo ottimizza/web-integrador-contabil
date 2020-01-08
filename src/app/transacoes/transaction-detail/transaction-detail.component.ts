@@ -37,14 +37,28 @@ export class TransactionDetailComponent implements OnInit {
 
   outras() {
     const dialogRef = this.dialog.open(RuleCreatorComponent, {
-      width: '85%',
+      maxWidth: '92%',
+      width: '92%',
       data: {transacao: this.transacao}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
     });
     this._naoSeEsqueceDeApagar();
   }
 
   ignorar() {
     this._transactionService.update(this.id, 'IGNORAR');
+    const dialogRef = this.dialog.open(RuleCreatorComponent, {
+      maxWidth: '92%',
+      width: '92%',
+      data: {transacao: this.transacao}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
     this._excluir();
     this.conta = null;
   }

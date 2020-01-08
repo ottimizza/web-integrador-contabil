@@ -1,6 +1,5 @@
 form {
-  padding: 2vw;
-  padding-bottom: 0;
+  padding: 0 2%;
 }
 
 input[type="button"] {
@@ -26,28 +25,11 @@ input[type="button"] {
   width: 100%;
   border: solid 3px rgb(214, 0, 0);
   font-family: sans-serif;
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
 }
 
 .form-group strong {
   font-size: 2vh;
   font-weight: bold;
   color: rgb(214, 0, 0)
-}
-
-@media (max-width: 767px) {
-  form {
-    margin-left: 0;
-  }
-}
-
-@media (min-width: 768px) {
-  form {
-    margin-left: 70px;
-  }
-}
-
-@media (min-width: 1170px) {
-  form {
-    margin-left: 240px;
-  }
 }

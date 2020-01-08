@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-chips',
@@ -9,8 +10,12 @@ export class InputChipsComponent implements OnInit {
 
   @Input() title: string;
   @Input() property: string;
-  @Output() valueEmitter = new EventEmitter();
+  @Output() selectedInfos = new EventEmitter();
   props: string[] = [];
+  chipList: string[] = [];
+  returningObject: any;
+
+  constructor(@Inject(DOCUMENT) private _document: Document) {}
 
   ngOnInit(): void {
     if (this.property) {
@@ -28,18 +33,37 @@ export class InputChipsComponent implements OnInit {
     }
   }
 
-  devolve(name: string, property: string) {
-    let selectorPreset: number;
+  // devolve(name: string, property: string) {
+  //   let selectorPreset: number;
 
-    if (this.props.length === 1) {
-      selectorPreset = 0;
-    } else if (this.props.indexOf(property) === 0) {
-      selectorPreset = 1;
+  //   if (this.props.length === 1) {
+  //     selectorPreset = 0;
+  //   } else if (this.props.indexOf(property) === 0) {
+  //     selectorPreset = 1;
+  //   } else {
+  //     selectorPreset = 2;
+  //   }
+
+  //   this.valueEmitter.emit({name, property, selectorPreset});
+  // }
+
+  select(id: number, title: string) {
+    const chip = this._document.getElementById(id + title);
+    const prop = this.props[id];
+    if (chip.classList.contains('selected')) {
+      chip.classList.remove('selected');
+      const chiplistId = this.chipList.indexOf(prop);
+      // this.chipList.splice(this.chipList.indexOf({ title, selecteds: prop}), 1);
+      this.chipList.splice(chiplistId, 1);
+      this.returningObject = { title, selecteds: this.chipList };
+      this.selectedInfos.emit(this.chipList);
     } else {
-      selectorPreset = 2;
+      chip.classList.add('selected');
+      this.chipList.push(prop);
+      this.returningObject = { title, selecteds: this.chipList };
+      this.selectedInfos.emit(this.returningObject);
     }
 
-    this.valueEmitter.emit({name, property, selectorPreset});
   }
 
   private _verifyWord(words: string[]) {

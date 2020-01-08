@@ -223,6 +223,10 @@ $full-sidebar-width: 240px;
     .un-alt-collapsed {
       width: $full-sidebar-width;
     }
+
+    .alt-main-wrapper {
+      margin-left: $compact-sidebar-width;
+    }
   }
 
 }

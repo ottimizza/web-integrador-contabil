@@ -1,16 +1,117 @@
 <h1 mat-dialog-title>Criar regra</h1>
 <div mat-dialog-content>
-  <p>Selecione as condições da regra</p>
-  <div>
-    <app-chips title="Data" [property]="data.transacao.data"></app-chips>
+  <div *ngIf="!gridIsOn; else openGrid">
+    <p>Selecione as condições da regra</p>
+    <app-chips title="Data" [property]="data.transacao.data" (selectedInfos)="onDevolve($event)"></app-chips>
+    <br>
     <app-chips title="Valor" [property]="data.transacao.valor"></app-chips>
+    <br>
     <app-chips title="Fornecedor" [property]="data.transacao.fornecedor"></app-chips>
+    <br>
     <app-chips title="Documento" [property]="data.transacao.documento"></app-chips>
+    <br>
     <app-chips title="Banco" [property]="data.transacao.banco"></app-chips>
+    <br>
     <app-chips title="Complemento" [property]="data.transacao.complemento"></app-chips>
   </div>
+  <ng-template #openGrid>
+    <p>Estes serão os lançamentos afetados</p>
+    <table class="table table-striped table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th>Data</th>
+          <th>Valor</th>
+          <th>Fornecedor</th>
+          <th>Documento</th>
+          <th>Banco</th>
+          <th>Complemento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+        </tr>
+        <tr>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+        </tr>
+        <tr>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+        </tr>
+        <tr>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+        </tr>
+        <tr>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+        </tr>
+        <tr>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+        </tr>
+        <tr>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+        </tr>
+        <tr>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+        </tr>
+        <tr>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+          <td>Não implementado</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </ng-template>
 </div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="data.regra" cdkFocusInitial class="btn btn-outline-info mr-3">Ok</button>
-  <button mat-button (click)="onNoClick()" class="btn btn-outline-danger">Cancelar</button>
+  <button mat-button [mat-dialog-close]="data.regra" tabindex="-1" class="btn btn-outline-info mr-3">Ok</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="btn btn-outline-danger mr-4">Cancelar</button>
+  <div class="ml-4">
+    <button mat-button *ngIf="gridIsOn; else gridOff" class="btn btn-outline-dark" (click)="gridIsOn = false">Definir regra</button>
+    <ng-template #gridOff>
+      <button mat-button class="btn btn-outline-dark" (click)="gridIsOn = true">Lançamentos afetados</button>
+    </ng-template>
+  </div>
 </div>
