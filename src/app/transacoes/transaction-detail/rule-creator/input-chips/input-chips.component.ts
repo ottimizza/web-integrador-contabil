@@ -53,10 +53,9 @@ export class InputChipsComponent implements OnInit {
     if (chip.classList.contains('selected')) {
       chip.classList.remove('selected');
       const chiplistId = this.chipList.indexOf(prop);
-      // this.chipList.splice(this.chipList.indexOf({ title, selecteds: prop}), 1);
       this.chipList.splice(chiplistId, 1);
       this.returningObject = { title, selecteds: this.chipList };
-      this.selectedInfos.emit(this.chipList);
+      this.selectedInfos.emit(this.returningObject);
     } else {
       chip.classList.add('selected');
       this.chipList.push(prop);

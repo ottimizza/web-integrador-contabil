@@ -4,15 +4,15 @@
     <p>Selecione as condições da regra</p>
     <app-chips title="Data" [property]="data.transacao.data" (selectedInfos)="onDevolve($event)"></app-chips>
     <br>
-    <app-chips title="Valor" [property]="data.transacao.valor"></app-chips>
+    <app-chips title="Valor" [property]="data.transacao.valor" (selectedInfos)="onDevolve($event)"></app-chips>
     <br>
-    <app-chips title="Fornecedor" [property]="data.transacao.fornecedor"></app-chips>
+    <app-chips title="Fornecedor" [property]="data.transacao.fornecedor" (selectedInfos)="onDevolve($event)"></app-chips>
     <br>
-    <app-chips title="Documento" [property]="data.transacao.documento"></app-chips>
+    <app-chips title="Documento" [property]="data.transacao.documento" (selectedInfos)="onDevolve($event)"></app-chips>
     <br>
-    <app-chips title="Banco" [property]="data.transacao.banco"></app-chips>
+    <app-chips title="Banco" [property]="data.transacao.banco" (selectedInfos)="onDevolve($event)"></app-chips>
     <br>
-    <app-chips title="Complemento" [property]="data.transacao.complemento"></app-chips>
+    <app-chips title="Complemento" [property]="data.transacao.complemento" (selectedInfos)="onDevolve($event)"></app-chips>
   </div>
   <ng-template #openGrid>
     <p>Estes serão os lançamentos afetados</p>

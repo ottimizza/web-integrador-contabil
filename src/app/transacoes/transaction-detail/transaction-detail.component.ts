@@ -45,7 +45,7 @@ export class TransactionDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
     });
-    this._naoSeEsqueceDeApagar();
+    this._excluir();
   }
 
   ignorar() {
