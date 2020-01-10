@@ -18,7 +18,7 @@ export class GeradorTransacoes {
             'Um melhor ainda aqui',
             'Esse também é muito bom',
             'Esse nem tanto',
-            'Complemento 05 (acabou a criatividade)',
+            'Complemento 05 - acabou a criatividade',
             Math.round(Math.random() * 10000).toString(),
             'Arquivo Fake de Testes'
           )

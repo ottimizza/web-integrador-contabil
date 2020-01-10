@@ -13,7 +13,7 @@ export class InputChipsComponent implements OnInit {
   @Output() selectedInfos = new EventEmitter();
   props: string[] = [];
   chipList: string[] = [];
-  returningObject: any;
+  returningObject: any = { title: this.title, selecteds: undefined };
 
   constructor(@Inject(DOCUMENT) private _document: Document) {}
 
@@ -50,38 +50,43 @@ export class InputChipsComponent implements OnInit {
   select(id: number, title: string) {
     const chip = this._document.getElementById(id + title);
     const prop = this.props[id];
+
     if (chip.classList.contains('selected')) {
+      // Desselecionar
       chip.classList.remove('selected');
       chip.classList.add('chipDefault');
-      this.chipList.splice(this.chipList.indexOf(prop), 1);
-      this.returningObject = { title, selecteds: this.chipList };
-      this.selectedInfos.emit(this.returningObject);
+      this.returningObject = { title, selecteds: this.chipList.length > 0 ? this.chipList : undefined };
     } else {
+      // Selecionar
       chip.classList.remove('chipDefault');
       chip.classList.add('selected');
       this.chipList.push(prop);
       this.returningObject = { title, selecteds: this.chipList };
-      this.selectedInfos.emit(this.returningObject);
     }
+    this.selectedInfos.emit(this.returningObject);
   }
 
   devolveAll() {
-    const chips = this._document.getElementsByClassName('chip' + this.title);
+    const chips: HTMLCollectionOf<Element> = this._document.getElementsByClassName('chip' + this.title);
+    let countSelected = 0;
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < chips.length; i++) {
       if (chips[i].classList.contains('selected')) {
         chips[i].classList.remove('selected');
         chips[i].classList.add('chipDefault');
       } else {
+        countSelected++;
         chips[i].classList.remove('chipDefault');
         chips[i].classList.add('selected');
       }
     }
-    if (this.returningObject && this.returningObject.selecteds === this.props) {
-      this.returningObject = { title: this.title, selecteds: undefined};
-    } else {
+
+    if (countSelected === 0) {
+      this.returningObject = { title: this.title, selecteds: undefined };
+    } else if (countSelected > 0) {
       this.returningObject = { title: this.title, selecteds: [this.property] };
     }
+
     this.selectedInfos.emit(this.returningObject);
   }
 
@@ -121,6 +126,7 @@ export class InputChipsComponent implements OnInit {
     });
     return returningArray;
   }
+
 }
 
 

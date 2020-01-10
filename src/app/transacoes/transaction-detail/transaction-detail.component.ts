@@ -56,9 +56,10 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   regra() {
-    if (this.conta && this.verifyConditions) {
+    if (this.conta && this.verifyConditions()) {
       console.log(this.conta);
       console.log(this.conditions);
+      this.resetConditions();
       this._excluir();
       this.conta = null;
     }
@@ -94,38 +95,54 @@ export class TransactionDetailComponent implements OnInit {
 
   ignorar() {
     if (this.verifyConditions()) {
+      this.resetConditions();
       this._excluir();
       this.conta = null;
     }
   }
 
   pular() {
+    this.resetConditions();
     this._excluir();
     this.conta = null;
   }
 
   private _excluir() {
-    const array = this._transactionService.remove(parseInt(this.id.toString()));
+    const array = this._transactionService.remove(+this.id.toString());
 
     this._router.navigate(['dashboard', array.length ? array[0].id : 'index']);
   }
 
   private verifyConditions() {
-    if (this.conditions.data ||
-      this.conditions.valor ||
-      this.conditions.fornecedor ||
-      this.conditions.documento ||
-      this.conditions.banco ||
-      this.conditions.complemento01 ||
-      this.conditions.complemento02 ||
-      this.conditions.complemento03 ||
-      this.conditions.complemento04 ||
-      this.conditions.complemento05 ||
-      this.conditions.tipoPlanilha ||
-      this.conditions.nomeArquivo) {
-      return true;
-    }
-    return false;
+    return this.conditions.data ||
+    this.conditions.valor ||
+    this.conditions.fornecedor ||
+    this.conditions.documento ||
+    this.conditions.banco ||
+    this.conditions.complemento01 ||
+    this.conditions.complemento02 ||
+    this.conditions.complemento03 ||
+    this.conditions.complemento04 ||
+    this.conditions.complemento05 ||
+    this.conditions.tipoPlanilha ||
+    this.conditions.nomeArquivo;
+  }
+
+  private resetConditions() {
+    this.conditions = {
+      data: undefined,
+      valor: undefined,
+      fornecedor: undefined,
+      documento: undefined,
+      banco: undefined,
+      complemento01: undefined,
+      complemento02: undefined,
+      complemento03: undefined,
+      complemento04: undefined,
+      complemento05: undefined,
+      tipoPlanilha: undefined,
+      nomeArquivo: undefined
+    };
   }
 
 }
