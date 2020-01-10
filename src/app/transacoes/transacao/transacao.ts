@@ -9,11 +9,22 @@ export class Transacao {
         readonly fornecedor: string,
         readonly documento: string,
         readonly banco: string,
-        readonly complemento: string,
+        readonly complemento01: string,
+        readonly complemento02: string,
+        readonly complemento03: string,
+        readonly complemento04: string,
+        readonly complemento05: string,
+        readonly tipoPlanilha: string,
+        readonly nomeArquivo: string
     ) {
         this.fornecedor = fornecedor.toUpperCase();
         this.banco = banco.toUpperCase();
-        this.complemento = complemento.toUpperCase();
+        this.complemento01 = complemento01.toUpperCase();
+        this.complemento02 = complemento02.toUpperCase();
+        this.complemento03 = complemento03.toUpperCase();
+        this.complemento04 = complemento04.toUpperCase();
+        this.complemento05 = complemento05.toUpperCase();
+        this.nomeArquivo = nomeArquivo.toUpperCase();
     }
 
     set conta(conta: string) {

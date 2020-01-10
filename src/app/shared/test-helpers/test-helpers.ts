@@ -11,7 +11,13 @@ export class TestHelper {
             'Fornecedor Fake',
             '111.222.333-44',
             'Banco do Brasil',
-            'Lorem ipsum.'
+            'Lorem ipsum.',
+            'Lorem ipsum.',
+            'Lorem ipsum.',
+            'Lorem ipsum.',
+            'Lorem ipsum.',
+            'tipo',
+            'Um nome bem louco'
         );
 
     }

@@ -18,6 +18,9 @@ import { MatChipsModule } from '@angular/material/chips';
     FormsModule,
     MatFormFieldModule,
     MatChipsModule
+  ],
+  exports: [
+    InputChipsComponent
   ]
 })
 export class RuleCreatorModule { }

@@ -52,17 +52,37 @@ export class InputChipsComponent implements OnInit {
     const prop = this.props[id];
     if (chip.classList.contains('selected')) {
       chip.classList.remove('selected');
-      const chiplistId = this.chipList.indexOf(prop);
-      this.chipList.splice(chiplistId, 1);
+      chip.classList.add('chipDefault');
+      this.chipList.splice(this.chipList.indexOf(prop), 1);
       this.returningObject = { title, selecteds: this.chipList };
       this.selectedInfos.emit(this.returningObject);
     } else {
+      chip.classList.remove('chipDefault');
       chip.classList.add('selected');
       this.chipList.push(prop);
       this.returningObject = { title, selecteds: this.chipList };
       this.selectedInfos.emit(this.returningObject);
     }
+  }
 
+  devolveAll() {
+    const chips = this._document.getElementsByClassName('chip' + this.title);
+    // tslint:disable-next-line: prefer-for-of
+    for (let i = 0; i < chips.length; i++) {
+      if (chips[i].classList.contains('selected')) {
+        chips[i].classList.remove('selected');
+        chips[i].classList.add('chipDefault');
+      } else {
+        chips[i].classList.remove('chipDefault');
+        chips[i].classList.add('selected');
+      }
+    }
+    if (this.returningObject && this.returningObject.selecteds === this.props) {
+      this.returningObject = { title: this.title, selecteds: undefined};
+    } else {
+      this.returningObject = { title: this.title, selecteds: [this.property] };
+    }
+    this.selectedInfos.emit(this.returningObject);
   }
 
   private _verifyWord(words: string[]) {

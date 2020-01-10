@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { TimelineComponent } from './timeline.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import { TimelineComponent } from './timeline.component';
         RouterModule,
         FormsModule,
         MatProgressBarModule,
+        MatTooltipModule
     ]
 })
 export class TimeLineModule {}

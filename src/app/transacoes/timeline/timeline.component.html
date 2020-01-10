@@ -7,8 +7,8 @@
 
   </div>
 
-  <div class="main-wrapper p-0">
-    <mat-progress-bar mode="determinate" [value]="percentage"></mat-progress-bar>
+  <div class="main-wrapper p-0" *ngIf="!inputSelector">
+    <mat-progress-bar mode="determinate" [value]="percentage" [matTooltip]="percentage + '% de ' + ias" matTooltipShowDelay="300" matTooltipHideDelay="500"></mat-progress-bar>
   </div>
 
   <!-- <div class="bar greybar rightpos fullHeight" *ngIf="!inputSelector">
@@ -39,11 +39,11 @@
 
   <div class="contentField row">
 
-    <div class="businessField col-6">
+    <div class="businessField col-12">
       <div class="inputField">
         <label for="business">Empresa:</label>
         <div class="space"></div>
-        <input id="business" type="text" (keyup)="defineLocalizationText()" [(ngModel)]="business">
+        <input id="business" type="text" (keyup)="defineLocalizationText()" [(ngModel)]="business"  autocomplete="off">
       </div>
       <br>
       <div class="tableField">
@@ -54,7 +54,7 @@
       </div>
     </div>
 
-    <div class="reportField col-6">
+    <!-- <div class="reportField col-6">
       <div class="inputField">
         <label for="report">Planilha:</label>
         <div class="space"></div>
@@ -69,7 +69,7 @@
           <option>Não implementado</option>
         </select>
       </div>
-    </div>
+    </div> -->
 
   </div>
 

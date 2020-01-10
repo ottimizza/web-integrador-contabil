@@ -20,6 +20,7 @@ export class TimelineComponent implements OnInit {
   transacoes: Transacao[] = [];
   local: string;
   cuttedLocal: string;
+  ias: number;
   constructor(
     public router: Router,
     private fake: TransactionService
@@ -85,8 +86,8 @@ export class TimelineComponent implements OnInit {
   }
 
   get percentage(): number {
-    const IAS = TimelineComponent.initialArraySize;
-    return ((IAS - this.transacoes.length) / IAS) * 100;
+    this.ias = TimelineComponent.initialArraySize;
+    return ((this.ias - this.transacoes.length) / this.ias) * 100;
   }
 
   protected defineLocalizationText(): void {

@@ -14,7 +14,13 @@ export class GeradorTransacoes {
             'Fornecedor Fake',
             '111.222.333-44',
             'Banco do Brasil',
-            'Imagine um complemento TOP aqui'
+            'Imagine um complemento TOP aqui',
+            'Um melhor ainda aqui',
+            'Esse também é muito bom',
+            'Esse nem tanto',
+            'Complemento 05 (acabou a criatividade)',
+            Math.round(Math.random() * 10000).toString(),
+            'Arquivo Fake de Testes'
           )
         );
       }

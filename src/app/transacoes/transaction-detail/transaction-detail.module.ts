@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
-import { TransactionDetailComponent } from './transaction-detail.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TransactionInfoModule } from './transaction-info/transaction-info.module';
+
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+import { TransactionDetailComponent } from './transaction-detail.component';
+import { TransactionInfoModule } from './transaction-info/transaction-info.module';
 import { RuleCreatorModule } from './rule-creator/rule-creator.module';
 import { RuleCreatorComponent } from './rule-creator/rule-creator.component';
 
@@ -14,7 +17,8 @@ import { RuleCreatorComponent } from './rule-creator/rule-creator.component';
         FormsModule,
         RuleCreatorModule,
         TransactionInfoModule,
-        MatDialogModule
+        MatDialogModule,
+        MatTooltipModule
     ],
     entryComponents: [RuleCreatorComponent],
     exports: [TransactionDetailComponent]

@@ -28,8 +28,12 @@ input[type="button"] {
   box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
 }
 
+
 .form-group strong {
-  font-size: 2vh;
+  font-size: 13px;
   font-weight: bold;
-  color: rgb(214, 0, 0)
+}
+
+.account-field {
+  color: rgb(214, 0, 0);
 }
