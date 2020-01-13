@@ -1,7 +1,7 @@
 <div>
   <div class="page-wrapper">
 
-    <i class="fal fa-filter icon" title="Filtrar" id="filter" (click)="openFilterDialog()"></i>
+    <i class="fal fa-filter icon" id="filter" (click)="openFilterDialog()" matTooltip="Clique para abrir o filtro novamente" matTooltipShowDelay="300" matTooltipHideDelay="500"></i>
 
     <a [routerLink]="['/dashboard', 'index']">Última digitação {{ local }}</a>
 
@@ -10,23 +10,6 @@
   <div class="main-wrapper p-0" *ngIf="!inputSelector">
     <mat-progress-bar mode="determinate" [value]="percentage" [matTooltip]="percentage + '% de ' + ias" matTooltipShowDelay="300" matTooltipHideDelay="500"></mat-progress-bar>
   </div>
-
-  <!-- <div class="bar greybar rightpos fullHeight" *ngIf="!inputSelector">
-
-    <mat-progress-bar mode="determinate" [value]="percentage"></mat-progress-bar>
-
-    <div *ngFor="let transacao of transacoes">
-
-      <ott-item *ngIf="transacao == transacoes[0]; else common" [transacao]="transacao" main="true" (click)="redirect()"></ott-item>
-      <ng-template #common>
-        <ott-item [transacao]="transacao"></ott-item>
-      </ng-template>
-
-    </div>
-  </div>
-</div> -->
-
-
 
 
 <div class="modalFilter" *ngIf="inputSelector">
@@ -54,22 +37,7 @@
       </div>
     </div>
 
-    <!-- <div class="reportField col-6">
-      <div class="inputField">
-        <label for="report">Planilha:</label>
-        <div class="space"></div>
-        <input type="text" id="report" (keyup)="defineLocalizationText()" [(ngModel)]="report">
-      </div>
-      <br>
-      <div class="tableField">
-        <select>
-          <option></option>
-          <option>Não implementado</option>
-          <option>Não implementado</option>
-          <option>Não implementado</option>
-        </select>
-      </div>
-    </div> -->
+
 
   </div>
 

@@ -12,23 +12,12 @@ import { RuleCreatorComponent } from './rule-creator/rule-creator.component';
 })
 export class TransactionDetailComponent implements OnInit {
 
-  transacao: Transacao;
+  entry: Transacao;
   id: number;
   conta: string;
-  conditions: any = {
-    data: undefined,
-    valor: undefined,
-    fornecedor: undefined,
-    documento: undefined,
-    banco: undefined,
-    complemento01: undefined,
-    complemento02: undefined,
-    complemento03: undefined,
-    complemento04: undefined,
-    complemento05: undefined,
-    tipoPlanilha: undefined,
-    nomeArquivo: undefined
-  };
+  conditions: any;
+  suggestions: string[];
+  ruleSelected = false;
 
   constructor(
     // tslint:disable: variable-name
@@ -42,16 +31,27 @@ export class TransactionDetailComponent implements OnInit {
     this._router.events.subscribe(() => {
       this.id = this._route.snapshot.params.transactionId;
 
-      this.transacao = this._transactionService.getById(this.id);
+      this.entry = this._transactionService.getById(this.id);
     });
+    this.resetConditions();
+    this.suggestions = [
+      '312321321',
+      '735190862',
+      '902873038',
+      '919591831',
+      '423782332'
+    ];
   }
 
   get info() {
     return {
       account: 'Insira neste campo, a conta contábil relativa a este lançamento ou selecione uma das sugeridas.',
-      rule: 'Esta conta contábil deve ser aplicada em todas as ocorrências da regra selecionada',
+      rule: 'A conta contábil informada deve ser aplicada em todas as ocorrências da regra selecionada.',
       ignore: 'Todos os lançamentos com a regra seleciona serão ignorados.',
-      skip: 'Selecione esta opção caso você não consiga preencher sózinho ou não tenha os dados necessários no momento.'
+      skip: 'Selecione esta opção caso você não consiga preencher sózinho ou não tenha os dados necessários no momento.',
+      ok: 'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
+      cancel: 'Voltar à barra de opções anterior.',
+      affecteds: 'Clique aqui para visualizar os lançamentos afetados.'
     };
   }
 
@@ -107,8 +107,19 @@ export class TransactionDetailComponent implements OnInit {
     this.conta = null;
   }
 
+  affecteds() {
+    return 120;
+  }
+
+  activate() {
+    if (this.verifyConditions()) {
+      this.ruleSelected = true;
+    }
+  }
+
   private _excluir() {
     const array = this._transactionService.remove(+this.id.toString());
+    this.ruleSelected = false;
 
     this._router.navigate(['dashboard', array.length ? array[0].id : 'index']);
   }

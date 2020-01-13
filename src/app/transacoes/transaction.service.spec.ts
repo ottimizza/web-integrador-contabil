@@ -35,19 +35,6 @@ describe('Service: Transaction', () => {
 
     });
 
-    it('Deve atualizar uma transação', () => {
-        let transacao: Transacao;
-        service
-            .getAll()
-            .subscribe(array => {
-                transacao = array[0];
-            });
-
-        transacao.conta = 'Uma conta de testes qualquer';
-
-        expect(service.update(transacao.id, 'Uma conta de testes qualquer')).toEqual(transacao);
-    });
-
     it('Deve remover uma transação', () => {
         let id: number;
         let quant: number;

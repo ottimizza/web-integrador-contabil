@@ -15,10 +15,6 @@ export class TransactionService {
     return GeradorTransacoes.selecionar(id);
   }
 
-  update(id: number, conta: string) {
-    return GeradorTransacoes.adiocionarConta(id, conta);
-  }
-
   remove(id: number) {
     return GeradorTransacoes.removerTransacao(id);
   }

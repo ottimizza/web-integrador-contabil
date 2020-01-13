@@ -18,7 +18,7 @@ export class GeradorTransacoes {
             'Um melhor ainda aqui',
             'Esse também é muito bom',
             'Esse nem tanto',
-            'Complemento 05 - acabou a criatividade',
+            'Complemento ',
             Math.round(Math.random() * 10000).toString(),
             'Arquivo Fake de Testes'
           )
@@ -34,22 +34,19 @@ export class GeradorTransacoes {
       this.arrayAleatorio();
     }
 
-    // this.transacoes.filter((transacao: any) => {
-    //     return id === transacao.id ? transacao : null;
-    // });
     for (const transacao of this.transacoes) {
-      if (transacao.id == id) {
+      if (transacao.id.toString() === id.toString()) {
         return transacao;
       }
     }
   }
 
-  static adiocionarConta(id: number, conta: string) {
-    for (let i = 0; i < this.transacoes.length; i++) {
-      if (id === this.transacoes[i].id) {
-        this.transacoes[i].conta = conta;
+  static adicionarConta(id: number, conta: string) {
+    this.transacoes.forEach(transacao => {
+      if (id === transacao.id) {
+        this.transacoes[this.transacoes.indexOf(transacao)].conta = conta;
       }
-    }
+    });
     return this.selecionar(id);
   }
 

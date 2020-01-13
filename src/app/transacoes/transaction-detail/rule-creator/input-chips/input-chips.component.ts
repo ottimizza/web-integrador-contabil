@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { ArrayUtils } from '@shared/utils/array.utils';
 
 @Component({
   selector: 'app-chips',
@@ -14,6 +15,7 @@ export class InputChipsComponent implements OnInit {
   props: string[] = [];
   chipList: string[] = [];
   returningObject: any = { title: this.title, selecteds: undefined };
+  isSelected = false;
 
   constructor(@Inject(DOCUMENT) private _document: Document) {}
 
@@ -33,20 +35,6 @@ export class InputChipsComponent implements OnInit {
     }
   }
 
-  // devolve(name: string, property: string) {
-  //   let selectorPreset: number;
-
-  //   if (this.props.length === 1) {
-  //     selectorPreset = 0;
-  //   } else if (this.props.indexOf(property) === 0) {
-  //     selectorPreset = 1;
-  //   } else {
-  //     selectorPreset = 2;
-  //   }
-
-  //   this.valueEmitter.emit({name, property, selectorPreset});
-  // }
-
   select(id: number, title: string) {
     const chip = this._document.getElementById(id + title);
     const prop = this.props[id];
@@ -55,6 +43,7 @@ export class InputChipsComponent implements OnInit {
       // Desselecionar
       chip.classList.remove('selected');
       chip.classList.add('chipDefault');
+      this.chipList.splice(this.chipList.indexOf(prop), 1);
       this.returningObject = { title, selecteds: this.chipList.length > 0 ? this.chipList : undefined };
     } else {
       // Selecionar
@@ -66,12 +55,37 @@ export class InputChipsComponent implements OnInit {
     this.selectedInfos.emit(this.returningObject);
   }
 
+  // devolveAll() {
+  //   const chips: HTMLCollectionOf<Element> = this._document.getElementsByClassName('chip' + this.title);
+  //   let countSelected = 0;
+  //   // tslint:disable-next-line: prefer-for-of
+  //   for (let i = 0; i < chips.length; i++) {
+  //     if (chips[i].classList.contains('selected')) {
+  //       chips[i].classList.remove('selected');
+  //       chips[i].classList.add('chipDefault');
+  //     } else {
+  //       countSelected++;
+  //       chips[i].classList.remove('chipDefault');
+  //       chips[i].classList.add('selected');
+  //     }
+  //   }
+
+  //   if (countSelected === 0) {
+  //     this.returningObject = { title: this.title, selecteds: undefined };
+  //   } else if (countSelected > 0) {
+  //     this.returningObject = { title: this.title, selecteds: [this.property] };
+  //   }
+
+  //   this.selectedInfos.emit(this.returningObject);
+  // }
+
   devolveAll() {
+    this.isSelected = !this.isSelected;
     const chips: HTMLCollectionOf<Element> = this._document.getElementsByClassName('chip' + this.title);
     let countSelected = 0;
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < chips.length; i++) {
-      if (chips[i].classList.contains('selected')) {
+      if (this.isSelected) {
         chips[i].classList.remove('selected');
         chips[i].classList.add('chipDefault');
       } else {
@@ -105,10 +119,9 @@ export class InputChipsComponent implements OnInit {
       'nos',
       'nas',
       'a',
-      'a',
+      'à',
       'o',
       'é',
-      'à',
       'as',
       'os',
       'em',
@@ -117,14 +130,10 @@ export class InputChipsComponent implements OnInit {
       'às'
     ];
 
-    const returningArray: string[] = [];
-
-    words.forEach(word => {
-      if (!list.includes(word.toLowerCase())) {
-        returningArray.push(word);
-      }
+    return words.filter(word => {
+     return !list.includes(word.toLowerCase());
     });
-    return returningArray;
+
   }
 
 }

@@ -21,6 +21,7 @@ export class TimelineComponent implements OnInit {
   local: string;
   cuttedLocal: string;
   ias: number;
+
   constructor(
     public router: Router,
     private fake: TransactionService

@@ -23,7 +23,7 @@ input[type="button"] {
   padding: 0 10px;
   border-radius: 3px;
   width: 100%;
-  border: solid 3px rgb(214, 0, 0);
+  border: solid 3px #ba000d;
   font-family: sans-serif;
   box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3);
 }
@@ -35,5 +35,14 @@ input[type="button"] {
 }
 
 .account-field {
-  color: rgb(214, 0, 0);
+  color: #ba000d;
+}
+
+::ng-deep .mat-tooltip {
+  font-size: 13px;
+  padding: 5px;
+}
+
+span {
+  font-weight: bold;
 }
