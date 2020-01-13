@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ArrayUtils } from '@shared/utils/array.utils';
+import { DocumentDetectorUtils } from '@shared/utils/doc-detector.utils';
 
 @Component({
   selector: 'app-chips',
@@ -24,9 +25,15 @@ export class InputChipsComponent implements OnInit {
       if (this.title === 'Data') {
         this.props = this._verifyWord(this.property.split('/'));
       } else if (this.title === 'Documento') {
-        const doc1: string[] = this.property.split('-')[0].split('.');
-        doc1.push(this.property.split('-')[1]);
-        this.props = this._verifyWord(doc1);
+        const docType = DocumentDetectorUtils.detect(this.property);
+        let doc: string[];
+        if (docType === 'CNPJ') {
+          doc = this.property.split('');
+        } else if (docType === 'CPF') {
+          doc = this.property.split('-')[0].split('.');
+        }
+        doc.push(this.property.split('-')[1]);
+        this.props = this._verifyWord(doc);
       } else if (this.title === 'Valor') {
         this.props.push(this.property);
       } else {
