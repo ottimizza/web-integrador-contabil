@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { TransactionDetailComponent } from './transaction-detail.component';
 import { TransactionInfoModule } from './transaction-info/transaction-info.module';
@@ -20,7 +21,8 @@ import { CardModule } from '@shared/components/card/card.module';
         TransactionInfoModule,
         MatDialogModule,
         MatTooltipModule,
-        CardModule
+        CardModule,
+        MatProgressBarModule
     ],
     entryComponents: [RuleCreatorComponent],
     exports: [TransactionDetailComponent]

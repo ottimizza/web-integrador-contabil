@@ -1,8 +1,8 @@
-<span class="ml-2">{{ title }}:</span>
+<span class="ml-2">{{ name }}:</span>
 
 <div class="disabledStyle">
   <mat-chip-list>
-    <i class="fal fa-clipboard mr-4 ml-3" title="Copiar todos termos do campo" (click)="devolveAll()"></i>
-    <mat-chip *ngFor="let prop of props; let i = index" (click)="select(i, title)" [id]="i + title" [ngClass]="'chip' + title" class="chipDefault">{{ prop }}</mat-chip>
+    <i class="fal fa-clipboard mr-4 ml-3" (click)="devolveAll()" [matTooltip]="info().copyAll" matTooltipShowDelay="300" matTooltipHideDelay="500"></i>
+    <mat-chip *ngFor="let prop of props; let i = index" (click)="select(i, name)" [id]="i + name" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(prop).copy" matTooltipShowDelay="300" matTooltipHideDelay="500">{{ prop }}</mat-chip>
   </mat-chip-list>
 </div>

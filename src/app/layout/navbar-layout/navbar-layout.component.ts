@@ -46,12 +46,12 @@ export class NavbarLayoutComponent implements OnInit {
   public altToggleSidebar() {
     const sidebar = this.document.querySelector('.left-sidebar');
     const mains = this.document.getElementsByClassName('main-wrapper');
-    const location = this.document.querySelector('.page-wrapper');
+    // const location = this.document.querySelector('.page-wrapper');
 
     if (sidebar.classList.contains('alt-collapsed')) {
       sidebar.classList.remove('alt-collapsed');
       sidebar.classList.add('un-alt-collapsed');
-      location.classList.remove('alt-main-wrapper');
+      // location.classList.remove('alt-main-wrapper');
       // tslint:disable: prefer-for-of
       for (let i = 0; i < mains.length; i++) {
         mains[i].classList.remove('alt-main-wrapper');
@@ -59,7 +59,7 @@ export class NavbarLayoutComponent implements OnInit {
     } else {
       sidebar.classList.remove('un-alt-collapsed');
       sidebar.classList.add('alt-collapsed');
-      location.classList.add('alt-main-wrapper');
+      // location.classList.add('alt-main-wrapper');
       for (let i = 0; i < mains.length; i++) {
         mains[i].classList.add('alt-main-wrapper');
       }

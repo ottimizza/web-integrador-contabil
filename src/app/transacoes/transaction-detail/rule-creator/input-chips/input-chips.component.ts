@@ -10,31 +10,22 @@ import { DocumentDetectorUtils } from '@shared/utils/doc-detector.utils';
 })
 export class InputChipsComponent implements OnInit {
 
-  @Input() title: string;
+  @Input() name: string;
   @Input() property: string;
   @Output() selectedInfos = new EventEmitter();
   props: string[] = [];
   chipList: string[] = [];
-  returningObject: any = { title: this.title, selecteds: undefined };
+  returningObject: any = { title: this.name, selecteds: undefined };
   isSelected = false;
 
   constructor(@Inject(DOCUMENT) private _document: Document) {}
 
   ngOnInit(): void {
     if (this.property) {
-      if (this.title === 'Data') {
-        this.props = this._verifyWord(this.property.split('/'));
-      } else if (this.title === 'Documento') {
-        const docType = DocumentDetectorUtils.detect(this.property);
-        let doc: string[];
-        if (docType === 'CNPJ') {
-          doc = this.property.split('');
-        } else if (docType === 'CPF') {
-          doc = this.property.split('-')[0].split('.');
-        }
-        doc.push(this.property.split('-')[1]);
-        this.props = this._verifyWord(doc);
-      } else if (this.title === 'Valor') {
+      if (this.name === 'Data') {
+        const date = this.property.split('-');
+        this.props = this._verifyWord([date[2], date[1], date[0]]);
+      } else if (this.name === 'Valor') {
         this.props.push(this.property);
       } else {
         this.props = this._verifyWord(this.property.split(' '));
@@ -62,8 +53,16 @@ export class InputChipsComponent implements OnInit {
     this.selectedInfos.emit(this.returningObject);
   }
 
+  info(chip?: string) {
+    const title = ` "${this.name}".`;
+    return {
+      copy: 'Clique para selecionar o campo "' + chip + '" de' + title,
+      copyAll: 'Clique duas vezes para selecionar todos os campos de' + title
+    };
+  }
+
   // devolveAll() {
-  //   const chips: HTMLCollectionOf<Element> = this._document.getElementsByClassName('chip' + this.title);
+  //   const chips: HTMLCollectionOf<Element> = this._document.getElementsByClassName('chip' + this.name);
   //   let countSelected = 0;
   //   // tslint:disable-next-line: prefer-for-of
   //   for (let i = 0; i < chips.length; i++) {
@@ -78,9 +77,9 @@ export class InputChipsComponent implements OnInit {
   //   }
 
   //   if (countSelected === 0) {
-  //     this.returningObject = { title: this.title, selecteds: undefined };
+  //     this.returningObject = { title: this.name, selecteds: undefined };
   //   } else if (countSelected > 0) {
-  //     this.returningObject = { title: this.title, selecteds: [this.property] };
+  //     this.returningObject = { title: this.name, selecteds: [this.property] };
   //   }
 
   //   this.selectedInfos.emit(this.returningObject);
@@ -88,7 +87,7 @@ export class InputChipsComponent implements OnInit {
 
   devolveAll() {
     this.isSelected = !this.isSelected;
-    const chips: HTMLCollectionOf<Element> = this._document.getElementsByClassName('chip' + this.title);
+    const chips: HTMLCollectionOf<Element> = this._document.getElementsByClassName('chip' + this.name);
     let countSelected = 0;
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < chips.length; i++) {
@@ -103,9 +102,9 @@ export class InputChipsComponent implements OnInit {
     }
 
     if (countSelected === 0) {
-      this.returningObject = { title: this.title, selecteds: undefined };
+      this.returningObject = { title: this.name, selecteds: undefined };
     } else if (countSelected > 0) {
-      this.returningObject = { title: this.title, selecteds: [this.property] };
+      this.returningObject = { title: this.name, selecteds: [this.property] };
     }
 
     this.selectedInfos.emit(this.returningObject);

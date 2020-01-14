@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { InputChipsComponent } from './input-chips/input-chips.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { MatChipsModule } from '@angular/material/chips';
     CommonModule,
     FormsModule,
     MatFormFieldModule,
-    MatChipsModule
+    MatChipsModule,
+    MatTooltipModule
   ],
   exports: [
     InputChipsComponent

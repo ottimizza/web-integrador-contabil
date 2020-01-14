@@ -3,4 +3,14 @@
   border-radius: 3px;
   background-color: white;
   padding-top: 10px;
+  transition: 300ms;
 }
+
+.cardStyle:hover {
+  transform: scale(1.01);
+}
+
+// .cardDestroy {
+//   transform: rotateZ(360deg);
+//   filter: blur(10px);
+// }

@@ -24,3 +24,7 @@ span{
 i {
   font-size: 20px;
 }
+
+i, .chipDefault, .selected {
+  cursor: pointer;
+}

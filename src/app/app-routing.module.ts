@@ -12,11 +12,11 @@ import { TransactionListComponent } from './transacoes/transaction-list/transact
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard/index',
+    redirectTo: 'dashboard/',
     pathMatch: 'full'
   },
   {
-    path: 'dashboard/:transactionId',
+    path: 'dashboard/',
     component: ContentLayoutComponent,
     canActivate: [AuthGuard], // Should be replaced with actual auth guard
     children: [
@@ -36,7 +36,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'dashboard/index',
+    redirectTo: 'dashboard/',
     pathMatch: 'full'
   },
 ];

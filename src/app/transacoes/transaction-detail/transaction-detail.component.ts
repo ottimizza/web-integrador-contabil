@@ -1,9 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { TransactionService } from '../transaction.service';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Transacao } from '../transacao/transacao';
 import { MatDialog } from '@angular/material/dialog';
-import { RuleCreatorComponent } from './rule-creator/rule-creator.component';
+import { Lancamento } from '@shared/models/Lancamento';
+import { LancamentoService } from '@app/services/lancamentos.service';
 
 @Component({
   selector: 'app-tdetail',
@@ -12,27 +11,33 @@ import { RuleCreatorComponent } from './rule-creator/rule-creator.component';
 })
 export class TransactionDetailComponent implements OnInit {
 
-  entry: Transacao;
+  record: Lancamento;
   id: number;
   conta: string;
   conditions: any;
   suggestions: string[];
   ruleSelected = false;
+  totalElements = 0;
+  elementsQuant = 0;
 
   constructor(
     // tslint:disable: variable-name
-    private _transactionService: TransactionService,
+    private _service: LancamentoService,
     private _route: ActivatedRoute,
     private _router: Router,
     public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this._router.events.subscribe(() => {
-      this.id = this._route.snapshot.params.transactionId;
-
-      this.entry = this._transactionService.getById(this.id);
-    });
+    this._service
+      .getLancamentos()
+      .subscribe(imports => {
+        console.log(imports);
+        if (imports.pageInfo.totalElements) {
+          this.totalElements = imports.pageInfo.totalElements;
+        }
+        this.record = imports.records[0];
+      });
     this.resetConditions();
     this.suggestions = [
       '312321321',
@@ -45,6 +50,8 @@ export class TransactionDetailComponent implements OnInit {
 
   get info() {
     return {
+      general: 'Nesta tela, você deve clicar nos campos para selecioná-los. Você pode pular este lançamento ou criar uma regra para os campos selecionados.',
+      progressBar: `${this.percentage}% de ${this.totalElements}`,
       account: 'Insira neste campo, a conta contábil relativa a este lançamento ou selecione uma das sugeridas.',
       rule: 'A conta contábil informada deve ser aplicada em todas as ocorrências da regra selecionada.',
       ignore: 'Todos os lançamentos com a regra seleciona serão ignorados.',
@@ -55,13 +62,15 @@ export class TransactionDetailComponent implements OnInit {
     };
   }
 
+  get percentage() {
+    return (this.elementsQuant / this.totalElements) * 100;
+  }
+
   regra() {
     if (this.conta && this.verifyConditions()) {
       console.log(this.conta);
       console.log(this.conditions);
-      this.resetConditions();
-      this._excluir();
-      this.conta = null;
+      this._disable();
     }
   }
 
@@ -95,16 +104,12 @@ export class TransactionDetailComponent implements OnInit {
 
   ignorar() {
     if (this.verifyConditions()) {
-      this.resetConditions();
-      this._excluir();
-      this.conta = null;
+      this._disable();
     }
   }
 
   pular() {
-    this.resetConditions();
-    this._excluir();
-    this.conta = null;
+    this._disable();
   }
 
   affecteds() {
@@ -117,11 +122,10 @@ export class TransactionDetailComponent implements OnInit {
     }
   }
 
-  private _excluir() {
-    const array = this._transactionService.remove(+this.id.toString());
+  private _disable() {
+    this.resetConditions();
     this.ruleSelected = false;
-
-    this._router.navigate(['dashboard', array.length ? array[0].id : 'index']);
+    this.conta = null;
   }
 
   private verifyConditions() {

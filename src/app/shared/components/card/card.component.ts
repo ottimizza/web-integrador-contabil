@@ -7,7 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class CardComponent {
 
-  @Input() main = false;
+  @Input() main: boolean;
 
   padding() {
     if (this.main) {
@@ -16,5 +16,6 @@ export class CardComponent {
       return '0';
     }
   }
+
 
 }
