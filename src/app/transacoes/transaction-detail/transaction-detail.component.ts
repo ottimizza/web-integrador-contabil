@@ -5,6 +5,7 @@ import { RecordService } from '@app/services/record.service';
 import { Lancamento } from '@shared/models/Record';
 import { PageInfo } from '@shared/models/ImportacaoLancamentosRequest';
 import { catchError } from 'rxjs/operators';
+import { RuleGridComponent } from './rule-creator/rule-grid.component';
 
 @Component({
   selector: 'app-tdetail',
@@ -123,6 +124,18 @@ export class TransactionDetailComponent implements OnInit {
     }
   }
 
+  openDialog(): void {
+    const dialogRef = this.dialog.open(RuleGridComponent, {
+      maxWidth: '1400px',
+      width: '95vw',
+      data: {abaporu: 'Tarsila do Amaral'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
   private get elements() {
     let totalElements = 0;
     if (this.pageInfo) {
@@ -147,7 +160,7 @@ export class TransactionDetailComponent implements OnInit {
    }
 
    this.id++;
-   if (this.id + 1 === this.pageInfo.pageSize) { this.id = 0; }
+   if (this.pageInfo && this.id + 1 >= this.pageInfo.pageSize) { this.id = 0; }
 
 
   }

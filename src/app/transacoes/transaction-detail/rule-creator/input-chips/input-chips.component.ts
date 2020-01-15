@@ -89,7 +89,7 @@ export class InputChipsComponent implements OnInit {
     this.isSelected = !this.isSelected;
     const chips: HTMLCollectionOf<Element> = this._document.getElementsByClassName('chip' + this.name);
     let countSelected = 0;
-    // tslint:disable-next-line: prefer-for-of
+    // tslint:disable: prefer-for-of
     for (let i = 0; i < chips.length; i++) {
       if (this.isSelected) {
         chips[i].classList.remove('selected');

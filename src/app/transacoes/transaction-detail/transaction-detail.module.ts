@@ -8,8 +8,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { TransactionDetailComponent } from './transaction-detail.component';
 import { TransactionInfoModule } from './transaction-info/transaction-info.module';
-import { RuleCreatorModule } from './rule-creator/rule-creator.module';
-import { RuleCreatorComponent } from './rule-creator/rule-creator.component';
+import { RuleGridModule } from './rule-creator/rule-grid.module';
+import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { CardModule } from '@shared/components/card/card.module';
 
 @NgModule({
@@ -17,14 +17,14 @@ import { CardModule } from '@shared/components/card/card.module';
     imports: [
         CommonModule,
         FormsModule,
-        RuleCreatorModule,
+        RuleGridModule,
         TransactionInfoModule,
         MatDialogModule,
         MatTooltipModule,
         CardModule,
         MatProgressBarModule
     ],
-    entryComponents: [RuleCreatorComponent],
+    entryComponents: [RuleGridComponent],
     exports: [TransactionDetailComponent]
 })
 export class TransactionDetailModule {}

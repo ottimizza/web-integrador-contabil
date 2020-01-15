@@ -141,7 +141,7 @@
           matTooltipHideDelay="500"
         >
           Esta regra afetará
-          <span class="text-danger">{{ affecteds() }}</span>
+          <span class="text-danger" (click)="openDialog()">{{ affecteds() }}</span>
           lançamentos.
         </p>
       </div>

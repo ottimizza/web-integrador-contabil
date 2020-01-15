@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RuleCreatorComponent } from './rule-creator.component';
+import { RuleGridComponent } from './rule-grid.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -10,7 +10,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
-    RuleCreatorComponent,
+    RuleGridComponent,
     InputChipsComponent
   ],
   imports: [
@@ -25,4 +25,4 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     InputChipsComponent
   ]
 })
-export class RuleCreatorModule { }
+export class RuleGridModule { }

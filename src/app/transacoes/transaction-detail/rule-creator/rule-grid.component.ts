@@ -1,0 +1,19 @@
+import { Component, Inject, Input } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+@Component({
+  templateUrl: './rule-grid.component.html'
+})
+export class RuleGridComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<RuleGridComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+
+}
