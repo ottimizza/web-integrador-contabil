@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LancamentoService } from '@app/services/lancamentos.service';
 
 @Component({
     templateUrl: './transaction-list.component.html',

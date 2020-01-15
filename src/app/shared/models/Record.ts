@@ -1,5 +1,7 @@
 export class Lancamento {
+
   constructor(
+    public id: number,
     public dataMovimento: string,
     public documento: string,
     public descricao: string,
@@ -26,4 +28,5 @@ export class Lancamento {
     public cnpjContabilidade: string,
     public idRoteiro: string
   ) { }
+
 }

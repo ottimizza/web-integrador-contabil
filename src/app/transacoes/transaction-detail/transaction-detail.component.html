@@ -8,7 +8,7 @@
   ></mat-progress-bar>
 </div>
 <div class="main-wrapper pt-4">
-  <form *ngIf="record" autocomplete="off">
+  <form *ngIf="records[0]" autocomplete="off">
     <div class="info-container mb-4">
       <p>{{ info.general }}</p>
     </div>
@@ -16,74 +16,74 @@
     <!-- <app-card> -->
 
     <app-card main="true">
-      <div class="row m-0 mb-2" *ngIf="record.descricao || record.portador">
+      <div class="row m-0 mb-2" *ngIf="records[0].descricao || records[0].portador">
         <app-chips
           name="Fornecedor"
-          [property]="record.descricao"
+          [property]="records[0].descricao"
           class="col"
-          *ngIf="record.descricao"
+          *ngIf="records[0].descricao"
           (selectedInfos)="onDevolve($event)"
         ></app-chips>
         <app-chips
           name="Banco"
-          [property]="record.portador"
+          [property]="records[0].portador"
           class="col"
-          *ngIf="record.portador"
+          *ngIf="records[0].portador"
           (selectedInfos)="onDevolve($event)"
         ></app-chips>
       </div>
 
       <div
         class="row m-0 mb-2"
-        *ngIf="record.dataMovimento || record.valorOriginal || record.documento"
+        *ngIf="records[0].dataMovimento || records[0].valorOriginal || records[0].documento"
       >
         <app-chips
           name="Data"
-          [property]="record.dataMovimento"
+          [property]="records[0].dataMovimento"
           class="col"
-          *ngIf="record.dataMovimento"
+          *ngIf="records[0].dataMovimento"
           (selectedInfos)="onDevolve($event)"
         ></app-chips>
         <app-chips
           name="Valor"
-          [property]="record.valorPago"
+          [property]="records[0].valorPago"
           class="col"
-          *ngIf="record.valorPago"
+          *ngIf="records[0].valorPago"
           (selectedInfos)="onDevolve($event)"
         ></app-chips>
         <app-chips
           name="Documento"
-          [property]="record.documento"
+          [property]="records[0].documento"
           class="col"
-          *ngIf="record.documento"
+          *ngIf="records[0].documento"
           (selectedInfos)="onDevolve($event)"
         ></app-chips>
       </div>
 
       <div
         class="row m-0 mb-2"
-        *ngIf="record.arquivo.nome || record.tipoPlanilha"
+        *ngIf="records[0].arquivo.nome || records[0].tipoPlanilha"
       >
         <app-chips
           name="Nome do Arquivo"
-          [property]="record.arquivo.nome"
+          [property]="records[0].arquivo.nome"
           class="col"
-          *ngIf="record.arquivo.nome"
+          *ngIf="records[0].arquivo.nome"
           (selectedInfos)="onDevolve($event)"
         ></app-chips>
         <app-chips
           name="Tipo da Planilha"
-          [property]="record.tipoPlanilha"
+          [property]="records[0].tipoPlanilha"
           class="col"
-          *ngIf="record.tipoPlanilha"
+          *ngIf="records[0].tipoPlanilha"
           (selectedInfos)="onDevolve($event)"
         ></app-chips>
       </div>
 
-      <div class="row m-0 mb-2" *ngIf="record.complemento01">
+      <div class="row m-0 mb-2" *ngIf="records[0].complemento01">
         <app-chips
           name="Complemento 1"
-          [property]="record.complemento01"
+          [property]="records[0].complemento01"
           class="col"
           (selectedInfos)="onDevolve($event)"
         ></app-chips>
@@ -91,40 +91,40 @@
 
       <div
         class="row m-0 mb-2"
-        *ngIf="record.complemento02 || record.complemento03"
+        *ngIf="records[0].complemento02 || records[0].complemento03"
       >
         <app-chips
           name="Complemento 2"
-          [property]="record.complemento02"
+          [property]="records[0].complemento02"
           class="col"
-          *ngIf="record.complemento02"
+          *ngIf="records[0].complemento02"
           (selectedInfos)="onDevolve($event)"
         ></app-chips>
         <app-chips
           name="Complemento 3"
-          [property]="record.complemento03"
+          [property]="records[0].complemento03"
           class="col"
-          *ngIf="record.complemento03"
+          *ngIf="records[0].complemento03"
           (selectedInfos)="onDevolve($event)"
         ></app-chips>
       </div>
 
       <div
         class="row m-0 mb-2"
-        *ngIf="record.complemento04 || record.complemento05"
+        *ngIf="records[0].complemento04 || records[0].complemento05"
       >
         <app-chips
           name="Complemento 4"
-          [property]="record.complemento04"
+          [property]="records[0].complemento04"
           class="col"
-          *ngIf="record.complemento04"
+          *ngIf="records[0].complemento04"
           (selectedInfos)="onDevolve($event)"
         ></app-chips>
         <app-chips
           name="Complemento 5"
-          [property]="record.complemento05"
+          [property]="records[0].complemento05"
           class="col"
-          *ngIf="record.complemento05"
+          *ngIf="records[0].complemento05"
           (selectedInfos)="onDevolve($event)"
         ></app-chips>
       </div>
@@ -169,7 +169,7 @@
 
     <ng-template #ris>
       <div class="row mt-2 field">
-        <!-- <ott-tinfo titulo="Conta" [valor]="record.conta" ativado="true" class="col-6"></ott-tinfo> -->
+        <!-- <ott-tinfo titulo="Conta" [valor]="records[0].conta" ativado="true" class="col-6"></ott-tinfo> -->
         <div class="form-group col-4">
           <strong
             class="account-field"
@@ -181,8 +181,8 @@
           <input
             list="suggestions"
             type="text"
-            [(ngModel)]="conta"
-            name="conta"
+            [(ngModel)]="account"
+            name="account"
             [matTooltip]="info.account"
             matTooltipShowDelay="300"
             matTooltipHideDelay="500"

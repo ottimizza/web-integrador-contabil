@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { Lancamento } from '@shared/models/Lancamento';
-import { LancamentoService } from '@app/services/lancamentos.service';
+import { RecordService } from '@app/services/record.service';
+import { Lancamento } from '@shared/models/Record';
+import { PageInfo } from '@shared/models/ImportacaoLancamentosRequest';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tdetail',
@@ -12,33 +14,26 @@ import { LancamentoService } from '@app/services/lancamentos.service';
 export class TransactionDetailComponent implements OnInit {
 
   record: Lancamento;
-  id: number;
-  conta: string;
+  records: Lancamento[] = [];
+  id = 0;
+  account: string;
   conditions: any;
   suggestions: string[];
   ruleSelected = false;
-  totalElements = 0;
+  pageInfo: PageInfo;
   elementsQuant = 0;
 
   constructor(
     // tslint:disable: variable-name
-    private _service: LancamentoService,
+    private _service: RecordService,
     private _route: ActivatedRoute,
     private _router: Router,
     public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this._service
-      .getLancamentos()
-      .subscribe(imports => {
-        console.log(imports);
-        if (imports.pageInfo.totalElements) {
-          this.totalElements = imports.pageInfo.totalElements;
-        }
-        this.record = imports.records[0];
-      });
     this.resetConditions();
+    this._next();
     this.suggestions = [
       '312321321',
       '735190862',
@@ -51,9 +46,9 @@ export class TransactionDetailComponent implements OnInit {
   get info() {
     return {
       general: 'Nesta tela, você deve clicar nos campos para selecioná-los. Você pode pular este lançamento ou criar uma regra para os campos selecionados.',
-      progressBar: `${this.percentage}% de ${this.totalElements}`,
-      account: 'Insira neste campo, a conta contábil relativa a este lançamento ou selecione uma das sugeridas.',
-      rule: 'A conta contábil informada deve ser aplicada em todas as ocorrências da regra selecionada.',
+      progressBar: `${this.percentage}% de ${this.elements}`,
+      account: 'Insira neste campo, a conta relativa a este lançamento ou selecione uma das sugeridas.',
+      rule: 'A conta informada deve ser aplicada em todas as ocorrências da regra selecionada.',
       ignore: 'Todos os lançamentos com a regra seleciona serão ignorados.',
       skip: 'Selecione esta opção caso você não consiga preencher sózinho ou não tenha os dados necessários no momento.',
       ok: 'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
@@ -63,28 +58,30 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   get percentage() {
-    return (this.elementsQuant / this.totalElements) * 100;
+    return ((this.elementsQuant / this.elements) * 100).toFixed(2);
   }
 
   regra() {
-    if (this.conta && this.verifyConditions()) {
-      console.log(this.conta);
-      console.log(this.conditions);
-      this._disable();
+    if (this.account && this.verifyConditions()) {
+      this._service
+        .saveAsDePara(this.records[0], this.account)
+        .subscribe(data => {
+          this._disable();
+        });
     }
   }
 
   onDevolve(event: any) {
     if (event.title === 'Data') {
-      this.conditions.data = event.selecteds;
+      this.conditions.dataMovimento = event.selecteds;
     } else if (event.title === 'Valor') {
-      this.conditions.valor = event.selecteds;
+      this.conditions.valorOriginal = event.selecteds;
     } else if (event.title === 'Fornecedor') {
-      this.conditions.fornecedor = event.selecteds;
+      this.conditions.descricao = event.selecteds;
     } else if (event.title === 'Documento') {
       this.conditions.documento = event.selecteds;
     } else if (event.title === 'Banco') {
-      this.conditions.banco = event.selecteds;
+      this.conditions.portador = event.selecteds;
     } else if (event.title === 'Complemento 1') {
       this.conditions.complemento01 = event.selecteds;
     } else if (event.title === 'Complemento 2') {
@@ -104,7 +101,11 @@ export class TransactionDetailComponent implements OnInit {
 
   ignorar() {
     if (this.verifyConditions()) {
-      this._disable();
+      this._service
+        .ignoreRecord(this.records[0])
+        .subscribe(data => {
+          this._disable();
+        });
     }
   }
 
@@ -122,18 +123,50 @@ export class TransactionDetailComponent implements OnInit {
     }
   }
 
+  private get elements() {
+    let totalElements = 0;
+    if (this.pageInfo) {
+      totalElements = this.pageInfo.totalElements;
+    }
+    return totalElements;
+  }
+
   private _disable() {
     this.resetConditions();
     this.ruleSelected = false;
-    this.conta = null;
+    this.account = null;
+    this._next();
+  }
+
+  private _next() {
+
+   if (this.id === 0) {
+    this._nextPage();
+   } else {
+     this.records.splice(0, 1);
+   }
+
+   this.id++;
+   if (this.id + 1 === this.pageInfo.pageSize) { this.id = 0; }
+
+
+  }
+
+  private _nextPage() {
+    this._service
+      .getRecords()
+      .subscribe(imports => {
+        this.records = imports.records;
+        this.pageInfo = imports.pageInfo;
+      });
   }
 
   private verifyConditions() {
-    return this.conditions.data ||
-    this.conditions.valor ||
-    this.conditions.fornecedor ||
+    return this.conditions.dataMovimento ||
+    this.conditions.valorOriginal ||
+    this.conditions.descricao ||
     this.conditions.documento ||
-    this.conditions.banco ||
+    this.conditions.portador ||
     this.conditions.complemento01 ||
     this.conditions.complemento02 ||
     this.conditions.complemento03 ||
@@ -145,11 +178,11 @@ export class TransactionDetailComponent implements OnInit {
 
   private resetConditions() {
     this.conditions = {
-      data: undefined,
-      valor: undefined,
-      fornecedor: undefined,
+      dataMovimento: undefined,
+      valorOriginal: undefined,
+      descricao: undefined,
       documento: undefined,
-      banco: undefined,
+      portador: undefined,
       complemento01: undefined,
       complemento02: undefined,
       complemento03: undefined,
@@ -159,5 +192,4 @@ export class TransactionDetailComponent implements OnInit {
       nomeArquivo: undefined
     };
   }
-
 }

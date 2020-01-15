@@ -81,7 +81,7 @@ body {
  * * * * * * * *  SCROLLBAR * * * * * * * * * * *
  * ******************************************** */
  ::-webkit-scrollbar {
-  width: 8px;
+  width: 5px;
 }
 /* Track */
 ::-webkit-scrollbar-track {
@@ -114,7 +114,7 @@ body {
 
 .info-container:hover {
   transform: scale(1.03);
-  box-shadow: 1px -1px 5px 5px rgba(0, 0, 0, .1);
+  box-shadow: 1px -1px 5px 3px rgba(0, 0, 0, .1);
 }
 
 /* ******************************************** *

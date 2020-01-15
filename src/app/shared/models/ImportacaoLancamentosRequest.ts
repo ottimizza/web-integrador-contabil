@@ -1,4 +1,4 @@
-import { Lancamento } from './Lancamento';
+import { Lancamento } from './Record';
 
 export class ImportacaoLancamentosRequest {
 

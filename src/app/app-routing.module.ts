@@ -39,6 +39,11 @@ const routes: Routes = [
     redirectTo: 'dashboard/',
     pathMatch: 'full'
   },
+  {
+    path: 'dashboard/:ReportId',
+    redirectTo: 'dashboard/',
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({
