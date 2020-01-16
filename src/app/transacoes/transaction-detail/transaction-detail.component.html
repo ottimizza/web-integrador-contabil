@@ -12,8 +12,8 @@
     <div class="info-container mb-4">
       <p>{{ info.general }}</p>
     </div>
-    <!-- <app-card> -->
-    <!-- <app-card> -->
+    <app-card>
+    <app-card>
 
     <app-card main="true">
       <div class="row m-0 mb-2" *ngIf="records[0].descricao || records[0].portador">
@@ -46,9 +46,9 @@
         ></app-chips>
         <app-chips
           name="Valor"
-          [property]="records[0].valorPago"
+          [property]="records[0].valorOriginal"
           class="col"
-          *ngIf="records[0].valorPago"
+          *ngIf="records[0].valorOriginal"
           (selectedInfos)="onDevolve($event)"
         ></app-chips>
         <app-chips
@@ -129,8 +129,8 @@
         ></app-chips>
       </div>
     </app-card>
-    <!-- </app-card> -->
-    <!-- </app-card> -->
+    </app-card>
+    </app-card>
 
     <div class="row mt-2 p-2" *ngIf="!ruleSelected; else ris">
       <div class="col-8 p-3">

@@ -13,7 +13,6 @@ import { RuleGridComponent } from './rule-creator/rule-grid.component';
   styleUrls: ['./transaction-detail.component.scss']
 })
 export class TransactionDetailComponent implements OnInit {
-
   record: Lancamento;
   records: Lancamento[] = [];
   id = 0;
@@ -46,13 +45,18 @@ export class TransactionDetailComponent implements OnInit {
 
   get info() {
     return {
-      general: 'Nesta tela, você deve clicar nos campos para selecioná-los. Você pode pular este lançamento ou criar uma regra para os campos selecionados.',
+      general:
+        'Nesta tela, você deve clicar nos campos para selecioná-los. Você pode pular este lançamento ou criar uma regra para os campos selecionados.',
       progressBar: `${this.percentage}% de ${this.elements}`,
-      account: 'Insira neste campo, a conta relativa a este lançamento ou selecione uma das sugeridas.',
-      rule: 'A conta informada deve ser aplicada em todas as ocorrências da regra selecionada.',
+      account:
+        'Insira neste campo, a conta relativa a este lançamento ou selecione uma das sugeridas.',
+      rule:
+        'A conta informada deve ser aplicada em todas as ocorrências da regra selecionada.',
       ignore: 'Todos os lançamentos com a regra seleciona serão ignorados.',
-      skip: 'Selecione esta opção caso você não consiga preencher sózinho ou não tenha os dados necessários no momento.',
-      ok: 'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
+      skip:
+        'Selecione esta opção caso você não consiga preencher sózinho ou não tenha os dados necessários no momento.',
+      ok:
+        'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
       cancel: 'Voltar à barra de opções anterior.',
       affecteds: 'Clique aqui para visualizar os lançamentos afetados.'
     };
@@ -102,11 +106,9 @@ export class TransactionDetailComponent implements OnInit {
 
   ignorar() {
     if (this.verifyConditions()) {
-      this._service
-        .ignoreRecord(this.records[0])
-        .subscribe(data => {
-          this._disable();
-        });
+      this._service.ignoreRecord(this.records[0]).subscribe(data => {
+        this._disable();
+      });
     }
   }
 
@@ -128,7 +130,7 @@ export class TransactionDetailComponent implements OnInit {
     const dialogRef = this.dialog.open(RuleGridComponent, {
       maxWidth: '1400px',
       width: '95vw',
-      data: {abaporu: 'Tarsila do Amaral'}
+      data: { abaporu: 'Tarsila do Amaral' }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -152,41 +154,42 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   private _next() {
+    if (this.id === 0) {
+      this._nextPage();
+    } else {
+      this.records.splice(0, 1);
 
-   if (this.id === 0) {
-    this._nextPage();
-   } else {
-     this.records.splice(0, 1);
-   }
-
-   this.id++;
-   if (this.pageInfo && this.id + 1 >= this.pageInfo.pageSize) { this.id = 0; }
-
-
+      console.log(this.records);
+      console.log(this.records[0]);
+    }
+    this.id++;
+    if (this.pageInfo && this.id + 1 >= this.pageInfo.pageSize) {
+      this.id = 0;
+    }
   }
 
   private _nextPage() {
-    this._service
-      .getRecords()
-      .subscribe(imports => {
-        this.records = imports.records;
-        this.pageInfo = imports.pageInfo;
-      });
+    this._service.getRecords().subscribe(imports => {
+      this.records = imports.records;
+      this.pageInfo = imports.pageInfo;
+    });
   }
 
   private verifyConditions() {
-    return this.conditions.dataMovimento ||
-    this.conditions.valorOriginal ||
-    this.conditions.descricao ||
-    this.conditions.documento ||
-    this.conditions.portador ||
-    this.conditions.complemento01 ||
-    this.conditions.complemento02 ||
-    this.conditions.complemento03 ||
-    this.conditions.complemento04 ||
-    this.conditions.complemento05 ||
-    this.conditions.tipoPlanilha ||
-    this.conditions.nomeArquivo;
+    return (
+      this.conditions.dataMovimento ||
+      this.conditions.valorOriginal ||
+      this.conditions.descricao ||
+      this.conditions.documento ||
+      this.conditions.portador ||
+      this.conditions.complemento01 ||
+      this.conditions.complemento02 ||
+      this.conditions.complemento03 ||
+      this.conditions.complemento04 ||
+      this.conditions.complemento05 ||
+      this.conditions.tipoPlanilha ||
+      this.conditions.nomeArquivo
+    );
   }
 
   private resetConditions() {

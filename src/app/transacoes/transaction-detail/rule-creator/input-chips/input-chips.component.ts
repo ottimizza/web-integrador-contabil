@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, Inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Inject, SimpleChanges, OnChanges } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { DocumentDetectorUtils } from '@shared/utils/doc-detector.utils';
@@ -8,7 +8,7 @@ import { DocumentDetectorUtils } from '@shared/utils/doc-detector.utils';
   templateUrl: './input-chips.component.html',
   styleUrls: ['./input-chips.component.scss']
 })
-export class InputChipsComponent implements OnInit {
+export class InputChipsComponent implements OnInit, OnChanges {
 
   @Input() name: string;
   @Input() property: string;
@@ -21,14 +21,34 @@ export class InputChipsComponent implements OnInit {
   constructor(@Inject(DOCUMENT) private _document: Document) {}
 
   ngOnInit(): void {
+    this._change();
+  }
+
+  private _change() {
     if (this.property) {
       if (this.name === 'Data') {
         const date = this.property.split('-');
         this.props = this._verifyWord([date[2], date[1], date[0]]);
       } else if (this.name === 'Valor') {
-        this.props.push(this.property);
+        this.props = [this.property];
       } else {
         this.props = this._verifyWord(this.property.split(' '));
+      }
+    }
+  }
+
+  public ngOnChanges(changes: SimpleChanges) {
+      for (const key in changes) {
+        if (changes.hasOwnProperty(key)) {
+          switch (key) {
+            case 'name':
+              this.name = changes[key].currentValue;
+              break;
+            case 'property':
+              this.property = changes[key].currentValue;
+              this._change();
+              break;
+        }
       }
     }
   }
