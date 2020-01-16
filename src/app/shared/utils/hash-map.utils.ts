@@ -3,7 +3,7 @@ export class HashMapUtils {
   // tslint:disable-next-line: variable-name
   private static _values: string[][] = [[]];
 
-  public static setItem(item: any, key?: string) {
+  public static setItem(item: any, key?: string): string | void {
     if (key) {
       if (this._verifyKey(key)) {
         this._values.push([key, JSON.stringify(item)]);
@@ -39,14 +39,8 @@ export class HashMapUtils {
   }
 
   private static get _newKey() {
-    const key = Math.round(Math.random() * 10000).toString();
-    let validKey = true;
-    this._values.forEach(row => {
-      if (row[0] === key) {
-        validKey = false;
-      }
-    });
-    if (validKey) {
+    const key = Math.round(Math.random() * 100000).toString();
+    if (this._verifyKey(key)) {
       return key;
     } else {
       return this._newKey;

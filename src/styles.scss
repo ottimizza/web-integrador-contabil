@@ -100,25 +100,6 @@ body {
 }
 
 /* ******************************************** *
- * * * * * * * * * * INFO * * * * * * * * * * * *
- * ******************************************** */
-.info-container {
-  text-align: justify;
-  margin: 0 auto;
-  width: 95%;
-  padding: 1%;
-  border: solid 1px rgba(0, 0, 0, .5);
-  border-radius: 10px;
-  box-shadow: 1px -1px 5px 1px rgba(0, 0, 0, .1);
-  transition: 500ms;
-}
-
-.info-container:hover {
-  transform: scale(1.03);
-  box-shadow: 1px -1px 5px 3px rgba(0, 0, 0, .1);
-}
-
-/* ******************************************** *
  * * * * * * * * *  SIDEBAR * * * * * * * * * * *
  * ******************************************** */
 $compact-sidebar-width: 70px;

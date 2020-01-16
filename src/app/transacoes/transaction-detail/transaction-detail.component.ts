@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { MatDialog } from '@angular/material/dialog';
-import { RecordService } from '@app/services/record.service';
-import { Lancamento } from '@shared/models/Record';
+
+import { LancamentoService } from '@shared/services/lancamento.service';
+import { Lancamento } from '@shared/models/Lancamento';
 import { PageInfo } from '@shared/models/ImportacaoLancamentosRequest';
-import { catchError } from 'rxjs/operators';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 
 @Component({
@@ -25,7 +26,7 @@ export class TransactionDetailComponent implements OnInit {
 
   constructor(
     // tslint:disable: variable-name
-    private _service: RecordService,
+    private _service: LancamentoService,
     private _route: ActivatedRoute,
     private _router: Router,
     public dialog: MatDialog
@@ -46,7 +47,8 @@ export class TransactionDetailComponent implements OnInit {
   get info() {
     return {
       general:
-        'Nesta tela, você deve clicar nos campos para selecioná-los. Você pode pular este lançamento ou criar uma regra para os campos selecionados.',
+        `Clique nas palavras que indicam o motivo da movimentação ser ignorada ou atribuída a uma determinada conta contábil.
+        Depois informe a conta ou selecione uma das sugeridas, ou informe que esta regra deve ser ignorada.`,
       progressBar: `${this.percentage}% de ${this.elements}`,
       account:
         'Insira neste campo, a conta relativa a este lançamento ou selecione uma das sugeridas.',
@@ -64,6 +66,36 @@ export class TransactionDetailComponent implements OnInit {
 
   get percentage() {
     return ((this.elementsQuant / this.elements) * 100).toFixed(2);
+  }
+
+  get complementos() {
+    const r = this.records[0];
+    let comp = '';
+    if (r.complemento01) {
+      comp += `${r.complemento01}`;
+    }
+    if (r.complemento02) {
+      comp += ` ${r.complemento02}`;
+    }
+    if (r.complemento03) {
+      comp += ` ${r.complemento03}`;
+    }
+    if (r.complemento04) {
+      comp += ` ${r.complemento04}`;
+    }
+    if (r.complemento05) {
+      comp += ` ${r.complemento05}`;
+    }
+
+    return {
+    ok: r.complemento01 || r.complemento02 || r.complemento03 || r.complemento04 || r.complemento05,
+    comp
+    };
+
+  }
+
+  impact() {
+    return 18;
   }
 
   regra() {
@@ -106,7 +138,7 @@ export class TransactionDetailComponent implements OnInit {
 
   ignorar() {
     if (this.verifyConditions()) {
-      this._service.ignoreRecord(this.records[0]).subscribe(data => {
+      this._service.ignoreLancamento(this.records[0]).subscribe(data => {
         this._disable();
       });
     }
@@ -169,7 +201,7 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   private _nextPage() {
-    this._service.getRecords().subscribe(imports => {
+    this._service.getLancamentos().subscribe(imports => {
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
     });

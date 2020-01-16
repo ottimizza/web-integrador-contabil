@@ -9,78 +9,85 @@
 </div>
 <div class="main-wrapper pt-4">
   <form *ngIf="records[0]" autocomplete="off">
-    <div class="info-container mb-4">
-      <p>{{ info.general }}</p>
-    </div>
+    <app-info [description]="info.general"></app-info>
+
+    <br />
+
     <app-card>
-    <app-card>
+      <app-card>
+        <app-card main="true">
+          <div
+            class="row m-0 mb-2"
+            *ngIf="records[0].descricao || records[0].portador"
+          >
+            <app-chips
+              name="Fornecedor"
+              [property]="records[0].descricao"
+              class="col"
+              *ngIf="records[0].descricao"
+              (selectedInfos)="onDevolve($event)"
+            ></app-chips>
+            <app-chips
+              name="Banco"
+              [property]="records[0].portador"
+              class="col"
+              *ngIf="records[0].portador"
+              (selectedInfos)="onDevolve($event)"
+            ></app-chips>
+          </div>
 
-    <app-card main="true">
-      <div class="row m-0 mb-2" *ngIf="records[0].descricao || records[0].portador">
-        <app-chips
-          name="Fornecedor"
-          [property]="records[0].descricao"
-          class="col"
-          *ngIf="records[0].descricao"
-          (selectedInfos)="onDevolve($event)"
-        ></app-chips>
-        <app-chips
-          name="Banco"
-          [property]="records[0].portador"
-          class="col"
-          *ngIf="records[0].portador"
-          (selectedInfos)="onDevolve($event)"
-        ></app-chips>
-      </div>
+          <div
+            class="row m-0 mb-2"
+            *ngIf="
+              records[0].dataMovimento ||
+              records[0].valorOriginal ||
+              records[0].documento
+            "
+          >
+            <app-chips
+              name="Data"
+              [property]="records[0].dataMovimento"
+              class="col"
+              *ngIf="records[0].dataMovimento"
+              (selectedInfos)="onDevolve($event)"
+            ></app-chips>
+            <app-chips
+              name="Valor"
+              [property]="records[0].valorOriginal"
+              class="col"
+              *ngIf="records[0].valorOriginal"
+              (selectedInfos)="onDevolve($event)"
+            ></app-chips>
+            <app-chips
+              name="Documento"
+              [property]="records[0].documento"
+              class="col"
+              *ngIf="records[0].documento"
+              (selectedInfos)="onDevolve($event)"
+            ></app-chips>
+          </div>
 
-      <div
-        class="row m-0 mb-2"
-        *ngIf="records[0].dataMovimento || records[0].valorOriginal || records[0].documento"
-      >
-        <app-chips
-          name="Data"
-          [property]="records[0].dataMovimento"
-          class="col"
-          *ngIf="records[0].dataMovimento"
-          (selectedInfos)="onDevolve($event)"
-        ></app-chips>
-        <app-chips
-          name="Valor"
-          [property]="records[0].valorOriginal"
-          class="col"
-          *ngIf="records[0].valorOriginal"
-          (selectedInfos)="onDevolve($event)"
-        ></app-chips>
-        <app-chips
-          name="Documento"
-          [property]="records[0].documento"
-          class="col"
-          *ngIf="records[0].documento"
-          (selectedInfos)="onDevolve($event)"
-        ></app-chips>
-      </div>
+          <div
+            class="row m-0 mb-2"
+            *ngIf="records[0].arquivo.nome || records[0].tipoPlanilha"
+          >
+            <app-chips
+              name="Nome do Arquivo"
+              [property]="records[0].arquivo.nome"
+              class="col"
+              *ngIf="records[0].arquivo.nome"
+              (selectedInfos)="onDevolve($event)"
+            ></app-chips>
+            <app-chips
+              name="Tipo da Planilha"
+              [property]="records[0].tipoPlanilha"
+              class="col"
+              *ngIf="records[0].tipoPlanilha"
+              (selectedInfos)="onDevolve($event)"
+            ></app-chips>
+          </div>
 
-      <div
-        class="row m-0 mb-2"
-        *ngIf="records[0].arquivo.nome || records[0].tipoPlanilha"
-      >
-        <app-chips
-          name="Nome do Arquivo"
-          [property]="records[0].arquivo.nome"
-          class="col"
-          *ngIf="records[0].arquivo.nome"
-          (selectedInfos)="onDevolve($event)"
-        ></app-chips>
-        <app-chips
-          name="Tipo da Planilha"
-          [property]="records[0].tipoPlanilha"
-          class="col"
-          *ngIf="records[0].tipoPlanilha"
-          (selectedInfos)="onDevolve($event)"
-        ></app-chips>
-      </div>
-
-      <div class="row m-0 mb-2" *ngIf="records[0].complemento01">
+          <!-- <div class="row m-0 mb-2" *ngIf="records[0].complemento01">
         <app-chips
           name="Complemento 1"
           [property]="records[0].complemento01"
@@ -127,106 +134,74 @@
           *ngIf="records[0].complemento05"
           (selectedInfos)="onDevolve($event)"
         ></app-chips>
-      </div>
-    </app-card>
-    </app-card>
+      </div> -->
+          <div class="row m-0 mb-2" *ngIf="complementos.ok">
+            <app-chips
+              name="Complementos"
+              [property]="complementos.comp"
+              class="col"
+              (selectedInfos)="onDevolve($event)"
+            ></app-chips>
+          </div>
+        </app-card>
+      </app-card>
     </app-card>
 
-    <div class="row mt-2 p-2" *ngIf="!ruleSelected; else ris">
-      <div class="col-8 p-3">
-        <p
-          class="text-warning"
-          [matTooltip]="info.affecteds"
-          matTooltipShowDelay="300"
-          matTooltipHideDelay="500"
-        >
-          Esta regra afetará
-          <span class="text-danger" (click)="openDialog()">{{ affecteds() }}</span>
-          lançamentos.
-        </p>
-      </div>
-      <div class="col-4">
+  </form>
+
+  <div class="row m-0 mt-4">
+    <div class="form-group col-4">
+      <strong
+        class="account-field"
+        [matTooltip]="info.account"
+        matTooltipShowDelay="300"
+        matTooltipHideDelay="500"
+        >Conta:</strong
+      >
+      <input
+        list="suggestions"
+        type="text"
+        [(ngModel)]="account"
+        name="account"
+        [matTooltip]="info.account"
+        matTooltipShowDelay="300"
+        matTooltipHideDelay="500"
+      />
+      <datalist id="suggestions">
+        <option
+          *ngFor="let suggestion of suggestions"
+          [value]="suggestion"
+        ></option>
+      </datalist>
+    </div>
+
+    <div class="col-5">
+      <p class="m-4">Impacto: {{ impact() }} contas.</p>
+    </div>
+
+    <div class="col-3">
+      <div class="row w-100 m-0">
         <input
           type="button"
-          class="btn btn-outline-primary col mx-2"
-          value="Ok"
-          (click)="activate()"
-          [matTooltip]="info.ok"
+          class="btn btn-outline-info col mx-2"
+          value="Conta"
+          (click)="regra()"
+          [matTooltip]="info.rule"
           matTooltipShowDelay="300"
           matTooltipHideDelay="500"
         />
         <input
           type="button"
           class="btn btn-outline-info col mx-2"
-          value="Pular"
-          (click)="pular()"
-          [matTooltip]="info.skip"
+          value="Ignorar"
+          (click)="ignorar()"
+          [matTooltip]="info.ignore"
           matTooltipShowDelay="300"
           matTooltipHideDelay="500"
         />
       </div>
     </div>
+  </div>
 
-    <ng-template #ris>
-      <div class="row mt-2 field">
-        <!-- <ott-tinfo titulo="Conta" [valor]="records[0].conta" ativado="true" class="col-6"></ott-tinfo> -->
-        <div class="form-group col-4">
-          <strong
-            class="account-field"
-            [matTooltip]="info.account"
-            matTooltipShowDelay="300"
-            matTooltipHideDelay="500"
-            >Conta:</strong
-          >
-          <input
-            list="suggestions"
-            type="text"
-            [(ngModel)]="account"
-            name="account"
-            [matTooltip]="info.account"
-            matTooltipShowDelay="300"
-            matTooltipHideDelay="500"
-          />
-          <datalist id="suggestions">
-            <option
-              *ngFor="let suggestion of suggestions"
-              [value]="suggestion"
-            ></option>
-          </datalist>
-        </div>
 
-        <div class="col-8">
-          <div class="row w-100 m-0">
-            <input
-              type="button"
-              class="btn btn-outline-info col mx-2"
-              value="Salvar regra"
-              (click)="regra()"
-              [matTooltip]="info.rule"
-              matTooltipShowDelay="300"
-              matTooltipHideDelay="500"
-            />
-            <input
-              type="button"
-              class="btn btn-outline-info col mx-2"
-              value="Ignorar"
-              (click)="ignorar()"
-              [matTooltip]="info.ignore"
-              matTooltipShowDelay="300"
-              matTooltipHideDelay="500"
-            />
-            <input
-              type="button"
-              class="btn btn-outline-info col mx-2"
-              value="Cancelar"
-              (click)="ruleSelected = false"
-              [matTooltip]="info.cancel"
-              matTooltipShowDelay="300"
-              matTooltipHideDelay="500"
-            />
-          </div>
-        </div>
-      </div>
-    </ng-template>
-  </form>
 </div>
