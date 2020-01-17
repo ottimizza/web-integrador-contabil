@@ -1,3 +1,5 @@
+import { Lancamento } from '@shared/models/Lancamento';
+
 export class TestHelper {
 
   static ipsum() {

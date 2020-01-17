@@ -7,7 +7,6 @@ import { LancamentoService } from '@shared/services/lancamento.service';
 import { Lancamento } from '@shared/models/Lancamento';
 import { PageInfo } from '@shared/models/ImportacaoLancamentosRequest';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
-import { debounce } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tdetail',
@@ -174,6 +173,7 @@ export class TransactionDetailComponent implements OnInit {
       this._service.ignoreLancamento(this.records[0])
         .subscribe(data => {
           console.log(data);
+          console.log(this.conditions);
           this.destroy = true;
           this._disable();
       });

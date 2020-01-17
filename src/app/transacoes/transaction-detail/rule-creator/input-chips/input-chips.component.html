@@ -2,28 +2,16 @@
 
 <div class="disabledStyle">
   <mat-chip-list>
-    <i
-      class="fal fa-clipboard mr-4 ml-3"
-      (click)="devolveAll()"
-      [matTooltip]="info().copyAll"
-      matTooltipShowDelay="300"
-      matTooltipHideDelay="500"
-    ></i>
+    <i class="fal fa-clipboard mr-4 ml-3" *ngIf="name !== 'Valor' && name !== 'Data'; else whitespace" (click)="devolveAll()" [matTooltip]="info().copyAll" matTooltipShowDelay="300" matTooltipHideDelay="500"></i>
+    <ng-template #whitespace>
+      <div class="m-2"></div>
+    </ng-template>
     <span *ngIf="name == 'Valor'" class="m-1">R$</span>
     <div *ngFor="let prop of props; let i = index">
-      <mat-chip
-        (click)="select(i, name)"
-        [id]="i + name"
-        [ngClass]="'chip' + name"
-        class="chipDefault"
-        [matTooltip]="info(prop).copy"
-        matTooltipShowDelay="300"
-        matTooltipHideDelay="500"
-        >{{prop}}</mat-chip
-      >
-        <!-- [(ngModel)]="prop"
-        name="prop"
-        ngDefaultControl -->
+      <mat-chip (click)="select(i, name)" [id]="i + name" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(prop).copy" matTooltipShowDelay="300" matTooltipHideDelay="500" *ngIf="name !== 'Data' && name !== 'Valor'; else nodatevalue">{{prop}}</mat-chip>
+      <ng-template #nodatevalue>
+        <mat-chip class="chipDefault">{{ prop }}</mat-chip>
+      </ng-template>
       <span *ngIf="name == 'Data' && i != 2" class="m-1">/</span>
     </div>
   </mat-chip-list>

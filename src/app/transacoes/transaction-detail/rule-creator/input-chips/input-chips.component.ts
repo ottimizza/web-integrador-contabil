@@ -100,30 +100,6 @@ export class InputChipsComponent implements OnInit, OnChanges {
     };
   }
 
-  // devolveAll() {
-  //   const chips: HTMLCollectionOf<Element> = this._document.getElementsByClassName('chip' + this.name);
-  //   let countSelected = 0;
-  //   // tslint:disable-next-line: prefer-for-of
-  //   for (let i = 0; i < chips.length; i++) {
-  //     if (chips[i].classList.contains('selected')) {
-  //       chips[i].classList.remove('selected');
-  //       chips[i].classList.add('chipDefault');
-  //     } else {
-  //       countSelected++;
-  //       chips[i].classList.remove('chipDefault');
-  //       chips[i].classList.add('selected');
-  //     }
-  //   }
-
-  //   if (countSelected === 0) {
-  //     this.returningObject = { title: this.name, selecteds: undefined };
-  //   } else if (countSelected > 0) {
-  //     this.returningObject = { title: this.name, selecteds: [this.property] };
-  //   }
-
-  //   this.selectedInfos.emit(this.returningObject);
-  // }
-
   devolveAll() {
     this.isSelected = !this.isSelected;
     const chips = this.chips;
