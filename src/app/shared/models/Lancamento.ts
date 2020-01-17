@@ -6,7 +6,7 @@ export class Lancamento {
   public descricao: string;
   public portador: string;
   public centroCusto: string;
-  public arquivo: any;
+  public arquivo: Arquivo;
   public tipoPlanilha: string;
   public tipoLancamento: number;
   public tipoMovimento: string;
@@ -27,5 +27,11 @@ export class Lancamento {
   public cnpjContabilidade: string;
   public idRoteiro: string;
 
+}
 
+export class Arquivo {
+  id: number;
+  nome: string;
+  cnpjEmpresa: string;
+  cnpjContabilidade: string;
 }

@@ -2,6 +2,10 @@ form {
   padding: 0 2%;
 }
 
+.grayContainer {
+  background-color: rgb(245, 245, 245);
+}
+
 input[type="button"] {
   margin-top: 3vh;
   font-size: 80%;
@@ -23,7 +27,7 @@ input[type="button"] {
   padding: 0 10px;
   border-radius: 3px;
   width: 100%;
-  border: solid 3px #999999;
+  border: solid 1px #5c5c5c;
   font-family: sans-serif;
   // box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.3);
 }
@@ -35,7 +39,7 @@ input[type="button"] {
 }
 
 .account-field {
-  color: #999999;
+  color: #5c5c5c;
 }
 
 ::ng-deep .mat-tooltip {
@@ -46,4 +50,9 @@ input[type="button"] {
 span {
   font-weight: bold;
   cursor: pointer;
+}
+
+.defaultSpan {
+  font-weight: normal;
+  cursor: context-menu;
 }

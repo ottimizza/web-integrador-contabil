@@ -3,6 +3,13 @@ import { count } from 'rxjs/operators';
 export class ArrayUtils {
 
   public static sum(array: any[], arr: any[]) {
+    /*
+    * Soma dois arrays eliminando os elementos repetidos
+    */
+
+    if (typeof array !== typeof arr) {
+      throw new Error('Os dois arrays passados para o método ArrayUtils.sum() são de tipos diferentes');
+    }
 
     array.forEach(arrayItem => {
       arr.forEach(arrItem => {
@@ -17,6 +24,9 @@ export class ArrayUtils {
 
 
   public static compare(array: any[], arr: any[]) {
+    /*
+    * Verifica se dois arrays são EXATAMENTE iguais em TODOS os aspectos
+    */
 
     if (!array) {
       return false;
@@ -34,6 +44,9 @@ export class ArrayUtils {
   }
 
   public static split(text: string, divisors: string[]) {
+    /*
+    * Realiza um split com mais de um divisor
+    */
 
     let returningArray: string[];
 

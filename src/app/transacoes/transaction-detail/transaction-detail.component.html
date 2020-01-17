@@ -1,3 +1,4 @@
+<div class="grayContainer">
 <div class="main-wrapper p-0">
   <mat-progress-bar
     mode="determinate"
@@ -11,16 +12,35 @@
   <form *ngIf="records[0]" autocomplete="off">
     <app-info [description]="info.general"></app-info>
 
-    <br />
+    <br>
+
+    <div class="card p-4">
+
+    <div class="row m-0 mb-4 d-inline-block">
+      <div class="col">
+        <div class="float-left">
+         <span class="defaultSpan">Impacto: </span>
+          <span (click)="openDialog()">{{ impact.impact }}</span>
+          <span class="defaultSpan"> lançamentos.</span>
+        </div>
+      </div>
+      <div class="col">
+        <div class="float-right">
+          <span class="defaultSpan">Lançamentos restantes: </span>
+          <span class="defaultSpan">{{ impact.remaining }}</span>
+        </div>
+      </div>
+    </div>
 
     <app-card>
       <app-card>
-        <app-card main="true">
+        <app-card main="true" [destroy]="destroy">
           <div
             class="row m-0 mb-2"
             *ngIf="records[0].descricao || records[0].portador"
           >
             <app-chips
+              [reset]="destroy"
               name="Fornecedor"
               [property]="records[0].descricao"
               class="col"
@@ -28,6 +48,7 @@
               (selectedInfos)="onDevolve($event)"
             ></app-chips>
             <app-chips
+              [reset]="destroy"
               name="Banco"
               [property]="records[0].portador"
               class="col"
@@ -45,6 +66,7 @@
             "
           >
             <app-chips
+              [reset]="destroy"
               name="Data"
               [property]="records[0].dataMovimento"
               class="col"
@@ -52,6 +74,7 @@
               (selectedInfos)="onDevolve($event)"
             ></app-chips>
             <app-chips
+              [reset]="destroy"
               name="Valor"
               [property]="records[0].valorOriginal"
               class="col"
@@ -59,6 +82,7 @@
               (selectedInfos)="onDevolve($event)"
             ></app-chips>
             <app-chips
+              [reset]="destroy"
               name="Documento"
               [property]="records[0].documento"
               class="col"
@@ -72,6 +96,7 @@
             *ngIf="records[0].arquivo.nome || records[0].tipoPlanilha"
           >
             <app-chips
+              [reset]="destroy"
               name="Nome do Arquivo"
               [property]="records[0].arquivo.nome"
               class="col"
@@ -79,6 +104,7 @@
               (selectedInfos)="onDevolve($event)"
             ></app-chips>
             <app-chips
+              [reset]="destroy"
               name="Tipo da Planilha"
               [property]="records[0].tipoPlanilha"
               class="col"
@@ -87,56 +113,9 @@
             ></app-chips>
           </div>
 
-          <!-- <div class="row m-0 mb-2" *ngIf="records[0].complemento01">
-        <app-chips
-          name="Complemento 1"
-          [property]="records[0].complemento01"
-          class="col"
-          (selectedInfos)="onDevolve($event)"
-        ></app-chips>
-      </div>
-
-      <div
-        class="row m-0 mb-2"
-        *ngIf="records[0].complemento02 || records[0].complemento03"
-      >
-        <app-chips
-          name="Complemento 2"
-          [property]="records[0].complemento02"
-          class="col"
-          *ngIf="records[0].complemento02"
-          (selectedInfos)="onDevolve($event)"
-        ></app-chips>
-        <app-chips
-          name="Complemento 3"
-          [property]="records[0].complemento03"
-          class="col"
-          *ngIf="records[0].complemento03"
-          (selectedInfos)="onDevolve($event)"
-        ></app-chips>
-      </div>
-
-      <div
-        class="row m-0 mb-2"
-        *ngIf="records[0].complemento04 || records[0].complemento05"
-      >
-        <app-chips
-          name="Complemento 4"
-          [property]="records[0].complemento04"
-          class="col"
-          *ngIf="records[0].complemento04"
-          (selectedInfos)="onDevolve($event)"
-        ></app-chips>
-        <app-chips
-          name="Complemento 5"
-          [property]="records[0].complemento05"
-          class="col"
-          *ngIf="records[0].complemento05"
-          (selectedInfos)="onDevolve($event)"
-        ></app-chips>
-      </div> -->
           <div class="row m-0 mb-2" *ngIf="complementos.ok">
             <app-chips
+              [reset]="destroy"
               name="Complementos"
               [property]="complementos.comp"
               class="col"
@@ -147,61 +126,72 @@
       </app-card>
     </app-card>
 
-  </form>
-
-  <div class="row m-0 mt-4">
-    <div class="form-group col-4">
-      <strong
-        class="account-field"
-        [matTooltip]="info.account"
-        matTooltipShowDelay="300"
-        matTooltipHideDelay="500"
-        >Conta:</strong
-      >
-      <input
-        list="suggestions"
-        type="text"
-        [(ngModel)]="account"
-        name="account"
-        [matTooltip]="info.account"
-        matTooltipShowDelay="300"
-        matTooltipHideDelay="500"
-      />
-      <datalist id="suggestions">
-        <option
-          *ngFor="let suggestion of suggestions"
-          [value]="suggestion"
-        ></option>
-      </datalist>
+    <div class="row mt-4 ml-4 text-danger">
+      <p *ngIf="errorText">{{ errorText }}</p>
+      <p *ngIf="errorText2">{{ errorText2 }}</p>
     </div>
 
-    <div class="col-5">
-      <p class="m-4">Impacto: {{ impact() }} contas.</p>
-    </div>
-
-    <div class="col-3">
-      <div class="row w-100 m-0">
+    <div class="row m-0">
+      <div class="form-group col-5 mt-1">
+        <strong
+          class="account-field"
+          [matTooltip]="info.account"
+          matTooltipShowDelay="300"
+          matTooltipHideDelay="500"
+          >Conta:</strong
+        >
         <input
-          type="button"
-          class="btn btn-outline-info col mx-2"
-          value="Conta"
-          (click)="regra()"
-          [matTooltip]="info.rule"
+          list="suggestions"
+          type="text"
+          [(ngModel)]="account"
+          name="account"
+          [matTooltip]="info.account"
           matTooltipShowDelay="300"
           matTooltipHideDelay="500"
         />
-        <input
-          type="button"
-          class="btn btn-outline-info col mx-2"
-          value="Ignorar"
-          (click)="ignorar()"
-          [matTooltip]="info.ignore"
-          matTooltipShowDelay="300"
-          matTooltipHideDelay="500"
-        />
+        <datalist id="suggestions">
+          <option
+            *ngFor="let suggestion of suggestions"
+            [value]="suggestion"
+          ></option>
+        </datalist>
+      </div>
+
+      <div class="col-2"></div>
+
+      <div class="col-5">
+        <div class="row w-100 m-0">
+          <input
+            type="button"
+            class="btn btn-outline-info col mx-2"
+            value="Fornecedor"
+            (click)="fornecedor()"
+            [matTooltip]="info.provider"
+            matTooltipShowDelay="300"
+            matTooltipHideDelay="500"
+          />
+          <input
+            type="button"
+            class="btn btn-outline-info col mx-2"
+            value="Regra"
+            (click)="regra()"
+            [matTooltip]="info.rule"
+            matTooltipShowDelay="300"
+            matTooltipHideDelay="500"
+          />
+          <input
+            type="button"
+            class="btn btn-outline-info col mx-2"
+            value="Ignorar"
+            (click)="ignorar()"
+            [matTooltip]="info.ignore"
+            matTooltipShowDelay="300"
+            matTooltipHideDelay="500"
+          />
+        </div>
       </div>
     </div>
-  </div>
-
-
+    </div>
+  </form>
+</div>
 </div>

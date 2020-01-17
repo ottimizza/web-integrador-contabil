@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, Inject, SimpleChanges, OnChanges } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { ArrayUtils } from '@shared/utils/array.utils';
-import { DocumentDetectorUtils } from '@shared/utils/doc-detector.utils';
+import { collectionForUtils } from '@shared/utils/collection-for.utils';
 
 @Component({
   selector: 'app-chips',
@@ -12,6 +11,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
 
   @Input() name: string;
   @Input() property: string;
+  @Input() reset: boolean;
   @Output() selectedInfos = new EventEmitter();
   props: string[] = [];
   chipList: string[] = [];
@@ -22,6 +22,32 @@ export class InputChipsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this._change();
+  }
+
+  public ngOnChanges(changes: SimpleChanges) {
+      for (const key in changes) {
+        if (changes.hasOwnProperty(key)) {
+          switch (key) {
+            case 'name':
+              this.name = changes[key].currentValue;
+              break;
+            case 'property':
+              this.property = changes[key].currentValue;
+              this._change();
+              break;
+            case 'reset':
+              if (this.reset) {
+                // this.devolveAll();
+                this._deSelectAll();
+              }
+              break;
+        }
+      }
+    }
+  }
+
+  get chips() {
+    return this._document.getElementsByClassName('chip' + this.name);
   }
 
   private _change() {
@@ -37,21 +63,14 @@ export class InputChipsComponent implements OnInit, OnChanges {
     }
   }
 
-  public ngOnChanges(changes: SimpleChanges) {
-      for (const key in changes) {
-        if (changes.hasOwnProperty(key)) {
-          switch (key) {
-            case 'name':
-              this.name = changes[key].currentValue;
-              break;
-            case 'property':
-              this.property = changes[key].currentValue;
-              this._change();
-              break;
-        }
-      }
-    }
+  private _deSelectAll() {
+    // Desseleciona todos os chips do "input" e emite a informação de que eles estão vazios para o componente pai
+    const chips = this.chips;
+    collectionForUtils(chips, false, 'selected');
+    collectionForUtils(chips, true, 'chipDefault');
+    this.returningObject = { title: this.name, selecteds: undefined };
   }
+
 
   select(id: number, title: string) {
     const chip = this._document.getElementById(id + title);
@@ -107,7 +126,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
 
   devolveAll() {
     this.isSelected = !this.isSelected;
-    const chips: HTMLCollectionOf<Element> = this._document.getElementsByClassName('chip' + this.name);
+    const chips = this.chips;
     let countSelected = 0;
     // tslint:disable: prefer-for-of
     for (let i = 0; i < chips.length; i++) {

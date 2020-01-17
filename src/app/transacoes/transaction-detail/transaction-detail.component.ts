@@ -7,6 +7,7 @@ import { LancamentoService } from '@shared/services/lancamento.service';
 import { Lancamento } from '@shared/models/Lancamento';
 import { PageInfo } from '@shared/models/ImportacaoLancamentosRequest';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
+import { debounce } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tdetail',
@@ -14,7 +15,7 @@ import { RuleGridComponent } from './rule-creator/rule-grid.component';
   styleUrls: ['./transaction-detail.component.scss']
 })
 export class TransactionDetailComponent implements OnInit {
-  record: Lancamento;
+
   records: Lancamento[] = [];
   id = 0;
   account: string;
@@ -23,6 +24,9 @@ export class TransactionDetailComponent implements OnInit {
   ruleSelected = false;
   pageInfo: PageInfo;
   elementsQuant = 0;
+  destroy: boolean;
+  errorText: string;
+  errorText2: string;
 
   constructor(
     // tslint:disable: variable-name
@@ -50,17 +54,14 @@ export class TransactionDetailComponent implements OnInit {
         `Clique nas palavras que indicam o motivo da movimentação ser ignorada ou atribuída a uma determinada conta contábil.
         Depois informe a conta ou selecione uma das sugeridas, ou informe que esta regra deve ser ignorada.`,
       progressBar: `${this.percentage}% de ${this.elements}`,
-      account:
-        'Insira neste campo, a conta relativa a este lançamento ou selecione uma das sugeridas.',
-      rule:
-        'A conta informada deve ser aplicada em todas as ocorrências da regra selecionada.',
+      account: 'Insira neste campo, a conta relativa a este lançamento ou selecione uma das sugeridas.',
+      rule: 'A conta informada deve ser aplicada em todas as ocorrências da regra selecionada.',
       ignore: 'Todos os lançamentos com a regra seleciona serão ignorados.',
-      skip:
-        'Selecione esta opção caso você não consiga preencher sózinho ou não tenha os dados necessários no momento.',
-      ok:
-        'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
+      skip: 'Selecione esta opção caso você não consiga preencher sózinho ou não tenha os dados necessários no momento.',
+      ok: 'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
       cancel: 'Voltar à barra de opções anterior.',
-      affecteds: 'Clique aqui para visualizar os lançamentos afetados.'
+      affecteds: 'Clique aqui para visualizar os lançamentos afetados.',
+      provider: 'A conta informada será aplicada para todas as ocorrências deste fornecedor.'
     };
   }
 
@@ -94,17 +95,48 @@ export class TransactionDetailComponent implements OnInit {
 
   }
 
-  impact() {
-    return 18;
+  get impact() {
+    return {
+      impact: 18,
+      remaining: 122
+    };
+  }
+
+  resetErrors() {
+    this.errorText = null;
+    this.errorText2 = null;
   }
 
   regra() {
+    this.resetErrors();
     if (this.account && this.verifyConditions()) {
       this._service
         .saveAsDePara(this.records[0], this.account)
         .subscribe(data => {
+          this.destroy = true;
           this._disable();
         });
+    } else if (this.account) {
+      this.errorText = 'Para salvar o lançamento em uma regra customizada você deve informar as condições da regra.';
+    } else if (this.verifyConditions()) {
+      this.errorText = 'Para salvar o lançamento em uma regra customizada você deve informar uma conta contábil.';
+    } else {
+      this.errorText = 'Para salvar o lançamento em uma regra customizada você deve informar as condições da regra.';
+      this.errorText2 = 'Para salvar o lançamento em uma regra customizada você deve informar uma conta contábil.';
+    }
+  }
+
+  fornecedor() {
+    this.resetErrors();
+    if (this.account && this.account.length > 0) {
+      this._service
+        .saveAsDePara(this.records[0], this.account)
+        .subscribe(data => {
+          this.destroy = true;
+          this._disable();
+        });
+    } else {
+      this.errorText = 'Para salvar o lançamento para uma conta de fornecedor, você deve informar uma conta.';
     }
   }
 
@@ -137,15 +169,17 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   ignorar() {
+    this.resetErrors();
     if (this.verifyConditions()) {
-      this._service.ignoreLancamento(this.records[0]).subscribe(data => {
-        this._disable();
+      this._service.ignoreLancamento(this.records[0])
+        .subscribe(data => {
+          console.log(data);
+          this.destroy = true;
+          this._disable();
       });
+    } else {
+      this.errorText = 'Para salvar um lançamento dentro de uma regra de ignorar, você deve informar as condições da regra';
     }
-  }
-
-  pular() {
-    this._disable();
   }
 
   affecteds() {
@@ -162,7 +196,7 @@ export class TransactionDetailComponent implements OnInit {
     const dialogRef = this.dialog.open(RuleGridComponent, {
       maxWidth: '1400px',
       width: '95vw',
-      data: { abaporu: 'Tarsila do Amaral' }
+      data: {}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -179,31 +213,39 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   private _disable() {
+    // Reseta todas as variáveis locais após executar uma ação para permitir
+    // que a próxima ação esteja pronta para ser executada.
     this.resetConditions();
     this.ruleSelected = false;
     this.account = null;
     this._next();
   }
 
-  private _next() {
+  private async _next() {
     if (this.id === 0) {
       this._nextPage();
     } else {
       this.records.splice(0, 1);
-
-      console.log(this.records);
-      console.log(this.records[0]);
+      await this._delay(500);
+      this.destroy = false;
     }
     this.id++;
     if (this.pageInfo && this.id + 1 >= this.pageInfo.pageSize) {
       this.id = 0;
     }
+    this.resetErrors();
+
+  }
+
+  private _delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
   }
 
   private _nextPage() {
     this._service.getLancamentos().subscribe(imports => {
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
+      this.destroy = false;
     });
   }
 
