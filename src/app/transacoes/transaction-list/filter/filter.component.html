@@ -1,0 +1,6 @@
+<div class="filterBox mb-3 mt-2">
+  <input type="text" list="businesssuggestions" autocomplete="off" [(ngModel)]="word">
+  <datalist id="businesssuggestions">
+    <option *ngFor="let suggestion of suggestions"[value]="suggestion"></option>
+  </datalist>
+</div>

@@ -14,11 +14,8 @@ export class LancamentoService {
 
   constructor(private http: HttpClient, private authService: AuthenticationService) { }
 
-  public getLancamentos(page: number = 0): Observable<GenericPageableResponse<Lancamento>> {
-    const headers = this._headers
-      .headers;
-      // .append('page', page.toString());
-    return this.http.get<GenericPageableResponse<Lancamento>>(BASE_URL + '/api/v1/lancamentos', { headers });
+  public getLancamentos(page: number): Observable<GenericPageableResponse<Lancamento>> {
+    return this.http.get<GenericPageableResponse<Lancamento>>(BASE_URL + '/api/v1/lancamentos?pageIndex=' + page, this._headers);
   }
 
   public ignoreLancamento(lancamento: Lancamento): Observable<Lancamento> {
@@ -33,7 +30,7 @@ export class LancamentoService {
 
   private get _headers() {
     const headers = this.authService.getAuthorizationHeaders();
-    return {headers};
+    return { headers };
   }
 
 }

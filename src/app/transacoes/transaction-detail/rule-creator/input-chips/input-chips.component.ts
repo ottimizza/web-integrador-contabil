@@ -120,8 +120,6 @@ export class InputChipsComponent implements OnInit, OnChanges {
       // Desselecionar
       chip.classList.remove('selected');
       chip.classList.add('chipDefault');
-      // this.chipList.splice(this.chipList.indexOf(prop), 1);
-      // this.returningObject = { title, selecteds: this.chipList.length > 0 ? this.chipList : undefined };
       this.returningObject = { title, selecteds: undefined };
     } else {
       // Selecionar
@@ -138,11 +136,11 @@ export class InputChipsComponent implements OnInit, OnChanges {
     return {
       copy: 'Clique para selecionar o campo "' + chip + '" de' + title,
       copyAll: 'Clique duas vezes para selecionar todos os campos de' + title,
-      c1: `Clique para selecionar "${chip}" de "Complemento 1"`,
-      c2: `Clique para selecionar "${chip}" de "Complemento 2"`,
-      c3: `Clique para selecionar "${chip}" de "Complemento 3"`,
-      c4: `Clique para selecionar "${chip}" de "Complemento 4"`,
-      c5: `Clique para selecionar "${chip}" de "Complemento 5"`
+      c1: `Clique para selecionar "${chip}" de "Complemento 1".`,
+      c2: `Clique para selecionar "${chip}" de "Complemento 2".`,
+      c3: `Clique para selecionar "${chip}" de "Complemento 3".`,
+      c4: `Clique para selecionar "${chip}" de "Complemento 4".`,
+      c5: `Clique para selecionar "${chip}" de "Complemento 5".`
     };
   }
 
@@ -175,21 +173,18 @@ export class InputChipsComponent implements OnInit, OnChanges {
     this.isSelected = !this.isSelected;
     const chips = this.chips;
     let countSelected = 0;
-    // tslint:disable: prefer-for-of
-    for (let i = 0; i < chips.length; i++) {
-      if (this.isSelected) {
-        chips[i].classList.remove('selected');
-        chips[i].classList.add('chipDefault');
-      } else {
-        countSelected++;
-        chips[i].classList.remove('chipDefault');
-        chips[i].classList.add('selected');
-      }
+    if (!this.isSelected) {
+      countSelected++;
+      collectionForUtils(chips, false, 'chipDefault');
+      collectionForUtils(chips, true, 'selected');
+    } else {
+      collectionForUtils(chips, false, 'selected');
+      collectionForUtils(chips, true, 'chipDefault');
     }
 
-    if (countSelected === 0) {
+    if (countSelected < 1) {
       this.returningObject = { title, selecteds: undefined };
-    } else if (countSelected > 0) {
+    } else {
       this.returningObject = { title, selecteds: [selecteds] };
     }
 

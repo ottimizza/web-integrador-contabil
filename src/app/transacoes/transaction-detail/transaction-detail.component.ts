@@ -25,6 +25,7 @@ export class TransactionDetailComponent implements OnInit {
   destroy: boolean;
   errorText: string;
   errorText2: string;
+  page = 0;
 
   constructor(
     // tslint:disable: variable-name
@@ -216,6 +217,7 @@ export class TransactionDetailComponent implements OnInit {
   private async _next() {
     if (this.id === 0) {
       this._nextPage();
+      this.page++;
     } else {
       this.records.splice(0, 1);
       await this._delay(200);
@@ -229,12 +231,22 @@ export class TransactionDetailComponent implements OnInit {
 
   }
 
+  private _newerPage() {
+    if (this.pageInfo.hasNext) {
+      this.page++;
+    } else {
+      this.page = 0;
+      this.errorText = 'Não há mais lançamentos pendentes envolvendo esta empresa';
+    }
+  }
+
   private _delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   private _nextPage() {
-    this._service.getLancamentos().subscribe(imports => {
+    console.log(this.page);
+    this._service.getLancamentos(this.page).subscribe(imports => {
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
       this.destroy = false;
