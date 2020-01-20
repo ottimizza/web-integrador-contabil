@@ -1,7 +1,7 @@
 export function collectionForUtils(collection: HTMLCollectionOf<Element>, add: boolean, prop: string) {
-    /*
-     * Altera a ClassList de um HTMLCollectionOf (que é diferente de um array)
-     */
+  /*
+   * Altera a ClassList de um HTMLCollectionOf (que é diferente de um array)
+   */
 
   // tslint:disable-next-line: prefer-for-of
   for (let i = 0; i < collection.length; i++) {

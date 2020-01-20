@@ -20,7 +20,7 @@
       <div class="col">
         <div class="float-left">
          <span class="defaultSpan">Impacto: </span>
-          <span (click)="openDialog()">{{ impact.impact }}</span>
+          <span (click)="openDialog()" class="text-danger">{{ impact.impact }}</span>
           <span class="defaultSpan"> lançamentos.</span>
         </div>
       </div>
@@ -113,11 +113,11 @@
             ></app-chips>
           </div>
 
-          <div class="row m-0 mb-2" *ngIf="complementos.ok">
+          <div class="row m-0 mb-2" *ngIf="getComplementos().ok">
             <app-chips
               [reset]="destroy"
               name="Complementos"
-              [property]="complementos.comp"
+              [property]="getComplementos().text"
               class="col"
               (selectedInfos)="onDevolve($event)"
             ></app-chips>

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -30,8 +29,6 @@ export class TransactionDetailComponent implements OnInit {
   constructor(
     // tslint:disable: variable-name
     private _service: LancamentoService,
-    private _route: ActivatedRoute,
-    private _router: Router,
     public dialog: MatDialog
   ) {}
 
@@ -68,30 +65,24 @@ export class TransactionDetailComponent implements OnInit {
     return ((this.elementsQuant / this.elements) * 100).toFixed(2);
   }
 
-  get complementos() {
-    const r = this.records[0];
-    let comp = '';
-    if (r.complemento01) {
-      comp += `${r.complemento01}`;
-    }
-    if (r.complemento02) {
-      comp += ` ${r.complemento02}`;
-    }
-    if (r.complemento03) {
-      comp += ` ${r.complemento03}`;
-    }
-    if (r.complemento04) {
-      comp += ` ${r.complemento04}`;
-    }
-    if (r.complemento05) {
-      comp += ` ${r.complemento05}`;
+  getComplementos() {
+    const lancamento = this.records[0];
+    const ok = lancamento.complemento01 || lancamento.complemento02 || lancamento.complemento03 || lancamento.complemento04 || lancamento.complemento05;
+    let text = '';
+    if (ok) {
+      text = JSON.stringify({
+        c1: lancamento.complemento01,
+        c2: lancamento.complemento02,
+        c3: lancamento.complemento03,
+        c4: lancamento.complemento04,
+        c5: lancamento.complemento05
+      });
     }
 
     return {
-    ok: r.complemento01 || r.complemento02 || r.complemento03 || r.complemento04 || r.complemento05,
-    comp
+      ok,
+      text
     };
-
   }
 
   get impact() {
@@ -170,7 +161,8 @@ export class TransactionDetailComponent implements OnInit {
   ignorar() {
     this.resetErrors();
     if (this.verifyConditions()) {
-      this._service.ignoreLancamento(this.records[0])
+      this._service
+        .ignoreLancamento(this.records[0])
         .subscribe(data => {
           console.log(data);
           console.log(this.conditions);
@@ -226,7 +218,7 @@ export class TransactionDetailComponent implements OnInit {
       this._nextPage();
     } else {
       this.records.splice(0, 1);
-      await this._delay(500);
+      await this._delay(200);
       this.destroy = false;
     }
     this.id++;
@@ -238,7 +230,7 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   private _delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   private _nextPage() {
