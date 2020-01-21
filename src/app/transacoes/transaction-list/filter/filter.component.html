@@ -1,6 +1,6 @@
-<div class="filterBox mb-3 mt-2">
-  <input type="text" list="businesssuggestions" autocomplete="off" [(ngModel)]="word">
-  <datalist id="businesssuggestions">
-    <option *ngFor="let suggestion of suggestions"[value]="suggestion"></option>
+<div class="filterBox mb-1 mt-4">
+  <input type="text" (keyup)="change()" list="businesssuggestions" autocomplete="off" [(ngModel)]="word" placeholder="Filtro" [matTooltip]="info" matTooltipShowDelay="300" matTooltipHideDelay="500">
+  <datalist id="businesssuggestions" (change)="change()">
+    <option *ngFor="let suggestion of suggestions" [value]="suggestion"></option>
   </datalist>
 </div>

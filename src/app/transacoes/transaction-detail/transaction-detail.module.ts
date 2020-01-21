@@ -12,6 +12,8 @@ import { RuleGridModule } from './rule-creator/rule-grid.module';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { CardModule } from '@shared/components/card/card.module';
 import { InfoModule } from '@shared/components/info/info.module';
+import { HistoricModule } from './historic/historic.module';
+import { HistoricComponent } from './historic/historic.component';
 
 @NgModule({
     declarations: [TransactionDetailComponent],
@@ -24,9 +26,13 @@ import { InfoModule } from '@shared/components/info/info.module';
         MatTooltipModule,
         CardModule,
         MatProgressBarModule,
-        InfoModule
+        InfoModule,
+        HistoricModule
     ],
-    entryComponents: [RuleGridComponent],
+    entryComponents: [
+      RuleGridComponent,
+      HistoricComponent
+    ],
     exports: [TransactionDetailComponent]
 })
 export class TransactionDetailModule {}

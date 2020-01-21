@@ -6,6 +6,8 @@ import { environment } from '@env';
 import { AuthenticationService } from '@app/authentication/authentication.service';
 import { Lancamento } from '@shared/models/Lancamento';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
+import { Empresa } from '@shared/models/Empresa';
+import { PostShapeRule } from '@shared/models/Rule';
 
 const BASE_URL = environment.storageBaseUrl;
 
@@ -14,8 +16,17 @@ export class LancamentoService {
 
   constructor(private http: HttpClient, private authService: AuthenticationService) { }
 
-  public getLancamentos(page: number): Observable<GenericPageableResponse<Lancamento>> {
-    return this.http.get<GenericPageableResponse<Lancamento>>(BASE_URL + '/api/v1/lancamentos?pageIndex=' + page, this._headers);
+  public getLancamentos(page: number, b: Empresa): Observable<GenericPageableResponse<Lancamento>> {
+    // return this.http.get<GenericPageableResponse<Lancamento>>(`${BASE_URL}/api/v1/lancamentos?pageIndex=${page}`, this._headers);
+    return this.http.get<GenericPageableResponse<Lancamento>>(`${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}`, this._headers);
+  }
+
+  public getByRule(rules: PostShapeRule[], b: Empresa): Observable<GenericPageableResponse<Lancamento>> {
+    return this.http.post<GenericPageableResponse<Lancamento>>(
+      `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${b.cnpj}`,
+      rules,
+      this._headers
+    );
   }
 
   public ignoreLancamento(lancamento: Lancamento): Observable<Lancamento> {

@@ -69,4 +69,16 @@ export class ArrayUtils {
 
   }
 
+  public static verify(array: boolean[]): boolean {
+
+    let verify = true;
+    array.forEach(arr => {
+      if (!arr) {
+        verify = false;
+      }
+    });
+    return verify;
+
+  }
+
 }

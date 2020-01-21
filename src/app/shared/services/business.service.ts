@@ -3,6 +3,8 @@ import { environment } from '@env';
 import { AuthenticationService } from '@app/authentication/authentication.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
+import { Empresa } from '@shared/models/Empresa';
 
 const BASE_URL = environment.storageBaseUrl;
 
@@ -16,8 +18,8 @@ export class BusinessService {
     private _http: HttpClient
   ) { }
 
-  getBusiness(business: string): Observable<any> {
-    return this._http.get(`${BASE_URL}/api/v1/empresas?razaoSocial=${business}`, this._headers);
+  getBusiness(business: string): Observable<GenericPageableResponse<Empresa>> {
+    return this._http.get<GenericPageableResponse<Empresa>>(`${BASE_URL}/api/v1/empresas?razaoSocial=${business}`, this._headers);
   }
 
   private get _headers() {

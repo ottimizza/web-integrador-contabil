@@ -1,0 +1,63 @@
+<h1 mat-dialog-title>Histórico do Lançamento</h1>
+<div mat-dialog-content>
+
+
+  <form>
+
+    <div class="row m-0 mt-3">
+      <span>Código do Histórico:</span>
+      <input type="number" class="form-control">
+    </div>
+
+    <div class="row m-0 mt-3">
+      <span>Texto Inicial:</span>
+      <input type="text" class="form-control">
+    </div>
+
+    <div class="row m-0 mt-3">
+      <app-historic-field name="Campo 1:"></app-historic-field>
+    </div>
+
+    <div class="row m-0 mt-3">
+      <span>Texto 2:</span>
+      <input type="text" class="form-control">
+    </div>
+
+    <div class="row m-0 mt-3">
+      <app-historic-field name="Campo 2:"></app-historic-field>
+    </div>
+
+    <div class="row m-0 mt-3">
+      <span>Texto 3:</span>
+      <input type="text" class="form-control">
+    </div>
+
+    <div class="row m-0 mt-3">
+      <app-historic-field name="Campo 3:"></app-historic-field>
+    </div>
+
+    <div class="row m-0 mt-3">
+      <span>Texto 4:</span>
+      <input type="text" class="form-control">
+    </div>
+
+    <div class="row m-0 mt-3">
+      <app-historic-field name="Campo 4:"></app-historic-field>
+    </div>
+
+    <div class="row m-0 mt-3">
+      <span>Texto 5:</span>
+      <input type="text" class="form-control">
+    </div>
+
+    <div class="row m-0 mt-3">
+      <app-historic-field name="Campo 5:"></app-historic-field>
+    </div>
+
+  </form>
+
+</div>
+<div mat-dialog-actions>
+  <button [mat-dialog-close]="data.regra" tabindex="-1" class="btn btn-outline-info mr-3">Confirmar</button>
+  <button (click)="onNoClick()" tabindex="-1" class="btn btn-outline-danger mr-4">Ignorar</button>
+</div>

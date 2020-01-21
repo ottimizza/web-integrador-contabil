@@ -9,8 +9,8 @@
   ></mat-progress-bar>
 </div> -->
 <!-- <div class="main-wrapper pt-4"> -->
-  <form *ngIf="records[0]" autocomplete="off">
-    <app-info [description]="info.general"></app-info>
+  <!-- <form *ngIf="records[0]" autocomplete="off"> -->
+  <form autocomplete="off">
 
     <br>
 
@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <app-card>
+    <app-card *ngIf="records[0]">
       <app-card>
         <app-card main="true" [destroy]="destroy">
           <div
