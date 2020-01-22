@@ -35,17 +35,19 @@ export class FilterComponent implements OnInit {
      * Cada vez que a expressão inserida no filtro for alterada, deve ser realizado um novo request
      * com a nova expressão
      */
-    const word = this.word.toUpperCase();
+
+    const search = this.word.split(' - ')[1] ? this.word.split(' - ')[1].toUpperCase() : '';
+    const word = this.word.toUpperCase()
     const subs = this._service
-      .getBusiness(word)
+      .getBusiness(search)
       .subscribe(data => {
         this.suggestions = [];
         data.records.forEach(record => {
-          const name = record.razaoSocial;
-          if (word === name) {
+          const code = `${record.codigoERP} - ${record.razaoSocial}`;
+          if (word === code) {
             this.devolve(record);
           }
-          this.suggestions.push(name);
+          this.suggestions.push(code);
         });
         subs.unsubscribe();
       });

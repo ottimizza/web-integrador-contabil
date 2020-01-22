@@ -9,7 +9,7 @@ export class Lancamento {
   public arquivo: Arquivo;
   public tipoPlanilha: string;
   public tipoLancamento: number;
-  public tipoMovimento: string;
+  public tipoMovimento: string; // 1 = Pagamento; 2 = Recebimento
   public contaMovimento: string;
   public contaContraPartida: string;
   public tipoConta: number;

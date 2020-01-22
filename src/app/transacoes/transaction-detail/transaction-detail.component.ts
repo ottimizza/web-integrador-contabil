@@ -11,6 +11,7 @@ import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { Rule } from '@shared/models/Rule';
 import { HistoricComponent } from './historic/historic.component';
 import { ArrayUtils } from '@shared/utils/array.utils';
+import { throwIfAlreadyLoaded } from '@app/guard/module-import.guard';
 
 @Component({
   selector: 'app-tdetail',
@@ -27,13 +28,13 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   suggestions: string[];
   ruleSelected = false;
   pageInfo: PageInfo;
-  elementsQuant = '0';
   destroy: boolean;
   errorText: string;
   errorText2: string;
   page = 0;
   impact = 0;
   remaining: number;
+  gridArray: Lancamento[];
 
   constructor(
     // tslint:disable: variable-name
@@ -120,27 +121,27 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   }
 
   regra() {
-    const obs = this._service.saveAsDePara(this.records[0], this.account);
-    const verifys = [(this.account && this.account.length > 0), this.verifyConditions()];
+    const observable = this._service.saveAsDePara(this.records[0], this.account);
+    const verifications = [(this.account && this.account.length > 0), this.conditions.verify()];
     const errors = [
       'Para salvar o lançamento em uma regra customizada você deve informar uma conta contábil.',
       'Para salvar o lançamento em uma regra customizada você deve informar as condições da regra.'
     ];
-    this._savePattern(obs, verifys, errors);
+    this._savePattern(observable, verifications, errors);
   }
 
   ignorar() {
-    const obs = this._service.ignoreLancamento(this.records[0]);
-    const verify = this.verifyConditions();
+    const observable = this._service.ignoreLancamento(this.records[0]);
+    const verification = this.conditions.verify();
     const error = ['Para salvar um lançamento dentro de uma regra de ignorar, você deve informar as condições da regra.'];
-    this._savePattern(obs, [verify], error);
+    this._savePattern(observable, [verification], error);
   }
 
   fornecedor() {
-    const obs = this._service.saveAsDePara(this.records[0], this.account);
-    const verify = this.account && this.account.length > 0;
+    const observable = this._service.saveAsDePara(this.records[0], this.account);
+    const verification = this.account && this.account.length > 0;
     const error = ['Para salvar o lançamento para uma conta de fornecedor, você deve informar uma conta.'];
-    this._savePattern(obs, [verify], error);
+    this._savePattern(observable, [verification], error);
   }
 
   private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[]) {
@@ -187,21 +188,12 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   }
 
   getByRule() {
-    // console.log(this.conditions.rules);
-    // const subs = this._service
-    //   .getByRule(this.conditions.rules, this.business)
-    //   .subscribe(data => {
-    //     this.impact = data.records.length;
-    //     console.log(data);
-    //     console.log(data.records.length);
-    //     console.log('-=-=-=-=-=-=-=-=-=');
-    //     subs.unsubscribe();
-    //   });
     const rules = this.conditions.rules;
     if (rules.length > 0) {
       const subs = this._service
         .getByRule(rules, this.business)
         .subscribe(data => {
+          this.gridArray = data.records;
           this.impact = data.pageInfo.totalElements;
           subs.unsubscribe();
         });
@@ -210,46 +202,36 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     }
   }
 
-  affecteds() {
-    return 120;
-  }
-
   activate() {
-    if (this.verifyConditions()) {
-      this.ruleSelected = true;
-    }
+    this.ruleSelected = this.conditions.verify();
   }
 
-  openDialog(): void {
+  openGrid(): void {
     const dialogRef = this.dialog.open(RuleGridComponent, {
       maxWidth: '1400px',
       width: '95vw',
-      data: {}
+      data: {
+        table: this.gridArray
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+
     });
   }
 
   openHistoric(): void {
     const dialogRef = this.dialog.open(HistoricComponent, {
       maxWidth: '1400px',
-      width: '95vw',
-      data: {}
+      width: '90vw',
+      data: {
+        lancamento: this.records[0]
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
 
-  private get elements() {
-    let totalElements = 0;
-    if (this.pageInfo) {
-      totalElements = this.pageInfo.totalElements;
-    }
-    return totalElements;
+    });
   }
 
   private _disable() {
@@ -265,8 +247,6 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   private async _next() {
     if (this.id === 0) {
       this._nextPage();
-      // this._newerPage();
-      this.page++;
     } else {
       this.records.splice(0, 1);
       await this._delay(200);
@@ -282,9 +262,11 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   }
 
   private _remaining() {
+    if (this.pageInfo) {
+      this.remaining = this.pageInfo.totalElements;
+    }
     // console.log(this.remaining)
     // Conferir a eficacia deste método
-    this.remaining = this.pageInfo.totalElements;
   }
 
   private _delay(ms: number) {
@@ -297,26 +279,8 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
       this.pageInfo = imports.pageInfo;
       this._remaining();
       this.destroy = false;
+      this.page++;
     });
-  }
-
-  private verifyConditions() {
-    if (
-      this.conditions.descricao ||
-      this.conditions.documento ||
-      this.conditions.portador ||
-      this.conditions.complemento01 ||
-      this.conditions.complemento02 ||
-      this.conditions.complemento03 ||
-      this.conditions.complemento04 ||
-      this.conditions.complemento05 ||
-      this.conditions.tipoPlanilha ||
-      this.conditions.nomeArquivo
-    ) {
-      return true;
-    } else {
-      return false;
-    }
   }
 
   private resetConditions() {

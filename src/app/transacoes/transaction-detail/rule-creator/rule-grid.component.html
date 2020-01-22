@@ -6,110 +6,37 @@
       <tr>
         <th>Fornecedor</th>
         <th>Banco</th>
-        <th>Data</th>
+        <th>Data do Movimento</th>
         <th>Valor</th>
         <th>Documento</th>
         <th>Nome do Arquivo</th>
         <th>Tipo da Planilha</th>
-        <th>Complementos</th>
+        <th>Complemento 1</th>
+        <th>Complemento 2</th>
+        <th>Complemento 3</th>
+        <th>Complemento 4</th>
+        <th>Complemento 5</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
+      <tr *ngFor="let i of info">
+        <td>{{ i.descricao }}</td>
+        <td>{{ i.portador }}</td>
+        <td>{{ dateFormat(i.dataMovimento) }}</td>
+        <td>{{ i.valorOriginal }}</td>
+        <td>{{ i.documento }}</td>
+        <td>{{ i.arquivo.nome }}</td>
+        <td>{{ i.tipoPlanilha }}</td>
+        <td>{{ i.complemento01 }}</td>
+        <td>{{ i.complemento02 }}</td>
+        <td>{{ i.complemento03 }}</td>
+        <td>{{ i.complemento04 }}</td>
+        <td>{{ i.complemento05 }}</td>
       </tr>
-      <tr>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-      </tr>
-      <tr>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-      </tr>
-      <tr>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-      </tr>
-      <tr>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-      </tr>
-      <tr>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-      </tr>
-      <tr>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-      </tr>
-      <tr>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-      </tr>
-      <tr>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-        <td>Não implementado</td>
-      </tr>
-
     </tbody>
   </table>
 </div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="data.regra" tabindex="-1" class="btn btn-outline-info mr-3">Ok</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1" class="btn btn-outline-info mr-3">Ok</button>
   <button mat-button (click)="onNoClick()" tabindex="-1" class="btn btn-outline-danger mr-4">Cancelar</button>
 </div>

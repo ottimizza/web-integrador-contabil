@@ -20,7 +20,7 @@
       <div class="col">
         <div class="float-left">
          <span class="defaultSpan">Impacto: </span>
-          <span (click)="openDialog()" class="text-danger">{{ impact }}</span>
+          <span (click)="openGrid()" class="text-danger" [matTooltip]="info.affecteds" matTooltipShowDelay="300" matTooltipHideDelay="500">{{ impact }}</span>
           <span class="defaultSpan"> lançamentos.</span>
         </div>
       </div>

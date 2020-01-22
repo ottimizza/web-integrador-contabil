@@ -7,10 +7,10 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
 export class HistoricFieldComponent {
 
   @Input() name: string;
-  @Output() change = new EventEmitter();
+  @Output() selectOne = new EventEmitter();
 
   devolve(event: any): void {
-    this.change.emit(event.target.value);
+    this.selectOne.emit(event.target.value);
   }
 
   protected get values(): string[] {

@@ -23,6 +23,10 @@ export class Rule {
     public tipoPlanilha: string[];
     public nomeArquivo: string[];
 
+    public verify() {
+      return this.rules.length > 0;
+    }
+
     public get rules(): PostFormatRule[] {
       this._rules = [];
       this._newRule('descricao', this.descricao);
