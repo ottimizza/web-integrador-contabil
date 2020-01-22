@@ -7,7 +7,7 @@ import { AuthenticationService } from '@app/authentication/authentication.servic
 import { Lancamento } from '@shared/models/Lancamento';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
 import { Empresa } from '@shared/models/Empresa';
-import { PostShapeRule } from '@shared/models/Rule';
+import { PostFormatRule } from '@shared/models/Rule';
 
 const BASE_URL = environment.storageBaseUrl;
 
@@ -21,7 +21,7 @@ export class LancamentoService {
     return this.http.get<GenericPageableResponse<Lancamento>>(`${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}`, this._headers);
   }
 
-  public getByRule(rules: PostShapeRule[], b: Empresa): Observable<GenericPageableResponse<Lancamento>> {
+  public getByRule(rules: PostFormatRule[], b: Empresa): Observable<GenericPageableResponse<Lancamento>> {
     return this.http.post<GenericPageableResponse<Lancamento>>(
       `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${b.cnpj}`,
       rules,

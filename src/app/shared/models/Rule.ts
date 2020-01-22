@@ -1,4 +1,4 @@
-export class PostShapeRule {
+export class PostFormatRule {
 
   constructor(
     public campo: string,
@@ -11,7 +11,7 @@ export class PostShapeRule {
 export class Rule {
 
     // tslint:disable: variable-name
-    private _rules: PostShapeRule[];
+    private _rules: PostFormatRule[];
     public descricao: string[];
     public documento: string[];
     public portador: string[];
@@ -23,11 +23,7 @@ export class Rule {
     public tipoPlanilha: string[];
     public nomeArquivo: string[];
 
-    constructor() {
-      this._rules = [];
-    }
-
-    public get rules(): PostShapeRule[] {
+    public get rules(): PostFormatRule[] {
       this._rules = [];
       this._newRule('descricao', this.descricao);
       this._newRule('documento', this.documento);
@@ -45,7 +41,7 @@ export class Rule {
     private _newRule(name: string, values: string[]) {
       if (values && values.length > 0) {
         values.forEach(value => {
-          this._rules.push(new PostShapeRule(name, 1, value));
+          this._rules.push(new PostFormatRule(name, 1, value));
         });
       }
     }

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -9,7 +10,6 @@ import { Empresa } from '@shared/models/Empresa';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { Rule } from '@shared/models/Rule';
 import { HistoricComponent } from './historic/historic.component';
-import { Subscription, Observable, observable } from 'rxjs';
 import { ArrayUtils } from '@shared/utils/array.utils';
 
 @Component({
@@ -27,11 +27,13 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   suggestions: string[];
   ruleSelected = false;
   pageInfo: PageInfo;
-  elementsQuant = 0;
+  elementsQuant = '0';
   destroy: boolean;
   errorText: string;
   errorText2: string;
   page = 0;
+  impact = 0;
+  remaining: number;
 
   constructor(
     // tslint:disable: variable-name
@@ -69,7 +71,6 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
 
   get info() {
     return {
-      progressBar: `${this.percentage}% de ${this.elements}`,
       account: 'Insira neste campo, a conta relativa a este lançamento ou selecione uma das sugeridas.',
       rule: 'A conta informada deve ser aplicada em todas as ocorrências da regra selecionada.',
       ignore: 'Todos os lançamentos com a regra seleciona serão ignorados.',
@@ -81,11 +82,11 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     };
   }
 
-  get percentage() {
-    return ((this.elementsQuant / this.elements) * 100).toFixed(2);
-  }
-
   getComplementos() {
+    /*
+     * Transforma todos os complementos em um objeto legível para os componentes filhos
+     * (para o componente dos chips especificamente)
+     */
     const lancamento = this.records[0];
     const ok = lancamento.complemento01 || lancamento.complemento02 || lancamento.complemento03 || lancamento.complemento04 || lancamento.complemento05;
     let text = '';
@@ -102,13 +103,6 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     return {
       ok,
       text
-    };
-  }
-
-  get impact() {
-    return {
-      impact: 18,
-      remaining: 122
     };
   }
 
@@ -193,12 +187,27 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   }
 
   getByRule() {
-    const subs = this._service
-      .getByRule(this.conditions.rules, this.business)
-      .subscribe(data => {
-        console.log(data);
-        subs.unsubscribe();
-      });
+    // console.log(this.conditions.rules);
+    // const subs = this._service
+    //   .getByRule(this.conditions.rules, this.business)
+    //   .subscribe(data => {
+    //     this.impact = data.records.length;
+    //     console.log(data);
+    //     console.log(data.records.length);
+    //     console.log('-=-=-=-=-=-=-=-=-=');
+    //     subs.unsubscribe();
+    //   });
+    const rules = this.conditions.rules;
+    if (rules.length > 0) {
+      const subs = this._service
+        .getByRule(rules, this.business)
+        .subscribe(data => {
+          this.impact = data.pageInfo.totalElements;
+          subs.unsubscribe();
+        });
+    } else {
+      this.impact = 0;
+    }
   }
 
   affecteds() {
@@ -261,6 +270,7 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     } else {
       this.records.splice(0, 1);
       await this._delay(200);
+      this._remaining();
       this.destroy = false;
     }
     this.id++;
@@ -271,6 +281,12 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
 
   }
 
+  private _remaining() {
+    // console.log(this.remaining)
+    // Conferir a eficacia deste método
+    this.remaining = this.pageInfo.totalElements;
+  }
+
   private _delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
@@ -279,6 +295,7 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     this._service.getLancamentos(this.page, this.business).subscribe(imports => {
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
+      this._remaining();
       this.destroy = false;
     });
   }

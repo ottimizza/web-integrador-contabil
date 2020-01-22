@@ -14,4 +14,14 @@ export class HistoricComponent {
 
   onNoClick() { }
 
+  get fields() {
+    return [
+      { span: 'Comentário Inicial', name: 'Campo 1:' },
+      { span: 'Comentário 2', name: 'Campo 2:' },
+      { span: 'Comentário 3', name: 'Campo 3:' },
+      { span: 'Comentário 4', name: 'Campo 4:' },
+      { span: 'Comentário 5', name: 'Campo 5:' },
+    ];
+  }
+
 }

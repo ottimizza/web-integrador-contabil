@@ -5,11 +5,13 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { HistoricFieldComponent } from './historic-field/historic-field.component';
+import { HistoricRowComponent } from './historic-row/historic-row.component';
 
 @NgModule({
   declarations: [
     HistoricComponent,
-    HistoricFieldComponent
+    HistoricFieldComponent,
+    HistoricRowComponent
   ],
   imports: [
     CommonModule,
