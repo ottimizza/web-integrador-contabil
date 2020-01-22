@@ -1,6 +1,5 @@
 form {
-  padding: 2vw;
-  padding-bottom: 0;
+  padding: 0 2%;
 }
 
 input[type="button"] {
@@ -21,30 +20,35 @@ input[type="button"] {
 }
 
 .form-group input {
+  padding: 0 10px;
   border-radius: 3px;
   width: 100%;
-  border: solid 3px rgb(122, 122, 122);
+  border: solid 1px #5c5c5c;
+  font-family: sans-serif;
+  // box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.3);
 }
 
+
 .form-group strong {
-  font-size: 2vh;
+  font-size: 13px;
   font-weight: bold;
 }
 
-@media (max-width: 767px) {
-  form {
-    margin-left: 0;
-  }
+.account-field {
+  color: #5c5c5c;
 }
 
-@media (min-width: 768px) {
-  form {
-    margin-left: 70px;
-  }
+::ng-deep .mat-tooltip {
+  font-size: 13px;
+  padding: 5px;
 }
 
-@media (min-width: 1170px) {
-  form {
-    margin-left: 240px;
-  }
+span {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.defaultSpan {
+  font-weight: normal;
+  cursor: context-menu;
 }

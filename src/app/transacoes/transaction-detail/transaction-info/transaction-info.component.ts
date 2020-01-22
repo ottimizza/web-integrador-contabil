@@ -6,14 +6,16 @@ import { EventEmitter } from 'events';
     templateUrl: './transaction-info.component.html',
     styleUrls: ['./transaction-info.component.scss']
 })
-export class TransactionInfoComponent implements OnInit{
+export class TransactionInfoComponent implements OnInit {
 
     @Input() titulo: string;
     @Input() valor: string;
-    @Input() ativado: boolean = false;
+    @Input() ativado = false;
 
     ngOnInit(): void {
-        if(!this.valor) this.valor = '';
+      if (!this.valor) {
+        this.valor = '';
+      }
     }
 
 }

@@ -28,7 +28,7 @@ export class ImageCompressorService {
           const ctx = elem.getContext('2d') as CanvasRenderingContext2D;
           ctx.drawImage(img, 0, 0, elem.width, elem.height);
           ctx.canvas.toBlob(
-            blob => { 
+            blob => {
               observer.next(
                 new File([blob], file.name, {
                   type: 'image/jpeg',

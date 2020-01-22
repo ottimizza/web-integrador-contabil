@@ -1,2 +1,7 @@
-<app-timeline></app-timeline>
-<ott-tdetail></ott-tdetail>
+<div class="main-wrapper pt-2 grayContainer">
+  <div class="info mt-2">
+    <app-info [description]="info"></app-info>
+  </div>
+  <app-tfilter (empresa)="onDevolve($event)"></app-tfilter>
+  <app-tdetail *ngIf="business" [business]="business"></app-tdetail>
+</div>

@@ -1,0 +1,10 @@
+
+<div class="row m-0 mt-3">
+  <div [ngClass]="'col-' + col">
+    <span>{{ span }}:</span>
+    <input type="text" class="form-control" (keyup)="devolve($event)">
+  </div>
+  <div class="col">
+    <ng-content></ng-content>
+  </div>
+</div>

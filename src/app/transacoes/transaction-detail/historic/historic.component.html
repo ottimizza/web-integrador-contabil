@@ -1,0 +1,24 @@
+<div mat-dialog-title>
+  <app-hrow span="Código do Histórico" col="3">
+  </app-hrow>
+  <div class="row m-0">
+    <p>{{ params }}</p>
+  </div>
+</div>
+<div mat-dialog-content>
+
+
+  <form>
+
+    <app-hrow *ngFor="let f of fields; let id = index" [span]="f.span" (write)="onKeyup($event, id)">
+      <app-historic-field [name]="f.name" (selectOne)="onChange($event, id)"></app-historic-field>
+    </app-hrow>
+
+
+  </form>
+
+</div>
+<div mat-dialog-actions>
+  <button [mat-dialog-close]="data.regra" tabindex="-1" class="btn btn-outline-info mr-3">Confirmar</button>
+  <button (click)="onNoClick()" tabindex="-1" class="btn btn-outline-danger mr-4">Ignorar</button>
+</div>
