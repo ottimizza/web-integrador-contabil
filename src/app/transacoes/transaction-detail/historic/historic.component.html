@@ -12,7 +12,8 @@
     </app-hrow>
 
   </form>
-  <div class="row m-4">
+  <div class="row m-4" *ngIf="params && params.length > 0">
+    <p class="mr-4">Resultado:</p>
     <p class="text-warning font-weight-bold">{{ params }}</p>
   </div>
 

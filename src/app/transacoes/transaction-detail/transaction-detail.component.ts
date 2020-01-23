@@ -11,8 +11,8 @@ import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { HistoricComponent } from './historic/historic.component';
 import { ArrayUtils } from '@shared/utils/array.utils';
-import { throwIfAlreadyLoaded } from '@app/guard/module-import.guard';
 import { RuleService } from '@shared/services/rule.service';
+import { HistoricService } from '@shared/services/historic.service';
 
 @Component({
   selector: 'app-tdetail',
@@ -44,6 +44,7 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     // tslint:disable: variable-name
     private _lancamentoService: LancamentoService,
     private _ruleService: RuleService,
+    private _historicService: HistoricService,
     public dialog: MatDialog
   ) {}
 
@@ -51,9 +52,9 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     this.controllInit();
     this.tabsInfo = [
       'btn btn-light col',
-      'btn btn-outline-light col',
-      'btn btn-outline-light col',
-      'btn btn-outline-light col'
+      'btn btn-link-light col',
+      'btn btn-link-light col',
+      'btn btn-link-light col'
     ];
   }
 
@@ -75,8 +76,13 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   }
 
   get suggestions() {
-    if (this.records.length > 0) {
-      return this.records[0].contaSugerida;
+    if (this.records.length > 0 && this.records[0].contaSugerida) {
+      const account = this.records[0].contaSugerida;
+      if (account === 'null' || account === 'IGNORAR') {
+        return '';
+      } else {
+        return account;
+      }
     } else {
       return '';
     }
@@ -177,11 +183,18 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
 
     if (verify) {
       if (rule) {
-        this.openHistoric();
+        this._historicService
+          .getHistoric(this.business, this.account)
+          .subscribe(data => {
+            if (data.records.length === 0) {
+              this.openHistoric(obs);
+            } else {
+              this._subsAndDisable(obs);
+            }
+          });
+      } else {
+        this._subsAndDisable(obs);
       }
-      obs.subscribe(() => {
-        this._disable();
-      });
     } else if ((verifications.length === 1) || (verifications.length > 1 && !verifications[0] && verifications[1])) {
       this.resetErrors([errors[0]]);
     } else if (verifications.length > 1 && verifications[0] && !verifications[1]) {
@@ -189,6 +202,12 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     } else {
       this.resetErrors(errors);
     }
+  }
+
+  private _subsAndDisable(obs: Observable<any>) {
+    obs.subscribe(() => {
+      this._disable();
+    });
   }
 
   onDevolve(event: any) {
@@ -249,7 +268,7 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     });
   }
 
-  openHistoric(): void {
+  openHistoric(obs: Observable<Lancamento>): void {
     const dialogRef = this.dialog.open(HistoricComponent, {
       maxWidth: '900px',
       width: '90vw',
@@ -259,7 +278,7 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-
+      this._subsAndDisable(obs);
     });
   }
 
@@ -281,13 +300,14 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
 
   tabsPattern(position: number, tipoMovimento: number, tipoLancamento: string) {
     this.tabsInfo.forEach(tab => {
-      this.tabsInfo[this.tabsInfo.indexOf(tab)] = 'btn btn-outline-light col';
+      this.tabsInfo[this.tabsInfo.indexOf(tab)] = 'btn btn-outline-link col';
     });
     this.tabsInfo[position] = 'btn btn-light col';
-    this.tipoLancamento = tipoLancamento;
-    this.tipoMovimento = tipoMovimento;
-    this.id = 0;
-    this._nextPage();
+
+    // this.tipoLancamento = tipoLancamento;
+    // this.tipoMovimento = tipoMovimento;
+    // this.id = 0;
+    // this._nextPage();
   }
 
   private _disable() {

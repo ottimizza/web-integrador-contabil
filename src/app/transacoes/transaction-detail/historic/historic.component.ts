@@ -18,6 +18,7 @@ export class HistoricComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.teste();
     this.fields = [
       { span: 'Comentário Inicial', name: 'Campo 1:' },
       { span: 'Comentário 2', name: 'Campo 2:' },
@@ -92,6 +93,40 @@ export class HistoricComponent implements OnInit {
       { field: '', combo: '' },
     ];
     this.lancamento = this.data.lancamento;
+  }
+
+
+
+
+
+
+
+
+
+
+
+  teste() {
+    const lancamento = {
+      id: '',
+      complemento01: 'FOLHA DE PAGAMENTO',
+      documento: '4523'
+    };
+
+    const historico = '${r2 323} Texto ${complemento01} ${documento}';
+
+    const format = (texto, lanc) => {
+      const regex = /\${(?<=(\${))[a-zA-Z0-9]+(?=})}/g;
+      const formatado = texto.replace(regex, (match) => {
+        // remove '${' (inicio) e '}' (fim).
+        const m = match.replace(/\${((?<=(\${))[a-zA-Z0-9]+(?=}))}/g, '$1');
+        // devolve o valor substituto, caso exista ou não troca a variavel.
+        return (typeof lanc[m] !== typeof undefined) ? lanc[m] : match;
+      });
+      return formatado;
+    };
+
+    console.log(historico);
+    console.log(format(historico, lancamento));
   }
 
 
