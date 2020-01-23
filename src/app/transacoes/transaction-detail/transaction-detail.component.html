@@ -1,21 +1,14 @@
-<div class="grayContainer">
-<!-- <div class="main-wrapper p-0">
-  <mat-progress-bar
-    mode="determinate"
-    [value]="percentage"
-    [matTooltip]="info.progressBar"
-    matTooltipShowDelay="300"
-    matTooltipHideDelay="500"
-  ></mat-progress-bar>
-</div> -->
-<!-- <div class="main-wrapper pt-4"> -->
-  <!-- <form *ngIf="records[0]" autocomplete="off"> -->
+
   <form autocomplete="off">
+    <div class="card">
+      <div class="row w-100 m-0">
+        <button [ngClass]="tabsInfo[0]" (click)="pag()">Pagamentos</button>
+        <button [ngClass]="tabsInfo[1]" (click)="expag()">Extrato Débitos</button>
+        <button [ngClass]="tabsInfo[2]" (click)="rec()">Recebimentos</button>
+        <button [ngClass]="tabsInfo[3]" (click)="exrec()">Extrato Créditos</button>
+      </div>
 
-    <br>
-
-    <div class="card p-4">
-
+    <div class="p-4">
     <div class="row m-0 mb-4 d-inline-block">
       <div class="col">
         <div class="float-left">
@@ -31,7 +24,6 @@
         </div>
       </div>
     </div>
-
     <app-card *ngIf="records[0]">
       <app-card>
         <app-card main="true" [destroy]="destroy">
@@ -192,6 +184,5 @@
       </div>
     </div>
     </div>
-  </form>
-</div>
+  <!-- </form> -->
 <!-- </div> -->
