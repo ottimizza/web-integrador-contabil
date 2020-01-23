@@ -8,12 +8,12 @@
   <form>
 
     <app-hrow *ngFor="let f of fields; let id = index" [span]="f.span" (write)="onKeyup($event, id)">
-      <app-historic-field [name]="f.name" (selectOne)="onChange($event, id)"></app-historic-field>
+      <app-historic-field *ngIf="f.name" [name]="f.name" (selectOne)="onChange($event, id)"></app-historic-field>
     </app-hrow>
 
   </form>
-  <div class="row m-0">
-    <p>{{ params }}</p>
+  <div class="row m-4">
+    <p class="text-warning font-weight-bold">{{ params }}</p>
   </div>
 
 </div>

@@ -8,6 +8,16 @@ export class PostFormatRule {
 
 }
 
+export class RuleCreateFormat {
+
+  constructor(
+    public regras: PostFormatRule[],
+    public cnpjEmpresa: string,
+    public contaMovimento: string
+  ) { }
+
+}
+
 export class Rule {
 
     // tslint:disable: variable-name

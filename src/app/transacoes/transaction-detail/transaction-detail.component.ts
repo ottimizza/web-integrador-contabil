@@ -8,10 +8,11 @@ import { Lancamento } from '@shared/models/Lancamento';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { Empresa } from '@shared/models/Empresa';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
-import { Rule } from '@shared/models/Rule';
+import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { HistoricComponent } from './historic/historic.component';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { throwIfAlreadyLoaded } from '@app/guard/module-import.guard';
+import { RuleService } from '@shared/services/rule.service';
 
 @Component({
   selector: 'app-tdetail',
@@ -25,7 +26,6 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   id = 0;
   account: string;
   conditions = new Rule();
-  suggestions: string[];
   ruleSelected = false;
   pageInfo: PageInfo;
   destroy: boolean;
@@ -36,11 +36,14 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   remaining: number;
   gridArray: Lancamento[];
   tabsInfo: string[];
+  tipoLancamento = 'PAG';
+  tipoMovimento = 1;
 
 
   constructor(
     // tslint:disable: variable-name
-    private _service: LancamentoService,
+    private _lancamentoService: LancamentoService,
+    private _ruleService: RuleService,
     public dialog: MatDialog
   ) {}
 
@@ -67,15 +70,16 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   }
 
   controllInit() {
-    this.resetConditions();
+    this.conditions = new Rule();
     this._next();
-    this.suggestions = [
-      '312321321',
-      '735190862',
-      '902873038',
-      '919591831',
-      '423782332'
-    ];
+  }
+
+  get suggestions() {
+    if (this.records.length > 0) {
+      return this.records[0].contaSugerida;
+    } else {
+      return '';
+    }
   }
 
   get info() {
@@ -83,7 +87,7 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
       account: 'Insira neste campo, a conta relativa a este lançamento ou selecione uma das sugeridas.',
       rule: 'A conta informada deve ser aplicada em todas as ocorrências da regra selecionada.',
       ignore: 'Todos os lançamentos com a regra seleciona serão ignorados.',
-      skip: 'Selecione esta opção caso você não consiga preencher sózinho ou não tenha os dados necessários no momento.',
+      skip: 'Envie este lançamento para o final da lista.',
       ok: 'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
       cancel: 'Voltar à barra de opções anterior.',
       affecteds: 'Clique aqui para visualizar os lançamentos afetados.',
@@ -97,7 +101,8 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
      * (para o componente dos chips especificamente)
      */
     const lancamento = this.records[0];
-    const ok = lancamento.complemento01 || lancamento.complemento02 || lancamento.complemento03 || lancamento.complemento04 || lancamento.complemento05;
+    const arquivo = lancamento.arquivo;
+    const ok = (lancamento.complemento01 && arquivo.labelComplemento01) || (lancamento.complemento02 && arquivo.labelComplemento02) || (lancamento.complemento03 && arquivo.labelComplemento03) || (lancamento.complemento04 && arquivo.labelComplemento04) || (lancamento.complemento05 && arquivo.labelComplemento05);
     let text = '';
     if (ok) {
       text = JSON.stringify({
@@ -105,7 +110,12 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
         c2: lancamento.complemento02,
         c3: lancamento.complemento03,
         c4: lancamento.complemento04,
-        c5: lancamento.complemento05
+        c5: lancamento.complemento05,
+        l1: arquivo.labelComplemento01,
+        l2: arquivo.labelComplemento02,
+        l3: arquivo.labelComplemento03,
+        l4: arquivo.labelComplemento04,
+        l5: arquivo.labelComplemento05
       });
     }
 
@@ -128,36 +138,47 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     }
   }
 
+  pular() {
+    this._next();
+  }
+
   regra() {
-    const observable = this._service.saveAsDePara(this.records[0], this.account);
+    const regra = new RuleCreateFormat(
+      this.conditions.rules,
+      this.business.cnpj,
+      this.account
+    );
+    const observable = this._ruleService.createRule(regra);
     const verifications = [(this.account && this.account.length > 0), this.conditions.verify()];
     const errors = [
       'Para salvar o lançamento em uma regra customizada você deve informar uma conta contábil.',
       'Para salvar o lançamento em uma regra customizada você deve informar as condições da regra.'
     ];
-    this._savePattern(observable, verifications, errors);
+    this._savePattern(observable, verifications, errors, true);
   }
 
   ignorar() {
-    const observable = this._service.ignoreLancamento(this.records[0]);
+    const observable = this._lancamentoService.ignoreLancamento(this.records[0]);
     const verification = this.conditions.verify();
     const error = ['Para salvar um lançamento dentro de uma regra de ignorar, você deve informar as condições da regra.'];
     this._savePattern(observable, [verification], error);
   }
 
   fornecedor() {
-    const observable = this._service.saveAsDePara(this.records[0], this.account);
+    const observable = this._lancamentoService.saveAsDePara(this.records[0], this.account);
     const verification = this.account && this.account.length > 0;
     const error = ['Para salvar o lançamento para uma conta de fornecedor, você deve informar uma conta.'];
     this._savePattern(observable, [verification], error);
   }
 
-  private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[]) {
+  private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[], rule?: boolean) {
 
     const verify = ArrayUtils.verify(verifications);
 
     if (verify) {
-      this.openHistoric();
+      if (rule) {
+        this.openHistoric();
+      }
       obs.subscribe(() => {
         this._disable();
       });
@@ -198,7 +219,7 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   getByRule() {
     const rules = this.conditions.rules;
     if (rules.length > 0) {
-      const subs = this._service
+      const subs = this._lancamentoService
         .getByRule(rules, this.business)
         .subscribe(data => {
           this.gridArray = data.records;
@@ -230,7 +251,7 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
 
   openHistoric(): void {
     const dialogRef = this.dialog.open(HistoricComponent, {
-      maxWidth: '1400px',
+      maxWidth: '900px',
       width: '90vw',
       data: {
         lancamento: this.records[0]
@@ -243,33 +264,37 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   }
 
   pag() {
-    this.tabsPattern(0);
+    this.tabsPattern(0, 1, 'PAG');
   }
 
   expag() {
-    this.tabsPattern(1);
+    this.tabsPattern(1, 1, 'EXPAG');
   }
 
   rec() {
-    this.tabsPattern(2);
+    this.tabsPattern(2, 1, 'REC');
   }
 
   exrec() {
-    this.tabsPattern(3);
+    this.tabsPattern(3, 1, 'EXREC');
   }
 
-  tabsPattern(position: number) {
+  tabsPattern(position: number, tipoMovimento: number, tipoLancamento: string) {
     this.tabsInfo.forEach(tab => {
       this.tabsInfo[this.tabsInfo.indexOf(tab)] = 'btn btn-outline-light col';
     });
     this.tabsInfo[position] = 'btn btn-light col';
+    this.tipoLancamento = tipoLancamento;
+    this.tipoMovimento = tipoMovimento;
+    this.id = 0;
+    this._nextPage();
   }
 
   private _disable() {
     // Reseta todas as variáveis locais após executar uma ação para permitir
     // que a próxima ação esteja pronta para ser executada.
     this.destroy = true;
-    this.resetConditions();
+    this.conditions = new Rule();
     this.ruleSelected = false;
     this.account = null;
     this._next();
@@ -296,6 +321,7 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     if (this.pageInfo) {
       this.remaining = this.pageInfo.totalElements;
     }
+
     // console.log(this.remaining)
     // Conferir a eficacia deste método
   }
@@ -305,16 +331,13 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   }
 
   private _nextPage() {
-    this._service.getLancamentos(this.page, this.business).subscribe(imports => {
+    this._lancamentoService.getLancamentos(this.page, this.business, this.tipoLancamento, this.tipoMovimento).subscribe(imports => {
+      console.log(imports);
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
       this._remaining();
       this.destroy = false;
       this.page++;
     });
-  }
-
-  private resetConditions() {
-    this.conditions = new Rule();
   }
 }

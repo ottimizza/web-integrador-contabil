@@ -11,6 +11,7 @@ export class Lancamento {
   public tipoLancamento: number;
   public tipoMovimento: string; // 1 = Pagamento; 2 = Recebimento
   public contaMovimento: string;
+  public contaSugerida: string;
   public contaContraPartida: string;
   public tipoConta: number;
   public valorOriginal: number;
@@ -26,6 +27,7 @@ export class Lancamento {
   public cnpjEmpresa: string;
   public cnpjContabilidade: string;
   public idRoteiro: string;
+  public nomeArquivo: string;
 
 }
 
@@ -34,4 +36,9 @@ export class Arquivo {
   nome: string;
   cnpjEmpresa: string;
   cnpjContabilidade: string;
+  labelComplemento01: string;
+  labelComplemento02: string;
+  labelComplemento03: string;
+  labelComplemento04: string;
+  labelComplemento05: string;
 }

@@ -16,9 +16,14 @@ export class LancamentoService {
 
   constructor(private http: HttpClient, private authService: AuthenticationService) { }
 
-  public getLancamentos(page: number, b: Empresa): Observable<GenericPageableResponse<Lancamento>> {
-    // return this.http.get<GenericPageableResponse<Lancamento>>(`${BASE_URL}/api/v1/lancamentos?pageIndex=${page}`, this._headers);
-    return this.http.get<GenericPageableResponse<Lancamento>>(`${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}`, this._headers);
+  public getLancamentos(page: number, b: Empresa, tipoLancamento: string, tipoMovimento: number): Observable<GenericPageableResponse<Lancamento>> {
+    const url = `${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}`;
+    // const url = `${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}&ipoLancamento=${tipoLancamento}&tipoMovimento=${tipoMovimento}`;
+      // .get<GenericPageableResponse<Lancamento>>
+      // (, this._headers);
+    return this.http
+      .get<GenericPageableResponse<Lancamento>>
+      (url, this._headers);
   }
 
   public getByRule(rules: PostFormatRule[], b: Empresa): Observable<GenericPageableResponse<Lancamento>> {

@@ -2,7 +2,15 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-hrow',
-  templateUrl: './historic-row.component.html'
+  templateUrl: './historic-row.component.html',
+  styles: [
+    `
+    .row {
+      width: 100%
+      /* margin: 0 auto; */
+    }
+    `
+  ]
 })
 export class HistoricRowComponent {
 
