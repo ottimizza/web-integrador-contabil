@@ -35,6 +35,8 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   impact = 0;
   remaining: number;
   gridArray: Lancamento[];
+  tabsInfo: string[];
+
 
   constructor(
     // tslint:disable: variable-name
@@ -44,6 +46,12 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.controllInit();
+    this.tabsInfo = [
+      'btn btn-light col',
+      'btn btn-outline-light col',
+      'btn btn-outline-light col',
+      'btn btn-outline-light col'
+    ];
   }
 
   public ngOnChanges(changes: SimpleChanges) {
@@ -232,6 +240,29 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     dialogRef.afterClosed().subscribe(result => {
 
     });
+  }
+
+  pag() {
+    this.tabsPattern(0);
+  }
+
+  expag() {
+    this.tabsPattern(1);
+  }
+
+  rec() {
+    this.tabsPattern(2);
+  }
+
+  exrec() {
+    this.tabsPattern(3);
+  }
+
+  tabsPattern(position: number) {
+    this.tabsInfo.forEach(tab => {
+      this.tabsInfo[this.tabsInfo.indexOf(tab)] = 'btn btn-outline-light col';
+    });
+    this.tabsInfo[position] = 'btn btn-light col';
   }
 
   private _disable() {

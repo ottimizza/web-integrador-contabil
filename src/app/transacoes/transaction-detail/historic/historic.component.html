@@ -1,9 +1,6 @@
 <div mat-dialog-title>
   <app-hrow span="Código do Histórico" col="3">
   </app-hrow>
-  <div class="row m-0">
-    <p>{{ params }}</p>
-  </div>
 </div>
 <div mat-dialog-content>
 
@@ -14,8 +11,10 @@
       <app-historic-field [name]="f.name" (selectOne)="onChange($event, id)"></app-historic-field>
     </app-hrow>
 
-
   </form>
+  <div class="row m-0">
+    <p>{{ params }}</p>
+  </div>
 
 </div>
 <div mat-dialog-actions>

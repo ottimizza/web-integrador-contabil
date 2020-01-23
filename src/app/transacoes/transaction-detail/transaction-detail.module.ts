@@ -14,6 +14,7 @@ import { CardModule } from '@shared/components/card/card.module';
 import { InfoModule } from '@shared/components/info/info.module';
 import { HistoricModule } from './historic/historic.module';
 import { HistoricComponent } from './historic/historic.component';
+import { TabModule } from '@shared/components/tab/tab.module';
 
 @NgModule({
     declarations: [TransactionDetailComponent],

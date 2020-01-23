@@ -42,13 +42,44 @@ export class HistoricComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  date(date: string) {
+    const dates = date.split('-');
+    return `${dates[2]}/${dates[1]}/${dates[0]}`;
+  }
+
   get params() {
     const h = this.historic;
     let text = '';
 
     this.historic.forEach(obj => {
       text += obj.field + ' ';
-      text += obj.combo + ' ';
+      // text += obj.combo + ' ';
+      const c = obj.combo;
+      if (c === 'Fornecedor') {
+        text += `${this.lancamento.descricao} `;
+      } else if (c === 'Portador') {
+        text += `${this.lancamento.portador} `;
+      } else if (c === 'Data') {
+        text += `${this.date(this.lancamento.dataMovimento)} `;
+      } else if (c === 'Valor') {
+        text += `${this.lancamento.valorOriginal} `;
+      } else if (c === 'Documento') {
+        text += `${this.lancamento.documento} `;
+      } else if (c === 'Nome do Arquivo') {
+        text += `${this.lancamento.arquivo.nome} `;
+      } else if (c === 'Tipo da Planilha') {
+        text += `${this.lancamento.tipoPlanilha} `;
+      } else if (c === 'Complemento 01') {
+        text += `${this.lancamento.complemento01} `;
+      } else if (c === 'Complemento 02') {
+        text += `${this.lancamento.complemento02} `;
+      } else if (c === 'Complemento 03') {
+        text += `${this.lancamento.complemento03} `;
+      } else if (c === 'Complemento 04') {
+        text += `${this.lancamento.complemento04} `;
+      } else if (c === 'Complemento 05') {
+        text += `${this.lancamento.complemento05} `;
+      }
     });
     return text;
   }
