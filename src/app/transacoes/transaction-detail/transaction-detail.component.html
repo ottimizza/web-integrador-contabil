@@ -1,3 +1,8 @@
+<div class="mt-2 mb-4 pr-4 pl-4" *ngIf="tabIsClicked">
+  <app-info [description]="info.info"></app-info>
+</div>
+
+
 <form autocomplete="off">
   <div class="card">
     <div class="row w-100 m-0">
@@ -9,7 +14,8 @@
       </button>
     </div>
 
-    <div class="p-4">
+
+    <div class="p-4" *ngIf="tabIsClicked">
       <div class="row m-0 mb-4 d-inline-block">
         <div class="col">
           <span class="defaultSpan">Impacto: </span>
@@ -100,87 +106,6 @@
                 (selectedInfos)="onDevolve($event)"
               ></app-chips>
             </div>
-            <!-- <div
-              class="row m-0 mb-2"
-              *ngIf="
-                records[0].complemento01 &&
-                records[0].arquivo.labelComplemento01
-              "
-            >
-              <app-chips
-                [reset]="destroy"
-                [name]="records[0].arquivo.labelComplemento01"
-                [property]="records[0].complemento01"
-                class="col"
-                (selectedInfos)="onDevolve($event)"
-              ></app-chips>
-            </div>
-
-            <div
-              class="row m-0 mb-2"
-              *ngIf="
-                (records[0].complemento02 &&
-                  records[0].arquivo.labelComplemento02) ||
-                (records[0].complemento03 &&
-                  records[0].arquivo.labelComplemento03)
-              "
-            >
-              <app-chips
-                *ngIf="
-                  records[0].complemento02 &&
-                  records[0].arquivo.labelComplemento02
-                "
-                [reset]="destroy"
-                [name]="records[0].arquivo.labelComplemento02"
-                [property]="records[0].complemento02"
-                class="col"
-                (selectedInfos)="onDevolve($event)"
-              ></app-chips>
-              <app-chips
-                *ngIf="
-                  records[0].complemento03 &&
-                  records[0].arquivo.labelComplemento03
-                "
-                [reset]="destroy"
-                [name]="records[0].arquivo.labelComplemento04"
-                [property]="records[0].complemento04"
-                class="col"
-                (selectedInfos)="onDevolve($event)"
-              ></app-chips>
-            </div>
-
-            <div
-              class="row m-0 mb-2"
-              *ngIf="
-                (records[0].complemento04 &&
-                  records[0].arquivo.labelComplemento04) ||
-                (records[0].complemento05 &&
-                  records[0].arquivo.labelComplemento05)
-              "
-            >
-              <app-chips
-                *ngIf="
-                  records[0].complemento04 &&
-                  records[0].arquivo.labelComplemento04
-                "
-                [reset]="destroy"
-                [name]="records[0].arquivo.labelComplemento04"
-                [property]="records[0].complemento04"
-                class="col"
-                (selectedInfos)="onDevolve($event)"
-              ></app-chips>
-              <app-chips
-                *ngIf="
-                  records[0].complemento05 &&
-                  records[0].arquivo.labelComplemento05
-                "
-                [reset]="destroy"
-                [name]="records[0].arquivo.labelComplemento05"
-                [property]="records[0].complemento05"
-                class="col"
-                (selectedInfos)="onDevolve($event)"
-              ></app-chips>
-            </div> -->
 
             <div
               class="row m-0 mb-2"
@@ -238,6 +163,7 @@
         <div class="col-7">
           <div class="row w-100 m-0">
             <input
+              *ngIf="account && conditions.verify()"
               type="button"
               class="btn btn-outline-info col mx-2"
               value="Regra"
@@ -247,6 +173,7 @@
               matTooltipHideDelay="500"
             />
             <input
+              *ngIf="account"
               type="button"
               class="btn btn-outline-info col mx-2"
               value="Fornecedor"
@@ -256,6 +183,7 @@
               matTooltipHideDelay="500"
             />
             <input
+              *ngIf="conditions.verify()"
               type="button"
               class="btn btn-outline-info col mx-2"
               value="Ignorar"

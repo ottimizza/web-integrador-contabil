@@ -18,20 +18,12 @@ export class LancamentoService {
 
   public getLancamentos(page: number, b: Empresa, tipoLancamento: string, tipoMovimento: number): Observable<GenericPageableResponse<Lancamento>> {
     const url = `${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}&tipoConta=0`;
-    // const url = `${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}&ipoLancamento=${tipoLancamento}&tipoMovimento=${tipoMovimento}`;
-      // .get<GenericPageableResponse<Lancamento>>
-      // (, this._headers);
-    return this.http
-      .get<GenericPageableResponse<Lancamento>>
-      (url, this._headers);
+    return this.http.get<GenericPageableResponse<Lancamento>>(url, this._headers);
   }
 
-  public getByRule(rules: PostFormatRule[], b: Empresa): Observable<GenericPageableResponse<Lancamento>> {
-    return this.http.post<GenericPageableResponse<Lancamento>>(
-      `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${b.cnpj}`,
-      rules,
-      this._headers
-    );
+  public getByRule(rules: PostFormatRule[], e: Empresa): Observable<GenericPageableResponse<Lancamento>> {
+    const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}&tipoConta=0`;
+    return this.http.post<GenericPageableResponse<Lancamento>>(url, rules, this._headers);
   }
 
   public ignoreLancamento(lancamento: Lancamento): Observable<Lancamento> {

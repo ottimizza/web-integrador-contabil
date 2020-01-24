@@ -8,14 +8,23 @@ import { Empresa } from '@shared/models/Empresa';
 export class TransactionListComponent {
 
   business: Empresa;
+  tabIsSelected = false;
 
   get info() {
-    return `Filtre por uma empresa, clique nas palavras que indicam o motivo da movimentação ser ignorada ou atribuída a uma determinada conta contábil.
-      Depois informe a conta ou selecione uma das sugeridas, ou informe que esta regra deve ser ignorada.`;
+    return {
+      first: 'Para filtrar, insira o nome ou o código ERP da empresa que deseja filtrar.',
+      second: 'Agora selecione entre "Pagamentos", "Extrato Débitos", "Recebimentos" ou "Extrato Créditos"'
+    };
   }
 
   onDevolve(event: any) {
     this.business = JSON.parse(event);
+  }
+
+  onSelect(event: any) {
+    if (event === 'true') {
+      this.tabIsSelected = true;
+    }
   }
 
 }

@@ -1,7 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { BusinessService } from '@shared/services/business.service';
-import { Observable } from 'rxjs';
-import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
 import { Empresa } from '@shared/models/Empresa';
 
 @Component({
@@ -37,7 +35,7 @@ export class FilterComponent implements OnInit {
      */
 
     const search = this.word.split(' - ')[1] ? this.word.split(' - ')[1].toUpperCase() : '';
-    const word = this.word.toUpperCase()
+    const word = this.word.toUpperCase();
     const subs = this._service
       .getBusiness(search)
       .subscribe(data => {

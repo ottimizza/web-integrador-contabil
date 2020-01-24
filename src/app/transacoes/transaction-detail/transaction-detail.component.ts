@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -22,6 +22,7 @@ import { HistoricService } from '@shared/services/historic.service';
 export class TransactionDetailComponent implements OnInit, OnChanges {
 
   @Input() business: Empresa;
+  @Output() tabSelect = new EventEmitter();
   records: Lancamento[] = [];
   id = 0;
   account: string;
@@ -38,6 +39,7 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   tabsInfo: string[];
   tipoLancamento = 'PAG';
   tipoMovimento = 1;
+  tabIsClicked = false;
 
 
   constructor(
@@ -51,10 +53,10 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.controllInit();
     this.tabsInfo = [
-      'btn btn-light col',
-      'btn btn-link-light col',
-      'btn btn-link-light col',
-      'btn btn-link-light col'
+      'btn btn-outline-link col',
+      'btn btn-outline-link col',
+      'btn btn-outline-link col',
+      'btn btn-outline-link col'
     ];
   }
 
@@ -71,6 +73,7 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   }
 
   controllInit() {
+    this.id = 0;
     this.conditions = new Rule();
     this._next();
   }
@@ -97,7 +100,8 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
       ok: 'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
       cancel: 'Voltar à barra de opções anterior.',
       affecteds: 'Clique aqui para visualizar os lançamentos afetados.',
-      provider: 'A conta informada será aplicada para todas as ocorrências deste fornecedor.'
+      provider: 'A conta informada será aplicada para todas as ocorrências deste fornecedor.',
+      info: 'Agora clique nas palavras que justificam o lançamento ser aplicado a determinada conta ou ignorado.'
     };
   }
 
@@ -108,7 +112,11 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
      */
     const lancamento = this.records[0];
     const arquivo = lancamento.arquivo;
-    const ok = (lancamento.complemento01 && arquivo.labelComplemento01) || (lancamento.complemento02 && arquivo.labelComplemento02) || (lancamento.complemento03 && arquivo.labelComplemento03) || (lancamento.complemento04 && arquivo.labelComplemento04) || (lancamento.complemento05 && arquivo.labelComplemento05);
+    const ok = (lancamento.complemento01 && arquivo.labelComplemento01) ||
+               (lancamento.complemento02 && arquivo.labelComplemento02) ||
+               (lancamento.complemento03 && arquivo.labelComplemento03) ||
+               (lancamento.complemento04 && arquivo.labelComplemento04) ||
+               (lancamento.complemento05 && arquivo.labelComplemento05);
     let text = '';
     if (ok) {
       text = JSON.stringify({
@@ -238,9 +246,11 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   getByRule() {
     const rules = this.conditions.rules;
     if (rules.length > 0) {
+      console.log(rules);
       const subs = this._lancamentoService
         .getByRule(rules, this.business)
         .subscribe(data => {
+          console.log(data);
           this.gridArray = data.records;
           this.impact = data.pageInfo.totalElements;
           subs.unsubscribe();
@@ -303,6 +313,8 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
       this.tabsInfo[this.tabsInfo.indexOf(tab)] = 'btn btn-outline-link col';
     });
     this.tabsInfo[position] = 'btn btn-light col';
+    this.tabIsClicked = true;
+    this.tabSelect.emit('true');
 
     // this.tipoLancamento = tipoLancamento;
     // this.tipoMovimento = tipoMovimento;
@@ -339,7 +351,7 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
 
   private _remaining() {
     if (this.pageInfo) {
-      this.remaining = this.pageInfo.totalElements;
+      this.remaining = this.pageInfo.totalElements - this.id;
     }
 
     // console.log(this.remaining)
@@ -352,6 +364,7 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
 
   private _nextPage() {
     this._lancamentoService.getLancamentos(this.page, this.business, this.tipoLancamento, this.tipoMovimento).subscribe(imports => {
+      // console.log(imports);
       console.log(imports);
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
