@@ -19,7 +19,8 @@ import { HistoricService } from '@shared/services/historic.service';
   templateUrl: './transaction-detail.component.html',
   styleUrls: ['./transaction-detail.component.scss']
 })
-export class TransactionDetailComponent implements OnInit, OnChanges {
+export class TransactionDetailComponent implements OnInit {
+// export class TransactionDetailComponent implements OnInit, OnChanges {
 
   @Input() business: Empresa;
   @Output() tabSelect = new EventEmitter();
@@ -51,7 +52,7 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    this.controllInit();
+    // this.controllInit();
     this.tabsInfo = [
       'btn btn-outline-link col',
       'btn btn-outline-link col',
@@ -60,23 +61,23 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     ];
   }
 
-  public ngOnChanges(changes: SimpleChanges) {
-    for (const key in changes) {
-      if (changes.hasOwnProperty(key)) {
-        switch (key) {
-          case 'business':
-            this.controllInit();
-            break;
-        }
-      }
-    }
-  }
+  // public ngOnChanges(changes: SimpleChanges) {
+  //   for (const key in changes) {
+  //     if (changes.hasOwnProperty(key)) {
+  //       switch (key) {
+  //         case 'business':
+  //           this.controllInit();
+  //           break;
+  //       }
+  //     }
+  //   }
+  // }
 
-  controllInit() {
-    this.id = 0;
-    this.conditions = new Rule();
-    this._next();
-  }
+  // controllInit() {
+  //   this.id = 0;
+  //   this.conditions = new Rule();
+  //   this._next();
+  // }
 
   get suggestions() {
     if (this.records.length > 0 && this.records[0].contaSugerida) {
@@ -101,7 +102,8 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
       cancel: 'Voltar à barra de opções anterior.',
       affecteds: 'Clique aqui para visualizar os lançamentos afetados.',
       provider: 'A conta informada será aplicada para todas as ocorrências deste fornecedor.',
-      info: 'Agora clique nas palavras que justificam o lançamento ser aplicado a determinada conta ou ignorado.'
+      info: `Agora clique nas palavras que justificam o lançamento ser aplicado a determinada conta ou ignorado.
+      Se necessário, informe a conta.`
     };
   }
 
@@ -316,10 +318,11 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     this.tabIsClicked = true;
     this.tabSelect.emit('true');
 
-    // this.tipoLancamento = tipoLancamento;
-    // this.tipoMovimento = tipoMovimento;
-    // this.id = 0;
-    // this._nextPage();
+    this.tipoLancamento = tipoLancamento;
+    this.tipoMovimento = tipoMovimento;
+    this.id = 0;
+    this.page = 0;
+    this._nextPage();
   }
 
   private _disable() {
@@ -351,7 +354,7 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
 
   private _remaining() {
     if (this.pageInfo) {
-      this.remaining = this.pageInfo.totalElements - this.id;
+      this.remaining = this.pageInfo.totalElements - (this.id + 1);
     }
 
     // console.log(this.remaining)

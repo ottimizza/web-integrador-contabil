@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Lancamento } from '@shared/models/Lancamento';
+import { Historic } from '@shared/models/Historic';
 
 @Component({
   templateUrl: './historic.component.html',
@@ -11,6 +12,7 @@ export class HistoricComponent implements OnInit {
   fields: any[];
   historic: any[];
   lancamento: Lancamento;
+  historicObj: Historic;
 
   constructor(
     public dialogRef: MatDialogRef<HistoricComponent>,
@@ -18,7 +20,6 @@ export class HistoricComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.teste();
     this.fields = [
       { span: 'Comentário Inicial', name: 'Campo 1:' },
       { span: 'Comentário 2', name: 'Campo 2:' },
@@ -48,7 +49,6 @@ export class HistoricComponent implements OnInit {
   }
 
   get params() {
-    const h = this.historic;
     let text = '';
 
     this.historic.forEach(obj => {
@@ -96,16 +96,7 @@ export class HistoricComponent implements OnInit {
   }
 
 
-
-
-
-
-
-
-
-
-
-  teste() {
+  decode() {
     const lancamento = {
       id: '',
       complemento01: 'FOLHA DE PAGAMENTO',
@@ -124,6 +115,9 @@ export class HistoricComponent implements OnInit {
       });
       return formatado;
     };
+
+    // const reg1 = /\${(?<=(\${))[a-zA-Z0-9]+(?=})}/g;
+    // const reg2 = /\${((?<=(\${))[a-zA-Z0-9]+(?=}))}/g;
 
     console.log(historico);
     console.log(format(historico, lancamento));
