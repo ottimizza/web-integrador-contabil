@@ -1,84 +1,78 @@
 export class HistoricField {
-
-  constructor(public field: string, public value: string) { }
+  constructor(public field: string, public value: string) {}
 
   public static null() {
     return new HistoricField(null, null);
   }
-
 }
 
 export class Historic {
-
-
   public id: string;
-  public comentarios: string[];
-  public campos: HistoricField[];
-  public contaMovimento: string;
-  public cnpjEmpresa: string;
-  public cnpjContabilidade: string;
+  public com1: string;
+  public field1: HistoricField;
+  public com2: string;
+  public field2: HistoricField;
+  public com3: string;
+  public field3: HistoricField;
+  public com4: string;
 
   constructor() {
-    this.comentarios = ['', '', ''];
     const hf = HistoricField.null();
-    this.campos = [hf, hf, hf];
+    this.field1 = hf;
+    this.field2 = hf;
+    this.field3 = hf;
   }
 
   public get preview() {
-    const obj = [
-      this.comentarios[0],
-      this.campos[0].value,
-      this.comentarios[1],
-      this.campos[1].value,
-      this.comentarios[2],
-      this.campos[2].value,
-      this.comentarios[3]
-    ];
-
-    return this._iterate(obj);
+    const array = this._comments([
+      { text: this.field1.value, param: false },
+      { text: this.field2.value, param: false },
+      { text: this.field3.value, param: false }
+    ]);
+    return this._iterate(array);
   }
 
   public toParams() {
-    const template = (text: string) => {
-      return '${' + text + '}';
-    };
-
-    const obj = [
-      this.id.toString(),
-      this.comentarios[0],
-      template(this.campos[0].field),
-      this.comentarios[1],
-      template(this.campos[1].field),
-      this.comentarios[2],
-      template(this.campos[2].field),
-      this.comentarios[3]
-    ];
-
-    return {
-      historico: this._iterate(obj, true),
-      contaMovimento: this.contaMovimento,
-      cnpjEmpresa: this.cnpjContabilidade,
-      cnpjContabilidade: this.cnpjContabilidade
-    };
-
+    const array = this._comments([
+      { text: this.field1.field, param: true },
+      { text: this.field2.field, param: true },
+      { text: this.field3.field, param: true },
+    ]);
+    return this._iterate(array);
   }
 
-  private _iterate(array: string[], params?: boolean): string {
+  private _comments(fields: any[]) {
+    return [
+      { text: this.com1, param: false },
+      fields[0],
+      { text: this.com2, param: false },
+      fields[1],
+      { text: this.com3, param: false },
+      fields[2],
+      { text: this.com4, param: false }
+    ];
+  }
+
+  private _iterate(array: any[]) {
     let text = '';
     array.forEach(arr => {
-      text += this._verifyAndReturn(arr, params);
+      text += this._verifyAndReturn(arr);
     });
     return text;
   }
 
-  private _verifyAndReturn(text: string, params?: boolean): string {
-    if (text) {
-      return text + ' ';
-    } else if (params === true) {
-      return 'nenhum';
-    } else {
-      return '';
-    }
-  }
+  private _verifyAndReturn(obj: any): string {
+    let yes: string;
+    let no: string;
 
+    if (obj.param === true) {
+      yes = '${' + obj.text + '} ';
+      no = '${nenhum} ';
+    } else {
+      yes = obj.text + ' ';
+      no = '';
+    }
+
+    return obj.text ? yes : no;
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -215,7 +215,7 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   private _subsAndDisable(obs: Observable<any>) {
-    obs.subscribe(() => {
+    obs.subscribe(data => {
       this._disable();
     });
   }
@@ -248,11 +248,9 @@ export class TransactionDetailComponent implements OnInit {
   getByRule() {
     const rules = this.conditions.rules;
     if (rules.length > 0) {
-      console.log(rules);
       const subs = this._lancamentoService
         .getByRule(rules, this.business)
         .subscribe(data => {
-          console.log(data);
           this.gridArray = data.records;
           this.impact = data.pageInfo.totalElements;
           subs.unsubscribe();

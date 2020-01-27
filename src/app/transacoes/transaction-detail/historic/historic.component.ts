@@ -2,6 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Lancamento } from '@shared/models/Lancamento';
 import { Historic } from '@shared/models/Historic';
+import { LIVE_ANNOUNCER_DEFAULT_OPTIONS } from '@angular/cdk/a11y';
+import { prependOnceListener } from 'cluster';
+import { Command } from 'protractor';
 
 @Component({
   templateUrl: './historic.component.html',
@@ -30,22 +33,45 @@ export class HistoricComponent implements OnInit {
     this._reset();
   }
 
-  onChange(event: any, index: number) {
-    this.historic[index].combo = event;
-    // this.historicObj.campos[index].
+  onChange(event: any, i: number) {
+    this.historic[i].combo = event;
+    // this.historicObj.campos[index].field = this.dePara(event);
+    // this.historicObj.campos[index].value = this.getValues(event);
+
+    if (i === 0) {
+      this.historicObj.field1.value = this.getValues(event);
+      this.historicObj.field1.field = this.dePara(event);
+    } else if (i === 1) {
+      this.historicObj.field2.value = this.getValues(event);
+      this.historicObj.field2.field = this.dePara(event);
+    } else if (i === 2) {
+      this.historicObj.field3.value = this.getValues(event);
+      this.historicObj.field3.field = this.dePara(event);
+    }
   }
 
-  onKeyup(event: any, index: number) {
-    this.historic[index].field = event;
-    this.historicObj.comentarios[index] = event;
+  onKeyup(event: any, i: number) {
+    this.historic[i].field = event;
+    if (i === 0) {
+      this.historicObj.com1 = event;
+    } else if (i === 1) {
+      this.historicObj.com2 = event;
+    } else if (i === 2) {
+      this.historicObj.com3 = event;
+    } else if (i === 3) {
+      this.historicObj.com4 = event;
+    }
+
   }
 
   onNoClick() {
+    console.log(this.historicObj.preview);
+    console.log(this.historicObj.toParams());
     this.dialogRef.close();
   }
 
-  date(date: string) {
-    const dates = date.split('-');
+  date() {
+    const dates = this.lancamento.dataMovimento;
     return `${dates[2]}/${dates[1]}/${dates[0]}`;
   }
 
@@ -54,35 +80,77 @@ export class HistoricComponent implements OnInit {
 
     this.historic.forEach(obj => {
       text += obj.field + ' ';
-      // text += obj.combo + ' ';
-      const c = obj.combo;
-      if (c === 'Fornecedor') {
-        text += `${this.lancamento.descricao} `;
-      } else if (c === 'Portador') {
-        text += `${this.lancamento.portador} `;
-      } else if (c === 'Data') {
-        text += `${this.date(this.lancamento.dataMovimento)} `;
-      } else if (c === 'Valor') {
-        text += `${this.lancamento.valorOriginal} `;
-      } else if (c === 'Documento') {
-        text += `${this.lancamento.documento} `;
-      } else if (c === 'Nome do Arquivo') {
-        text += `${this.lancamento.arquivo.nome} `;
-      } else if (c === 'Tipo da Planilha') {
-        text += `${this.lancamento.tipoPlanilha} `;
-      } else if (c === 'Complemento 01') {
-        text += `${this.lancamento.complemento01} `;
-      } else if (c === 'Complemento 02') {
-        text += `${this.lancamento.complemento02} `;
-      } else if (c === 'Complemento 03') {
-        text += `${this.lancamento.complemento03} `;
-      } else if (c === 'Complemento 04') {
-        text += `${this.lancamento.complemento04} `;
-      } else if (c === 'Complemento 05') {
-        text += `${this.lancamento.complemento05} `;
-      }
+      text += this.getValues(obj.combo) + ' ';
     });
     return text;
+  }
+
+  private getValues(combo: string) {
+    const l = this.lancamento;
+    const results = [
+      l.descricao,
+      l.portador,
+      this.date(),
+      l.valorOriginal ? `${l.valorOriginal}` : null,
+      l.documento,
+      l.nomeArquivo,
+      l.tipoPlanilha,
+      l.complemento01,
+      l.complemento02,
+      l.complemento03,
+      l.complemento04,
+      l.complemento04
+    ];
+    return this.ifChainPattern(results, combo);
+  }
+
+  private dePara(property: string) {
+    const results = [
+      'descricao',
+      'portador',
+      'dataMovimento',
+      'valorOriginal',
+      'documento',
+      'nomeArquivo',
+      'tipoPlanilha',
+      'complemento01',
+      'complemento02',
+      'complemento03',
+      'complemento04',
+      'complemento05'
+    ];
+
+    return this.ifChainPattern(results, property);
+  }
+
+  private ifChainPattern(results: string[], property: string) {
+      if (property === 'Fornecedor') {
+        return results[0];
+      } else if (property === 'Portador') {
+        return results[1];
+      } else if (property === 'Data') {
+        return results[2];
+      } else if (property === 'Valor') {
+        return results[3];
+      } else if (property === 'Documento') {
+        return results[4];
+      } else if (property === 'Nome do Arquivo') {
+        return results[5];
+      } else if (property === 'Tipo da Planilha') {
+        return results[6];
+      } else if (property === 'Complemento 01') {
+        return results[7];
+      } else if (property === 'Complemento 02') {
+        return results[8];
+      } else if (property === 'Complemento 03') {
+        return results[9];
+      } else if (property === 'Complemento 04') {
+        return results[10];
+      } else if (property === 'Complemento 05') {
+        return results[11];
+      } else {
+        return '';
+      }
   }
 
   private _reset() {
@@ -123,6 +191,5 @@ export class HistoricComponent implements OnInit {
     console.log(historico);
     console.log(format(historico, lancamento));
   }
-
 
 }
