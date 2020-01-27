@@ -17,7 +17,7 @@ export class LancamentoService {
   constructor(private http: HttpClient, private authService: AuthenticationService) { }
 
   public getLancamentos(page: number, b: Empresa, tipoLancamento: string, tipoMovimento: number): Observable<GenericPageableResponse<Lancamento>> {
-    const url = `${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}&tipoConta=0`;
+    const url = `${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}` //&tipoConta=0`;
     return this.http.get<GenericPageableResponse<Lancamento>>(url, this._headers);
   }
 
@@ -33,7 +33,7 @@ export class LancamentoService {
 
   public saveAsDePara(lancamento: Lancamento, account: string): Observable<Lancamento> {
     const url = `${BASE_URL}/api/v1/lancamentos/${lancamento.id}/depara?contaMovimento=${account}`;
-    return this.http.post<Lancamento>(url, {}, this._headers);
+    return this.http.post<Lancamento>(url, {}, this._headers)
   }
 
   private get _headers() {

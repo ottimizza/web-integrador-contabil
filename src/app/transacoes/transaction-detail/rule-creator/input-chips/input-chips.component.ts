@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, Inject, SimpleChanges, OnChanges } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { collectionForUtils } from '@shared/utils/collection-for.utils';
-import { Lancamento } from '@shared/models/Lancamento';
 
 @Component({
   selector: 'app-chips',
@@ -16,7 +15,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
   @Output() selectedInfos = new EventEmitter();
   props: string[] = [];
   chipList: string[] = [];
-  returningObject: any = { title: this.name, selecteds: undefined };
+  returningObject = { title: this.name, selecteds: undefined };
   isSelected = false;
   comps: any;
 
@@ -149,17 +148,18 @@ export class InputChipsComponent implements OnInit, OnChanges {
   }
 
   devolveAllComps() {
-    const comps = this.comps;
-    const c1 = comps.c1 ? comps.c1 : undefined;
-    const c2 = comps.c2 ? comps.c2 : undefined;
-    const c3 = comps.c3 ? comps.c3 : undefined;
-    const c4 = comps.c4 ? comps.c4 : undefined;
-    const c5 = comps.c5 ? comps.c5 : undefined;
-    this._devolveAllCompsPattern('Complemento 1', c1);
-    this._devolveAllCompsPattern('Complemento 2', c2);
-    this._devolveAllCompsPattern('Complemento 3', c3);
-    this._devolveAllCompsPattern('Complemento 4', c4);
-    this._devolveAllCompsPattern('Complemento 5', c5);
+    const c = this.comps;
+    const comps = [
+      { name: 'Complemento 1', prop: c.c1 ? c.c1 : undefined },
+      { name: 'Complemento 2', prop: c.c2 ? c.c2 : undefined },
+      { name: 'Complemento 3', prop: c.c3 ? c.c3 : undefined },
+      { name: 'Complemento 4', prop: c.c4 ? c.c4 : undefined },
+      { name: 'Complemento 5', prop: c.c5 ? c.c5 : undefined },
+    ];
+
+    comps.forEach(comp => {
+      this._devolveAllCompsPattern(comp.name, comp.prop);
+    });
   }
 
   private _devolveAllCompsPattern(name: string, prop: string) {

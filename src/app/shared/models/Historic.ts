@@ -2,32 +2,37 @@ export class HistoricField {
 
   constructor(public field: string, public value: string) { }
 
+  public static null() {
+    return new HistoricField(null, null);
+  }
+
 }
 
 export class Historic {
 
 
-  public id: number;
-  public comentario1: string;
-  public comentario2: string;
-  public comentario3: string;
-  public comentario4: string;
-  public campo1: HistoricField;
-  public campo2: HistoricField;
-  public campo3: HistoricField;
+  public id: string;
+  public comentarios: string[];
+  public campos: HistoricField[];
   public contaMovimento: string;
   public cnpjEmpresa: string;
   public cnpjContabilidade: string;
 
+  constructor() {
+    this.comentarios = ['', '', ''];
+    const hf = HistoricField.null();
+    this.campos = [hf, hf, hf];
+  }
+
   public get preview() {
     const obj = [
-      this.comentario1,
-      this.campo1.value,
-      this.comentario2,
-      this.campo2.value,
-      this.comentario3,
-      this.campo3.value,
-      this.comentario4
+      this.comentarios[0],
+      this.campos[0].value,
+      this.comentarios[1],
+      this.campos[1].value,
+      this.comentarios[2],
+      this.campos[2].value,
+      this.comentarios[3]
     ];
 
     return this._iterate(obj);
@@ -40,13 +45,13 @@ export class Historic {
 
     const obj = [
       this.id.toString(),
-      this.comentario1,
-      template(this.campo1.field),
-      this.comentario2,
-      template(this.campo2.field),
-      this.comentario3,
-      template(this.campo3.field),
-      this.comentario4
+      this.comentarios[0],
+      template(this.campos[0].field),
+      this.comentarios[1],
+      template(this.campos[1].field),
+      this.comentarios[2],
+      template(this.campos[2].field),
+      this.comentarios[3]
     ];
 
     return {

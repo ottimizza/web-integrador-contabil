@@ -26,17 +26,18 @@ export class HistoricComponent implements OnInit {
       { span: 'Comentário 3', name: 'Campo 3:' },
       { span: 'Comentário 4' }
     ];
+    this.historicObj = new Historic();
     this._reset();
   }
 
   onChange(event: any, index: number) {
     this.historic[index].combo = event;
-    console.log(this.historic);
+    // this.historicObj.campos[index].
   }
 
   onKeyup(event: any, index: number) {
     this.historic[index].field = event;
-    console.log(this.historic);
+    this.historicObj.comentarios[index] = event;
   }
 
   onNoClick() {
