@@ -55,7 +55,11 @@ export class Historic {
       { text: this.field2.field, param: true },
       { text: this.field3.field, param: true }
     ]);
-    return this._iterate(array);
+    let text = this._iterate(array);
+    if (this.id) {
+      text = `idHistorico:${this.id} ${text}`;
+    }
+    return text;
 
   }
 

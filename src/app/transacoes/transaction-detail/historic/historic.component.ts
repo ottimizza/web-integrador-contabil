@@ -9,6 +9,7 @@ import { Historic } from '@shared/models/Historic';
 })
 export class HistoricComponent implements OnInit {
 
+  id: string;
   fields: any[];
   lancamento: Lancamento;
   historicObj: Historic;
@@ -73,6 +74,7 @@ export class HistoricComponent implements OnInit {
   }
 
   private _update(): void {
+    this.historicObj.id = this.id;
     const l = this.lancamento;
     this.data.regra = this.historicObj.historic(l.contaMovimento, l.cnpjEmpresa, l.cnpjContabilidade);
   }
@@ -130,12 +132,13 @@ export class HistoricComponent implements OnInit {
         'Complemento 04',
         'Complemento 05',
       ];
+      let text = '';
       array.forEach(prop => {
         if (prop === property) {
-          return results[array.indexOf(prop)];
+          text = results[array.indexOf(prop)];
         }
       });
-      return '';
+      return text;
   }
 
 }

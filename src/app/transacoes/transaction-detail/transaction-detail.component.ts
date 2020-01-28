@@ -275,24 +275,6 @@ export class TransactionDetailComponent implements OnInit {
     });
   }
 
-  // async _next() {
-  //   if (this.id === 0) {
-  //     this._nextPage();
-  //   } else {
-  //     this.records.splice(0, 1);
-  //     await this._delay(200);
-  //     this._remaining();
-  //     this.destroy = false;
-  //   }
-  //   this.id++;
-  //   // if (this.pageInfo && this.id + 1 >= this.pageInfo.pageSize) {
-  //   if (this.pageInfo && this.id >= this.records.length) {
-  //     this.id = 0;
-  //   }
-  //   this.resetErrors();
-
-  // }
-
   pag() {
     this.tabsPattern(0, 1, 'PAG');
   }
@@ -313,7 +295,7 @@ export class TransactionDetailComponent implements OnInit {
     this.tabsInfo.forEach(tab => {
       this.tabsInfo[this.tabsInfo.indexOf(tab)] = 'btn btn-outline-link col';
     });
-    this.tabsInfo[position] = 'btn btn-light col';
+    this.tabsInfo[position] = 'btn btn-light text-info col';
     this.tabIsClicked = true;
     this.tabSelect.emit('true');
 
@@ -329,6 +311,7 @@ export class TransactionDetailComponent implements OnInit {
     // que a próxima ação esteja pronta para ser executada.
     this.destroy = true;
     this.conditions = new Rule();
+    this.getByRule();
     this.ruleSelected = false;
     this.account = null;
     this._next();
@@ -351,6 +334,23 @@ export class TransactionDetailComponent implements OnInit {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  // async _next() {
+  //   if (this.id === 0) {
+  //     this._nextPage();
+  //   } else {
+  //     this.records.splice(0, 1);
+  //     await this._delay(200);
+  //     this._remaining();
+  //     this.destroy = false;
+  //   }
+  //   this.id++;
+  //   // if (this.pageInfo && this.id + 1 >= this.pageInfo.pageSize) {
+  //   if (this.pageInfo && this.id >= this.records.length) {
+  //     this.id = 0;
+  //   }
+  //   this.resetErrors();
+  // }
+
   private async _next() {
     this.records.splice(0, 1);
     this.resetErrors();
@@ -364,7 +364,7 @@ export class TransactionDetailComponent implements OnInit {
       this.destroy = false;
     } else {
       this._remaining();
-      this.resetErrors(['Você conclui todos os lançamentos desta conta']);
+      this.resetErrors(['Você conclui todos os lançamentos desta empresa']);
     }
   }
 
