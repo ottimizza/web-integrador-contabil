@@ -2,9 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Lancamento } from '@shared/models/Lancamento';
 import { Historic } from '@shared/models/Historic';
-import { LIVE_ANNOUNCER_DEFAULT_OPTIONS } from '@angular/cdk/a11y';
-import { prependOnceListener } from 'cluster';
-import { Command } from 'protractor';
 
 @Component({
   templateUrl: './historic.component.html',
@@ -13,7 +10,6 @@ import { Command } from 'protractor';
 export class HistoricComponent implements OnInit {
 
   fields: any[];
-  historic: any[];
   lancamento: Lancamento;
   historicObj: Historic;
 
@@ -23,6 +19,7 @@ export class HistoricComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // Define os labels dos campos que serão exibidos
     this.fields = [
       { span: 'Comentário Inicial', name: 'Campo 1:' },
       { span: 'Comentário 2', name: 'Campo 2:' },
@@ -30,13 +27,12 @@ export class HistoricComponent implements OnInit {
       { span: 'Comentário 4' }
     ];
     this.historicObj = new Historic();
-    this._reset();
+    this.lancamento = this.data.lancamento;
   }
 
-  onChange(event: any, i: number) {
-    this.historic[i].combo = event;
-    // this.historicObj.campos[index].field = this.dePara(event);
-    // this.historicObj.campos[index].value = this.getValues(event);
+  onChange(event: any, i: number): void {
+    // this.historicObj.campos[i].field = this.dePara(event);
+    // this.historicObj.campos[i].value = this.getValues(event);
 
     if (i === 0) {
       this.historicObj.field1.value = this.getValues(event);
@@ -48,10 +44,10 @@ export class HistoricComponent implements OnInit {
       this.historicObj.field3.value = this.getValues(event);
       this.historicObj.field3.field = this.dePara(event);
     }
+    this._update();
   }
 
-  onKeyup(event: any, i: number) {
-    this.historic[i].field = event;
+  onKeyup(event: any, i: number): void {
     if (i === 0) {
       this.historicObj.com1 = event;
     } else if (i === 1) {
@@ -61,31 +57,29 @@ export class HistoricComponent implements OnInit {
     } else if (i === 3) {
       this.historicObj.com4 = event;
     }
+    this._update();
 
   }
 
   onNoClick() {
-    console.log(this.historicObj.preview);
-    console.log(this.historicObj.toParams());
     this.dialogRef.close();
   }
 
-  date() {
+  date(): string {
     const dates = this.lancamento.dataMovimento;
     return `${dates[2]}/${dates[1]}/${dates[0]}`;
   }
 
-  get params() {
-    let text = '';
-
-    this.historic.forEach(obj => {
-      text += obj.field + ' ';
-      text += this.getValues(obj.combo) + ' ';
-    });
-    return text;
+  get params(): string {
+    return this.historicObj.preview;
   }
 
-  private getValues(combo: string) {
+  private _update(): void {
+    const l = this.lancamento;
+    this.data.regra = this.historicObj.historic(l.contaMovimento, l.cnpjEmpresa, l.cnpjContabilidade);
+  }
+
+  private getValues(combo: string): string {
     const l = this.lancamento;
     const results = [
       l.descricao,
@@ -99,12 +93,12 @@ export class HistoricComponent implements OnInit {
       l.complemento02,
       l.complemento03,
       l.complemento04,
-      l.complemento04
+      l.complemento05
     ];
     return this.ifChainPattern(results, combo);
   }
 
-  private dePara(property: string) {
+  private dePara(property: string): string {
     const results = [
       'descricao',
       'portador',
@@ -123,7 +117,7 @@ export class HistoricComponent implements OnInit {
     return this.ifChainPattern(results, property);
   }
 
-  private ifChainPattern(results: string[], property: string) {
+  private ifChainPattern(results: string[], property: string): string {
       if (property === 'Fornecedor') {
         return results[0];
       } else if (property === 'Portador') {
@@ -152,18 +146,6 @@ export class HistoricComponent implements OnInit {
         return '';
       }
   }
-
-  private _reset() {
-    this.historic = [
-      { field: '', combo: '' },
-      { field: '', combo: '' },
-      { field: '', combo: '' },
-      { field: '', combo: '' },
-      { field: '', combo: '' },
-    ];
-    this.lancamento = this.data.lancamento;
-  }
-
 
   decode() {
     const lancamento = {

@@ -5,6 +5,7 @@ import { AuthenticationService } from '@app/authentication/authentication.servic
 import { Empresa } from '@shared/models/Empresa';
 import { Observable } from 'rxjs';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
+import { FormattedHistoric } from '@shared/models/Historic';
 
 const BASE_URL = environment.storageBaseUrl;
 
@@ -17,6 +18,11 @@ export class HistoricService {
 
   getHistoric(empresa: Empresa, conta: string): Observable<GenericPageableResponse<any>> {
     return this._http.get<GenericPageableResponse<any>>(`${BASE_URL}/api/v1/historicos?cnpjEmpresa=${empresa.cnpj}&contaMovimento=${conta}`, this._headers);
+  }
+
+  createHistoric(historic: FormattedHistoric): Observable<any> {
+    const url = `${BASE_URL}/api/v1/historicos`;
+    return this._http.post(url, historic, this._headers);
   }
 
   private get _headers() {

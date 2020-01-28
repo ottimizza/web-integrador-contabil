@@ -6,6 +6,13 @@ export class HistoricField {
   }
 }
 
+export interface FormattedHistoric {
+  historico: string;
+  contaMovimento: string;
+  cnpjEmpresa: string;
+  cnpjContabilidade: string;
+}
+
 export class Historic {
   public id: string;
   public com1: string;
@@ -17,10 +24,9 @@ export class Historic {
   public com4: string;
 
   constructor() {
-    const hf = HistoricField.null();
-    this.field1 = hf;
-    this.field2 = hf;
-    this.field3 = hf;
+    this.field1 = HistoricField.null();
+    this.field2 = HistoricField.null();
+    this.field3 = HistoricField.null();
   }
 
   public get preview() {
@@ -32,13 +38,23 @@ export class Historic {
     return this._iterate(array);
   }
 
-  public toParams() {
+  public historic(contaMovimento: string, cnpjEmpresa: string, cnpjContabilidade: string): FormattedHistoric {
+    return {
+      historico: this._toParams(),
+      contaMovimento,
+      cnpjEmpresa,
+      cnpjContabilidade
+    };
+  }
+
+  private _toParams() {
     const array = this._comments([
       { text: this.field1.field, param: true },
       { text: this.field2.field, param: true },
-      { text: this.field3.field, param: true },
+      { text: this.field3.field, param: true }
     ]);
     return this._iterate(array);
+
   }
 
   private _comments(fields: any[]) {
@@ -72,7 +88,6 @@ export class Historic {
       yes = obj.text + ' ';
       no = '';
     }
-
     return obj.text ? yes : no;
   }
 }
