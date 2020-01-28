@@ -165,7 +165,7 @@
             <input
               *ngIf="account && conditions.verify()"
               type="button"
-              class="btn btn-outline-info col mx-2"
+              class="btn btn-info col mx-2"
               value="Regra"
               (click)="regra()"
               [matTooltip]="info.rule"
@@ -175,7 +175,7 @@
             <input
               *ngIf="account"
               type="button"
-              class="btn btn-outline-info col mx-2"
+              class="btn btn-info col mx-2"
               value="Fornecedor"
               (click)="fornecedor()"
               [matTooltip]="info.provider"
@@ -196,7 +196,7 @@
               type="button"
               class="btn btn-outline-info col mx-2"
               value="Pular"
-              (click)="pular()"
+              (click)="disable()"
               [matTooltip]="info.skip"
               matTooltipShowDelay="300"
               matTooltipHideDelay="500"

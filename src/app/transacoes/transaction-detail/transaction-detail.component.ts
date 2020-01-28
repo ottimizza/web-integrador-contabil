@@ -20,12 +20,10 @@ import { HistoricService } from '@shared/services/historic.service';
   styleUrls: ['./transaction-detail.component.scss']
 })
 export class TransactionDetailComponent implements OnInit {
-// export class TransactionDetailComponent implements OnInit, OnChanges {
 
   @Input() business: Empresa;
   @Output() tabSelect = new EventEmitter();
   records: Lancamento[] = [];
-  id = 0;
   account: string;
   conditions = new Rule();
   ruleSelected = false;
@@ -41,7 +39,8 @@ export class TransactionDetailComponent implements OnInit {
   tipoLancamento = 'PAG';
   tipoMovimento = 1;
   tabIsClicked = false;
-
+  counter = 0;
+  // Cuidado ao alterar o counter, fazer isto apenas através do tabsPattern() e do _remaining()
 
   constructor(
     // tslint:disable: variable-name
@@ -60,24 +59,6 @@ export class TransactionDetailComponent implements OnInit {
       'btn btn-outline-link col'
     ];
   }
-
-  // public ngOnChanges(changes: SimpleChanges) {
-  //   for (const key in changes) {
-  //     if (changes.hasOwnProperty(key)) {
-  //       switch (key) {
-  //         case 'business':
-  //           this.controllInit();
-  //           break;
-  //       }
-  //     }
-  //   }
-  // }
-
-  // controllInit() {
-  //   this.id = 0;
-  //   this.conditions = new Rule();
-  //   this._next();
-  // }
 
   get suggestions() {
     if (this.records.length > 0 && this.records[0].contaSugerida) {
@@ -112,6 +93,7 @@ export class TransactionDetailComponent implements OnInit {
      * Transforma todos os complementos em um objeto legível para os componentes filhos
      * (para o componente dos chips especificamente)
      */
+
     const lancamento = this.records[0];
     const arquivo = lancamento.arquivo;
     const ok = (lancamento.complemento01 && arquivo.labelComplemento01) ||
@@ -152,10 +134,6 @@ export class TransactionDetailComponent implements OnInit {
       this.errorText = null;
       this.errorText2 = null;
     }
-  }
-
-  pular() {
-    this._next();
   }
 
   regra() {
@@ -216,7 +194,7 @@ export class TransactionDetailComponent implements OnInit {
 
   private _subsAndDisable(obs: Observable<any>) {
     obs.subscribe(data => {
-      this._disable();
+      this.disable();
     });
   }
 
@@ -297,6 +275,24 @@ export class TransactionDetailComponent implements OnInit {
     });
   }
 
+  // async _next() {
+  //   if (this.id === 0) {
+  //     this._nextPage();
+  //   } else {
+  //     this.records.splice(0, 1);
+  //     await this._delay(200);
+  //     this._remaining();
+  //     this.destroy = false;
+  //   }
+  //   this.id++;
+  //   // if (this.pageInfo && this.id + 1 >= this.pageInfo.pageSize) {
+  //   if (this.pageInfo && this.id >= this.records.length) {
+  //     this.id = 0;
+  //   }
+  //   this.resetErrors();
+
+  // }
+
   pag() {
     this.tabsPattern(0, 1, 'PAG');
   }
@@ -323,12 +319,12 @@ export class TransactionDetailComponent implements OnInit {
 
     this.tipoLancamento = tipoLancamento;
     this.tipoMovimento = tipoMovimento;
-    this.id = 0;
+    this.counter = 0;
     this.page = 0;
     this._nextPage();
   }
 
-  private _disable() {
+  disable() {
     // Reseta todas as variáveis locais após executar uma ação para permitir
     // que a próxima ação esteja pronta para ser executada.
     this.destroy = true;
@@ -338,26 +334,13 @@ export class TransactionDetailComponent implements OnInit {
     this._next();
   }
 
-  private async _next() {
-    if (this.id === 0) {
-      this._nextPage();
-    } else {
-      this.records.splice(0, 1);
-      await this._delay(200);
-      this._remaining();
-      this.destroy = false;
-    }
-    this.id++;
-    if (this.pageInfo && this.id + 1 >= this.pageInfo.pageSize) {
-      this.id = 0;
-    }
-    this.resetErrors();
-
-  }
-
-  private _remaining() {
+  private _remaining(autoIncrement?: boolean) {
     if (this.pageInfo) {
-      this.remaining = this.pageInfo.totalElements - (this.id + 1);
+      this.remaining = this.pageInfo.totalElements - this.counter;
+    }
+
+    if (autoIncrement === true) {
+      this.counter++;
     }
 
     // console.log(this.remaining)
@@ -368,14 +351,36 @@ export class TransactionDetailComponent implements OnInit {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  private async _next() {
+    this.records.splice(0, 1);
+    this.resetErrors();
+
+    if (this.records.length === 0 && (!this.pageInfo || this.pageInfo.hasNext)) {
+      this._nextPage();
+      this._remaining(true);
+    } else if (this.records.length !== 0) {
+      await this._delay(200);
+      this._remaining(true);
+      this.destroy = false;
+    } else {
+      this._remaining();
+      this.resetErrors(['Você conclui todos os lançamentos desta conta']);
+    }
+  }
+
+
   private _nextPage() {
     this._lancamentoService.getLancamentos(this.page, this.business, this.tipoLancamento, this.tipoMovimento).subscribe(imports => {
       console.log(imports);
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
-      this._remaining();
+      if (this.counter === 0) {
+        this._remaining(true);
+      }
       this.destroy = false;
       this.page++;
     });
   }
+
+
 }

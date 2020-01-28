@@ -9,7 +9,7 @@ import {
   HTTP_INTERCEPTORS
 } from '@angular/common/http';
 
-import { Observable, EMPTY, throwError, of, Subject } from 'rxjs';
+import { Observable, EMPTY, throwError, Subject } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { AuthSession } from '@shared/models/AuthSession';
 import { AuthenticationService } from '@app/authentication/authentication.service';

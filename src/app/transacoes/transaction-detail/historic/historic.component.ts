@@ -31,9 +31,6 @@ export class HistoricComponent implements OnInit {
   }
 
   onChange(event: any, i: number): void {
-    // this.historicObj.campos[i].field = this.dePara(event);
-    // this.historicObj.campos[i].value = this.getValues(event);
-
     if (i === 0) {
       this.historicObj.field1.value = this.getValues(event);
       this.historicObj.field1.field = this.dePara(event);
@@ -119,60 +116,26 @@ export class HistoricComponent implements OnInit {
   }
 
   private ifChainPattern(results: string[], property: string): string {
-      if (property === 'Fornecedor') {
-        return results[0];
-      } else if (property === 'Portador') {
-        return results[1];
-      } else if (property === 'Data') {
-        return results[2];
-      } else if (property === 'Valor') {
-        return results[3];
-      } else if (property === 'Documento') {
-        return results[4];
-      } else if (property === 'Nome do Arquivo') {
-        return results[5];
-      } else if (property === 'Tipo da Planilha') {
-        return results[6];
-      } else if (property === 'Complemento 01') {
-        return results[7];
-      } else if (property === 'Complemento 02') {
-        return results[8];
-      } else if (property === 'Complemento 03') {
-        return results[9];
-      } else if (property === 'Complemento 04') {
-        return results[10];
-      } else if (property === 'Complemento 05') {
-        return results[11];
-      } else {
-        return '';
-      }
-  }
-
-  decode() {
-    const lancamento = {
-      id: '',
-      complemento01: 'FOLHA DE PAGAMENTO',
-      documento: '4523'
-    };
-
-    const historico = '${r2 323} Texto ${complemento01} ${documento}';
-
-    const format = (texto: string, lanc: { id, complemento01, documento }) => {
-      const regex = /\${(?<=(\${))[a-zA-Z0-9]+(?=})}/g;
-      const formatado = texto.replace(regex, (match) => {
-        // remove '${' (inicio) e '}' (fim).
-        const m = match.replace(/\${((?<=(\${))[a-zA-Z0-9]+(?=}))}/g, '$1');
-        // devolve o valor substituto, caso exista ou não troca a variavel.
-        return (typeof lanc[m] !== typeof undefined) ? lanc[m] : match;
+      const array = [
+        'Fornecedor',
+        'Portador',
+        'Data',
+        'Valor',
+        'Documento',
+        'Nome do Arquivo',
+        'Tipo da Planilha',
+        'Complemento 01',
+        'Complemento 02',
+        'Complemento 03',
+        'Complemento 04',
+        'Complemento 05',
+      ];
+      array.forEach(prop => {
+        if (prop === property) {
+          return results[array.indexOf(prop)];
+        }
       });
-      return formatado;
-    };
-
-    // const reg1 = /\${(?<=(\${))[a-zA-Z0-9]+(?=})}/g;
-    // const reg2 = /\${((?<=(\${))[a-zA-Z0-9]+(?=}))}/g;
-
-    console.log(historico);
-    console.log(format(historico, lancamento));
+      return '';
   }
 
 }

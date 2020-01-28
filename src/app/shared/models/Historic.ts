@@ -1,5 +1,5 @@
 export class HistoricField {
-  constructor(public field: string, public value: string) {}
+  constructor(public field: string, public value: string) { }
 
   public static null() {
     return new HistoricField(null, null);
