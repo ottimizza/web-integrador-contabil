@@ -62,6 +62,7 @@ export class HistoricComponent implements OnInit {
   }
 
   onNoClick() {
+    console.log(this.historicObj.historic('', '', ''));
     this.dialogRef.close();
   }
 
@@ -156,7 +157,7 @@ export class HistoricComponent implements OnInit {
 
     const historico = '${r2 323} Texto ${complemento01} ${documento}';
 
-    const format = (texto, lanc) => {
+    const format = (texto: string, lanc: { id, complemento01, documento }) => {
       const regex = /\${(?<=(\${))[a-zA-Z0-9]+(?=})}/g;
       const formatado = texto.replace(regex, (match) => {
         // remove '${' (inicio) e '}' (fim).

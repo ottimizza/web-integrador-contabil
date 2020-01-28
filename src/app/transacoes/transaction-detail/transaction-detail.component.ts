@@ -289,6 +289,11 @@ export class TransactionDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this._subsAndDisable(obs);
+      this._historicService
+        .createHistoric(result)
+        .subscribe(data => {
+          console.log(data);
+        });
     });
   }
 
@@ -365,7 +370,6 @@ export class TransactionDetailComponent implements OnInit {
 
   private _nextPage() {
     this._lancamentoService.getLancamentos(this.page, this.business, this.tipoLancamento, this.tipoMovimento).subscribe(imports => {
-      // console.log(imports);
       console.log(imports);
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;

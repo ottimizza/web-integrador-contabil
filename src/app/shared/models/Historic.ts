@@ -6,12 +6,14 @@ export class HistoricField {
   }
 }
 
+
 export interface FormattedHistoric {
   historico: string;
   contaMovimento: string;
   cnpjEmpresa: string;
   cnpjContabilidade: string;
 }
+
 
 export class Historic {
   public id: string;
