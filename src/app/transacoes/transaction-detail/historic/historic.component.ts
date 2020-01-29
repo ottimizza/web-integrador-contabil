@@ -65,7 +65,7 @@ export class HistoricComponent implements OnInit {
   }
 
   date(): string {
-    const dates = this.lancamento.dataMovimento;
+    const dates = this.lancamento.dataMovimento.split('-');
     return `${dates[2]}/${dates[1]}/${dates[0]}`;
   }
 

@@ -8,7 +8,7 @@
   <form>
 
     <app-hrow *ngFor="let f of fields; let id = index" [span]="f.span" (write)="onKeyup($event, id)">
-      <app-historic-field *ngIf="f.name" [name]="f.name" (selectOne)="onChange($event, id)"></app-historic-field>
+      <app-historic-field *ngIf="f.name" [name]="f.name" [lancamento]="lancamento" (selectOne)="onChange($event, id)"></app-historic-field>
     </app-hrow>
 
   </form>

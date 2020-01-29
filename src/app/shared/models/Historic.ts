@@ -57,7 +57,7 @@ export class Historic {
     ]);
     let text = this._iterate(array);
     if (this.id) {
-      text = `idHistorico:${this.id} ${text}`;
+      text = `CodigoHistorico:${this.id} ${text}`;
     }
     return text;
 
