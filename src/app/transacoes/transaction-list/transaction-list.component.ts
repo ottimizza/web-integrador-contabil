@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Empresa } from '@shared/models/Empresa';
 
 @Component({
@@ -9,6 +9,7 @@ export class TransactionListComponent {
 
   business: Empresa;
   tabIsSelected = false;
+  id = 8.1;
 
   get info() {
     return {

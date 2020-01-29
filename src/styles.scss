@@ -82,7 +82,6 @@ body {
  * ******************************************** */
  ::-webkit-scrollbar {
   width: 5px;
-  height: 5px;
 }
 /* Track */
 ::-webkit-scrollbar-track {
@@ -96,7 +95,7 @@ body {
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #004ecb;
+  background: #555;
 }
 
 /* ******************************************** *
