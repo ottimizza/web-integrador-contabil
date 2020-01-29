@@ -16,7 +16,7 @@ export class HistoricService {
 
   constructor(private _http: HttpClient, private _auth: AuthenticationService) { }
 
-  getHistoric(empresa: Empresa, conta: string): Observable<GenericPageableResponse<any>> {
+  getHistoric(empresa: Empresa, conta: string): any {
     return this._http.get<GenericPageableResponse<any>>(`${BASE_URL}/api/v1/historicos?cnpjEmpresa=${empresa.cnpj}&contaMovimento=${conta}`, this._headers);
   }
 

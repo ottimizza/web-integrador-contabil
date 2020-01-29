@@ -19,6 +19,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
   isSelected = false;
   comps: any;
 
+  // tslint:disable-next-line: variable-name
   constructor(@Inject(DOCUMENT) private _document: Document) {}
 
   ngOnInit(): void {

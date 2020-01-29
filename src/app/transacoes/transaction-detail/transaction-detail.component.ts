@@ -3,23 +3,24 @@ import { Observable } from 'rxjs';
 
 import { MatDialog } from '@angular/material/dialog';
 
-import { LancamentoService } from '@shared/services/lancamento.service';
-import { Lancamento } from '@shared/models/Lancamento';
-import { RuleGridComponent } from './rule-creator/rule-grid.component';
+import { ArrayUtils } from '@shared/utils/array.utils';
 import { Empresa } from '@shared/models/Empresa';
+import { GenericPagination } from '@shared/interfaces/GenericPagination';
+import { HistoricComponent } from './historic/historic.component';
+import { HistoricService } from '@shared/services/historic.service';
+import { Lancamento } from '@shared/models/Lancamento';
+import { LancamentoService } from '@shared/services/lancamento.service';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { Rule, RuleCreateFormat } from '@shared/models/Rule';
-import { HistoricComponent } from './historic/historic.component';
-import { ArrayUtils } from '@shared/utils/array.utils';
+import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { RuleService } from '@shared/services/rule.service';
-import { HistoricService } from '@shared/services/historic.service';
 
 @Component({
   selector: 'app-tdetail',
   templateUrl: './transaction-detail.component.html',
   styleUrls: ['./transaction-detail.component.scss']
 })
-export class TransactionDetailComponent implements OnInit {
+export class TransactionDetailComponent implements OnInit, GenericPagination {
 
   @Input() business: Empresa;
   @Output() tabSelect = new EventEmitter();
@@ -31,14 +32,15 @@ export class TransactionDetailComponent implements OnInit {
   destroy: boolean;
   errorText: string;
   errorText2: string;
-  page = 0;
-  impact = 0;
   remaining: number;
   gridArray: Lancamento[];
-  tabsInfo: string[];
+  tabsButtonClass: string[];
   tipoLancamento = 'PAG';
+  tipoLancamentoName: string;
   tipoMovimento = 1;
   tabIsClicked = false;
+  page = 0;
+  impact = 0;
   counter = 0;
   // Cuidado ao alterar o counter, fazer isto apenas através do tabsPattern() e do _remaining()
 
@@ -48,11 +50,11 @@ export class TransactionDetailComponent implements OnInit {
     private _ruleService: RuleService,
     private _historicService: HistoricService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // this.controllInit();
-    this.tabsInfo = [
+    this.tabsButtonClass = [
       'btn btn-outline-link col',
       'btn btn-outline-link col',
       'btn btn-outline-link col',
@@ -90,7 +92,7 @@ export class TransactionDetailComponent implements OnInit {
 
   getComplementos() {
     /*
-     * Transforma todos os complementos em um objeto legível para os componentes filhos
+     * Transforma todos os complementos (5 strings) em um objeto legível para os componentes filhos
      * (para o componente dos chips especificamente)
      */
 
@@ -174,7 +176,7 @@ export class TransactionDetailComponent implements OnInit {
         this._historicService
           .getHistoric(this.business, this.account)
           .subscribe(data => {
-            if (data.records.length === 0) {
+            if (!data.records) {
               this.openHistoric(obs);
             } else {
               this._subsAndDisable(obs);
@@ -193,7 +195,7 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   private _subsAndDisable(obs: Observable<any>) {
-    obs.subscribe(data => {
+    obs.subscribe(() => {
       this.disable();
     });
   }
@@ -276,34 +278,35 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   pag() {
-    this.tabsPattern(0, 1, 'PAG');
+    this.tabsPattern(0, 1, 'PAG', 'pagamentos');
   }
 
   expag() {
-    this.tabsPattern(1, 1, 'EXPAG');
+    this.tabsPattern(1, 1, 'EXPAG', 'extratos de débitos');
   }
 
   rec() {
-    this.tabsPattern(2, 1, 'REC');
+    this.tabsPattern(2, 1, 'REC', 'recebimentos');
   }
 
   exrec() {
-    this.tabsPattern(3, 1, 'EXREC');
+    this.tabsPattern(3, 1, 'EXREC', 'extratos de recebimentos');
   }
 
-  tabsPattern(position: number, tipoMovimento: number, tipoLancamento: string) {
-    this.tabsInfo.forEach(tab => {
-      this.tabsInfo[this.tabsInfo.indexOf(tab)] = 'btn btn-outline-link col';
+  tabsPattern(position: number, tipoMovimento: number, tipoLancamento: string, tipoLancamentoName: string) {
+    this.tabsButtonClass.forEach(tab => {
+      this.tabsButtonClass[this.tabsButtonClass.indexOf(tab)] = 'btn btn-outline-link col';
     });
-    this.tabsInfo[position] = 'btn btn-light text-info col';
+    this.tabsButtonClass[position] = 'btn btn-light text-info col';
     this.tabIsClicked = true;
     this.tabSelect.emit('true');
 
     this.tipoLancamento = tipoLancamento;
     this.tipoMovimento = tipoMovimento;
+    this.tipoLancamentoName = tipoLancamentoName;
     this.counter = 0;
     this.page = 0;
-    this._nextPage();
+    this.nextPage();
   }
 
   disable() {
@@ -325,53 +328,32 @@ export class TransactionDetailComponent implements OnInit {
     if (autoIncrement === true) {
       this.counter++;
     }
-
-    // console.log(this.remaining)
-    // Conferir a eficacia deste método
   }
 
   private _delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  // async _next() {
-  //   if (this.id === 0) {
-  //     this._nextPage();
-  //   } else {
-  //     this.records.splice(0, 1);
-  //     await this._delay(200);
-  //     this._remaining();
-  //     this.destroy = false;
-  //   }
-  //   this.id++;
-  //   // if (this.pageInfo && this.id + 1 >= this.pageInfo.pageSize) {
-  //   if (this.pageInfo && this.id >= this.records.length) {
-  //     this.id = 0;
-  //   }
-  //   this.resetErrors();
-  // }
-
   private async _next() {
     this.records.splice(0, 1);
     this.resetErrors();
 
     if (this.records.length === 0 && (!this.pageInfo || this.pageInfo.hasNext)) {
-      this._nextPage();
+      this.nextPage();
       this._remaining(true);
     } else if (this.records.length !== 0) {
-      await this._delay(200);
       this._remaining(true);
+      await this._delay(200);
       this.destroy = false;
     } else {
       this._remaining();
-      this.resetErrors(['Você conclui todos os lançamentos desta empresa']);
+      this.resetErrors([`Você conclui todos os ${this.tipoLancamentoName} desta empresa.`]);
     }
   }
 
 
-  private _nextPage() {
+  nextPage() {
     this._lancamentoService.getLancamentos(this.page, this.business, this.tipoLancamento, this.tipoMovimento).subscribe(imports => {
-      console.log(imports);
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
       if (this.counter === 0) {
@@ -379,6 +361,7 @@ export class TransactionDetailComponent implements OnInit {
       }
       this.destroy = false;
       this.page++;
+      this.resetErrors();
     });
   }
 

@@ -6,10 +6,10 @@
 <form autocomplete="off">
   <div class="card">
     <div class="row w-100 m-0">
-      <button [ngClass]="tabsInfo[0]" (click)="pag()">Pagamentos</button>
-      <button [ngClass]="tabsInfo[1]" (click)="expag()">Extrato Débitos</button>
-      <button [ngClass]="tabsInfo[2]" (click)="rec()">Recebimentos</button>
-      <button [ngClass]="tabsInfo[3]" (click)="exrec()">
+      <button [ngClass]="tabsButtonClass[0]" (click)="pag()">Pagamentos</button>
+      <button [ngClass]="tabsButtonClass[1]" (click)="expag()">Extrato Débitos</button>
+      <button [ngClass]="tabsButtonClass[2]" (click)="rec()">Recebimentos</button>
+      <button [ngClass]="tabsButtonClass[3]" (click)="exrec()">
         Extrato Créditos
       </button>
     </div>
@@ -137,7 +137,7 @@
         <p *ngIf="errorText2">{{ errorText2 }}</p>
       </div>
 
-      <div class="row m-0">
+      <div class="row m-0" *ngIf="!errorText || !errorText.startsWith('Você conclui todos os ')">
         <div class="form-group col-5 mt-1">
           <strong
             class="account-field"
