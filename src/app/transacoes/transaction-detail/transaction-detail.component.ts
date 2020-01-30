@@ -249,7 +249,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       maxWidth: '1400px',
       width: '95vw',
       data: {
-        table: this.gridArray
+        table: this.gridArray,
+        rules: this.conditions.rules,
+        business: this.business
       }
     });
 
@@ -338,7 +340,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this.records.splice(0, 1);
     this.resetErrors();
 
-    if (this.records.length === 0 && (!this.pageInfo || this.pageInfo.hasNext)) {
+    if (this.records.length === 0 && this.hasNext()) {
       this.nextPage();
       this._remaining(true);
     } else if (this.records.length !== 0) {
@@ -351,6 +353,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     }
   }
 
+  hasNext() {
+    return !this.pageInfo || this.pageInfo.hasNext;
+  }
 
   nextPage() {
     this._lancamentoService.getLancamentos(this.page, this.business, this.tipoLancamento, this.tipoMovimento).subscribe(imports => {

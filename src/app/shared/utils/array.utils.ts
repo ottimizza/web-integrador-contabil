@@ -25,19 +25,20 @@ export class ArrayUtils {
     /*
     * Verifica se dois arrays são EXATAMENTE iguais em TODOS os aspectos
     */
+    let verify = true;
 
     if (!array) {
-      return false;
+      verify = false;
     }
     if (array.length !== arr.length) {
-      return false;
+      verify = false;
     }
     array.forEach(arrayItem => {
       if (arr[array.indexOf(arrayItem)] !== arrayItem) {
-        return false;
+        verify = false;
       }
     });
-    return true;
+    return verify;
 
   }
 

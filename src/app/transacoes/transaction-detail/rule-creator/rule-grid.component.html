@@ -2,7 +2,45 @@
 <div mat-dialog-content>
   <p>Estes serão os lançamentos afetados</p>
 
-  <table class="table table-striped table-bordered">
+  <table class="table table-bordered">
+
+    <thead>
+      <tr>
+        <th *ngIf="hasFonecedor">Fornecedor</th>
+        <th *ngIf="hasBanco">Banco</th>
+        <th *ngIf="hasData">Data do Movimento</th>
+        <th *ngIf="hasValor">Valor</th>
+        <th *ngIf="hasDocumento">Documento</th>
+        <th *ngIf="hasNomeArquivo">Nome do Arquivo</th>
+        <th *ngIf="hasTipoPlanilha">Tipo da Planilha</th>
+        <th *ngIf="hasComplemento1">Complemento 1</th>
+        <th *ngIf="hasComplemento2">Complemento 2</th>
+        <th *ngIf="hasComplemento3">Complemento 3</th>
+        <th *ngIf="hasComplemento4">Complemento 4</th>
+        <th *ngIf="hasComplemento5">Complemento 5</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let i of info">
+        <td *ngIf="hasFonecedor">{{ i.descricao }}</td>
+        <td *ngIf="hasBanco">{{ i.portador }}</td>
+        <td *ngIf="hasData">{{ dateFormat(i.dataMovimento) }}</td>
+        <td *ngIf="hasValor">R$ {{ i.valorOriginal }}</td>
+        <td *ngIf="hasDocumento">{{ i.documento }}</td>
+        <td *ngIf="hasNomeArquivo">{{ i.nomeArquivo }}</td>
+        <td *ngIf="hasTipoPlanilha">{{ i.tipoPlanilha }}</td>
+        <td *ngIf="hasComplemento1">{{ i.complemento01 }}</td>
+        <td *ngIf="hasComplemento2">{{ i.complemento02 }}</td>
+        <td *ngIf="hasComplemento3">{{ i.complemento03 }}</td>
+        <td *ngIf="hasComplemento4">{{ i.complemento04 }}</td>
+        <td *ngIf="hasComplemento5">{{ i.complemento05 }}</td>
+      </tr>
+    </tbody>
+
+  </table>
+
+ <!-- <table class="table table-striped table-bordered">
 
     <thead class="thead-dark">
       <tr>
@@ -38,7 +76,9 @@
       </tr>
     </tbody>
 
-  </table>
+    </table> -->
+
+  <button class="btn btn-success" *ngIf="hasNext()" (click)="nextPage()">Carregar mais</button>
 
 </div>
 <div mat-dialog-actions>

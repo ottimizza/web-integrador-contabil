@@ -8,7 +8,13 @@ describe('Utils: Array', () => {
       const arr1 = ['a', 'b', 'c', 'd'];
       const arr2 = ['a', 'e', 'd', 'c', 'f'];
 
-      expect(ArrayUtils.sum(arr1, arr2)).toBe(['a', 'b', 'c', 'd', 'e', 'f']);
+      const sum = ArrayUtils.sum(arr1, arr2);
+      expect(sum[0]).toBe('a');
+      expect(sum[1]).toBe('b');
+      expect(sum[2]).toBe('c');
+      expect(sum[3]).toBe('d');
+      expect(sum[4]).toBe('e');
+      expect(sum[5]).toBe('f');
     });
 
   });

@@ -28,6 +28,11 @@ export class LancamentoService {
     return this.http.post<GenericPageableResponse<Lancamento>>(url, rules, this._headers);
   }
 
+  public getByRulePaginated(rules: PostFormatRule[], e: Empresa, page: number) {
+    const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}&pageIndex=${page}&tipoConta=0`;
+    return this.http.post<GenericPageableResponse<Lancamento>>(url, rules, this._headers);
+  }
+
   public ignoreLancamento(lancamento: Lancamento): Observable<Lancamento> {
     const url = `${BASE_URL}/api/v1/lancamentos/${lancamento.id}/ignorar`;
     return this.http.post<Lancamento>(url, {}, this._headers);
