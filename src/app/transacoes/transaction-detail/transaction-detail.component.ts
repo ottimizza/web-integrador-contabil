@@ -176,7 +176,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         this._historicService
           .getHistoric(this.business, this.account)
           .subscribe(data => {
-            if (!data.records) {
+            if (!data.records.length) {
               this.openHistoric(obs);
             } else {
               this._subsAndDisable(obs);
@@ -274,7 +274,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this._historicService
         .createHistoric(result)
         .subscribe(data => {
-          console.log(data);
+          // console.log(data);
         });
     });
   }

@@ -60,7 +60,6 @@ export class HistoricComponent implements OnInit {
   }
 
   onNoClick() {
-    console.log(this.historicObj.historic('', '', ''));
     this.dialogRef.close();
   }
 
