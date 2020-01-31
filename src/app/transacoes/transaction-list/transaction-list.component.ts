@@ -9,7 +9,6 @@ export class TransactionListComponent {
 
   business: Empresa;
   tabIsSelected = false;
-  id = 8.1;
 
   get info() {
     return {

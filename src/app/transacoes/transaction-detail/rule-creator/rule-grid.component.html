@@ -40,45 +40,7 @@
 
   </table>
 
- <!-- <table class="table table-striped table-bordered">
-
-    <thead class="thead-dark">
-      <tr>
-        <th>Fornecedor</th>
-        <th>Banco</th>
-        <th>Data do Movimento</th>
-        <th>Valor</th>
-        <th>Documento</th>
-        <th>Nome do Arquivo</th>
-        <th>Tipo da Planilha</th>
-        <th>Complemento 1</th>
-        <th>Complemento 2</th>
-        <th>Complemento 3</th>
-        <th>Complemento 4</th>
-        <th>Complemento 5</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let i of info">
-        <td>{{ i.descricao }}</td>
-        <td>{{ i.portador }}</td>
-        <td>{{ dateFormat(i.dataMovimento) }}</td>
-        <td>{{ i.valorOriginal }}</td>
-        <td>{{ i.documento }}</td>
-        <td>{{ i.nomeArquivo }}</td>
-        <td>{{ i.tipoPlanilha }}</td>
-        <td>{{ i.complemento01 }}</td>
-        <td>{{ i.complemento02 }}</td>
-        <td>{{ i.complemento03 }}</td>
-        <td>{{ i.complemento04 }}</td>
-        <td>{{ i.complemento05 }}</td>
-      </tr>
-    </tbody>
-
-    </table> -->
-
-  <button class="btn btn-success" *ngIf="hasNext()" (click)="nextPage()">Carregar mais</button>
+  <button class="btn btn-dark mb-4" *ngIf="hasNext()" (click)="nextPage()">Carregar mais</button>
 
 </div>
 <div mat-dialog-actions>

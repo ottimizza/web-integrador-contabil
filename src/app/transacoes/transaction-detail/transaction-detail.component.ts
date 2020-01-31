@@ -33,7 +33,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   errorText: string;
   errorText2: string;
   remaining: number;
-  gridArray: Lancamento[];
   tabsButtonClass: string[];
   tipoLancamento = 'PAG';
   tipoLancamentoName: string;
@@ -53,13 +52,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   ) { }
 
   ngOnInit(): void {
-    // this.controllInit();
-    this.tabsButtonClass = [
-      'btn btn-outline-link col',
-      'btn btn-outline-link col',
-      'btn btn-outline-link col',
-      'btn btn-outline-link col'
-    ];
+    this._resetButtons();
   }
 
   get suggestions() {
@@ -79,11 +72,10 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     return {
       account: 'Insira neste campo, a conta relativa a este lançamento ou selecione uma das sugeridas.',
       rule: 'A conta informada deve ser aplicada em todas as ocorrências da regra selecionada.',
-      ignore: 'Todos os lançamentos com a regra seleciona serão ignorados.',
-      skip: 'Envie este lançamento para o final da lista.',
+      ignore: 'Todos os lançamentos com a regra selecionada serão ignorados.',
+      skip: 'Deixar este lançamento para depois.',
       ok: 'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
-      cancel: 'Voltar à barra de opções anterior.',
-      affecteds: 'Clique aqui para visualizar os lançamentos afetados.',
+      affecteds: 'Clique para visualizar os lançamentos afetados.',
       provider: 'A conta informada será aplicada para todas as ocorrências deste fornecedor.',
       info: `Agora clique nas palavras que justificam o lançamento ser aplicado a determinada conta ou ignorado.
       Se necessário, informe a conta.`
@@ -139,16 +131,12 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   regra() {
-    const regra = new RuleCreateFormat(
-      this.conditions.rules,
-      this.business.cnpj,
-      this.account
-    );
+    const regra = new RuleCreateFormat(this.conditions.rules, this.business.cnpj, this.account);
     const observable = this._ruleService.createRule(regra);
     const verifications = [(this.account && this.account.length > 0), this.conditions.verify()];
     const errors = [
-      'Para salvar o lançamento em uma regra customizada você deve informar uma conta contábil.',
-      'Para salvar o lançamento em uma regra customizada você deve informar as condições da regra.'
+      'Para salvar uma regra você deve informar uma conta contábil.',
+      'Para salvar uma regra você deve informar as condições da regra.'
     ];
     this._savePattern(observable, verifications, errors, true);
   }
@@ -156,14 +144,14 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   ignorar() {
     const observable = this._lancamentoService.ignoreLancamento(this.records[0]);
     const verification = this.conditions.verify();
-    const error = ['Para salvar um lançamento dentro de uma regra de ignorar, você deve informar as condições da regra.'];
+    const error = ['Para salvar uma regra de ignorar, você deve informar as condições da regra.'];
     this._savePattern(observable, [verification], error);
   }
 
   fornecedor() {
     const observable = this._lancamentoService.saveAsDePara(this.records[0], this.account);
     const verification = this.account && this.account.length > 0;
-    const error = ['Para salvar o lançamento para uma conta de fornecedor, você deve informar uma conta.'];
+    const error = ['Para atrelar o lançamento à uma conta de fornecedor, você deve informar a conta.'];
     this._savePattern(observable, [verification], error);
   }
 
@@ -231,7 +219,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       const subs = this._lancamentoService
         .getByRule(rules, this.business)
         .subscribe(data => {
-          this.gridArray = data.records;
           this.impact = data.pageInfo.totalElements;
           subs.unsubscribe();
         });
@@ -249,7 +236,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       maxWidth: '1400px',
       width: '95vw',
       data: {
-        table: this.gridArray,
         rules: this.conditions.rules,
         business: this.business
       }
@@ -295,10 +281,8 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this.tabsPattern(3, 1, 'EXREC', 'extratos de recebimentos');
   }
 
-  tabsPattern(position: number, tipoMovimento: number, tipoLancamento: string, tipoLancamentoName: string) {
-    this.tabsButtonClass.forEach(tab => {
-      this.tabsButtonClass[this.tabsButtonClass.indexOf(tab)] = 'btn btn-outline-link col';
-    });
+  tabsPattern(position: number, tipoMovimento: number, tipoLancamento: string, tipoLancamentoName: string): void {
+    this._resetButtons();
     this.tabsButtonClass[position] = 'btn btn-light text-info col';
     this.tabIsClicked = true;
     this.tabSelect.emit('true');
@@ -308,18 +292,34 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this.tipoLancamentoName = tipoLancamentoName;
     this.counter = 0;
     this.page = 0;
+    this._partialDisable();
     this.nextPage();
   }
 
-  disable() {
+  async disable() {
     // Reseta todas as variáveis locais após executar uma ação para permitir
     // que a próxima ação esteja pronta para ser executada.
     this.destroy = true;
+    this._partialDisable();
+    this._next();
+    await this._delay(320);
+    this.destroy = false;
+  }
+
+  private _partialDisable() {
     this.conditions = new Rule();
     this.getByRule();
     this.ruleSelected = false;
     this.account = null;
-    this._next();
+  }
+
+  private _resetButtons() {
+    this.tabsButtonClass = [
+      'btn btn-outline-link col',
+      'btn btn-outline-link col',
+      'btn btn-outline-link col',
+      'btn btn-outline-link col'
+    ];
   }
 
   private _remaining(autoIncrement?: boolean) {
@@ -336,7 +336,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  private async _next() {
+  private _next() {
     this.records.splice(0, 1);
     this.resetErrors();
 
@@ -345,8 +345,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this._remaining(true);
     } else if (this.records.length !== 0) {
       this._remaining(true);
-      await this._delay(200);
-      this.destroy = false;
     } else {
       this._remaining();
       this.resetErrors([`Você conclui todos os ${this.tipoLancamentoName} desta empresa.`]);
@@ -364,7 +362,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       if (this.counter === 0) {
         this._remaining(true);
       }
-      this.destroy = false;
       this.page++;
       this.resetErrors();
     });
@@ -372,3 +369,4 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
 
 }
+

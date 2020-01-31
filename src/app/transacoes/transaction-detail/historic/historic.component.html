@@ -19,6 +19,8 @@
 
 </div>
 <div mat-dialog-actions>
-  <button [mat-dialog-close]="data.regra" tabindex="-1" class="btn btn-outline-info mr-3">Confirmar</button>
-  <button (click)="onNoClick()" tabindex="-1" class="btn btn-outline-danger mr-4">Ignorar</button>
+  <div class="row w-100 m-0">
+    <button [mat-dialog-close]="data.regra" class="btn btn-outline-info m-4 mr-2 col">Confirmar</button>
+    <button (click)="onNoClick()" class="btn btn-outline-danger m-4 ml-2 col">Ignorar</button>
+  </div>
 </div>

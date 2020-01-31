@@ -26,9 +26,6 @@ export class RuleGridComponent implements OnInit, GenericPagination {
   ) { }
 
   ngOnInit(): void {
-    // Saída temporária
-    this.info = this.data.table;
-
     this.rules = this.data.rules;
     this.business = this.data.business;
     this.info = [];

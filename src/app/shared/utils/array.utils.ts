@@ -44,8 +44,8 @@ export class ArrayUtils {
 
   public static split(text: string, divisors: string[]) {
     /*
-    * Realiza um split com mais de um divisor
-    */
+     * Realiza um split com mais de um divisor
+     */
 
     let returningArray: string[];
 
@@ -69,6 +69,9 @@ export class ArrayUtils {
   }
 
   public static verify(array: boolean[]): boolean {
+    /*
+     * Verifica se todos os elementos de um array são true
+     */
 
     let verify = true;
     array.forEach(arr => {
