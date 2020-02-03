@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, Inject, SimpleChanges, OnChanges } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { collectionForUtils } from '@shared/utils/collection-for.utils';
-import { Lancamento } from '@shared/models/Lancamento';
 
 @Component({
   selector: 'app-chips',
@@ -16,10 +15,11 @@ export class InputChipsComponent implements OnInit, OnChanges {
   @Output() selectedInfos = new EventEmitter();
   props: string[] = [];
   chipList: string[] = [];
-  returningObject: any = { title: this.name, selecteds: undefined };
+  returningObject = { title: this.name, selecteds: undefined };
   isSelected = false;
   comps: any;
 
+  // tslint:disable-next-line: variable-name
   constructor(@Inject(DOCUMENT) private _document: Document) {}
 
   ngOnInit(): void {
@@ -53,7 +53,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
 
   isDefault() {
     // Informa se os chips devem ser clicáveis ou não
-    return this.name !== 'Valor' && this.name !== 'Data';
+    return (this.name !== 'Valor' && this.name !== 'Data');
   }
 
   private _change() {
@@ -131,16 +131,12 @@ export class InputChipsComponent implements OnInit, OnChanges {
 
   }
 
-  info(chip?: string) {
+  info(chip?: string, label?: string) {
     const title = ` "${this.name}".`;
     return {
       copy: 'Clique para selecionar o campo "' + chip + '" de' + title,
       copyAll: 'Clique duas vezes para selecionar todos os campos de' + title,
-      c1: `Clique para selecionar "${chip}" de "Complemento 1".`,
-      c2: `Clique para selecionar "${chip}" de "Complemento 2".`,
-      c3: `Clique para selecionar "${chip}" de "Complemento 3".`,
-      c4: `Clique para selecionar "${chip}" de "Complemento 4".`,
-      c5: `Clique para selecionar "${chip}" de "Complemento 5".`
+      comps: `Clique para selecionar "${chip}" de "${label}".`,
     };
   }
 
@@ -149,17 +145,18 @@ export class InputChipsComponent implements OnInit, OnChanges {
   }
 
   devolveAllComps() {
-    const comps = this.comps;
-    const c1 = comps.c1 ? comps.c1 : undefined;
-    const c2 = comps.c2 ? comps.c2 : undefined;
-    const c3 = comps.c3 ? comps.c3 : undefined;
-    const c4 = comps.c4 ? comps.c4 : undefined;
-    const c5 = comps.c5 ? comps.c5 : undefined;
-    this._devolveAllCompsPattern('Complemento 1', c1);
-    this._devolveAllCompsPattern('Complemento 2', c2);
-    this._devolveAllCompsPattern('Complemento 3', c3);
-    this._devolveAllCompsPattern('Complemento 4', c4);
-    this._devolveAllCompsPattern('Complemento 5', c5);
+    const c = this.comps;
+    const comps = [
+      { name: 'Complemento 1', prop: c.c1 ? c.c1 : undefined },
+      { name: 'Complemento 2', prop: c.c2 ? c.c2 : undefined },
+      { name: 'Complemento 3', prop: c.c3 ? c.c3 : undefined },
+      { name: 'Complemento 4', prop: c.c4 ? c.c4 : undefined },
+      { name: 'Complemento 5', prop: c.c5 ? c.c5 : undefined },
+    ];
+
+    comps.forEach(comp => {
+      this._devolveAllCompsPattern(comp.name, comp.prop);
+    });
   }
 
   private _devolveAllCompsPattern(name: string, prop: string) {

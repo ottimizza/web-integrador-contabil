@@ -1,103 +1,99 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { MatDialog } from '@angular/material/dialog';
 
-import { LancamentoService } from '@shared/services/lancamento.service';
-import { Lancamento } from '@shared/models/Lancamento';
-import { RuleGridComponent } from './rule-creator/rule-grid.component';
-import { Empresa } from '@shared/models/Empresa';
-import { PageInfo } from '@shared/models/GenericPageableResponse';
-import { Rule } from '@shared/models/Rule';
-import { HistoricComponent } from './historic/historic.component';
 import { ArrayUtils } from '@shared/utils/array.utils';
-import { throwIfAlreadyLoaded } from '@app/guard/module-import.guard';
+import { Empresa } from '@shared/models/Empresa';
+import { GenericPagination } from '@shared/interfaces/GenericPagination';
+import { HistoricComponent } from './historic/historic.component';
+import { HistoricService } from '@shared/services/historic.service';
+import { Lancamento } from '@shared/models/Lancamento';
+import { LancamentoService } from '@shared/services/lancamento.service';
+import { PageInfo } from '@shared/models/GenericPageableResponse';
+import { Rule, RuleCreateFormat } from '@shared/models/Rule';
+import { RuleGridComponent } from './rule-creator/rule-grid.component';
+import { RuleService } from '@shared/services/rule.service';
 
 @Component({
   selector: 'app-tdetail',
   templateUrl: './transaction-detail.component.html',
   styleUrls: ['./transaction-detail.component.scss']
 })
-export class TransactionDetailComponent implements OnInit, OnChanges {
+export class TransactionDetailComponent implements OnInit, GenericPagination {
 
   @Input() business: Empresa;
+  @Output() tabSelect = new EventEmitter();
   records: Lancamento[] = [];
-  id = 0;
   account: string;
   conditions = new Rule();
-  suggestions: string[];
-  ruleSelected = false;
   pageInfo: PageInfo;
   destroy: boolean;
   errorText: string;
   errorText2: string;
+  tabsButtonClass: string[];
+  tipoLancamento = 'PAG';
+  tipoLancamentoName: string;
+  tipoMovimento = 1;
+  tabIsClicked = false;
+  remaining = 0;
   page = 0;
   impact = 0;
-  remaining: number;
-  gridArray: Lancamento[];
-  tabsInfo: string[];
-
+  counter = 0;
+  // ! Cuidado ao alterar o counter, fazer isto apenas através do tabsPattern() e do _remaining()
 
   constructor(
     // tslint:disable: variable-name
-    private _service: LancamentoService,
+    private _lancamentoService: LancamentoService,
+    private _ruleService: RuleService,
+    private _historicService: HistoricService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.controllInit();
-    this.tabsInfo = [
-      'btn btn-light col',
-      'btn btn-outline-light col',
-      'btn btn-outline-light col',
-      'btn btn-outline-light col'
-    ];
+    this._resetButtons();
   }
 
-  public ngOnChanges(changes: SimpleChanges) {
-    for (const key in changes) {
-      if (changes.hasOwnProperty(key)) {
-        switch (key) {
-          case 'business':
-            this.controllInit();
-            break;
-        }
+  get suggestions() {
+    if (this.records.length > 0 && this.records[0].contaSugerida) {
+      const account = this.records[0].contaSugerida;
+      if (account === 'null' || account === 'IGNORAR') {
+        return '';
+      } else {
+        return account;
       }
+    } else {
+      return '';
     }
-  }
-
-  controllInit() {
-    this.resetConditions();
-    this._next();
-    this.suggestions = [
-      '312321321',
-      '735190862',
-      '902873038',
-      '919591831',
-      '423782332'
-    ];
   }
 
   get info() {
     return {
       account: 'Insira neste campo, a conta relativa a este lançamento ou selecione uma das sugeridas.',
-      rule: 'A conta informada deve ser aplicada em todas as ocorrências da regra selecionada.',
-      ignore: 'Todos os lançamentos com a regra seleciona serão ignorados.',
-      skip: 'Selecione esta opção caso você não consiga preencher sózinho ou não tenha os dados necessários no momento.',
+      rule: 'A conta informada deve ser aplicada em todas as ocorrências das palavras selecionada.',
+      ignore: 'Todos os lançamentos com as palavras selecionada serão ignorados.',
+      skip: 'Deixar este lançamento para depois.',
       ok: 'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
-      cancel: 'Voltar à barra de opções anterior.',
-      affecteds: 'Clique aqui para visualizar os lançamentos afetados.',
-      provider: 'A conta informada será aplicada para todas as ocorrências deste fornecedor.'
+      affecteds: 'Clique para visualizar os lançamentos afetados.',
+      provider: 'A conta informada será aplicada para todas as ocorrências deste fornecedor.',
+      info: `Agora clique nas palavras que justificam o lançamento ser aplicado a determinada conta ou ignorado.
+      Se necessário, informe a conta.`
     };
   }
 
   getComplementos() {
     /*
-     * Transforma todos os complementos em um objeto legível para os componentes filhos
+     * Transforma todos os complementos (5 strings) em um objeto legível para os componentes filhos
      * (para o componente dos chips especificamente)
      */
+
     const lancamento = this.records[0];
-    const ok = lancamento.complemento01 || lancamento.complemento02 || lancamento.complemento03 || lancamento.complemento04 || lancamento.complemento05;
+    const arquivo = lancamento.arquivo;
+    const ok = !!((lancamento.complemento01 && arquivo.labelComplemento01) ||
+                  (lancamento.complemento02 && arquivo.labelComplemento02) ||
+                  (lancamento.complemento03 && arquivo.labelComplemento03) ||
+                  (lancamento.complemento04 && arquivo.labelComplemento04) ||
+                  (lancamento.complemento05 && arquivo.labelComplemento05));
     let text = '';
     if (ok) {
       text = JSON.stringify({
@@ -105,7 +101,12 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
         c2: lancamento.complemento02,
         c3: lancamento.complemento03,
         c4: lancamento.complemento04,
-        c5: lancamento.complemento05
+        c5: lancamento.complemento05,
+        l1: arquivo.labelComplemento01,
+        l2: arquivo.labelComplemento02,
+        l3: arquivo.labelComplemento03,
+        l4: arquivo.labelComplemento04,
+        l5: arquivo.labelComplemento05
       });
     }
 
@@ -129,38 +130,48 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   }
 
   regra() {
-    const observable = this._service.saveAsDePara(this.records[0], this.account);
+    const regra = new RuleCreateFormat(this.conditions.rules, this.business.cnpj, this.account);
+    const observable = this._ruleService.createRule(regra);
     const verifications = [(this.account && this.account.length > 0), this.conditions.verify()];
     const errors = [
-      'Para salvar o lançamento em uma regra customizada você deve informar uma conta contábil.',
-      'Para salvar o lançamento em uma regra customizada você deve informar as condições da regra.'
+      'Para salvar uma regra você deve informar uma conta contábil.',
+      'Para salvar uma regra você deve informar as condições da regra.'
     ];
-    this._savePattern(observable, verifications, errors);
+    this._savePattern(observable, verifications, errors, true);
   }
 
   ignorar() {
-    const observable = this._service.ignoreLancamento(this.records[0]);
+    const observable = this._lancamentoService.ignoreLancamento(this.records[0]);
     const verification = this.conditions.verify();
-    const error = ['Para salvar um lançamento dentro de uma regra de ignorar, você deve informar as condições da regra.'];
+    const error = ['Para salvar uma regra de ignorar, você deve informar as condições da regra.'];
     this._savePattern(observable, [verification], error);
   }
 
   fornecedor() {
-    const observable = this._service.saveAsDePara(this.records[0], this.account);
+    const observable = this._lancamentoService.saveAsDePara(this.records[0], this.account);
     const verification = this.account && this.account.length > 0;
-    const error = ['Para salvar o lançamento para uma conta de fornecedor, você deve informar uma conta.'];
+    const error = ['Para atrelar o lançamento à uma conta de fornecedor, você deve informar a conta.'];
     this._savePattern(observable, [verification], error);
   }
 
-  private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[]) {
+  private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[], rule?: boolean) {
 
     const verify = ArrayUtils.verify(verifications);
 
     if (verify) {
-      this.openHistoric();
-      obs.subscribe(() => {
-        this._disable();
-      });
+      if (rule) {
+        this._historicService
+          .getHistoric(this.business, this.account)
+          .subscribe(data => {
+            if (!data.records.length) {
+              this.openHistoric(obs);
+            } else {
+              this._subsAndDisable(obs);
+            }
+          });
+      } else {
+        this._subsAndDisable(obs);
+      }
     } else if ((verifications.length === 1) || (verifications.length > 1 && !verifications[0] && verifications[1])) {
       this.resetErrors([errors[0]]);
     } else if (verifications.length > 1 && verifications[0] && !verifications[1]) {
@@ -170,27 +181,46 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     }
   }
 
+  private _subsAndDisable(obs: Observable<any>) {
+    obs.subscribe(() => {
+      this.disable();
+    });
+  }
+
   onDevolve(event: any) {
-    if (event.title === 'Fornecedor') {
-      this.conditions.descricao = event.selecteds;
-    } else if (event.title === 'Documento') {
-      this.conditions.documento = event.selecteds;
-    } else if (event.title === 'Banco') {
-      this.conditions.portador = event.selecteds;
-    } else if (event.title === 'Complemento 1') {
-      this.conditions.complemento01 = event.selecteds;
-    } else if (event.title === 'Complemento 2') {
-      this.conditions.complemento02 = event.selecteds;
-    } else if (event.title === 'Complemento 3') {
-      this.conditions.complemento03 = event.selecteds;
-    } else if (event.title === 'Complemento 4') {
-      this.conditions.complemento04 = event.selecteds;
-    } else if (event.title === 'Complemento 5') {
-      this.conditions.complemento05 = event.selecteds;
-    } else if (event.title === 'Tipo da Planilha') {
-      this.conditions.tipoPlanilha = event.selecteds;
-    } else if (event.title === 'Nome do Arquivo') {
-      this.conditions.nomeArquivo = event.selecteds;
+    const s = event.selecteds;
+
+    switch (event.title) {
+      case 'Fornecedor':
+        this.conditions.descricao = s;
+        break;
+      case 'Documento':
+        this.conditions.documento = s;
+        break;
+      case 'Banco':
+        this.conditions.portador = s;
+        break;
+      case 'Complemento 1':
+        this.conditions.complemento01 = s;
+        break;
+      case 'Complemento 2':
+        this.conditions.complemento02 = s;
+        break;
+      case 'Complemento 3':
+        this.conditions.complemento03 = s;
+        break;
+      case 'Complemento 4':
+        this.conditions.complemento04 = s;
+        break;
+      case 'Complemento 5':
+        this.conditions.complemento05 = s;
+        break;
+      case 'Tipo da Planilha':
+        this.conditions.tipoPlanilha = s;
+        break;
+      case 'Nome do Arquivo':
+        this.conditions.nomeArquivo = s;
+        break;
     }
     this.getByRule();
   }
@@ -198,10 +228,9 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
   getByRule() {
     const rules = this.conditions.rules;
     if (rules.length > 0) {
-      const subs = this._service
+      const subs = this._lancamentoService
         .getByRule(rules, this.business)
         .subscribe(data => {
-          this.gridArray = data.records;
           this.impact = data.pageInfo.totalElements;
           subs.unsubscribe();
         });
@@ -210,27 +239,22 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     }
   }
 
-  activate() {
-    this.ruleSelected = this.conditions.verify();
-  }
-
   openGrid(): void {
     const dialogRef = this.dialog.open(RuleGridComponent, {
       maxWidth: '1400px',
       width: '95vw',
       data: {
-        table: this.gridArray
+        rules: this.conditions.rules,
+        business: this.business
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-
-    });
+    dialogRef.afterClosed().subscribe();
   }
 
-  openHistoric(): void {
+  openHistoric(obs: Observable<Lancamento>): void {
     const dialogRef = this.dialog.open(HistoricComponent, {
-      maxWidth: '1400px',
+      maxWidth: '900px',
       width: '90vw',
       data: {
         lancamento: this.records[0]
@@ -238,83 +262,107 @@ export class TransactionDetailComponent implements OnInit, OnChanges {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-
+      this._subsAndDisable(obs);
+      this._historicService
+        .createHistoric(result)
+        .subscribe();
     });
   }
 
   pag() {
-    this.tabsPattern(0);
+    this.tabsPattern(0, 1, 'PAG', 'pagamentos');
   }
 
   expag() {
-    this.tabsPattern(1);
+    this.tabsPattern(1, 1, 'EXPAG', 'extratos de débitos');
   }
 
   rec() {
-    this.tabsPattern(2);
+    this.tabsPattern(2, 1, 'REC', 'recebimentos');
   }
 
   exrec() {
-    this.tabsPattern(3);
+    this.tabsPattern(3, 1, 'EXREC', 'extratos de recebimentos');
   }
 
-  tabsPattern(position: number) {
-    this.tabsInfo.forEach(tab => {
-      this.tabsInfo[this.tabsInfo.indexOf(tab)] = 'btn btn-outline-light col';
-    });
-    this.tabsInfo[position] = 'btn btn-light col';
+  tabsPattern(position: number, tipoMovimento: number, tipoLancamento: string, tipoLancamentoName: string): void {
+    this._resetButtons();
+    this.tabsButtonClass[position] = 'btn btn-light text-info col';
+    this.tabIsClicked = true;
+    this.tabSelect.emit('true');
+
+    this.tipoLancamento = tipoLancamento;
+    this.tipoMovimento = tipoMovimento;
+    this.tipoLancamentoName = tipoLancamentoName;
+    this.counter = 0;
+    this.page = 0;
+    this._partialDisable();
+    this.nextPage();
   }
 
-  private _disable() {
+  async disable() {
     // Reseta todas as variáveis locais após executar uma ação para permitir
     // que a próxima ação esteja pronta para ser executada.
     this.destroy = true;
-    this.resetConditions();
-    this.ruleSelected = false;
-    this.account = null;
+    this._partialDisable();
     this._next();
+    await this._delay(320);
+    this.destroy = false;
   }
 
-  private async _next() {
-    if (this.id === 0) {
-      this._nextPage();
-    } else {
-      this.records.splice(0, 1);
-      await this._delay(200);
-      this._remaining();
-      this.destroy = false;
-    }
-    this.id++;
-    if (this.pageInfo && this.id + 1 >= this.pageInfo.pageSize) {
-      this.id = 0;
-    }
-    this.resetErrors();
-
+  private _partialDisable() {
+    this.conditions = new Rule();
+    this.getByRule();
+    this.account = null;
   }
 
-  private _remaining() {
+  private _resetButtons() {
+    this.tabsButtonClass = [
+      'btn btn-outline-link col',
+      'btn btn-outline-link col',
+      'btn btn-outline-link col',
+      'btn btn-outline-link col'
+    ];
+  }
+
+  private _remaining(autoIncrement?: boolean) {
     if (this.pageInfo) {
-      this.remaining = this.pageInfo.totalElements;
+      this.remaining = this.pageInfo.totalElements - this.counter;
     }
-    // console.log(this.remaining)
-    // Conferir a eficacia deste método
+    if (autoIncrement === true) {
+      this.counter++;
+    }
   }
 
   private _delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  private _nextPage() {
-    this._service.getLancamentos(this.page, this.business).subscribe(imports => {
+  private _next() {
+    this.records.splice(0, 1);
+    this.resetErrors();
+
+    if (this.records.length === 0 && (!this.pageInfo || this.pageInfo.hasNext)) {
+      this.nextPage();
+      this._remaining(true);
+    } else if (this.records.length !== 0) {
+      this._remaining(true);
+    } else {
+      this._remaining();
+      this.resetErrors([`Você conclui todos os ${this.tipoLancamentoName} desta empresa.`]);
+    }
+  }
+
+  nextPage() {
+    this._lancamentoService.getLancamentos(this.page, this.business, this.tipoLancamento, this.tipoMovimento).subscribe(imports => {
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
-      this._remaining();
-      this.destroy = false;
+      if (this.counter === 0) {
+        this._remaining(true);
+      }
       this.page++;
+      this.resetErrors();
     });
   }
 
-  private resetConditions() {
-    this.conditions = new Rule();
-  }
 }

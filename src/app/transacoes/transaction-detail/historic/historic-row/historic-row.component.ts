@@ -2,7 +2,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-hrow',
-  templateUrl: './historic-row.component.html'
+  templateUrl: './historic-row.component.html',
+  styleUrls: ['./historic-row.component.scss']
 })
 export class HistoricRowComponent {
 

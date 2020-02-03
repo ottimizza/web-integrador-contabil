@@ -25,7 +25,6 @@ input[type="button"] {
   width: 100%;
   border: solid 1px #5c5c5c;
   font-family: sans-serif;
-  // box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.3);
 }
 
 
@@ -36,11 +35,6 @@ input[type="button"] {
 
 .account-field {
   color: #5c5c5c;
-}
-
-::ng-deep .mat-tooltip {
-  font-size: 13px;
-  padding: 5px;
 }
 
 span {

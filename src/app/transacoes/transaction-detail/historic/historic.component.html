@@ -1,6 +1,6 @@
 <div mat-dialog-title>
-  <app-hrow span="Código do Histórico" col="3">
-  </app-hrow>
+  <h2 class="ml-4">Histórico do Lançamento</h2>
+  <app-hrow span="Código do Histórico" col="4" (write)="id = $event"></app-hrow>
 </div>
 <div mat-dialog-content>
 
@@ -8,16 +8,19 @@
   <form>
 
     <app-hrow *ngFor="let f of fields; let id = index" [span]="f.span" (write)="onKeyup($event, id)">
-      <app-historic-field [name]="f.name" (selectOne)="onChange($event, id)"></app-historic-field>
+      <app-historic-field *ngIf="f.name" [name]="f.name" [lancamento]="lancamento" (selectOne)="onChange($event, id)"></app-historic-field>
     </app-hrow>
 
   </form>
-  <div class="row m-0">
-    <p>{{ params }}</p>
+  <div class="row m-4" *ngIf="params && params.length > 0">
+    <p class="mr-4">Resultado:</p>
+    <p class="font-weight-bold">{{ params }}</p>
   </div>
 
 </div>
 <div mat-dialog-actions>
-  <button [mat-dialog-close]="data.regra" tabindex="-1" class="btn btn-outline-info mr-3">Confirmar</button>
-  <button (click)="onNoClick()" tabindex="-1" class="btn btn-outline-danger mr-4">Ignorar</button>
+  <div class="row w-100 m-0">
+    <button [mat-dialog-close]="data.regra" class="btn btn-outline-info m-4 mr-2 col">Confirmar</button>
+    <button (click)="onNoClick()" class="btn btn-outline-danger m-4 ml-2 col">Ignorar</button>
+  </div>
 </div>

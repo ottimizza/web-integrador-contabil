@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Lancamento } from '@shared/models/Lancamento';
+import { Historic } from '@shared/models/Historic';
 
 @Component({
   templateUrl: './historic.component.html',
@@ -8,9 +9,10 @@ import { Lancamento } from '@shared/models/Lancamento';
 })
 export class HistoricComponent implements OnInit {
 
+  id: string;
   fields: any[];
-  historic: any[];
   lancamento: Lancamento;
+  historicObj: Historic;
 
   constructor(
     public dialogRef: MatDialogRef<HistoricComponent>,
@@ -18,82 +20,124 @@ export class HistoricComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // Define os labels dos campos que serão exibidos
     this.fields = [
       { span: 'Comentário Inicial', name: 'Campo 1:' },
       { span: 'Comentário 2', name: 'Campo 2:' },
       { span: 'Comentário 3', name: 'Campo 3:' },
-      { span: 'Comentário 4', name: 'Campo 4:' },
-      { span: 'Comentário 5', name: 'Campo 5:' },
+      { span: 'Comentário 4' }
     ];
-    this._reset();
+    this.historicObj = new Historic();
+    this.lancamento = this.data.lancamento;
   }
 
-  onChange(event: any, index: number) {
-    this.historic[index].combo = event;
-    console.log(this.historic);
+  onChange(event: any, i: number): void {
+    if (i === 0) {
+      this.historicObj.field1.value = this.getValues(event);
+      this.historicObj.field1.field = this.dePara(event);
+    } else if (i === 1) {
+      this.historicObj.field2.value = this.getValues(event);
+      this.historicObj.field2.field = this.dePara(event);
+    } else if (i === 2) {
+      this.historicObj.field3.value = this.getValues(event);
+      this.historicObj.field3.field = this.dePara(event);
+    }
+    this._update();
   }
 
-  onKeyup(event: any, index: number) {
-    this.historic[index].field = event;
-    console.log(this.historic);
+  onKeyup(event: any, i: number): void {
+    if (i === 0) {
+      this.historicObj.com1 = event;
+    } else if (i === 1) {
+      this.historicObj.com2 = event;
+    } else if (i === 2) {
+      this.historicObj.com3 = event;
+    } else if (i === 3) {
+      this.historicObj.com4 = event;
+    }
+    this._update();
+
   }
 
   onNoClick() {
     this.dialogRef.close();
   }
 
-  date(date: string) {
-    const dates = date.split('-');
+  date(): string {
+    const dates = this.lancamento.dataMovimento.split('-');
     return `${dates[2]}/${dates[1]}/${dates[0]}`;
   }
 
-  get params() {
-    const h = this.historic;
-    let text = '';
-
-    this.historic.forEach(obj => {
-      text += obj.field + ' ';
-      // text += obj.combo + ' ';
-      const c = obj.combo;
-      if (c === 'Fornecedor') {
-        text += `${this.lancamento.descricao} `;
-      } else if (c === 'Portador') {
-        text += `${this.lancamento.portador} `;
-      } else if (c === 'Data') {
-        text += `${this.date(this.lancamento.dataMovimento)} `;
-      } else if (c === 'Valor') {
-        text += `${this.lancamento.valorOriginal} `;
-      } else if (c === 'Documento') {
-        text += `${this.lancamento.documento} `;
-      } else if (c === 'Nome do Arquivo') {
-        text += `${this.lancamento.arquivo.nome} `;
-      } else if (c === 'Tipo da Planilha') {
-        text += `${this.lancamento.tipoPlanilha} `;
-      } else if (c === 'Complemento 01') {
-        text += `${this.lancamento.complemento01} `;
-      } else if (c === 'Complemento 02') {
-        text += `${this.lancamento.complemento02} `;
-      } else if (c === 'Complemento 03') {
-        text += `${this.lancamento.complemento03} `;
-      } else if (c === 'Complemento 04') {
-        text += `${this.lancamento.complemento04} `;
-      } else if (c === 'Complemento 05') {
-        text += `${this.lancamento.complemento05} `;
-      }
-    });
-    return text;
+  get params(): string {
+    return this.historicObj.preview;
   }
 
-  private _reset() {
-    this.historic = [
-      { field: '', combo: '' },
-      { field: '', combo: '' },
-      { field: '', combo: '' },
-      { field: '', combo: '' },
-      { field: '', combo: '' },
+  private _update(): void {
+    this.historicObj.id = this.id;
+    const l = this.lancamento;
+    this.data.regra = this.historicObj.historic(l.contaMovimento, l.cnpjEmpresa, l.cnpjContabilidade);
+  }
+
+  private getValues(combo: string): string {
+    const l = this.lancamento;
+    const results = [
+      l.descricao,
+      l.portador,
+      this.date(),
+      l.valorOriginal ? `${l.valorOriginal}` : null,
+      l.documento,
+      l.nomeArquivo,
+      l.tipoPlanilha,
+      l.complemento01,
+      l.complemento02,
+      l.complemento03,
+      l.complemento04,
+      l.complemento05
     ];
-    this.lancamento = this.data.lancamento;
+    return this.ifChainPattern(results, combo);
   }
 
+  private dePara(property: string): string {
+    const results = [
+      'descricao',
+      'portador',
+      'dataMovimento',
+      'valorOriginal',
+      'documento',
+      'nomeArquivo',
+      'tipoPlanilha',
+      'complemento01',
+      'complemento02',
+      'complemento03',
+      'complemento04',
+      'complemento05'
+    ];
+
+    return this.ifChainPattern(results, property);
+  }
+
+  private ifChainPattern(results: string[], property: string): string {
+      const array = [
+        'Fornecedor',
+        'Portador',
+        'Data',
+        'Valor',
+        'Documento',
+        'Nome do Arquivo',
+        'Tipo da Planilha',
+        'Complemento 01',
+        'Complemento 02',
+        'Complemento 03',
+        'Complemento 04',
+        'Complemento 05',
+      ];
+      let text = '';
+      array.forEach(prop => {
+        if (prop === property) {
+          text = results[array.indexOf(prop)];
+        }
+      });
+      return text;
+  }
 
 }

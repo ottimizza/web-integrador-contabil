@@ -1,9 +1,17 @@
-export class PostFormatRule {
+export interface PostFormatRule {
+
+    campo: string;
+    condicao: number;
+    valor: string;
+
+}
+
+export class RuleCreateFormat {
 
   constructor(
-    public campo: string,
-    public condicao: number,
-    public valor: string
+    public regras: PostFormatRule[],
+    public cnpjEmpresa: string,
+    public contaMovimento: string
   ) { }
 
 }
@@ -45,7 +53,9 @@ export class Rule {
     private _newRule(name: string, values: string[]) {
       if (values && values.length > 0) {
         values.forEach(value => {
-          this._rules.push(new PostFormatRule(name, 1, value));
+          this._rules.push(
+            { campo: name, condicao: 1, valor: value }
+          );
         });
       }
     }

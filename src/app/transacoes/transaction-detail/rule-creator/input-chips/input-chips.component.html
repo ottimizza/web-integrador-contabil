@@ -22,17 +22,30 @@
 
   </mat-chip-list>
 
+
+
+
   <ng-template #compsfield>
     <mat-chip-list>
 
       <i class="fal fa-clipboard mr-4 ml-3" (click)="devolveAllComps()" [matTooltip]="info().copyAll" matTooltipShowDelay="300" matTooltipHideDelay="500"></i>
-      <mat-chip *ngIf="comps.c1" (click)="selectComp(comps.c1, 'c1')" [id]="comps.c1 + ' ' + 'c1'" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(comps.c1).c1" matTooltipShowDelay="300" matTooltipHideDelay="500">{{ comps.c1 }}</mat-chip>
-      <mat-chip *ngIf="comps.c2" (click)="selectComp(comps.c2, 'c2')" [id]="comps.c2 + ' ' + 'c2'" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(comps.c2).c2" matTooltipShowDelay="300" matTooltipHideDelay="500">{{ comps.c2 }}</mat-chip>
-      <mat-chip *ngIf="comps.c3" (click)="selectComp(comps.c3, 'c3')" [id]="comps.c3 + ' ' + 'c3'" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(comps.c3).c3" matTooltipShowDelay="300" matTooltipHideDelay="500">{{ comps.c3 }}</mat-chip>
-      <mat-chip *ngIf="comps.c4" (click)="selectComp(comps.c4, 'c4')" [id]="comps.c4 + ' ' + 'c4'" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(comps.c4).c4" matTooltipShowDelay="300" matTooltipHideDelay="500">{{ comps.c4 }}</mat-chip>
-      <mat-chip *ngIf="comps.c5" (click)="selectComp(comps.c5, 'c5')" [id]="comps.c5 + ' ' + 'c5'" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(comps.c5).c5" matTooltipShowDelay="300" matTooltipHideDelay="500">{{ comps.c5 }}</mat-chip>
-
-    </mat-chip-list>
-  </ng-template>
-
-</div>
+      <div *ngIf="comps.c1 && comps.l1">
+        <span>{{ comps.l1 }}:</span>
+        <mat-chip *ngIf="comps.c1" (click)="selectComp(comps.c1, 'c1')" [id]="comps.c1 + ' ' + 'c1'" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(comps.c1, comps.l1).comps" matTooltipShowDelay="300" matTooltipHideDelay="500">{{ comps.c1 }}</mat-chip >
+      </div>
+      <div *ngIf="comps.c2 && comps.l2">
+        <span>{{ comps.l2 }}:</span>
+        <mat-chip *ngIf="comps.c2" (click)="selectComp(comps.c2, 'c2')" [id]="comps.c2 + ' ' + 'c2'" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(comps.c2, comps.l2).comps" matTooltipShowDelay="300" matTooltipHideDelay="500">{{ comps.c2 }}</mat-chip>
+      </div>
+      <div *ngIf="comps.c3 && comps.l3">
+        <span>{{ comps.l3 }}:</span>
+        <mat-chip *ngIf="comps.c3" (click)="selectComp(comps.c3, 'c3')" [id]="comps.c3 + ' ' + 'c3'" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(comps.c3, comps.l3).comps" matTooltipShowDelay="300" matTooltipHideDelay="500">{{ comps.c3 }}</mat-chip>
+      </div>
+      <div *ngIf="comps.c4 && comps.l4">
+        <span>{{ comps.l4 }}:</span>
+        <mat-chip *ngIf="comps.c4" (click)="selectComp(comps.c4, 'c4')" [id]="comps.c4 + ' ' + 'c4'" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(comps.c4, comps.l4).comps" matTooltipShowDelay="300" matTooltipHideDelay="500">{{ comps.c4 }}</mat-chip>
+      </div>
+      <div *ngIf="comps.c5 && comps.l5">
+        <span>{{ comps.l5 }}:</span>
+        <mat-chip *ngIf="comps.c5" (click)="selectComp(comps.c5, 'c5')" [id]="comps.c5 + ' ' + 'c5'" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(comps.c5, comps.l5).comps" matTooltipShowDelay="300" matTooltipHideDelay="500">{{ comps.c5 }}</mat-chip>
+      </div></mat-chip-list></ng-template></div>

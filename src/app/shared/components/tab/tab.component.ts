@@ -10,4 +10,5 @@ export class TabComponent {
 
   @Input() value: string;
   @Input() main = false;
+
 }

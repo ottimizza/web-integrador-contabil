@@ -1,42 +1,49 @@
 <h1 mat-dialog-title>Lançamentos afetados</h1>
 <div mat-dialog-content>
   <p>Estes serão os lançamentos afetados</p>
-  <table class="table table-striped table-bordered">
-    <thead class="thead-dark">
+
+  <table class="table table-bordered">
+
+    <thead>
       <tr>
-        <th>Fornecedor</th>
-        <th>Banco</th>
-        <th>Data do Movimento</th>
-        <th>Valor</th>
-        <th>Documento</th>
-        <th>Nome do Arquivo</th>
-        <th>Tipo da Planilha</th>
-        <th>Complemento 1</th>
-        <th>Complemento 2</th>
-        <th>Complemento 3</th>
-        <th>Complemento 4</th>
-        <th>Complemento 5</th>
+        <th *ngIf="hasFonecedor">Fornecedor</th>
+        <th *ngIf="hasBanco">Banco</th>
+        <th *ngIf="hasData">Data do Movimento</th>
+        <th *ngIf="hasValor">Valor</th>
+        <th *ngIf="hasDocumento">Documento</th>
+        <th *ngIf="hasNomeArquivo">Nome do Arquivo</th>
+        <th *ngIf="hasTipoPlanilha">Tipo da Planilha</th>
+        <th *ngIf="hasComplemento1">Complemento 1</th>
+        <th *ngIf="hasComplemento2">Complemento 2</th>
+        <th *ngIf="hasComplemento3">Complemento 3</th>
+        <th *ngIf="hasComplemento4">Complemento 4</th>
+        <th *ngIf="hasComplemento5">Complemento 5</th>
       </tr>
     </thead>
+
     <tbody>
       <tr *ngFor="let i of info">
-        <td>{{ i.descricao }}</td>
-        <td>{{ i.portador }}</td>
-        <td>{{ dateFormat(i.dataMovimento) }}</td>
-        <td>{{ i.valorOriginal }}</td>
-        <td>{{ i.documento }}</td>
-        <td>{{ i.arquivo.nome }}</td>
-        <td>{{ i.tipoPlanilha }}</td>
-        <td>{{ i.complemento01 }}</td>
-        <td>{{ i.complemento02 }}</td>
-        <td>{{ i.complemento03 }}</td>
-        <td>{{ i.complemento04 }}</td>
-        <td>{{ i.complemento05 }}</td>
+        <td *ngIf="hasFonecedor">{{ i.descricao }}</td>
+        <td *ngIf="hasBanco">{{ i.portador }}</td>
+        <td *ngIf="hasData">{{ dateFormat(i.dataMovimento) }}</td>
+        <td *ngIf="hasValor">R$ {{ i.valorOriginal }}</td>
+        <td *ngIf="hasDocumento">{{ i.documento }}</td>
+        <td *ngIf="hasNomeArquivo">{{ i.nomeArquivo }}</td>
+        <td *ngIf="hasTipoPlanilha">{{ i.tipoPlanilha }}</td>
+        <td *ngIf="hasComplemento1">{{ i.complemento01 }}</td>
+        <td *ngIf="hasComplemento2">{{ i.complemento02 }}</td>
+        <td *ngIf="hasComplemento3">{{ i.complemento03 }}</td>
+        <td *ngIf="hasComplemento4">{{ i.complemento04 }}</td>
+        <td *ngIf="hasComplemento5">{{ i.complemento05 }}</td>
       </tr>
     </tbody>
+
   </table>
+
+  <button class="btn btn-dark mb-4" *ngIf="hasNext()" (click)="nextPage()">Carregar mais</button>
+
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="btn btn-outline-info mr-3">Ok</button>
-  <button mat-button (click)="onNoClick()" tabindex="-1" class="btn btn-outline-danger mr-4">Cancelar</button>
+  <button (click)="onNoClick()" tabindex="-1" class="btn btn-outline-info mr-3">Ok</button>
+  <button (click)="onNoClick()" tabindex="-1" class="btn btn-outline-danger mr-4">Cancelar</button>
 </div>
