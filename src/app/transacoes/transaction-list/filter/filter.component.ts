@@ -1,9 +1,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { BusinessService } from '@shared/services/business.service';
 import { Empresa } from '@shared/models/Empresa';
-import { PageInfo, GenericPageableResponse } from '@shared/models/GenericPageableResponse';
-import { Observable } from 'rxjs';
+import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { ArrayUtils } from '@shared/utils/array.utils';
+import { GenericPagination } from '@shared/interfaces/GenericPagination';
 
 @Component({
   selector: 'app-tfilter',
@@ -14,8 +14,8 @@ export class FilterComponent implements OnInit {
 
   @Output() empresa = new EventEmitter();
   word = '';
-  pageInfo: PageInfo;
   suggestions: string[] = [];
+  business: Empresa[] = [];
 
   constructor(private _service: BusinessService) { }
 
@@ -28,27 +28,18 @@ export class FilterComponent implements OnInit {
   }
 
   confirm(event: any) {
-    const selected = event.target.value.split(' - ');
-    this._getEmpresas(selected[0], selected[1], true);
+    const erp = event.target.value.split(' - ')[0];
+    const business = this.business.filter(item => item.codigoERP === erp);
+    this.devolve(business[0]);
   }
 
   change() {
-    /*
-     ! ATENÇÃO:
-     TODO Quando houver mais empresas cadastradas, verificar se este método realmente funciona.
-
-     ! FUNCIONAMENTO ESPERADO:
-     ! Cada vez que a expressão inserida no filtro for alterada, deve ser realizado um novo request
-     ! com a nova expressão
-     */
-
     const split = this.word.split(' - ');
     if (split.length > 1) {
-      this._getEmpresas(split[0], split[1], false);
+      this._getEmpresas(split[0], split[1]);
     } else {
-      this._getEmpresas(split[0], split[0], false);
+      this._getEmpresas(split[0], split[0]);
     }
-
 
     // const search = this.word.split(' - ')[1] ? this.word.split(' - ')[1].toUpperCase() : '';
     // const word = this.word.toUpperCase();
@@ -67,24 +58,22 @@ export class FilterComponent implements OnInit {
     //   });
   }
 
-  private _getEmpresas(text1: string, text2: string, confirm: boolean) {
+  private _getEmpresas(text1: string, text2: string) {
     const obs2 = this._service.getByErpCode(text1);
-    const obs1 = this._service.getBusiness(text2);
-    const word = this.word.toUpperCase();
+    const obs1 = this._service.getBusiness(text2.toUpperCase());
     const subs1 = obs1.subscribe(data1 => {
 
       const subs2 = obs2.subscribe(data2 => {
-        if (confirm) {
-          this.devolve(data2.records[0]);
-        } else {
-          const records: Empresa[] = ArrayUtils.sum(data1.records, data2.records);
-          this.suggestions = [];
-          if (records.length) {
-            records.forEach(rec => {
-              this.suggestions.push(`${rec.codigoERP} - ${rec.razaoSocial}`);
-            });
-          }
+
+        const records: Empresa[] = ArrayUtils.sum(data1.records, data2.records);
+        this.suggestions = [];
+        this.business = records;
+        if (records.length) {
+          records.forEach(rec => {
+            this.suggestions.push(`${rec.codigoERP} - ${rec.razaoSocial}`);
+          });
         }
+
         subs2.unsubscribe();
       });
 
