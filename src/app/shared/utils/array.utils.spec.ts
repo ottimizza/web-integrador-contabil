@@ -41,4 +41,43 @@ describe('Utils: Array', () => {
 
   });
 
+  describe('Método split()', () => {
+
+    it('Deve realizar um split normal quando houver apenas um divisor', () => {
+      const text = '03/02/2020';
+      const split = ArrayUtils.split(text, ['/']);
+      expect(ArrayUtils.compare(split, ['03', '02', '2020'])).toBeTruthy();
+    });
+
+    it('Deve realizar splits consecutivos quando houver mais de um divisor', () => {
+      const cpf = '111.222.333-44';
+      const split = ArrayUtils.split(cpf, ['.', '-'])
+      expect(ArrayUtils.compare(split, ['111', '222', '333', '44'])).toBeTruthy();
+    });
+
+  });
+
+  describe('Médoto verify()', () => {
+
+    let array: boolean[];
+
+    beforeEach(() => {
+      array = [];
+      const times = Math.round(Math.random() * 300);
+      for (let i = 0; i < times; i++) {
+        array.push(true);
+      }
+    });
+
+    it('Deve retornar true quando todos os elementos do array forem true', () => {
+      expect(ArrayUtils.verify(array)).toBeTruthy();
+    });
+
+    it('Deve retornar false quando ao menos um dos elementos do array forem false', () => {
+      array.push(false);
+      expect(ArrayUtils.verify(array)).toBeFalsy();
+    });
+
+  });
+
 });

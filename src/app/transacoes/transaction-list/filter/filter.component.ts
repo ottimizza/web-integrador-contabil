@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { BusinessService } from '@shared/services/business.service';
 import { Empresa } from '@shared/models/Empresa';
+import { PageInfo } from '@shared/models/GenericPageableResponse';
 
 @Component({
   selector: 'app-tfilter',
@@ -12,6 +13,7 @@ export class FilterComponent implements OnInit {
   @Output() empresa = new EventEmitter();
   word = '';
   suggestions: string[] = [];
+  pageInfo: PageInfo;
 
   constructor(private _service: BusinessService) { }
 

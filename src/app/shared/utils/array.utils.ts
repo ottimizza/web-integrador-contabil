@@ -75,7 +75,7 @@ export class ArrayUtils {
 
     let verify = true;
     array.forEach(arr => {
-      if (!arr) {
+      if (arr !== true) {
         verify = false;
       }
     });

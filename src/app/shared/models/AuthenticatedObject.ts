@@ -1,24 +1,32 @@
 export class Authenticated {
-  username: string;
+  // username: string;
 
-  tokenType: string;
-  accessToken: string;
-  refreshToken: string;
+  // tokenType: string;
+  // accessToken: string;
+  // refreshToken: string;
 
-  expiresIn: number;
-  expiresAt: number;
+  // expiresIn: number;
+  // expiresAt: number;
 
+  // constructor(
+  //   username: string, tokenType: string, accessToken: string,
+  //   refreshToken: string, expiresIn: number, expiresAt: number
+  // ) {
+  //   this.username = username;
+  //   this.tokenType = tokenType;
+  //   this.accessToken = accessToken;
+  //   this.refreshToken = refreshToken;
+  //   this.expiresIn = expiresIn;
+  //   this.expiresAt = expiresAt;
+  // }
   constructor(
-    username: string, tokenType: string, accessToken: string,
-    refreshToken: string, expiresIn: number, expiresAt: number
-  ) {
-    this.username = username;
-    this.tokenType = tokenType;
-    this.accessToken = accessToken;
-    this.refreshToken = refreshToken;
-    this.expiresIn = expiresIn;
-    this.expiresAt = expiresAt;
-  }
+    public username: string,
+    public tokenType: string,
+    public accessToken: string,
+    public refreshToken: string,
+    public expiresIn: number,
+    public expiresAt: number
+  ) { }
 
   static empty() {
     return new Authenticated(

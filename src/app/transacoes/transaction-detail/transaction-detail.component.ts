@@ -70,8 +70,8 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   get info() {
     return {
       account: 'Insira neste campo, a conta relativa a este lançamento ou selecione uma das sugeridas.',
-      rule: 'A conta informada deve ser aplicada em todas as ocorrências da regra selecionada.',
-      ignore: 'Todos os lançamentos com a regra selecionada serão ignorados.',
+      rule: 'A conta informada deve ser aplicada em todas as ocorrências das palavras selecionada.',
+      ignore: 'Todos os lançamentos com as palavras selecionada serão ignorados.',
       skip: 'Deixar este lançamento para depois.',
       ok: 'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
       affecteds: 'Clique para visualizar os lançamentos afetados.',
@@ -89,11 +89,11 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     const lancamento = this.records[0];
     const arquivo = lancamento.arquivo;
-    const ok = (lancamento.complemento01 && arquivo.labelComplemento01) ||
-               (lancamento.complemento02 && arquivo.labelComplemento02) ||
-               (lancamento.complemento03 && arquivo.labelComplemento03) ||
-               (lancamento.complemento04 && arquivo.labelComplemento04) ||
-               (lancamento.complemento05 && arquivo.labelComplemento05);
+    const ok = !!((lancamento.complemento01 && arquivo.labelComplemento01) ||
+                  (lancamento.complemento02 && arquivo.labelComplemento02) ||
+                  (lancamento.complemento03 && arquivo.labelComplemento03) ||
+                  (lancamento.complemento04 && arquivo.labelComplemento04) ||
+                  (lancamento.complemento05 && arquivo.labelComplemento05));
     let text = '';
     if (ok) {
       text = JSON.stringify({
@@ -222,27 +222,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         this.conditions.nomeArquivo = s;
         break;
     }
-    // if (title === 'Fornecedor') {
-    //   this.conditions.descricao = sel;
-    // } else if (title === 'Documento') {
-    //   this.conditions.documento = sel;
-    // } else if (title === 'Banco') {
-    //   this.conditions.portador = sel;
-    // } else if (title === 'Complemento 1') {
-    //   this.conditions.complemento01 = sel;
-    // } else if (title === 'Complemento 2') {
-    //   this.conditions.complemento02 = sel;
-    // } else if (title === 'Complemento 3') {
-    //   this.conditions.complemento03 = sel;
-    // } else if (title === 'Complemento 4') {
-    //   this.conditions.complemento04 = sel;
-    // } else if (title === 'Complemento 5') {
-    //   this.conditions.complemento05 = sel;
-    // } else if (title === 'Tipo da Planilha') {
-    //   this.conditions.tipoPlanilha = sel;
-    // } else if (title === 'Nome do Arquivo') {
-    //   this.conditions.nomeArquivo = sel;
-    // }
     this.getByRule();
   }
 
