@@ -1,6 +1,6 @@
 <div mat-dialog-title>
   <h2 class="ml-4">Histórico do Lançamento</h2>
-  <app-hrow span="Código do Histórico" col="3" (write)="id = $event"></app-hrow>
+  <app-hrow span="Código do Histórico" col="4" (write)="id = $event"></app-hrow>
 </div>
 <div mat-dialog-content>
 
@@ -14,7 +14,7 @@
   </form>
   <div class="row m-4" *ngIf="params && params.length > 0">
     <p class="mr-4">Resultado:</p>
-    <p class="text-warning font-weight-bold">{{ params }}</p>
+    <p class="font-weight-bold">{{ params }}</p>
   </div>
 
 </div>

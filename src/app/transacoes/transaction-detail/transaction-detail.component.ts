@@ -31,12 +31,12 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   destroy: boolean;
   errorText: string;
   errorText2: string;
-  remaining: number;
   tabsButtonClass: string[];
   tipoLancamento = 'PAG';
   tipoLancamentoName: string;
   tipoMovimento = 1;
   tabIsClicked = false;
+  remaining = 0;
   page = 0;
   impact = 0;
   counter = 0;
@@ -239,7 +239,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     }
   }
 
-
   openGrid(): void {
     const dialogRef = this.dialog.open(RuleGridComponent, {
       maxWidth: '1400px',
@@ -250,9 +249,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-
-    });
+    dialogRef.afterClosed().subscribe();
   }
 
   openHistoric(obs: Observable<Lancamento>): void {
@@ -268,9 +265,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this._subsAndDisable(obs);
       this._historicService
         .createHistoric(result)
-        .subscribe(data => {
-          // console.log(data);
-        });
+        .subscribe();
     });
   }
 
@@ -334,7 +329,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     if (this.pageInfo) {
       this.remaining = this.pageInfo.totalElements - this.counter;
     }
-
     if (autoIncrement === true) {
       this.counter++;
     }

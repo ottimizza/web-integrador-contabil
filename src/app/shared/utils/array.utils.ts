@@ -1,25 +1,26 @@
 export class ArrayUtils {
 
   public static sum(array1: any[], array2: any[]) {
-    const array = array1;
-    const arr = array2;
     /*
-     * Soma dois arrays eliminando os elementos repetidos
+    Soma dois arrays eliminando os elementos repetidos
      */
+    const array = array1;
+    const arr = array2.filter(item => !array.includes(item));
 
-    if (typeof array !== typeof arr) {
-      throw new Error('Os dois arrays passados para o método ArrayUtils.sum() são de tipos diferentes');
-    }
-
-    array.forEach(arrayItem => {
-      arr.forEach(arrItem => {
-        if (arrayItem !== arrItem) {
-          arr.splice(arr.indexOf(arrItem), 1);
-        }
-      });
+    arr.forEach(item => {
+      array.push(item);
     });
 
-    return array.concat(arr);
+    return array;
+    // array.forEach(arrayItem => {
+    //   arr.forEach(arrItem => {
+    //     if (arrayItem !== arrItem) {
+    //       arr.splice(arr.indexOf(arrItem), 1);
+    //     }
+    //   });
+    // });
+
+    // return array.concat(arr);
   }
 
   public static compare(array: any[], arr: any[]) {
