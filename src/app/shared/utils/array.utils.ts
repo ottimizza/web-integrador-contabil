@@ -2,10 +2,12 @@ export class ArrayUtils {
 
   public static sum(array1: any[], array2: any[]) {
     /*
+    ! MÉTODO EM MANUTENÇAÕ, EVITAR SEU USO.
+    TODO: Consertar o método pra ontem
     Soma dois arrays eliminando os elementos repetidos
      */
     const array = array1;
-    const arr = array2.filter(item => !array.includes(item));
+    const arr = array2.filter(item => array.includes(item));
 
     arr.forEach(item => {
       array.push(item);
