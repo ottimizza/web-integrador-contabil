@@ -45,13 +45,13 @@ describe('Utils: Array', () => {
 
     it('Deve realizar um split normal quando houver apenas um divisor', () => {
       const text = '03/02/2020';
-      const split = ArrayUtils.split(text, ['/']);
+      const split = ArrayUtils.split(text, '/');
       expect(ArrayUtils.compare(split, ['03', '02', '2020'])).toBeTruthy();
     });
 
     it('Deve realizar splits consecutivos quando houver mais de um divisor', () => {
       const cpf = '111.222.333-44';
-      const split = ArrayUtils.split(cpf, ['.', '-'])
+      const split = ArrayUtils.split(cpf, '.', '-');
       expect(ArrayUtils.compare(split, ['111', '222', '333', '44'])).toBeTruthy();
     });
 

@@ -40,7 +40,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   page = 0;
   impact = 0;
   counter = 0;
-  // Cuidado ao alterar o counter, fazer isto apenas através do tabsPattern() e do _remaining()
+  // ! Cuidado ao alterar o counter, fazer isto apenas através do tabsPattern() e do _remaining()
 
   constructor(
     // tslint:disable: variable-name

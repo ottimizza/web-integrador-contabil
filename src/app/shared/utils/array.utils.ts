@@ -1,6 +1,8 @@
 export class ArrayUtils {
 
-  public static sum(array: any[], arr: any[]) {
+  public static sum(array1: any[], array2: any[]) {
+    const array = array1;
+    const arr = array2;
     /*
      * Soma dois arrays eliminando os elementos repetidos
      */
@@ -11,7 +13,7 @@ export class ArrayUtils {
 
     array.forEach(arrayItem => {
       arr.forEach(arrItem => {
-        if (arrayItem === arrItem) {
+        if (arrayItem !== arrItem) {
           arr.splice(arr.indexOf(arrItem), 1);
         }
       });
@@ -19,7 +21,6 @@ export class ArrayUtils {
 
     return array.concat(arr);
   }
-
 
   public static compare(array: any[], arr: any[]) {
     /*
@@ -42,7 +43,7 @@ export class ArrayUtils {
 
   }
 
-  public static split(text: string, divisors: string[]) {
+  public static split(text: string, ...divisors: string[]) {
     /*
      * Realiza um split com mais de um divisor
      */

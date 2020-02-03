@@ -13,7 +13,7 @@
 
     <div class="p-4" *ngIf="tabIsClicked">
       <div class="row m-0 mb-4 d-inline-block">
-        <div class="col">
+        <div class="col" *ngIf="impact > 0">
           <span class="defaultSpan">Impacto: </span>
           <span
             (click)="openGrid()"
@@ -26,7 +26,7 @@
           <span class="font-weight-normal" (click)="openGrid()"> lançamentos.</span
           >
         </div>
-        <div class="col">
+        <div class="col" *ngIf="remaining > 0">
           <div class="float-right">
             <span class="defaultSpan">Lançamentos restantes: </span>
             <span class="defaultSpan">{{ remaining }}</span>
@@ -36,6 +36,7 @@
       <app-card *ngIf="records[0]">
         <app-card>
           <app-card main="true" [destroy]="destroy">
+
             <div
               class="row m-0 mb-2"
               *ngIf="records[0].descricao || records[0].portador"
@@ -134,7 +135,7 @@
 
       <div
         class="row m-0"
-        *ngIf="!errorText || !errorText.startsWith('Você conclui todos os ')"
+        *ngIf="impact > 0 || remaining > 0"
       >
         <div class="form-group col-5 mt-1">
           <strong

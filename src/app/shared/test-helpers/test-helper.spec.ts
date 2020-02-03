@@ -10,7 +10,11 @@ describe('Test Helper', () => {
 
     it('Deve retornar o texto por inteiro caso o tamanho indicado seja maior que o do texto', () => {
       const num = Number.MAX_VALUE;
-      expect(TestHelper.ipsum(num).length).toBe(703);
+      expect(TestHelper.ipsum(num).length).toBe(696);
+    });
+
+    it('Deve retornar o texto por inteiro caso não seja indicado nenhum tamanho', () => {
+      expect(TestHelper.ipsum().length).toBe(696);
     });
 
   });

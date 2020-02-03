@@ -22,6 +22,11 @@ export class BusinessService {
     return this._http.get<GenericPageableResponse<Empresa>>(`${BASE_URL}/api/v1/empresas?razaoSocial=${business}`, this._headers);
   }
 
+  getByErpCode(erp: string): Observable<GenericPageableResponse<Empresa>> {
+    const url = `${BASE_URL}/api/v1/empresas?codigoERP=${erp}`;
+    return this._http.get<GenericPageableResponse<Empresa>>(url, this._headers);
+  }
+
   private get _headers() {
     const headers = this._auth.getAuthorizationHeaders();
     return { headers };
