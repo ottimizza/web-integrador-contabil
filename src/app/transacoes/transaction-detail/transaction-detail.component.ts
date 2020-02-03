@@ -393,4 +393,3 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
 }
-

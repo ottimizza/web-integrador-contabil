@@ -2,7 +2,6 @@
   <app-info [description]="info.info"></app-info>
 </div>
 
-
 <form autocomplete="off">
   <div class="card">
     <div class="row w-100 m-0">
@@ -11,7 +10,6 @@
       <button [ngClass]="tabsButtonClass[2]" (click)="rec()">Recebimentos</button>
       <button [ngClass]="tabsButtonClass[3]" (click)="exrec()">Extrato Créditos</button>
     </div>
-
 
     <div class="p-4" *ngIf="tabIsClicked">
       <div class="row m-0 mb-4 d-inline-block">
@@ -25,8 +23,8 @@
             matTooltipHideDelay="500"
             >{{ impact }}</span
           >
-          <span class="font-weight-normal" (click)="openGrid()">
-            lançamentos.</span
+          <span class="font-weight-normal" (click)="openGrid()"
+            >lançamentos.</span
           >
         </div>
         <div class="col">
@@ -135,7 +133,10 @@
         <p *ngIf="errorText2">{{ errorText2 }}</p>
       </div>
 
-      <div class="row m-0" *ngIf="!errorText || !errorText.startsWith('Você conclui todos os ')">
+      <div
+        class="row m-0"
+        *ngIf="!errorText || !errorText.startsWith('Você conclui todos os ')"
+      >
         <div class="form-group col-5 mt-1">
           <strong
             class="account-field"

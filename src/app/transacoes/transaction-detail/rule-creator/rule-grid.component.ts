@@ -60,103 +60,55 @@ export class RuleGridComponent implements OnInit, GenericPagination {
   }
 
   get hasFonecedor(): boolean {
-    const props = [];
-    this.info.forEach(lanc => {
-      props.push(lanc.descricao);
-    });
-    return this._verifyPattern(props);
+    return this._hasPattern('fornecedor');
   }
 
   get hasBanco(): boolean {
-    const props = [];
-    this.info.forEach(lanc => {
-      props.push(lanc.portador);
-    });
-    return this._verifyPattern(props);
+    return this._hasPattern('banco');
   }
 
   get hasData(): boolean {
-    const props = [];
-    this.info.forEach(lanc => {
-      props.push(lanc.dataMovimento);
-    });
-    return this._verifyPattern(props);
+    return this._hasPattern('data');
   }
 
   get hasValor(): boolean {
-    const props = [];
-    this.info.forEach(lanc => {
-      props.push(lanc.valorOriginal);
-    });
-    return this._verifyPattern(props);
+    return this._hasPattern('valor');
   }
 
   get hasDocumento(): boolean {
-    const props = [];
-    this.info.forEach(lanc => {
-      props.push(lanc.documento);
-    });
-    return this._verifyPattern(props);
+    return this._hasPattern('documento');
   }
 
   get hasNomeArquivo(): boolean {
-    const props = [];
-    this.info.forEach(lanc => {
-      props.push(lanc.nomeArquivo);
-    });
-    return this._verifyPattern(props);
+    return this._hasPattern('nome');
   }
 
   get hasTipoPlanilha(): boolean {
-    const props = [];
-    this.info.forEach(lanc => {
-      props.push(lanc.tipoPlanilha);
-    });
-    return this._verifyPattern(props);
+    return this._hasPattern('planilha');
   }
 
   get hasComplemento1(): boolean {
-    const props = [];
-    this.info.forEach(lanc => {
-      props.push(lanc.complemento01);
-    });
-    return this._verifyPattern(props);
+    return this._hasPattern('c1');
   }
 
   get hasComplemento2(): boolean {
-    const props = [];
-    this.info.forEach(lanc => {
-      props.push(lanc.complemento02);
-    });
-    return this._verifyPattern(props);
+    return this._hasPattern('c2');
   }
 
   get hasComplemento3(): boolean {
-    const props = [];
-    this.info.forEach(lanc => {
-      props.push(lanc.complemento03);
-    });
-    return this._verifyPattern(props);
+    return this._hasPattern('c3');
   }
 
   get hasComplemento4(): boolean {
-    const props = [];
-    this.info.forEach(lanc => {
-      props.push(lanc.complemento04);
-    });
-    return this._verifyPattern(props);
+    return this._hasPattern('c4');
   }
 
   get hasComplemento5(): boolean {
-    const props = [];
-    this.info.forEach(lanc => {
-      props.push(lanc.complemento05);
-    });
-    return this._verifyPattern(props);
+    return this._hasPattern('c5');
   }
 
-  private _verifyPattern(property: any[]) {
-    const verify = a => {
+  private _verify(property: any[]) {
+    const verify = (a: string) => {
       if (a) {
         return true;
       }
@@ -168,6 +120,60 @@ export class RuleGridComponent implements OnInit, GenericPagination {
     });
 
     return array.length > 0;
+  }
+
+  private _hasPattern(atribute: string) {
+    const props = [];
+    this.info.forEach(lanc => {
+      const prop = this._getProperty(lanc, atribute);
+      if (prop) {
+        props.push(prop);
+      }
+    });
+    return this._verify(props);
+  }
+
+  private _getProperty(l: Lancamento, atribute: string) {
+    let property: string;
+    switch (atribute) {
+      case 'fornecedor':
+        property = l.descricao;
+        break;
+      case 'banco':
+        property = l.portador;
+        break;
+      case 'data':
+        property = l.dataMovimento;
+        break;
+      case 'valor':
+        property = `${l.valorOriginal}`;
+        break;
+      case 'documento':
+        property = l.documento;
+        break;
+      case 'nome':
+        property = l.nomeArquivo;
+        break;
+      case 'planilha':
+        property = l.tipoPlanilha;
+        break;
+      case 'c1':
+        property = l.complemento01;
+        break;
+      case 'c2':
+        property = l.complemento02;
+        break;
+      case 'c3':
+        property = l.complemento03;
+        break;
+      case 'c4':
+        property = l.complemento04;
+        break;
+      case 'c5':
+        property = l.complemento05;
+        break;
+    }
+    return property;
   }
 
 }

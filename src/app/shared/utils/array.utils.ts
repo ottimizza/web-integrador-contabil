@@ -2,8 +2,8 @@ export class ArrayUtils {
 
   public static sum(array: any[], arr: any[]) {
     /*
-    * Soma dois arrays eliminando os elementos repetidos
-    */
+     * Soma dois arrays eliminando os elementos repetidos
+     */
 
     if (typeof array !== typeof arr) {
       throw new Error('Os dois arrays passados para o método ArrayUtils.sum() são de tipos diferentes');
@@ -23,8 +23,8 @@ export class ArrayUtils {
 
   public static compare(array: any[], arr: any[]) {
     /*
-    * Verifica se dois arrays são EXATAMENTE iguais em TODOS os aspectos
-    */
+     * Verifica se dois arrays são EXATAMENTE iguais em TODOS os aspectos
+     */
     let verify = true;
 
     if (!array) {
