@@ -3,7 +3,8 @@ import { Lancamento } from '@shared/models/Lancamento';
 
 @Component({
   selector: 'app-historic-field',
-  templateUrl: './historic-field.component.html'
+  templateUrl: './historic-field.component.html',
+  styleUrls: ['./historic-field.component.scss']
 })
 export class HistoricFieldComponent {
 
@@ -37,23 +38,29 @@ export class HistoricFieldComponent {
     } else {
       const l = this.lancamento;
       this.array.push('');
-      this._verifyAndPush(l.descricao, 'Fornecedor');
-      this._verifyAndPush(l.portador, 'Portador');
-      this._verifyAndPush(l.dataMovimento, 'Data');
-      this._verifyAndPush(l.valorOriginal, 'Valor');
-      this._verifyAndPush(l.documento, 'Documento');
-      this._verifyAndPush(l.nomeArquivo, 'Nome do Arquivo');
-      this._verifyAndPush(l.tipoPlanilha, 'Tipo da Planilha');
-      this._verifyAndPush(l.complemento01, 'Complemento 01');
-      this._verifyAndPush(l.complemento02, 'Complemento 02');
-      this._verifyAndPush(l.complemento03, 'Complemento 03');
-      this._verifyAndPush(l.complemento04, 'Complemento 04');
-      this._verifyAndPush(l.complemento05, 'Complemento 05');
+
+      const localArray: { property: string, text: string }[] = [
+        { property: l.descricao, text: 'Fornecedor' },
+        { property: l.portador, text: 'Portador' },
+        { property: l.dataMovimento, text: 'Data' },
+        { property: `${l.valorOriginal}`, text: 'Valor' },
+        { property: l.nomeArquivo, text: 'Nome do Arquivo' },
+        { property: l.tipoPlanilha, text: 'Tipo da Planilha' },
+        { property: l.complemento01, text: 'Complemento 01' },
+        { property: l.complemento02, text: 'Complemento 02' },
+        { property: l.complemento03, text: 'Complemento 03' },
+        { property: l.complemento04, text: 'Complemento 04' },
+        { property: l.complemento05, text: 'Complemento 05' },
+      ];
+
+      localArray.forEach(arrItem => {
+        this._verifyAndPush(arrItem.property, arrItem.text);
+      });
     }
     return this.array;
   }
 
-  private _verifyAndPush(verify: any, push: string) {
+  private _verifyAndPush(verify: string, push: string) {
     if (verify) {
       this.array.push(push);
     }

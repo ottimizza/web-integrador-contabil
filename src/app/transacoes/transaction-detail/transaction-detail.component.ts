@@ -27,7 +27,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   records: Lancamento[] = [];
   account: string;
   conditions = new Rule();
-  ruleSelected = false;
   pageInfo: PageInfo;
   destroy: boolean;
   errorText: string;
@@ -189,27 +188,61 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   onDevolve(event: any) {
-    if (event.title === 'Fornecedor') {
-      this.conditions.descricao = event.selecteds;
-    } else if (event.title === 'Documento') {
-      this.conditions.documento = event.selecteds;
-    } else if (event.title === 'Banco') {
-      this.conditions.portador = event.selecteds;
-    } else if (event.title === 'Complemento 1') {
-      this.conditions.complemento01 = event.selecteds;
-    } else if (event.title === 'Complemento 2') {
-      this.conditions.complemento02 = event.selecteds;
-    } else if (event.title === 'Complemento 3') {
-      this.conditions.complemento03 = event.selecteds;
-    } else if (event.title === 'Complemento 4') {
-      this.conditions.complemento04 = event.selecteds;
-    } else if (event.title === 'Complemento 5') {
-      this.conditions.complemento05 = event.selecteds;
-    } else if (event.title === 'Tipo da Planilha') {
-      this.conditions.tipoPlanilha = event.selecteds;
-    } else if (event.title === 'Nome do Arquivo') {
-      this.conditions.nomeArquivo = event.selecteds;
+    const s = event.selecteds;
+
+    switch (event.title) {
+      case 'Fornecedor':
+        this.conditions.descricao = s;
+        break;
+      case 'Documento':
+        this.conditions.documento = s;
+        break;
+      case 'Banco':
+        this.conditions.portador = s;
+        break;
+      case 'Complemento 1':
+        this.conditions.complemento01 = s;
+        break;
+      case 'Complemento 2':
+        this.conditions.complemento02 = s;
+        break;
+      case 'Complemento 3':
+        this.conditions.complemento03 = s;
+        break;
+      case 'Complemento 4':
+        this.conditions.complemento04 = s;
+        break;
+      case 'Complemento 5':
+        this.conditions.complemento05 = s;
+        break;
+      case 'Tipo da Planilha':
+        this.conditions.tipoPlanilha = s;
+        break;
+      case 'Nome do Arquivo':
+        this.conditions.nomeArquivo = s;
+        break;
     }
+    // if (title === 'Fornecedor') {
+    //   this.conditions.descricao = sel;
+    // } else if (title === 'Documento') {
+    //   this.conditions.documento = sel;
+    // } else if (title === 'Banco') {
+    //   this.conditions.portador = sel;
+    // } else if (title === 'Complemento 1') {
+    //   this.conditions.complemento01 = sel;
+    // } else if (title === 'Complemento 2') {
+    //   this.conditions.complemento02 = sel;
+    // } else if (title === 'Complemento 3') {
+    //   this.conditions.complemento03 = sel;
+    // } else if (title === 'Complemento 4') {
+    //   this.conditions.complemento04 = sel;
+    // } else if (title === 'Complemento 5') {
+    //   this.conditions.complemento05 = sel;
+    // } else if (title === 'Tipo da Planilha') {
+    //   this.conditions.tipoPlanilha = sel;
+    // } else if (title === 'Nome do Arquivo') {
+    //   this.conditions.nomeArquivo = sel;
+    // }
     this.getByRule();
   }
 
@@ -227,9 +260,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     }
   }
 
-  activate() {
-    this.ruleSelected = this.conditions.verify();
-  }
 
   openGrid(): void {
     const dialogRef = this.dialog.open(RuleGridComponent, {
@@ -309,7 +339,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   private _partialDisable() {
     this.conditions = new Rule();
     this.getByRule();
-    this.ruleSelected = false;
     this.account = null;
   }
 
@@ -340,7 +369,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this.records.splice(0, 1);
     this.resetErrors();
 
-    if (this.records.length === 0 && this.hasNext()) {
+    if (this.records.length === 0 && (!this.pageInfo || this.pageInfo.hasNext)) {
       this.nextPage();
       this._remaining(true);
     } else if (this.records.length !== 0) {
@@ -349,10 +378,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this._remaining();
       this.resetErrors([`Você conclui todos os ${this.tipoLancamentoName} desta empresa.`]);
     }
-  }
-
-  hasNext() {
-    return !this.pageInfo || this.pageInfo.hasNext;
   }
 
   nextPage() {
@@ -366,7 +391,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this.resetErrors();
     });
   }
-
 
 }
 

@@ -1,94 +1,75 @@
-describe('Component: TransactionDetail', () => {
+// import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+// import { TransactionDetailComponent } from './transaction-detail.component';
+// import { LancamentoService } from '@shared/services/lancamento.service';
+// import { RuleService } from '@shared/services/rule.service';
+// import { HistoricService } from '@shared/services/historic.service';
+// import { MatDialog } from '@angular/material/dialog';
+// import { TestHelper } from '@shared/test-helpers/test-helpers';
+// import { Rule } from '@shared/models/Rule';
 
-  // let fixture: ComponentFixture<TransactionDetailComponent>;
-  // let component: TransactionDetailComponent;
+// describe('Component: TransactionDetail', () => {
 
-  // beforeEach(() => {
-  //   TestBed.configureTestingModule({
-  //     declarations: [TransactionDetailComponent],
-  //     providers: [
-  //       LancamentoService,
-  //       RuleService,
-  //       HistoricService,
-  //       MatDialog
-  //     ],
-  //     imports: [
-  //       CommonModule,
-  //       FormsModule,
-  //       RuleGridModule,
-  //       TransactionInfoModule,
-  //       MatDialogModule,
-  //       MatTooltipModule,
-  //       CardModule,
-  //       MatProgressBarModule,
-  //       InfoModule,
-  //       HistoricModule
-  //     ]
-  //   });
-  //   fixture = TestBed.createComponent(TransactionDetailComponent);
-  //   component = fixture.componentInstance;
-  // });
+//   let fixture: ComponentFixture<TransactionDetailComponent>;
+//   let component: TransactionDetailComponent;
 
-  // it('getter suggestions deve retornar uma string em branco quando não houver sugestões', () => {
-  //   expect(component.suggestions).toEqual('');
-  // });
+//   beforeEach(() => {
+//     TestBed.configureTestingModule({
+//       declarations: [TransactionDetailComponent],
+//       providers: [
+//         LancamentoService,
+//         RuleService,
+//         HistoricService,
+//         MatDialog
+//       ]
+//     });
+//     fixture = TestBed.createComponent(TransactionDetailComponent);
+//     component = fixture.componentInstance;
+//   });
 
-  // it('método getComplementos() deve retornar false quando não houver complementos', () => {
-  //   expect(component.getComplementos().ok).toBeFalsy();
-  // });
+//   it('getter suggestions deve retornar uma string em branco quando não houver sugestões', () => {
+//     expect(component.suggestions).toEqual('');
+//   });
 
-  // describe('método resetErrors()', () => {
+//   it('método getComplementos() deve retornar false quando não houver complementos', () => {
+//     expect(component.getComplementos().ok).toBeFalsy();
+//   });
 
-  //   let texto1: string;
-  //   let texto2: string;
+//   describe('método resetErrors()', () => {
 
-  //   beforeEach(() => {
-  //     texto1 = TestHelper.ipsum(40);
-  //     texto2 = TestHelper.ipsum(70);
-  //   });
+//     let texto1: string;
+//     let texto2: string;
 
-  //   it('deve limpar os dois campos de erro se não houver erros', () => {
-  //     component.resetErrors();
-  //     expect(component.errorText).toBeNull();
-  //     expect(component.errorText2).toBeNull();
-  //   });
+//     beforeEach(() => {
+//       texto1 = TestHelper.ipsum(40);
+//       texto2 = TestHelper.ipsum(70);
+//     });
 
-  //   it('deve exibir o primeiro campo de erro e ocultar o segundo quando houver apenas um erro', () => {
-  //     component.resetErrors([texto1]);
-  //     expect(component.errorText).toEqual(texto1);
-  //     expect(component.errorText2).toBeNull();
-  //   });
+//     it('deve limpar os dois campos de erro se não houver erros', () => {
+//       component.resetErrors();
+//       expect(component.errorText).toBeNull();
+//       expect(component.errorText2).toBeNull();
+//     });
 
-  //   it('deve exibir os dois campos de erro caso haja mais de um erro', () => {
-  //     component.resetErrors([texto1, texto2]);
-  //     expect(component.errorText).toEqual(texto1);
-  //     expect(component.errorText2).toEqual(texto2);
-  //   });
+//     it('deve exibir o primeiro campo de erro e ocultar o segundo quando houver apenas um erro', () => {
+//       component.resetErrors([texto1]);
+//       expect(component.errorText).toEqual(texto1);
+//       expect(component.errorText2).toBeNull();
+//     });
 
-  // });
+//     it('deve exibir os dois campos de erro caso haja mais de um erro', () => {
+//       component.resetErrors([texto1, texto2]);
+//       expect(component.errorText).toEqual(texto1);
+//       expect(component.errorText2).toEqual(texto2);
+//     });
 
-  // describe('método activate()', () => {
+//   });
 
-  //   it('deve retornar false quando não houver nenhuma regra', () => {
-  //     component.activate();
-  //     expect(component.ruleSelected).toBeFalsy();
-  //   });
+//   it('método disable() deve reiniciar as variáveis de exibição', fakeAsync(() => {
+//     component.disable();
+//     tick();
+//     expect(component.destroy).toBeFalsy();
+//     expect(component.conditions).toEqual(new Rule());
+//     expect(component.account).toBeNull();
+//   }));
 
-  //   it('deve retornar true quando houver alguma regra', () => {
-  //     component.conditions.complemento01.push('a');
-  //     component.activate();
-  //     expect(component.ruleSelected).toBeTruthy();
-  //   });
-
-  // });
-
-  // it('método disable() deve reiniciar as variáveis de exibição', fakeAsync(() => {
-  //   component.disable();
-  //   tick();
-  //   expect(component.destroy).toBeFalsy();
-  //   expect(component.conditions).toEqual(new Rule());
-  //   expect(component.ruleSelected).toBeFalsy();
-  //   expect(component.account).toBeNull();
-  // }));
-
-});
+// });
