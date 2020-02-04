@@ -24,18 +24,18 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
   @Input() business: Empresa;
   @Output() tabSelect = new EventEmitter();
-  records: Lancamento[] = [];
-  account: string;
   conditions = new Rule();
   pageInfo: PageInfo;
-  destroy: boolean;
+  records: Lancamento[] = [];
+  tabsButtonClass: string[];
+  account: string;
   errorText: string;
   errorText2: string;
-  tabsButtonClass: string[];
-  tipoLancamento = 'PAG';
   tipoLancamentoName: string;
-  tipoMovimento = 1;
+  tipoLancamento = 'PAG';
+  destroy: boolean;
   tabIsClicked = false;
+  tipoMovimento = 1;
   remaining = 0;
   page = 0;
   impact = 0;

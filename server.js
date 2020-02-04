@@ -17,16 +17,16 @@ require('dotenv').config();
 function getEnvironmentVariable(key, _default = '') { return process.env[key] || _default; }
 
 function createEnvironementFile() {
-//   return `export const environment = {
-//   production: true,
-//   oauthBaseUrl: '${getEnvironmentVariable('OAUTH2_BASE_URL')}',
-//   oauthClientId: '${getEnvironmentVariable('OAUTH2_CLIENT_ID')}'
-// };`;
   return `export const environment = {
   production: true,
-  oauthBaseUrl: '${getEnvironmentVariable('oauthBaseUrl')}',
-  oauthClientId: '${getEnvironmentVariable('oauthClientId')}'
+  oauthBaseUrl: '${getEnvironmentVariable('OAUTH2_BASE_URL')}',
+  oauthClientId: '${getEnvironmentVariable('OAUTH2_CLIENT_ID')}'
 };`;
+//   return `export const environment = {
+//   production: true,
+//   oauthBaseUrl: '${getEnvironmentVariable('oauthBaseUrl')}',
+//   oauthClientId: '${getEnvironmentVariable('oauthClientId')}'
+// };`;
 }
 
 const environment = getEnvironmentVariable('ENVIRONMENT');
