@@ -22,6 +22,11 @@ function createEnvironementFile() {
   oauthBaseUrl: '${getEnvironmentVariable('OAUTH2_BASE_URL')}',
   oauthClientId: '${getEnvironmentVariable('OAUTH2_CLIENT_ID')}'
 };`;
+//   return `export const environment = {
+//   production: true,
+//   oauthBaseUrl: '${getEnvironmentVariable('oauthBaseUrl')}',
+//   oauthClientId: '${getEnvironmentVariable('oauthClientId')}'
+// };`;
 }
 
 const environment = getEnvironmentVariable('ENVIRONMENT');
@@ -54,7 +59,7 @@ const forceSSL = function () {
 //
 //
 
-app.disable('etag'); // 
+app.disable('etag'); //
 
 app.use(forceSSL()); // enforces SSL connection.
 

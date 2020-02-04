@@ -3,8 +3,8 @@ export class PageInfo {
   hasNext: boolean;
   hasPrevious: boolean;
 
-  pageIndex: number;
   pageSize: number;
+  pageIndex: number;
 
   totalPages: number;
   totalElements: number;
@@ -13,8 +13,7 @@ export class PageInfo {
 
 export class GenericPageableResponse<T> {
 
-  pageInfo: PageInfo;
-
   records: Array<T>;
+  pageInfo: PageInfo;
 
 }

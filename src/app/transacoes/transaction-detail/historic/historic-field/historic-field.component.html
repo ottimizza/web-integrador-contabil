@@ -1,0 +1,5 @@
+<span *ngIf="name">{{ name }}</span>
+
+<select (change)="devolve($event)" class="hrow-field">
+  <option *ngFor="let v of values" [value]="v">{{ v }}</option>
+</select>

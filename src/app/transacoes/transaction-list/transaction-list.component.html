@@ -1,2 +1,10 @@
-<app-timeline></app-timeline>
-<ott-tdetail></ott-tdetail>
+<div class="main-wrapper pt-2 grayContainer">
+  <div class="info mt-2" *ngIf="!business">
+    <app-info [description]="info.first"></app-info>
+  </div>
+  <app-tfilter (empresa)="onDevolve($event)"></app-tfilter>
+  <div class="info mt-2 mb-4" *ngIf="business && !tabIsSelected">
+    <app-info [description]="info.second"></app-info>
+  </div>
+  <app-tdetail *ngIf="business" [business]="business" (tabSelect)="onSelect($event)"></app-tdetail>
+</div>

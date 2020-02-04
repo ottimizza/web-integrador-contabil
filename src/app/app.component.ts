@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { RxEvent } from '@app/services/rx-event.service';
 import { DOCUMENT } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { TransactionDetailComponent } from './transacoes/transaction-detail/transaction-detail.component';
 
 @Component({
   selector: 'app-root',

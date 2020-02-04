@@ -65,6 +65,7 @@ body {
     max-height: 60px;
   }
 }
+
 #main-wrapper {
   width: 100%;
   height: calc(100% - 70px);
@@ -72,11 +73,55 @@ body {
   margin-top: 70px;
 }
 
+.main-wrapper, .page-wrapper {
+  transition: 0.15s ease-out;
+}
+
+/* ******************************************** *
+ * * * * * * * *  HISTORIC  * * * * * * * * * * *
+ * ******************************************** */
+ .hrow-field {
+  width: 100%;
+  padding: 5px;
+  border-radius: 7px;
+  border: solid 1px rgb(211, 211, 211);
+ }
+
+/* ******************************************** *
+ * * * * * * * *  SCROLLBAR * * * * * * * * * * *
+ * ******************************************** */
+ ::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 /* ******************************************** *
  * * * * * * * * *  SIDEBAR * * * * * * * * * * *
  * ******************************************** */
 $compact-sidebar-width: 70px;
 $full-sidebar-width: 240px;
+
+.alt-collapsed {
+  width: $compact-sidebar-width;
+}
+
+.un-alt-collapsed {
+  width: $full-sidebar-width;
+}
 
 .fix-sidebar {
   .left-sidebar {
@@ -148,7 +193,13 @@ $full-sidebar-width: 240px;
 
 @media (max-width: 767px) {
   .mini-sidebar {
-    .page-wrapper {
+
+    .alt-bars {
+      display: none;
+    }
+
+    .page-wrapper,
+    .main-wrapper {
       margin-left: 0px;
     }
     .left-sidebar {
@@ -163,13 +214,18 @@ $full-sidebar-width: 240px;
     }
   }
 }
+
 @media (min-width: 768px) {
   .mini-sidebar {
+    .alt-bars {
+      display: none;
+    }
     .sidebar-toggler,
     .sidebar-overlay {
       display: none;
     }
     .page-wrapper,
+    .main-wrapper,
     .footer {
       margin-left: $compact-sidebar-width;
     }
@@ -184,14 +240,31 @@ $full-sidebar-width: 240px;
 }
 @media (min-width: 1170px) {
   .mini-sidebar {
+    .alt-bars {
+      display: inline;
+    }
     .left-sidebar {
       width: $full-sidebar-width;
     }
     .page-wrapper,
+    .main-wrapper,
     .footer {
       margin-left: $full-sidebar-width;
     }
+
+    .alt-collapsed {
+      width: $compact-sidebar-width;
+    }
+
+    .un-alt-collapsed {
+      width: $full-sidebar-width;
+    }
+
+    .alt-main-wrapper {
+      margin-left: $compact-sidebar-width;
+    }
   }
+
 }
 
 /*******************

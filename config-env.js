@@ -14,6 +14,15 @@ function createEnvironementFile() {
   storageApplicationId: '${getEnvironmentVariable('STORAGE_APPLICATION_ID', 'accounts-avatar')}',
   storageAccountingId: '${getEnvironmentVariable('STORAGE_ACCOUNTING_ID', 'ottimizza')}'
 };`;
+//   return `export const environment = {
+//   production: true,
+//   oauthBaseUrl: '${getEnvironmentVariable('oauthBaseUrl')}',
+//   oauthClientId: '${getEnvironmentVariable('oauthClientId')}',
+//   serviceUrl: '${getEnvironmentVariable('serviceUrl')}',
+//   storageBaseUrl: '${getEnvironmentVariable('oauthClientId')}',
+//   storageApplicationId: '${getEnvironmentVariable('STORAGE_APPLICATION_ID', 'accounts-avatar')}',
+//   storageAccountingId: '${getEnvironmentVariable('STORAGE_ACCOUNTING_ID', 'ottimizza')}'
+// };`;
 }
 
 const environment = getEnvironmentVariable('ENVIRONMENT');
