@@ -15,6 +15,7 @@ describe('Utils: Array', () => {
       expect(sum.includes('d')).toBeTruthy();
       expect(sum.includes('e')).toBeTruthy();
       expect(sum.includes('f')).toBeTruthy();
+      expect(sum.length).toBe(6);
       // expect(true).toBeTruthy();
     });
 

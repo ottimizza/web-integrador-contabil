@@ -1,11 +1,6 @@
 export class ArrayUtils {
 
   public static sum(array: any[], arr: any[]) {
-    /*
-    ! MÉTODO EM MANUTENÇAÕ, EVITAR SEU USO.
-    TODO: Consertar o método pra ontem
-    Soma dois arrays eliminando os elementos repetidos
-     */
 
     const newArray = array.filter(item => {
       let verify = true;
@@ -18,17 +13,6 @@ export class ArrayUtils {
     });
 
     return newArray.concat(arr);
-
-
-    // array.forEach(arrayItem => {
-    //   arr.forEach(arrItem => {
-    //     if (arrayItem !== arrItem) {
-    //       arr.splice(arr.indexOf(arrItem), 1);
-    //     }
-    //   });
-    // });
-
-    // return array.concat(arr);
   }
 
   public static compare(array: any[], arr: any[]) {
