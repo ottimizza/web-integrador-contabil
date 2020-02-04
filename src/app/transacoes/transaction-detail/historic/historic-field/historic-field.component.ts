@@ -17,7 +17,7 @@ export class HistoricFieldComponent {
     this.selectOne.emit(event.target.value);
   }
 
-  protected get values(): string[] {
+  get values(): string[] {
     this.array = [];
     if (!this.lancamento) {
       this.array = [

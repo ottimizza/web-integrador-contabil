@@ -6,11 +6,20 @@ require('dotenv').config();
 function getEnvironmentVariable(key, _default = '') { return process.env[key] || _default; }
 
 function createEnvironementFile() {
+//   return `export const environment = {
+//   production: true,
+//   oauthBaseUrl: '${getEnvironmentVariable('OAUTH2_BASE_URL')}',
+//   oauthClientId: '${getEnvironmentVariable('OAUTH2_CLIENT_ID')}',
+//   storageBaseUrl: '${getEnvironmentVariable('STORAGE_BASE_URL')}',
+//   storageApplicationId: '${getEnvironmentVariable('STORAGE_APPLICATION_ID', 'accounts-avatar')}',
+//   storageAccountingId: '${getEnvironmentVariable('STORAGE_ACCOUNTING_ID', 'ottimizza')}'
+// };`;
   return `export const environment = {
   production: true,
-  oauthBaseUrl: '${getEnvironmentVariable('OAUTH2_BASE_URL')}',
-  oauthClientId: '${getEnvironmentVariable('OAUTH2_CLIENT_ID')}',
-  storageBaseUrl: '${getEnvironmentVariable('STORAGE_BASE_URL')}',
+  oauthBaseUrl: '${getEnvironmentVariable('oauthBaseUrl')}',
+  oauthClientId: '${getEnvironmentVariable('oauthClientId')}',
+  serviceUrl: '${getEnvironmentVariable('serviceUrl')}',
+  storageBaseUrl: '${getEnvironmentVariable('oauthClientId')}',
   storageApplicationId: '${getEnvironmentVariable('STORAGE_APPLICATION_ID', 'accounts-avatar')}',
   storageAccountingId: '${getEnvironmentVariable('STORAGE_ACCOUNTING_ID', 'ottimizza')}'
 };`;
