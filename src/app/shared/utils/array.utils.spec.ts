@@ -5,17 +5,18 @@ describe('Utils: Array', () => {
   describe('Méto sum()', () => {
 
     it('Deve eliminar repetições ao concatenar dois arrays', () => {
-      // const arr1 = ['a', 'b', 'c', 'd'];
-      // const arr2 = ['a', 'e', 'd', 'c', 'f'];
+      const arr1 = ['a', 'b', 'c', 'd'];
+      const arr2 = ['a', 'e', 'd', 'c', 'f'];
 
-      // const sum = ArrayUtils.sum(arr1, arr2);
-      // expect(sum.includes('a')).toBeTruthy();
-      // expect(sum.includes('b')).toBeTruthy();
-      // expect(sum.includes('c')).toBeTruthy();
-      // expect(sum.includes('d')).toBeTruthy();
-      // expect(sum.includes('e')).toBeTruthy();
-      // expect(sum.includes('f')).toBeTruthy();
-      expect(true).toBeTruthy();
+      const sum = ArrayUtils.sum(arr1, arr2);
+      expect(sum.includes('a')).toBeTruthy();
+      expect(sum.includes('b')).toBeTruthy();
+      expect(sum.includes('c')).toBeTruthy();
+      expect(sum.includes('d')).toBeTruthy();
+      expect(sum.includes('e')).toBeTruthy();
+      expect(sum.includes('f')).toBeTruthy();
+      expect(sum.length).toBe(6);
+      // expect(true).toBeTruthy();
     });
 
   });
