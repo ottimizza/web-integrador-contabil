@@ -1,19 +1,25 @@
 export class ArrayUtils {
 
-  public static sum(array1: any[], array2: any[]) {
+  public static sum(array: any[], arr: any[]) {
     /*
     ! MÉTODO EM MANUTENÇAÕ, EVITAR SEU USO.
     TODO: Consertar o método pra ontem
     Soma dois arrays eliminando os elementos repetidos
      */
-    const array = array1;
-    const arr = array2.filter(item => array.includes(item));
 
-    arr.forEach(item => {
-      array.push(item);
+    const newArray = array.filter(item => {
+      let verify = true;
+      arr.forEach(arrItem => {
+        if (JSON.stringify(item) === JSON.stringify(arrItem)) {
+          verify = false;
+        }
+      });
+      return verify;
     });
 
-    return array;
+    return newArray.concat(arr);
+
+
     // array.forEach(arrayItem => {
     //   arr.forEach(arrItem => {
     //     if (arrayItem !== arrItem) {
