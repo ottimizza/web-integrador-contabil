@@ -1,0 +1,12 @@
+<div [ngClass]="sizing">
+  <div class="row w-100 m-0" [style]="background">
+    <div class="col-2 text-center">
+      <i [ngClass]="'far fa-' + icon"></i>
+    </div>
+    <div class="col-10">
+      <strong [style]="fontColor">
+        {{ value }}
+      </strong>
+    </div>
+  </div>
+</div>

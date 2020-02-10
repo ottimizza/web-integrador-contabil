@@ -1,0 +1,82 @@
+<h1 mat-dialog-title>Editar regra</h1>
+
+
+
+<div mat-dialog-content>
+  <p>Sinta-se à vontade, você pode desfazer isto a qualquer momento</p>
+    <div class="row w-100 m-0 mt-4 text-center">
+      <div class="col">
+        <h4>Campo</h4>
+      </div>
+      <div class="col">
+        <h4>Condição</h4>
+      </div>
+      <div class="col">
+        <h4>Valor</h4>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row w-100 m-0 mb-4 text-center" id="ruleFieldModal" *ngFor="let rule of data.rules.regras">
+      <div class="col">
+        <select>
+          <option value="" selected disabled hidden>Selecione um campo</option>
+          <option value="descricao" *ngIf="rule.campo === 'descricao'" selected>Fornecedor</option>
+          <option value="descricao" *ngIf="rule.campo !== 'descricao'">Fornecedor</option>
+          <option value="documento" *ngIf="rule.campo === 'documento'" selected>Documento</option>
+          <option value="documento" *ngIf="rule.campo !== 'documento'">Documento</option>
+          <option value="portador" *ngIf="rule.campo === 'portador'" selected>Banco</option>
+          <option value="portador" *ngIf="rule.campo !== 'portador'">Banco</option>
+          <option value="complemento01" *ngIf="rule.campo === 'complemento01'" selected>Complemento 01</option>
+          <option value="complemento01" *ngIf="rule.campo !== 'complemento01'">Complemento 01</option>
+          <option value="complemento02" *ngIf="rule.campo === 'complemento02'" selected>Complemento 02</option>
+          <option value="complemento02" *ngIf="rule.campo !== 'complemento02'">Complemento 02</option>
+          <option value="complemento03" *ngIf="rule.campo === 'complemento03'" selected>Complemento 03</option>
+          <option value="complemento03" *ngIf="rule.campo !== 'complemento03'">Complemento 03</option>
+          <option value="complemento04" *ngIf="rule.campo === 'complemento04'" selected>Complemento 04</option>
+          <option value="complemento04" *ngIf="rule.campo !== 'complemento04'">Complemento 04</option>
+          <option value="complemento05" *ngIf="rule.campo === 'complemento05'" selected>Complemento 05</option>
+          <option value="complemento05" *ngIf="rule.campo !== 'complemento05'">Complemento 05</option>
+          <option value="tipoPlanilha" *ngIf="rule.campo === 'tipoPlanilha'" selected>Tipo da Planilha</option>
+          <option value="tipoPlanilha" *ngIf="rule.campo !== 'tipoPlanilha'">Tipo da Planilha</option>
+          <option value="nomeArquivo" *ngIf="rule.campo === 'nomeArquivo'" selected>Nome do Arquivo</option>
+          <option value="nomeArquivo" *ngIf="rule.campo !== 'nomeArquivo'">Nome do Arquivo</option>
+        </select>
+      </div>
+      <div class="col">
+        <select id="ruleConditionModal">
+          <option value="" selected disabled hidden>Selecione uma condição</option>
+          <option value="1" *ngIf="rule.condicao === 1" selected>Contém</option>
+          <option value="1" *ngIf="rule.condicao !== 1">Contém</option>
+          <option value="2" *ngIf="rule.condicao === 2" selected>Não contém</option>
+          <option value="2" *ngIf="rule.condicao !== 2">Não contém</option>
+          <option value="3" *ngIf="rule.condicao === 3" selected>Começa com</option>
+          <option value="3" *ngIf="rule.condicao !== 3">Começa com</option>
+          <option value="4" *ngIf="rule.condicao === 4" selected>Igual</option>
+          <option value="4" *ngIf="rule.condicao !== 4">Igual</option>
+        </select>
+      </div>
+      <div class="col">
+        <input type="text" placeholder="Informe um valor" *ngIf="rule.valor; else novaluerule" [value]="rule.valor">
+        <ng-template #novaluerule>
+          <input type="text" placeholder="Informe um valor">
+        </ng-template>
+      </div>
+    </div>
+</div>
+
+
+
+<div mat-dialog-actions>
+  <div class="row w-100 m-0">
+    <button class="col purple" cdkFocusInitial>
+      <i class="far fa-save mr-3"></i>
+      Salvar
+    </button>
+    <button (click)="onNoClick()" class="col secondary">
+      <i class="far fa-window-close mr-3"></i>
+      Cancelar
+    </button>
+  </div>
+</div>

@@ -23,6 +23,7 @@ import { HttpErrorInterceptor, ErrorInterceptorProvider } from '@app/interceptor
 import { NavbarLayoutModule } from './layout/navbar-layout/navbar-layout.module';
 import { TransactionModule } from './transacoes/transaction.module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { RuleListModule } from './rule-list/rule-list.module';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     BreadcrumbModule,
 
     // Entry Components
-    TransactionModule
+    TransactionModule,
+
+    // Rules
+    RuleListModule
   ],
   providers: [
     ErrorInterceptorProvider
