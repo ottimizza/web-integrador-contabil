@@ -32,7 +32,8 @@
               "src/styles.scss",
               "src/assets/scss/animate.css",
               "src/assets/scss/spinners.css",
-              "src/assets/scss/style.css"
+              "src/assets/scss/style.css",
+              "node_modules/@fortawesome/fontawesome-pro/css/all.min.css"
             ],
             "scripts": [],
             "es5BrowserSupport": true

@@ -1,3 +1,7 @@
+interface TestObjModel {
+  name: string;
+}
+
 export class TestHelper {
   static ipsum(size?: number) {
     // tslint:disable-next-line: max-line-length
@@ -12,4 +16,11 @@ export class TestHelper {
       return text;
     }
   }
+
+  static obj(...args: string[]) {
+    return {
+      name: args[0] ? args[0] : this.ipsum(20)
+    };
+  }
+
 }

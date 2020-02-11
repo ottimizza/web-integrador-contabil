@@ -162,6 +162,8 @@ export class InputChipsComponent implements OnInit, OnChanges {
   private _devolveAllCompsPattern(name: string, prop: string) {
     this._devolveAllPattern(name, prop);
     if (name !== 'Complemento 5') {
+      // Reseta a variável que foi alterada pelo _devolveAllPattern() para que ela esteja imediatamente pronta para a próxima ação
+      // sem precisar passar por tratamentos.
       this.isSelected = !this.isSelected;
     }
   }

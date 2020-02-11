@@ -19,6 +19,7 @@ export class Authenticated {
   //   this.expiresIn = expiresIn;
   //   this.expiresAt = expiresAt;
   // }
+
   constructor(
     public username: string,
     public tokenType: string,

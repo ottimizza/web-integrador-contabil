@@ -17,7 +17,6 @@ export class RuleCreateFormat {
 }
 
 export class Rule {
-
     // tslint:disable: variable-name
     private _rules: PostFormatRule[];
     public descricao: string[];
@@ -30,6 +29,65 @@ export class Rule {
     public complemento05: string[];
     public tipoPlanilha: string[];
     public nomeArquivo: string[];
+
+    public static getFieldName(field: string): string {
+      let strName = '';
+      switch (field) {
+        case 'descricao':
+          strName = 'fornecedor';
+          break;
+        case 'documento':
+          strName = 'documento';
+          break;
+        case 'portador':
+          strName = 'banco';
+          break;
+        case 'complemento01':
+          strName = 'complemento 01';
+          break;
+        case 'complemento02':
+          strName = 'complemento 02';
+          break;
+        case 'complemento03':
+          strName = 'complemento 03';
+          break;
+        case 'complemento04':
+          strName = 'complemento 04';
+          break;
+        case 'complemento05':
+          strName = 'complemento 05';
+          break;
+        case 'tipoPlanilha':
+          strName = 'tipo da planilha';
+          break;
+        case 'nomeArquivo':
+          strName = 'nome do arquivo';
+          break;
+      }
+      return strName;
+    }
+
+    public static previewOut(rules: PostFormatRule[]) {
+      let text = '';
+
+      rules.forEach(rule => {
+        const id = rules.indexOf(rule);
+        if (id === 0) {
+          text += 'Se';
+        } else if (id === rules.length - 1) {
+          text += ' e';
+        }
+        text += ` ${this.getFieldName(rule.campo)} contém ${rule.valor}`;
+        if (id !== rules.length - 1) {
+          text += ',';
+        }
+      });
+      return text;
+    }
+
+    public previewIn() {
+      return Rule.previewOut(this._rules);
+    }
 
     public verify() {
       return this.rules.length > 0;
@@ -62,3 +120,11 @@ export class Rule {
 
 }
 
+export enum Condicao {
+
+  CONTEM = 1,
+  NAO_CONTEM,
+  COMECAO_COM,
+  IGUAL
+
+}

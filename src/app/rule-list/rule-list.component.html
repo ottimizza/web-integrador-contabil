@@ -1,0 +1,26 @@
+<div class="main-wrapper pt-3 text-center">
+
+  <div class="pl-4 pr-4" *ngIf="!hasBusiness">
+    <app-info [description]="info.text1"></app-info>
+  </div>
+
+  <app-tfilter (empresa)="hasBusiness = true"></app-tfilter>
+
+  <div *ngIf="hasBusiness" class="pl-4 pr-4">
+    <app-info [description]="info.text2"></app-info>
+    <br>
+  </div>
+
+  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" *ngIf="rows.length">
+
+    <div *ngFor="let rule of rows;" cdkDrag>
+      <div style="margin-bottom: 20px;" *ngIf="rule.regras.length">
+        <app-ruleico [rules]="rule"></app-ruleico>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="btn btn-dark mb-3 mt-4" *ngIf="hasNext" (click)="nextPage()">Carregar mais</button>
+
+</div>

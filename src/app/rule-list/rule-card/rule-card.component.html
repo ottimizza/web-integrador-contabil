@@ -1,0 +1,53 @@
+<div class="cont" *ngIf="rules">
+
+
+  <!-- <div class="row w-100 m-0">
+    <button class="col red" (click)="modal('Modal de excluir')">
+      <i class="far fa-backspace"></i>
+      Excluir
+    </button>
+    <button class="col gray" (click)="modal('Modal de novo campo')">
+      <i class="far fa-plus-circle"></i>
+      Novo
+    </button>
+    <button class="col purple" (click)="openModal()">
+      <i class="far fa-edit"></i>
+      Editar
+    </button>
+  </div>
+
+  <br>
+
+  <div class="row w-100 m-0" *ngFor="let rule of rules.regras">
+    <span class="rc-center">{{ getText(rule) }}</span>
+  </div>
+  <hr>
+  <div class="row w-100 m-0 pb-3">
+    <p class="rc-center"><span>Conta: </span> <strong>{{ rules.contaMovimento }}</strong></p>
+  </div> -->
+
+  <div class="row w-100 m-0">
+    <div class="col-2 m-0 p-0">
+      <button class="red" (click)="close()">
+        <i class="far fa-trash-alt"></i>
+      </button>
+      <button class="gray" (click)="openModal(true)">
+        <i class="far fa-plus-circle"></i>
+      </button>
+      <button class="purple" (click)="openModal()">
+        <i class="far fa-edit"></i>
+      </button>
+    </div>
+    <div class="col">
+      <br>
+      <div *ngFor="let rule of rules.regras">
+        <span>{{ getText(rule) }}</span>
+        <br>
+      </div>
+      <hr>
+      <p><span>Conta: </span><strong>{{ rules.contaMovimento }}</strong></p>
+    </div>
+  </div>
+
+
+</div>

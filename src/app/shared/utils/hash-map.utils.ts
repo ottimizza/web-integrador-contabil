@@ -3,7 +3,7 @@ export class HashMapUtils {
   // tslint:disable-next-line: variable-name
   private static _values: string[][] = [[]];
 
-  public static setItem(item: any, key?: string): string | void {
+  public static setItem(item: any, key?: string) {
     if (key) {
       if (this._verifyKey(key)) {
         this._values.push([key, JSON.stringify(item)]);
@@ -18,11 +18,17 @@ export class HashMapUtils {
   }
 
   public static getItem(key: string) {
-    return JSON.parse(this._getCorrectRow(key)[1]);
+    const obj = this._getCorrectRow(key);
+    if (obj && obj.length) {
+      return JSON.parse(obj[1]);
+    }
   }
 
   public static removeItem(key: string) {
     this._values.splice(this._values.indexOf(this._getCorrectRow(key)), 1);
+    if (this._values.length < 1) {
+      this._values.push([]);
+    }
   }
 
   private static _getCorrectRow(key: string) {
@@ -30,16 +36,24 @@ export class HashMapUtils {
   }
 
   private static _verifyKey(key: string) {
+    let verify = true;
     this._values.forEach(row => {
       if (row[0] === key) {
-        return false;
+        verify = false;
       }
     });
-    return true;
+    return verify;
   }
 
   private static get _newKey() {
-    const key = Math.round(Math.random() * 100000).toString();
+    const length = Math.round(Math.random() * 1000);
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345678!@#$%&*';
+    let key = '';
+    for (let i = 0; i < length; i++) {
+      const index = Math.round(Math.random() * 67);
+      key += chars.charAt(index);
+    }
+
     if (this._verifyKey(key)) {
       return key;
     } else {

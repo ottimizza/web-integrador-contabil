@@ -1,6 +1,9 @@
 export class ArrayUtils {
 
   public static sum(array: any[], arr: any[]) {
+    /*
+     * Soma dois arrays eliminando os elementos repetidos
+     */
 
     const newArray = array.filter(item => {
       let verify = true;
