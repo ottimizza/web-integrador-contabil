@@ -32,10 +32,10 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   errorText: string;
   errorText2: string;
   tipoLancamentoName: string;
-  tipoLancamento = 'PAG';
+  tipoLancamento = 1;
   destroy: boolean;
   tabIsClicked = false;
-  tipoMovimento = 1;
+  tipoMovimento = 'PAG';
   remaining = 0;
   page = 0;
   impact = 0;
@@ -285,7 +285,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this.tabsPattern(3, 1, 'EXREC', 'extratos de recebimentos');
   }
 
-  async tabsPattern(position: number, tipoMovimento: number, tipoLancamento: string, tipoLancamentoName: string) {
+  async tabsPattern(position: number, tipoLancamento: number, tipoMovimento: string, tipoLancamentoName: string) {
     this.destroy = true;
     this._resetButtons();
     this.tabsButtonClass[position] = 'btn btn-light text-info col';

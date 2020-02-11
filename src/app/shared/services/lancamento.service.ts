@@ -16,7 +16,7 @@ export class LancamentoService {
 
   constructor(private http: HttpClient, private authService: AuthenticationService) { }
 
-  public getLancamentos(page: number, b: Empresa, tipoLancamento: string, tipoMovimento: number): Observable<GenericPageableResponse<Lancamento>> {
+  public getLancamentos(page: number, b: Empresa, tipoLancamento: number, tipoMovimento: string): Observable<GenericPageableResponse<Lancamento>> {
     const url
     = `${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}&tipoConta=0&tipoLancamento=${tipoLancamento}&tipoMovimento=${tipoMovimento}`;
     // const url = `${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}` // &tipoConta=0`;
