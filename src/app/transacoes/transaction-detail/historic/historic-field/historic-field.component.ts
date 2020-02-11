@@ -43,6 +43,7 @@ export class HistoricFieldComponent {
         { property: l.portador, text: 'Portador' },
         { property: l.dataMovimento, text: 'Data' },
         { property: `${l.valorOriginal}`, text: 'Valor' },
+        { property: l.documento, text: 'Documento' },
         { property: l.nomeArquivo, text: 'Nome do Arquivo' },
         { property: l.complemento01, text: 'Complemento 01' },
         { property: l.complemento02, text: 'Complemento 02' },
