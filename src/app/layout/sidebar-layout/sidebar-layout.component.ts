@@ -28,7 +28,7 @@ export class SidebarLayoutComponent implements OnInit {
   ngOnInit() {
     this.items = [
       { icon: 'fad fa-file-spreadsheet', label: 'Última Digitação', url: '/dashboard' },
-      { icon: 'fad fa-list-ol', label: 'Regras', url: '/regras' }
+      // { icon: 'fad fa-list-ol', label: 'Regras', url: '/regras' }
     ];
   }
 }

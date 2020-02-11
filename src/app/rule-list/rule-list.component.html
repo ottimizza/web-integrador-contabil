@@ -1,4 +1,4 @@
-<div class="main-wrapper pt-3">
+<div class="main-wrapper pt-3 text-center">
 
   <div class="pl-4 pr-4" *ngIf="!hasBusiness">
     <app-info [description]="info.text1"></app-info>
@@ -20,5 +20,7 @@
     </div>
 
   </div>
+
+  <button class="btn btn-dark mb-3 mt-4" *ngIf="hasNext" (click)="nextPage()">Carregar mais</button>
 
 </div>

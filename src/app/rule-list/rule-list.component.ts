@@ -3,18 +3,22 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
 import { RuleCreateFormat, PostFormatRule, Rule } from '@shared/models/Rule';
 import { StringCutterUtils } from '@shared/utils/string-cutter.util';
+import { GenericPagination } from '@shared/interfaces/GenericPagination';
+import { PageInfo } from '@shared/models/GenericPageableResponse';
 
 @Component({
   templateUrl: './rule-list.component.html',
   styleUrls: ['./rule-list.component.scss']
 })
-export class RuleListComponent implements OnInit, GenericDragDropList {
+export class RuleListComponent implements OnInit, GenericDragDropList, GenericPagination {
 
   rows: RuleCreateFormat[] = [];
   hasBusiness = false;
+  pageInfo: PageInfo;
+  page = 0;
 
   ngOnInit(): void {
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 10; i++) {
       this.rows.push(
         new RuleCreateFormat(
             [
@@ -38,6 +42,14 @@ export class RuleListComponent implements OnInit, GenericDragDropList {
     };
   }
 
+  get hasNext() {
+    if (!this.pageInfo || this.pageInfo.hasNext) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   getText(rule: PostFormatRule) {
     const text = `Se ${Rule.getFieldName(rule.campo)} ${this.getCondition(rule.condicao)} ${rule.valor}`;
     return StringCutterUtils.cut(text, 60);
@@ -55,4 +67,26 @@ export class RuleListComponent implements OnInit, GenericDragDropList {
     this.rows.splice(id, 1);
   }
 
+  nextPage() {
+
+    if (this.hasNext) {
+      this.page++;
+      for (let i = 0; i < 10; i++) {
+        this.rows.push(
+          new RuleCreateFormat(
+            [
+              { campo: 'descricao', condicao: 1, valor: i.toString() },
+              { campo: 'complemento01', condicao: 1, valor: 'atrasado' },
+              { campo: 'complemento02', condicao: 1, valor: 'extra' },
+              // { campo: 'complemento03', condicao: 1, valor: 'terceirizado' },
+              // { campo: 'nomeArquivo', condicao: 1, valor: 'arquivo3214.xlsx' }
+            ],
+            'um cnpj bem daora',
+            '1312418921'
+          )
+        );
+      }
+    }
+
+  }
 }

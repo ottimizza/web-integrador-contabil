@@ -1,24 +1,27 @@
-// import { HashMapUtils } from './hash-map.utils';
-// import { TestHelper } from '@shared/test-helpers/test-helpers';
+import { HashMapUtils } from './hash-map.utils';
 
-// describe('Utils: Hash Map', () => {
+describe('Utils: Hash Map', () => {
 
-//   const nome = 'Um nome qualquer';
+  describe('método setItem()', () => {
 
-//   describe('método setItem()', () => {
+    let key: string;
 
-//     let password: string;
+    afterEach(() => {
+      HashMapUtils.removeItem(key);
+    });
 
-//     it('Deve salvar o item e criar uma chave quando a chave não for informada', () => {
-//       const key = HashMapUtils.setItem(TestHelper.obj(nome));
-//       expect(typeof key).toBe(typeof 'string');
-//       password = key;
-//     });
+    it('Deve ser um void quando a key for informada', () => {
+      const a = () => {};
+      expect(typeof HashMapUtils.setItem(1, '1')).toBe(typeof a);
+      key = '1';
+    });
 
-//     it('Deve disparar um erro caso a key escolhida já esteja em uso', () => {
-//       expect(HashMapUtils.setItem('', password)).toThrow('This HashMapUtils key is already in use');
-//     });
+    it('Deve retornar a key gerada quando ela não for informada', () => {
+      const KEY = HashMapUtils.setItem(1);
+      expect(typeof KEY).toBe(typeof '');
+      key = KEY;
+    });
 
-//   });
+  });
 
-// });
+});
