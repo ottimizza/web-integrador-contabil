@@ -53,7 +53,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
 
   isDefault() {
     // Informa se os chips devem ser clicáveis ou não
-    return (this.name !== 'Valor' && this.name !== 'Data');
+    return (this.name !== 'Valor' && this.name !== 'Data' && this.name !== 'Tipo da Planilha');
   }
 
   private _change() {
