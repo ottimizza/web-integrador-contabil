@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Editar regra</h1>
+<h1 mat-dialog-title id="h1bemlegal">Editar regra</h1>
 
 
 
@@ -18,7 +18,12 @@
 
     <br>
 
-    <div class="row w-100 m-0 mb-4 text-center" id="ruleFieldModal" *ngFor="let rule of data.rules.regras">
+    <div class="row w-100 m-0 mb-4 text-center" id="ruleFieldModal" *ngFor="let rule of rules.regras; let id = index">
+      <div class="col-1">
+        <div class="p-3 clickIcon" (click)="remove(id)" [matTooltip]="info.remove" matTooltipShowDelay="300" matTooltipHideDelay="500">
+          <i class="far fa-times text-danger fa-2x"></i>
+        </div>
+      </div>
       <div class="col">
         <select>
           <option value="" selected disabled hidden>Selecione um campo</option>
@@ -70,7 +75,7 @@
 
 <div mat-dialog-actions>
   <div class="row w-100 m-0">
-    <button class="col purple" cdkFocusInitial>
+    <button class="col purple" cdkFocusInitial [mat-dialog-close]="rules">
       <i class="far fa-save mr-3"></i>
       Salvar
     </button>

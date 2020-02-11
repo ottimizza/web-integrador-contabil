@@ -10,6 +10,8 @@ import { CardModule } from '@shared/components/card/card.module';
 import { RuleCardModule } from './rule-card/rule-card.module';
 import { RuleEditModalModule } from './rule-edit-modal/rule-edit-modal.module';
 import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
+import { InfoModule } from '@shared/components/info/info.module';
+import { FilterModule } from 'app/transacoes/transaction-list/filter/filter.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.compon
     MatTooltipModule,
     RuleCardModule,
     MatDialogModule,
+    InfoModule,
+    FilterModule
   ]
 })
 export class RuleListModule { }

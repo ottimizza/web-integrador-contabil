@@ -1,29 +1,15 @@
-<!--
-<div class="main-wrapper">
+<div class="main-wrapper pt-3">
 
-  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" *ngIf="rows.length > 0">
-    <div class="example-box row w-100 m-0">
-      <div class="col-2">
-        <h4>Opções</h4>
-      </div>
-      <div class="col-8">
-        <h4>Regra</h4>
-      </div>
-      <div class="col">
-        <h4>Conta</h4>
-      </div>
-    </div>
+  <div class="pl-4 pr-4" *ngIf="!hasBusiness">
+    <app-info [description]="info.text1"></app-info>
+  </div>
 
+  <app-tfilter (empresa)="hasBusiness = true"></app-tfilter>
 
-    <div class="example-box" *ngFor="let rule of rows; let id = index" cdkDrag>
-
-      <app-ruleico [rules]="rule"></app-ruleico>
-
-    </div>
-
-
-  </div> -->
-<div class="main-wrapper">
+  <div *ngIf="hasBusiness" class="pl-4 pr-4">
+    <app-info [description]="info.text2"></app-info>
+    <br>
+  </div>
 
   <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" *ngIf="rows.length">
 

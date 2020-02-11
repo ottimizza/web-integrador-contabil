@@ -27,7 +27,7 @@ export class RuleCardComponent {
     const dialogRef = this.dialog.open(RuleEditModalComponent, {
       width: '80%',
       maxWidth: '1300px',
-      data: { rules: this.rules }
+      data: { rules: this.rules },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -46,4 +46,8 @@ export class RuleCardComponent {
       return 'é igual a';
     }
   }
-  }
+
+
+}
+
+

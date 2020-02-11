@@ -14,6 +14,7 @@ import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.compon
 export class RuleListComponent implements OnInit, GenericDragDropList {
 
   rows: RuleCreateFormat[] = [];
+  hasBusiness = false;
 
   ngOnInit(): void {
     for (let i = 0; i < 30; i++) {
@@ -31,6 +32,13 @@ export class RuleListComponent implements OnInit, GenericDragDropList {
           )
       );
     }
+  }
+
+  get info() {
+    return {
+      text1: 'Insira o nome da empresa que deseja filtrar',
+      text2: 'Selecione entre Recebimentos, Extrato Débitos, Pagamentos e Extrato Créditos'
+    };
   }
 
   getText(rule: PostFormatRule) {
