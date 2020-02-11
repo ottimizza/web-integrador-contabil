@@ -69,6 +69,19 @@
         </ng-template>
       </div>
     </div>
+
+    <div class="row text-center">
+      <div class="col">
+        <p>Conta: </p>
+      </div>
+      <div class="col">
+        <input type="text" placeholder="Informa a conta de movimento atrelada à esta regra" *ngIf="rules.contaMovimento; else noaccount" [value]="rules.contaMovimento">
+        <ng-template #noaccount>
+          <input type="text" placeholder="Informa a conta de movimento atrelada à esta regra">
+        </ng-template>
+      </div>
+    </div>
+
 </div>
 
 
