@@ -28,6 +28,7 @@
     "@angular/pwa": "^0.803.24",
     "@angular/router": "^8.2.14",
     "@angular/service-worker": "^8.2.14",
+    "@fortawesome/fontawesome-pro": "^5.12.1",
     "compression": "^1.7.4",
     "core-js": "^2.6.11",
     "dotenv": "^8.2.0",

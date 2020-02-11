@@ -1,0 +1,40 @@
+.cont {
+  width: 100%;
+  margin: 0 auto;
+  border: solid 1px rgb(226, 226, 226);
+  background-color: white;
+  border-radius: 0px 5px 5px 0px;
+}
+
+.rc-center {
+  text-align: center;
+  margin: 5px auto;
+}
+
+strong {
+  font-weight: bold;
+}
+
+button {
+  width: 33%;
+  border: none;
+  height: 100%;
+  color: white;
+}
+
+.red {
+  background-color: rgb(255, 0, 0);
+}
+
+.gray {
+  background-color: rgb(47, 129, 223);
+  // background-color: rgb(180, 180, 180);
+}
+
+.purple {
+  background-color: rgb(84, 0, 255);
+}
+
+.cont {
+  margin: solid 1px rgb(84, 84, 84);
+}

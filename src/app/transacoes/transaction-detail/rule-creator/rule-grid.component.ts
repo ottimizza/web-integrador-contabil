@@ -6,6 +6,7 @@ import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { LancamentoService } from '@shared/services/lancamento.service';
 import { PostFormatRule } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
+import { of } from 'rxjs';
 
 @Component({
   templateUrl: './rule-grid.component.html'
@@ -29,7 +30,6 @@ export class RuleGridComponent implements OnInit, GenericPagination {
     this.rules = this.data.rules;
     this.business = this.data.business;
     this.info = [];
-
     this.nextPage();
   }
 

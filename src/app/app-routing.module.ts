@@ -8,6 +8,7 @@ import { AuthGuard } from '@app/guard/auth.guard';
 import { NoAuthGuard } from '@app/guard/no-auth.guard';
 import { TransactionModule } from './transacoes/transaction.module';
 import { TransactionListComponent } from './transacoes/transaction-list/transaction-list.component';
+import { RuleListComponent } from './rule-list/rule-list.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,19 @@ const routes: Routes = [
     loadChildren: () =>
     import('@modules/auth/auth.module').then(m => m.AuthModule)
   },
+  // {
+  //   path: 'regras',
+  //   component: ContentLayoutComponent,
+  //   canActivate: [AuthGuard], // Should be replaced with actual auth guard
+  //   children: [
+  //     {
+  //       path: '',
+  //       component: RuleListComponent,
+  //       pathMatch: 'full',
+  //       canActivate: [AuthGuard]
+  //     }
+  //   ]
+  // },
   {
     path: '**',
     redirectTo: 'dashboard/',
