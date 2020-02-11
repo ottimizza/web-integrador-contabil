@@ -1,4 +1,4 @@
-<div class="cont">
+<div class="cont" *ngIf="rules">
 
 
   <!-- <div class="row w-100 m-0">
@@ -28,10 +28,10 @@
 
   <div class="row w-100 m-0">
     <div class="col-2 m-0 p-0">
-      <button class="red">
+      <button class="red" (click)="close()">
         <i class="far fa-trash-alt"></i>
       </button>
-      <button class="gray">
+      <button class="gray" (click)="openModal(true)">
         <i class="far fa-plus-circle"></i>
       </button>
       <button class="purple" (click)="openModal()">

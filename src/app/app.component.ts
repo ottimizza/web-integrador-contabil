@@ -1,9 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { RxEvent } from '@app/services/rx-event.service';
 import { DOCUMENT } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
-import { TransactionDetailComponent } from './transacoes/transaction-detail/transaction-detail.component';
-import { HashMapUtils } from '@shared/utils/hash-map.utils';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +22,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  public ngOnInit() {
-  }
+  public ngOnInit() {}
 
 }

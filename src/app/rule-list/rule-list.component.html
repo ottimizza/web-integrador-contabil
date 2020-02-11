@@ -13,8 +13,10 @@
 
   <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" *ngIf="rows.length">
 
-    <div *ngFor="let rule of rows;" style="margin-bottom: 35px;" cdkDrag>
-      <app-ruleico [rules]="rule"></app-ruleico>
+    <div *ngFor="let rule of rows;" cdkDrag>
+      <div style="margin-bottom: 20px;" *ngIf="rule.regras.length">
+        <app-ruleico [rules]="rule"></app-ruleico>
+      </div>
     </div>
 
   </div>

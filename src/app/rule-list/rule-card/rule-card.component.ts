@@ -14,20 +14,23 @@ export class RuleCardComponent {
 
   constructor(public dialog: MatDialog) { }
 
-
   getText(rule: PostFormatRule) {
     return `${Rule.getFieldName(rule.campo)} ${this._getCondition(rule.condicao)} ${rule.valor}`;
   }
 
-  modal(text: string) {
-    alert(text);
+  close() {
+    this.rules = null;
   }
 
-  openModal() {
+  openModal(newCamp?: boolean) {
+    const rules = this.rules;
+    if (newCamp) {
+      rules.regras.push({ campo: '', condicao: 0, valor: '' });
+    }
     const dialogRef = this.dialog.open(RuleEditModalComponent, {
       width: '80%',
       maxWidth: '1300px',
-      data: { rules: this.rules },
+      data: { rules },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -49,5 +52,3 @@ export class RuleCardComponent {
 
 
 }
-
-

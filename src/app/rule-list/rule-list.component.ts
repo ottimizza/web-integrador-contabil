@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { RuleCreateFormat, PostFormatRule, Rule } from '@shared/models/Rule';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
+import { RuleCreateFormat, PostFormatRule, Rule } from '@shared/models/Rule';
 import { StringCutterUtils } from '@shared/utils/string-cutter.util';
-import { MatDialog } from '@angular/material/dialog';
-import { RuleGridComponent } from 'app/transacoes/transaction-detail/rule-creator/rule-grid.component';
-import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 
 @Component({
   templateUrl: './rule-list.component.html',

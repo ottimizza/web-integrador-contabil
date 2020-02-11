@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RuleCreateFormat } from '@shared/models/Rule';
-import { ArrayUtils } from '@shared/utils/array.utils';
 
 @Component({
   templateUrl: './rule-edit-modal.component.html',
@@ -30,8 +29,8 @@ export class RuleEditModalComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  remove(index: number) {
-    this.rules.regras.splice(index, 1);
+  remove(id: number) {
+    this.rules.regras.splice(id, 1);
   }
 
 }
