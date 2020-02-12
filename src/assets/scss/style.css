@@ -862,7 +862,7 @@
 
   /*******************
   Buttons
-  *****************
+  ***************** */
   .btn {
     padding: 7px 12px;
     font-size: 14px;
@@ -938,6 +938,8 @@
     .btn-rounded.btn-md {
       padding: 12px 35px;
       font-size: 16px; }
+
+  /*
 
   .btn-secondary,
   .btn-secondary.disabled {

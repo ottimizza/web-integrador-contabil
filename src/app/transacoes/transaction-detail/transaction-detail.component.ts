@@ -77,8 +77,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       ok: 'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
       affecteds: 'Clique para visualizar os lançamentos afetados.',
       provider: 'A conta informada será aplicada para todas as ocorrências deste fornecedor e qualquer outro campo marcado será ignorado.',
-      info: `Agora clique nas palavras que justificam o lançamento ser aplicado a determinada conta ou ignorado.
-      Se necessário, informe a conta.`
+      info: 'Selecione os termos que justificam o lançamento ser vinculado a determinada conta ou ser ignorado.'
     };
   }
 
@@ -380,3 +379,23 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const records = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+records.splice(0, 1);
