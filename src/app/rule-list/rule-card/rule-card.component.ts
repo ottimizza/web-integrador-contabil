@@ -40,13 +40,13 @@ export class RuleCardComponent {
 
   private _getCondition(condition: Condicao) {
     if (condition === Condicao.CONTEM) {
-      return 'contém';
+      return 'CONTÉM';
     } else if (condition === Condicao.NAO_CONTEM) {
-      return 'não contém';
+      return 'NÃO CONTÉM';
     } else if (condition === Condicao.COMECAO_COM) {
-      return 'começa com';
+      return 'COMEÇA COM';
     } else if (condition === Condicao.IGUAL) {
-      return 'é igual a';
+      return 'É IGUAL A';
     }
   }
 

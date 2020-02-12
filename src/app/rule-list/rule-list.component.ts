@@ -23,8 +23,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
         new RuleCreateFormat(
             [
               { campo: 'descricao', condicao: 1, valor: i.toString() },
-              { campo: 'complemento01', condicao: 1, valor: 'atrasado' },
-              { campo: 'complemento02', condicao: 1, valor: 'extra' },
+              { campo: 'complemento01', condicao: 1, valor: 'ATRASADO' },
+              { campo: 'complemento02', condicao: 1, valor: 'EXTRA' },
               // { campo: 'complemento03', condicao: 1, valor: 'terceirizado' },
               // { campo: 'nomeArquivo', condicao: 1, valor: 'arquivo3214.xlsx' }
             ],
@@ -77,8 +77,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
           new RuleCreateFormat(
             [
               { campo: 'descricao', condicao: 1, valor: i.toString() },
-              { campo: 'complemento01', condicao: 1, valor: 'atrasado' },
-              { campo: 'complemento02', condicao: 1, valor: 'extra' },
+              { campo: 'complemento01', condicao: 1, valor: 'ATRASADO' },
+              { campo: 'complemento02', condicao: 1, valor: 'EXTRA' },
               // { campo: 'complemento03', condicao: 1, valor: 'terceirizado' },
               // { campo: 'nomeArquivo', condicao: 1, valor: 'arquivo3214.xlsx' }
             ],

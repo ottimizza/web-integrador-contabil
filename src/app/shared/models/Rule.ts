@@ -34,34 +34,34 @@ export class Rule {
       let strName = '';
       switch (field) {
         case 'descricao':
-          strName = 'fornecedor';
+          strName = 'FORNECEDOR';
           break;
         case 'documento':
-          strName = 'documento';
+          strName = 'DOCUMENTO';
           break;
         case 'portador':
-          strName = 'banco';
+          strName = 'BANCO';
           break;
         case 'complemento01':
-          strName = 'complemento 01';
+          strName = 'COMPLEMENTO 01';
           break;
         case 'complemento02':
-          strName = 'complemento 02';
+          strName = 'COMPLEMENTO 02';
           break;
         case 'complemento03':
-          strName = 'complemento 03';
+          strName = 'COMPLEMENTO 03';
           break;
         case 'complemento04':
-          strName = 'complemento 04';
+          strName = 'COMPLEMENTO 04';
           break;
         case 'complemento05':
-          strName = 'complemento 05';
+          strName = 'COMPLEMENTO 05';
           break;
         case 'tipoPlanilha':
-          strName = 'tipo da planilha';
+          strName = 'TIPO DA PLANILHA';
           break;
         case 'nomeArquivo':
-          strName = 'nome do arquivo';
+          strName = 'NOME DO ARQUIVO';
           break;
       }
       return strName;

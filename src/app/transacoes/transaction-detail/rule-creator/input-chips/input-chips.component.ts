@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, Inject, SimpleChanges, OnChanges } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { collectionForUtils } from '@shared/utils/collection-for.utils';
+import { ArrayUtils } from '@shared/utils/array.utils';
 
 @Component({
   selector: 'app-chips',
@@ -67,7 +68,8 @@ export class InputChipsComponent implements OnInit, OnChanges {
         // Transforma a string passada na property em um objeto manipulável para ser possível realizar as verificações
         this.comps = JSON.parse(this.property);
       } else {
-        this.props = this._verifyWord(this.property.split(' '));
+        const array = ArrayUtils.split(this.property, ' ', '.', ',');
+        this.props = this._verifyWord(array);
       }
     }
   }

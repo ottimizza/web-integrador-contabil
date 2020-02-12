@@ -28,7 +28,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   conditions = new Rule();
   pageInfo: PageInfo;
   records: Lancamento[] = [];
-  ruleArray: Rule[] = [];
   tabsButtonClass: string[];
   account: string;
   errorText: string;
@@ -38,6 +37,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   destroy: boolean;
   tabIsClicked = false;
   tipoMovimento = 'PAG';
+  pageSize = 1;
   remaining = 0;
   page = 0;
   impact = 0;
@@ -141,7 +141,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       'Para salvar uma regra você deve informar uma conta contábil.',
       'Para salvar uma regra você deve informar as condições da regra.'
     ];
-    this.ruleArray.push(this.conditions);
+    // this._applyRule();
     this._savePattern(observable, verifications, errors, true);
   }
 
@@ -149,7 +149,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     const observable = this._lancamentoService.ignoreLancamento(this.records[0]);
     const verification = this.conditions.verify();
     const error = ['Para salvar uma regra de ignorar, você deve informar as condições da regra.'];
-    this.ruleArray.push(this.conditions);
+    // this._applyRule();
     this._savePattern(observable, [verification], error);
   }
 
@@ -354,6 +354,10 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  private _applyRule() {
+    this.records = this._ruleApplier.apply(this.conditions, this.records);
+  }
+
   private _next() {
     this.records.splice(0, 1);
     this.resetErrors();
@@ -367,11 +371,12 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this._remaining();
       this.resetErrors([`Você conclui todos os ${this.tipoLancamentoName} desta empresa.`]);
     }
-    console.log(this._ruleApplier.apply(this.ruleArray, this.records));
+    console.log(this.records);
+    // console.log(this._ruleApplier.apply(this.ruleArray, this.records));
   }
 
   nextPage() {
-    this._lancamentoService.getLancamentos(this.page, this.business, this.tipoLancamento, this.tipoMovimento).subscribe(imports => {
+    this._lancamentoService.getLancamentos(this.page, this.business, this.tipoLancamento, this.tipoMovimento, this.pageSize).subscribe(imports => {
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
       this.impactCounter = 0;
