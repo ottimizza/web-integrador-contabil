@@ -25,7 +25,7 @@
           <mat-menu #menu="matMenu">
             <a [routerLink]="['/dashboard/users/', currentUser.id]"
               class="dropdown-header dropdown-item text-center mt-0 py-3">
-              <h6 class="text-dark m-0">{{currentUser.firstName + ' ' + currentUser.lastName}}</h6>
+              <h6 class="text-dark m-0">{{ currentUser.firstName + ' ' + currentUser.lastName }}</h6>
               <small class="text-muted text-lowercase">{{ currentUser.email }}</small>
             </a>
             <a mat-menu-item (click)="logout()">

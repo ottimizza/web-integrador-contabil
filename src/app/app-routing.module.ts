@@ -35,19 +35,19 @@ const routes: Routes = [
     loadChildren: () =>
     import('@modules/auth/auth.module').then(m => m.AuthModule)
   },
-  // {
-  //   path: 'regras',
-  //   component: ContentLayoutComponent,
-  //   canActivate: [AuthGuard], // Should be replaced with actual auth guard
-  //   children: [
-  //     {
-  //       path: '',
-  //       component: RuleListComponent,
-  //       pathMatch: 'full',
-  //       canActivate: [AuthGuard]
-  //     }
-  //   ]
-  // },
+  // { //
+  //   path: 'regras', //
+  //   component: ContentLayoutComponent, //
+  //   canActivate: [AuthGuard], // Should be replaced with actual auth guard //
+  //   children: [ //
+  //     { //
+  //       path: '', //
+  //       component: RuleListComponent, //
+  //       pathMatch: 'full', //
+  //       canActivate: [AuthGuard] //
+  //     } //
+  //   ] //
+  // }, //
   {
     path: '**',
     redirectTo: 'dashboard/',

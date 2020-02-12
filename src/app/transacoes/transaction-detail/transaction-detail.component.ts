@@ -39,6 +39,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   remaining = 0;
   page = 0;
   impact = 0;
+  impactCounter = 0;
   counter = 0;
   // ! Cuidado ao alterar o counter, fazer isto apenas através do tabsPattern() e do _remaining()
 
@@ -263,9 +264,11 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     dialogRef.afterClosed().subscribe(result => {
       this._subsAndDisable(obs);
-      this._historicService
-        .createHistoric(result)
-        .subscribe();
+      if (result) {
+        this._historicService
+          .createHistoric(result)
+          .subscribe();
+      }
     });
   }
 
@@ -307,6 +310,10 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   async disable() {
     // Reseta todas as variáveis locais após executar uma ação para permitir
     // que a próxima ação esteja pronta para ser executada.
+
+    // O impactCounter recebe o impact menos 1 pois este "1" é o lançamento atual que já é contado através do counter
+    this.impactCounter += this.impact - 1;
+
     this.destroy = true;
     this._partialDisable();
     this._next();
@@ -331,7 +338,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
   private _remaining(autoIncrement?: boolean) {
     if (this.pageInfo) {
-      this.remaining = this.pageInfo.totalElements - this.counter;
+      this.remaining = this.pageInfo.totalElements - (this.counter + this.impactCounter);
     }
     if (autoIncrement === true) {
       this.counter++;
@@ -361,9 +368,11 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this._lancamentoService.getLancamentos(this.page, this.business, this.tipoLancamento, this.tipoMovimento).subscribe(imports => {
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
-      if (this.counter === 0) {
-        this._remaining(true);
-      }
+      this.impactCounter = 0;
+      this._remaining(this.counter === 0);
+      // if (this.counter === 0) {
+      //   this._remaining(true);
+      // }
       this.page++;
       this.resetErrors();
     });

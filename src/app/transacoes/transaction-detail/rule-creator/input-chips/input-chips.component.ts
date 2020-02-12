@@ -78,6 +78,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
     collectionForUtils(chips, false, 'selected');
     collectionForUtils(chips, true, 'chipDefault');
     this.returningObject = { title: this.name, selecteds: undefined };
+    this.selectedInfos.emit(this.returningObject);
   }
 
 
