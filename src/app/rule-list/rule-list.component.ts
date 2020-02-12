@@ -29,6 +29,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
               // { campo: 'nomeArquivo', condicao: 1, valor: 'arquivo3214.xlsx' }
             ],
             'um cnpj bem daora',
+            'outro cnpj',
             '1312418921'
           )
       );
@@ -82,6 +83,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
               // { campo: 'nomeArquivo', condicao: 1, valor: 'arquivo3214.xlsx' }
             ],
             'um cnpj bem daora',
+            'outro cnpj',
             '1312418921'
           )
         );

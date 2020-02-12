@@ -131,7 +131,8 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   regra() {
-    const regra = new RuleCreateFormat(this.conditions.rules, this.business.cnpj, this.account);
+    // const regra = new RuleCreateFormat(this.conditions.rules, this.business.cnpj, this.account);
+    const regra = new RuleCreateFormat(this.conditions.rules, this.business.cnpj, this.records[0].cnpjContabilidade, this.account);
     const observable = this._ruleService.createRule(regra);
     const verifications = [(this.account && this.account.length > 0), this.conditions.verify()];
     const errors = [
