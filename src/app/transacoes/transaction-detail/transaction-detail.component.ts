@@ -14,6 +14,7 @@ import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { RuleService } from '@shared/services/rule.service';
+import { RuleApplierService } from '@shared/services/rule-applier.service';
 
 @Component({
   selector: 'app-tdetail',
@@ -27,6 +28,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   conditions = new Rule();
   pageInfo: PageInfo;
   records: Lancamento[] = [];
+  ruleArray: Rule[] = [];
   tabsButtonClass: string[];
   account: string;
   errorText: string;
@@ -48,6 +50,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     private _lancamentoService: LancamentoService,
     private _ruleService: RuleService,
     private _historicService: HistoricService,
+    private _ruleApplier: RuleApplierService,
     public dialog: MatDialog
   ) { }
 
@@ -138,6 +141,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       'Para salvar uma regra você deve informar uma conta contábil.',
       'Para salvar uma regra você deve informar as condições da regra.'
     ];
+    this.ruleArray.push(this.conditions);
     this._savePattern(observable, verifications, errors, true);
   }
 
@@ -145,6 +149,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     const observable = this._lancamentoService.ignoreLancamento(this.records[0]);
     const verification = this.conditions.verify();
     const error = ['Para salvar uma regra de ignorar, você deve informar as condições da regra.'];
+    this.ruleArray.push(this.conditions);
     this._savePattern(observable, [verification], error);
   }
 
@@ -215,9 +220,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         break;
       case 'Complemento 5':
         this.conditions.complemento05 = s;
-        break;
-      case 'Tipo da Planilha':
-        this.conditions.tipoPlanilha = s;
         break;
       case 'Nome do Arquivo':
         this.conditions.nomeArquivo = s;
@@ -339,6 +341,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   private _remaining(autoIncrement?: boolean) {
     if (this.pageInfo) {
       this.remaining = this.pageInfo.totalElements - (this.counter + this.impactCounter);
+      if (this.remaining < 0) {
+        this.remaining = 0;
+      }
     }
     if (autoIncrement === true) {
       this.counter++;
@@ -362,6 +367,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this._remaining();
       this.resetErrors([`Você conclui todos os ${this.tipoLancamentoName} desta empresa.`]);
     }
+    console.log(this._ruleApplier.apply(this.ruleArray, this.records));
   }
 
   nextPage() {
@@ -379,23 +385,3 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const records = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-records.splice(0, 1);

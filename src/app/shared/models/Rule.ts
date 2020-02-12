@@ -28,7 +28,6 @@ export class Rule {
     public complemento03: string[];
     public complemento04: string[];
     public complemento05: string[];
-    public tipoPlanilha: string[];
     public nomeArquivo: string[];
 
     public static getFieldName(field: string): string {
@@ -104,7 +103,6 @@ export class Rule {
       this._newRule('complemento03', this.complemento03);
       this._newRule('complemento04', this.complemento04);
       this._newRule('complemento05', this.complemento05);
-      this._newRule('tipoPlanilha', this.tipoPlanilha);
       this._newRule('nomeArquivo', this.nomeArquivo);
       return this._rules;
     }
