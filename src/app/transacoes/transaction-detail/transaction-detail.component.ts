@@ -288,7 +288,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   async tabsPattern(position: number, tipoLancamento: number, tipoMovimento: string, tipoLancamentoName: string) {
     this.destroy = true;
     this._resetButtons();
-    this.tabsButtonClass[position] = 'btn btn-light green col';
+    this.tabsButtonClass[position] = 'btn btn-info col';
     this.tabIsClicked = true;
     this.tabSelect.emit('true');
 
