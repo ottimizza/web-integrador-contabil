@@ -76,7 +76,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       skip: 'Deixar este lançamento para depois.',
       ok: 'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
       affecteds: 'Clique para visualizar os lançamentos afetados.',
-      provider: 'A conta informada será aplicada para todas as ocorrências deste fornecedor.',
+      provider: 'A conta informada será aplicada para todas as ocorrências deste fornecedor e qualquer outro campo marcado será ignorado.',
       info: `Agora clique nas palavras que justificam o lançamento ser aplicado a determinada conta ou ignorado.
       Se necessário, informe a conta.`
     };
