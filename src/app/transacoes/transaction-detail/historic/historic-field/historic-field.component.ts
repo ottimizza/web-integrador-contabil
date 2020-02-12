@@ -49,7 +49,7 @@ export class HistoricFieldComponent {
         { property: l.complemento02, text: 'Complemento 02' },
         { property: l.complemento03, text: 'Complemento 03' },
         { property: l.complemento04, text: 'Complemento 04' },
-        { property: l.complemento05, text: 'Complemento 05' },
+        { property: l.complemento05, text: 'Complemento 05' }
       ];
 
       localArray.forEach(arrItem => {
