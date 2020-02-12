@@ -77,8 +77,9 @@ export class InputChipsComponent implements OnInit, OnChanges {
     const chips = this.chips;
     collectionForUtils(chips, false, 'selected');
     collectionForUtils(chips, true, 'chipDefault');
+    this.chipList = [];
     this.returningObject = { title: this.name, selecteds: undefined };
-    this.selectedInfos.emit(this.returningObject);
+    this.emit();
   }
 
 
@@ -99,8 +100,15 @@ export class InputChipsComponent implements OnInit, OnChanges {
       this.chipList.push(prop);
       this.returningObject = { title, selecteds: this.chipList };
     }
+    this.emit();
+  }
+
+  emit() {
+    // console.log(this.returningObject.title);
+    // console.log(this.returningObject.selecteds);
     this.selectedInfos.emit(this.returningObject);
   }
+
 
   selectComp(prop: string, type: string) {
     const chip = this._document.getElementById(prop + ' ' + type);
@@ -188,7 +196,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
       this.returningObject = { title, selecteds: [selecteds] };
     }
 
-    this.selectedInfos.emit(this.returningObject);
+    this.emit();
   }
 
   private _verifyWord(words: string[]) {
