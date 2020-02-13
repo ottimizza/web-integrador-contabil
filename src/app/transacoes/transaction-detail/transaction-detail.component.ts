@@ -25,7 +25,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   @Input() business: Empresa;
   @Output() tabSelect = new EventEmitter();
   conditions = new Rule();
-  pageInfo: PageInfo = PageInfo.defaultPageInfo();
+  pageInfo = PageInfo.defaultPageInfo();
   records: Lancamento[] = [];
   tabsButtonClass: string[];
   account: string;
@@ -264,6 +264,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     const dialogRef = this.dialog.open(HistoricComponent, {
       maxWidth: '900px',
       width: '90vw',
+      maxHeight: '90vh',
       data: {
         lancamento: this.records[0]
       }

@@ -44,6 +44,10 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     }
   }
 
+  onDelete(event: number) {
+    this.rows.splice(event, 1);
+  }
+
   onClick(button: TabButton) {
     this.rows = [];
     this.isSelected = true;
@@ -78,18 +82,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   nextPage() {
 
-  //   const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: this.pageInfo.pageSize };
-  //   const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento: 1, tipoMovimento: this.tipoMovimento, tipoConta: 0};
-  //   Object.assign(filter, pageCriteria);
-
-  //   this._lancamentoService.getLancamentos(filter).subscribe(imports => {
-  //     this.records = imports.records;
-  //     this.pageInfo = imports.pageInfo;
-
-  //     this._remaining();
-  //     this.resetErrors();
-  //   });
-  // }
     const pageCriteria = { pageIndex: this.page };
     const sorting = { sortBy: 'posicao', sortOrder: 'asc' };
     const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento: this.tipoLancamento };

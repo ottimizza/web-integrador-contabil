@@ -22,16 +22,16 @@
 
     <div *ngFor="let rule of rows; let i = index" cdkDrag>
       <div style="margin-bottom: 20px;" *ngIf="rule.regras.length">
-        <app-ruleico [rules]="rule" [index]="i" (downAll)="downAll($event)" (upAll)="upAll($event)"></app-ruleico>
+        <app-ruleico [rules]="rule" [index]="i" (downAll)="downAll($event)" (upAll)="upAll($event)" (delete)="onDelete($event)"></app-ruleico>
       </div>
     </div>
 
   </div>
 
-  <button class="btn btn-dark mb-3 mt-4" *ngIf="hasNext && isSelected; else apagardepois" (click)="nextPage()">Carregar mais</button>
+  <button class="btn btn-dark mb-3 mt-4" *ngIf="hasNext && isSelected" (click)="nextPage()">Carregar mais</button>
 
-  <ng-template #apagardepois>
-    <br><br><br><br><br><b><br><br><br><br><br><br><br><br><br><br><br><br></b>
-  </ng-template>
+  <div *ngIf="!rows || rows.length < 2">
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  </div>
 
 </div>
