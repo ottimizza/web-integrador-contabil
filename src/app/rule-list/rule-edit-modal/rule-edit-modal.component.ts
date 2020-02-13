@@ -1,6 +1,7 @@
-import { Component, Inject, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RuleCreateFormat, PostFormatRule, Condicao } from '@shared/models/Rule';
+import { CompleteRule } from '@shared/models/CompleteRule';
 
 @Component({
   templateUrl: './rule-edit-modal.component.html',
@@ -8,21 +9,30 @@ import { RuleCreateFormat, PostFormatRule, Condicao } from '@shared/models/Rule'
 })
 export class RuleEditModalComponent implements OnInit {
 
-  ruleDefault: RuleCreateFormat;
+  ruleDefault: CompleteRule;
 
   constructor(
     public dialogRef: MatDialogRef<RuleEditModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { regras: PostFormatRule[], cnpjContabilidade: string, cnpjEmpresa: string, contaMovimento: string }
+    // tslint:disable-next-line: max-line-length
+    @Inject(MAT_DIALOG_DATA) public data: { rule: CompleteRule }
   ) { }
 
   ngOnInit(): void {
-    // ! O array local deve ser gerado desta forma ou através de algum outro método que gere UM NOVO array.
-    const localArray: PostFormatRule[] = [];
-    this.data.regras.forEach(rule => {
-      localArray.push(rule);
-    });
-
-    this.ruleDefault = new RuleCreateFormat(localArray, this.data.cnpjEmpresa, this.data.cnpjContabilidade, this.data.contaMovimento);
+    // ! O array local PRECISA ser feito desta forma ou de alguma outra que crie um NOVO array
+    const rule = this.data.rule;
+    const localArray = rule.regras.filter(() => true);
+    this.ruleDefault = new CompleteRule(
+      rule.id,
+      rule.posicao,
+      rule.contaMovimento,
+      rule.tipoLancamento,
+      rule.idRoteiro,
+      rule.cnpjEmpresa,
+      rule.cnpjContabilidade,
+      rule.dataCriacao,
+      rule.dataAtualizacao,
+      localArray
+    );
   }
 
   get info() {

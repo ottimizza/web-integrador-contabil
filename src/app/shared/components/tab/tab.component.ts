@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 export enum TabButton {
   PAGAMENTO = 'pag',
@@ -14,6 +14,7 @@ export enum TabButton {
 })
 export class TabComponent implements OnInit {
 
+  @Input() complete = true;
   @Output() clicked: EventEmitter<TabButton> = new EventEmitter();
   classes: string[];
 

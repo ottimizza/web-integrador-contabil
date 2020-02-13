@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RuleCreateFormat, PostFormatRule, Rule, Condicao } from '@shared/models/Rule';
 import { RuleEditModalComponent } from '../rule-edit-modal/rule-edit-modal.component';
+import { CompleteRule } from '@shared/models/CompleteRule';
 
 @Component({
   selector: 'app-ruleico',
@@ -10,7 +11,7 @@ import { RuleEditModalComponent } from '../rule-edit-modal/rule-edit-modal.compo
 })
 export class RuleCardComponent {
 
-  @Input() rules: RuleCreateFormat;
+  @Input() rules: CompleteRule;
   @Input() index: number;
   @Output() downAll: EventEmitter<number> = new EventEmitter();
   @Output() upAll: EventEmitter<number> = new EventEmitter();
@@ -46,16 +47,13 @@ export class RuleCardComponent {
   openModal(newCamp?: boolean) {
     const rules = this.rules;
     if (newCamp) {
-      rules.regras.push({ campo: '', condicao: 0, valor: '' });
+      rules.regras.push({ campo: null, condicao: null, grupoRegra: null, id: null, valor: null });
     }
     const dialogRef = this.dialog.open(RuleEditModalComponent, {
       width: '80%',
       maxWidth: '1300px',
       data: {
-        regras: rules.regras,
-        cnpjContabilidade: rules.cnpjContabilidade,
-        cnpjEmpresa: rules.cnpjEmpresa,
-        contaMovimento: rules.contaMovimento
+        rule: rules
       }
     });
 

@@ -12,6 +12,8 @@ export class RuleCreateFormat {
     public regras: PostFormatRule[],
     public cnpjEmpresa: string,
     public cnpjContabilidade: string,
+    public tipoLancamento: number,
+    public idRoteiro: string,
     public contaMovimento: string
   ) { }
 
