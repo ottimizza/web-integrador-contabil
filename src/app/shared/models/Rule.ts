@@ -11,6 +11,7 @@ export class RuleCreateFormat {
   constructor(
     public regras: PostFormatRule[],
     public cnpjEmpresa: string,
+    public cnpjContabilidade: string,
     public contaMovimento: string
   ) { }
 
@@ -27,41 +28,40 @@ export class Rule {
     public complemento03: string[];
     public complemento04: string[];
     public complemento05: string[];
-    public tipoPlanilha: string[];
     public nomeArquivo: string[];
 
     public static getFieldName(field: string): string {
       let strName = '';
       switch (field) {
         case 'descricao':
-          strName = 'fornecedor';
+          strName = 'FORNECEDOR';
           break;
         case 'documento':
-          strName = 'documento';
+          strName = 'DOCUMENTO';
           break;
         case 'portador':
-          strName = 'banco';
+          strName = 'BANCO';
           break;
         case 'complemento01':
-          strName = 'complemento 01';
+          strName = 'COMPLEMENTO 01';
           break;
         case 'complemento02':
-          strName = 'complemento 02';
+          strName = 'COMPLEMENTO 02';
           break;
         case 'complemento03':
-          strName = 'complemento 03';
+          strName = 'COMPLEMENTO 03';
           break;
         case 'complemento04':
-          strName = 'complemento 04';
+          strName = 'COMPLEMENTO 04';
           break;
         case 'complemento05':
-          strName = 'complemento 05';
+          strName = 'COMPLEMENTO 05';
           break;
         case 'tipoPlanilha':
-          strName = 'tipo da planilha';
+          strName = 'TIPO DA PLANILHA';
           break;
         case 'nomeArquivo':
-          strName = 'nome do arquivo';
+          strName = 'NOME DO ARQUIVO';
           break;
       }
       return strName;
@@ -103,7 +103,6 @@ export class Rule {
       this._newRule('complemento03', this.complemento03);
       this._newRule('complemento04', this.complemento04);
       this._newRule('complemento05', this.complemento05);
-      this._newRule('tipoPlanilha', this.tipoPlanilha);
       this._newRule('nomeArquivo', this.nomeArquivo);
       return this._rules;
     }

@@ -28,7 +28,6 @@ export class HistoricFieldComponent {
         'Valor',
         'Documento',
         'Nome do Arquivo',
-        'Tipo da Planilha',
         'Complemento 01',
         'Complemento 02',
         'Complemento 03',
@@ -44,13 +43,13 @@ export class HistoricFieldComponent {
         { property: l.portador, text: 'Portador' },
         { property: l.dataMovimento, text: 'Data' },
         { property: `${l.valorOriginal}`, text: 'Valor' },
+        { property: l.documento, text: 'Documento' },
         { property: l.nomeArquivo, text: 'Nome do Arquivo' },
-        { property: l.tipoPlanilha, text: 'Tipo da Planilha' },
         { property: l.complemento01, text: 'Complemento 01' },
         { property: l.complemento02, text: 'Complemento 02' },
         { property: l.complemento03, text: 'Complemento 03' },
         { property: l.complemento04, text: 'Complemento 04' },
-        { property: l.complemento05, text: 'Complemento 05' },
+        { property: l.complemento05, text: 'Complemento 05' }
       ];
 
       localArray.forEach(arrItem => {

@@ -1,14 +1,30 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { StringCutterUtils } from '@shared/utils/string-cutter.util';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-tab',
   templateUrl: './tab.component.html',
   styleUrls: ['./tab.component.scss']
 })
-export class TabComponent {
+export class TabComponent implements OnInit {
 
-  @Input() value: string;
-  @Input() main = false;
+  classes: string[];
+
+  ngOnInit(): void {
+    this._resetClasses();
+  }
+
+  private _resetClasses() {
+    this.classes = [
+      'btn btn-outline-link col',
+      'btn btn-outline-link col',
+      'btn btn-outline-link col',
+      'btn btn-outline-link col'
+    ];
+  }
+
+  update(position: number) {
+    this._resetClasses();
+    this.classes[position] = 'btn btn-info col';
+  }
 
 }

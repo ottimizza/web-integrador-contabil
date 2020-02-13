@@ -3,7 +3,7 @@
   Author: Themedesigner
   Email: niravjoshi87@gmail.com
   File: scss
-  */
+
   /**
   * Table Of Content
   *
@@ -15,20 +15,20 @@
   *	6. app
   *	7. Widgets
   *	8. Custom Templates
-  */
+
   /*
   Template Name: Material Pro Admin
   Author: Themedesigner
   Email: niravjoshi87@gmail.com
   File: scss
-  */
+
   @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700");
-  /*Theme Colors*/
-  /*bootstrap Color*/
-  /*Light colors*/
-  /*Normal Color*/
-  /*Extra Variable*/
-  /*Preloader*/
+  /*Theme Colors
+  /*bootstrap Color
+  /*Light colors
+  /*Normal Color
+  /*Extra Variable
+  /*Preloader
   /* @import url(../scss/icons/font-awesome/css/font-awesome.min.css);
   @import url(../scss/icons/simple-line-icons/css/simple-line-icons.css);
   @import url(../scss/icons/weather-icons/css/weather-icons.min.css);
@@ -38,7 +38,7 @@
   @import url(../scss/icons/material-design-iconic-font/css/materialdesignicons.min.css);
   @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700");
   @import url(../css/spinners.css);
-  @import url(../css/animate.css); */
+  @import url(../css/animate.css);
 
   .preloader {
     width: 100%;
@@ -57,7 +57,7 @@
   Author: Themedesigner
   Email: niravjoshi87@gmail.com
   File: scss
-  */
+
   /**
   * Table Of Content
   *
@@ -69,10 +69,10 @@
   *	6. Posts
   *	7. Widgets
   *	8. Custom Templates
-  */
+
   /*******************
   Global Styles
-  *******************/
+  ******************
   * {
     outline: none; }
 
@@ -88,7 +88,7 @@
     position: relative;
     min-height: 100%;
     background: #ffffff; }
-
+    */
   a:hover, a:focus {
     text-decoration: none; }
 
@@ -97,20 +97,21 @@
     a.link:hover, a.link:focus {
       color: #009efb; }
 
-  .img-responsive {
+ .img-responsive {
     width: 100%;
     height: auto;
     display: inline-block; }
 
   .img-rounded {
     border-radius: 4px; }
+  /*
 
   html body .mdi:before, html body .mdi-set {
     line-height: initial; }
 
   /*******************
   Headings
-  *******************/
+  ******************
   h1,
   h2,
   h3,
@@ -168,7 +169,7 @@
 
   /*******************
   Blockquote
-  *******************/
+  ******************
   html body blockquote {
     border-left: 5px solid #009efb;
     border: 1px solid rgba(120, 130, 140, 0.13);
@@ -182,7 +183,7 @@
 
   /*******************
   Paddings
-  *******************/
+  ******************
   html body .p-0 {
     padding: 0px; }
 
@@ -251,7 +252,7 @@
 
   /*******************
   Margin
-  *******************/
+  ******************
   html body .m-0 {
     margin: 0px; }
 
@@ -335,7 +336,7 @@
 
   /*******************
   vertical alignment
-  *******************/
+  ******************
   html body .vt {
     vertical-align: top; }
 
@@ -347,13 +348,13 @@
 
   /*******************
   Opacity
-  *******************/
+  ******************
   .op-5 {
     opacity: 0.5; }
 
   /*******************
   font weight
-  *******************/
+  ******************
   html body .font-bold {
     font-weight: 700; }
 
@@ -383,7 +384,7 @@
 
   /*******************
   Border
-  *******************/
+  ******************
   html body .b-0 {
     border: none; }
 
@@ -404,7 +405,7 @@
 
   /*******************
   Thumb size
-  *******************/
+  ******************
   .thumb-sm {
     height: 32px;
     width: 32px; }
@@ -428,7 +429,7 @@
 
   /*******************
   Text Colors
-  *******************/
+  ******************
   .text-white {
     color: #ffffff !important; }
 
@@ -470,7 +471,7 @@
 
   /*******************
   Background Colors
-  *******************/
+  ******************
   .bg-primary {
     background-color: #7460ee !important; }
 
@@ -527,7 +528,7 @@
 
   /*******************
   Rounds
-  *******************/
+  ******************
   .round {
     line-height: 48px;
     color: #ffffff;
@@ -564,7 +565,7 @@
 
   /*******************
   Labels
-  *******************/
+  ******************
   .label {
     padding: 3px 10px;
     line-height: 13px;
@@ -642,7 +643,7 @@
 
   /*******************
   Pagination
-  *******************/
+  ******************
   .pagination > li:first-child > a,
   .pagination > li:first-child > span {
     border-bottom-left-radius: 4px;
@@ -694,7 +695,7 @@
 
   /*******************
   Table Cell
-  *******************/
+  ******************
   .table-box {
     display: table;
     width: 100%; }
@@ -720,7 +721,7 @@
 
   /*******************
   Wave Effects
-  *******************/
+  ****************** */
   .waves-effect {
     position: relative;
     cursor: pointer;
@@ -821,7 +822,7 @@
   .waves-block {
     display: block; }
 
-  /*Badge*/
+  /*Badge
   .badge {
     font-weight: 400; }
 
@@ -861,7 +862,7 @@
 
   /*******************
   Buttons
-  ******************/
+  ***************** */
   .btn {
     padding: 7px 12px;
     font-size: 14px;
@@ -938,6 +939,8 @@
       padding: 12px 35px;
       font-size: 16px; }
 
+  /*
+
   .btn-secondary,
   .btn-secondary.disabled {
     -webkit-box-shadow: 0 2px 2px 0 rgba(169, 169, 169, 0.14), 0 3px 1px -2px rgba(169, 169, 169, 0.2), 0 1px 5px 0 rgba(169, 169, 169, 0.12);
@@ -955,7 +958,7 @@
       -webkit-box-shadow: 0 14px 26px -12px rgba(169, 169, 169, 0.42), 0 4px 23px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(169, 169, 169, 0.2);
       box-shadow: 0 14px 26px -12px rgba(169, 169, 169, 0.42), 0 4px 23px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(169, 169, 169, 0.2); }
 
-  /* .btn-primary,
+  /* .btn-primary
   .btn-primary.disabled {
     background: #7460ee;
     border: 1px solid #7460ee;
@@ -975,7 +978,7 @@
     .btn-primary.disabled:focus {
       background: #6352ce;
       -webkit-box-shadow: 0 14px 26px -12px rgba(116, 96, 238, 0.42), 0 4px 23px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(116, 96, 238, 0.2);
-      box-shadow: 0 14px 26px -12px rgba(116, 96, 238, 0.42), 0 4px 23px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(116, 96, 238, 0.2); } */
+      box-shadow: 0 14px 26px -12px rgba(116, 96, 238, 0.42), 0 4px 23px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(116, 96, 238, 0.2); }
 
   .btn-themecolor,
   .btn-themecolor.disabled {
@@ -1402,7 +1405,7 @@
 
   /*******************
   Notify
-  *******************/
+  ******************
   .notify {
     position: relative;
     top: -25px;
@@ -1470,7 +1473,7 @@
 
   /*******************
   Checkbox
-  *******************/
+  ******************
   .checkbox {
     padding-left: 20px; }
     .checkbox label {
@@ -1591,7 +1594,7 @@
 
   /*******************
   Radios
-  *******************/
+  ******************
   .radio {
     padding-left: 20px; }
     .radio label {
@@ -1727,7 +1730,7 @@
 
   /*******************
   File Upload
-  ******************/
+  *****************
   .fileupload {
     overflow: hidden;
     position: relative; }
@@ -1744,7 +1747,7 @@
 
   /*******************
   Megamenu
-  ******************/
+  *****************
   .mega-dropdown {
     position: static;
     width: 100%; }
@@ -1770,7 +1773,7 @@
 
   /*******************
   List-style-none
-  ******************/
+  *****************
   ul.list-style-none {
     margin: 0px;
     padding: 0px; }
@@ -1786,26 +1789,26 @@
 
   /*******************
   dropdown-item
-  ******************/
+  *****************
   .dropdown-item {
     padding: 8px 1rem;
     color: #67757c; }
 
   /*******************
   Custom-select
-  ******************/
+  *****************
   /* .custom-select {
-    background: url(../../assets/images/custom-select.png) right 0.75rem center no-repeat; } */
+    background: url(../../assets/images/custom-select.png) right 0.75rem center no-repeat; }
 
   /*******************
   textarea
-  ******************/
+  *****************
   textarea {
     resize: none; }
 
   /*******************
   Form-control
-  ******************/
+  *****************
   .form-control {
     color: #67757c;
     min-height: 38px;
@@ -1817,9 +1820,14 @@
   .form-control:disabled, .form-control[readonly] {
     opacity: 0.7; }
 
-  .custom-control-input:focus ~ .custom-control-indicator {
+    .custom-control-input:focus ~ .custom-control-indicator {
     -webkit-box-shadow: none;
     box-shadow: none; }
+  */
+  input:focus, datalist:focus {
+    -webkit-box-shadow: none;
+    box-shadow: none; }
+  /*
 
   .custom-control-input:checked ~ .custom-control-indicator {
     background-color: #26c6da; }
@@ -1842,8 +1850,8 @@
 
   /*******************
   Layouts
-  ******************/
-  /*Card-noborders*/
+  *****************
+  /*Card-noborders
   .card-no-border .card {
     border-color: #d7dfe3;
     border-radius: 4px;
@@ -1876,18 +1884,18 @@
     background: #ffffff;
     border-bottom: 0px; }
 
-  /*******************/
-  /*widgets -app*/
-  /*******************/
+  /******************
+  /*widgets -app
+  /******************
   .css-bar:after {
     z-index: 1; }
 
   .css-bar > i {
     z-index: 10; }
 
-  /*******************/
-  /*single column*/
-  /*******************/
+  /******************
+  /*single column
+  /******************
   .single-column .left-sidebar {
     display: none; }
 
@@ -1904,10 +1912,10 @@
   Author: Themedesigner
   Email: niravjoshi87@gmail.com
   File: scss
-  */
+
   /*==============================================================
   For all pages
-  ============================================================== */
+  ==============================================================
   #main-wrapper {
     width: 100%; }
 
@@ -1940,7 +1948,7 @@
 
   /*******************
   Topbar
-  *******************/
+  ****************** */
   .topbar {
     position: relative;
     z-index: 50;
@@ -2062,7 +2070,7 @@
 
   /*******************
   Breadcrumb and page title
-  *******************/
+  ******************
   .page-titles {
     background: #ffffff;
     margin: 0 -30px 30px;
@@ -2089,7 +2097,7 @@
 
   /*******************
   Right side toggle
-  *******************/
+  ******************
   @-webkit-keyframes rotate {
     from {
       -webkit-transform: rotate(0deg); }
@@ -2199,7 +2207,7 @@
 
   /*******************
   Right side toggle
-  *******************/
+  ******************
   ul#themecolors {
     display: block; }
     ul#themecolors li {
@@ -2249,22 +2257,22 @@
 
   .default-dark-theme {
     background: #263238;
-    /* Old browsers */
+    /* Old browsers
     background: -moz-linear-gradient(left, #263238 0%, #263238 23%, #99abb4 23%, #99abb4 99%);
-    /* FF3.6-15 */
+    /* FF3.6-15
     background: -webkit-linear-gradient(left, #263238 0%, #263238 23%, #99abb4 23%, #99abb4 99%);
-    /* Chrome10-25,Safari5.1-6 */
+    /* Chrome10-25,Safari5.1-6
     background: -webkit-gradient(linear, left top, right top, from(#263238), color-stop(23%, #263238), color-stop(23%, #99abb4), color-stop(99%, #99abb4));
     background: -o-linear-gradient(left, #263238 0%, #263238 23%, #99abb4 23%, #99abb4 99%);
     background: linear-gradient(to right, #263238 0%, #263238 23%, #99abb4 23%, #99abb4 99%); }
 
   .green-dark-theme {
     background: #263238;
-    /* Old browsers */
+    /* Old browsers
     background: -moz-linear-gradient(left, #263238 0%, #263238 23%, #26c6da 23%, #26c6da 99%);
-    /* FF3.6-15 */
+    /* FF3.6-15
     background: -webkit-linear-gradient(left, #263238 0%, #263238 23%, #00c292 23%, #26c6da 99%);
-    /* Chrome10-25,Safari5.1-6 */
+    /* Chrome10-25,Safari5.1-6
     background: -webkit-gradient(linear, left top, right top, from(#263238), color-stop(23%, #263238), color-stop(23%, #26c6da), color-stop(99%, #26c6da));
     background: -webkit-linear-gradient(left, #263238 0%, #263238 23%, #26c6da 23%, #26c6da 99%);
     background: -o-linear-gradient(left, #263238 0%, #263238 23%, #26c6da 23%, #26c6da 99%);
@@ -2272,68 +2280,68 @@
 
   .yellow-dark-theme {
     background: #263238;
-    /* Old browsers */
+    /* Old browsers
     background: -moz-linear-gradient(left, #263238 0%, #263238 23%, #fc4b6c 23%, #fc4b6c 99%);
-    /* FF3.6-15 */
+    /* FF3.6-15
     background: -webkit-linear-gradient(left, #263238 0%, #263238 23%, #fc4b6c 23%, #fc4b6c 99%);
-    /* Chrome10-25,Safari5.1-6 */
+    /* Chrome10-25,Safari5.1-6
     background: -webkit-gradient(linear, left top, right top, from(#263238), color-stop(23%, #263238), color-stop(23%, #fc4b6c), color-stop(99%, #fc4b6c));
     background: -o-linear-gradient(left, #263238 0%, #263238 23%, #fc4b6c 23%, #fc4b6c 99%);
     background: linear-gradient(to right, #263238 0%, #263238 23%, #fc4b6c 23%, #fc4b6c 99%); }
 
   .blue-dark-theme {
     background: #263238;
-    /* Old browsers */
+    /* Old browsers
     background: -moz-linear-gradient(left, #263238 0%, #263238 23%, #1e88e5 23%, #1e88e5 99%);
-    /* FF3.6-15 */
+    /* FF3.6-15
     background: -webkit-linear-gradient(left, #263238 0%, #263238 23%, #1e88e5 23%, #1e88e5 99%);
-    /* Chrome10-25,Safari5.1-6 */
+    /* Chrome10-25,Safari5.1-6
     background: -webkit-gradient(linear, left top, right top, from(#263238), color-stop(23%, #263238), color-stop(23%, #1e88e5), color-stop(99%, #1e88e5));
     background: -o-linear-gradient(left, #263238 0%, #263238 23%, #1e88e5 23%, #1e88e5 99%);
     background: linear-gradient(to right, #263238 0%, #263238 23%, #1e88e5 23%, #1e88e5 99%); }
 
   .purple-dark-theme {
     background: #263238;
-    /* Old browsers */
+    /* Old browsers
     background: -moz-linear-gradient(left, #263238 0%, #263238 23%, #7460ee 23%, #7460ee 99%);
-    /* FF3.6-15 */
+    /* FF3.6-15
     background: -webkit-linear-gradient(left, #263238 0%, #263238 23%, #7460ee 23%, #7460ee 99%);
-    /* Chrome10-25,Safari5.1-6 */
+    /* Chrome10-25,Safari5.1-6
     background: -webkit-gradient(linear, left top, right top, from(#263238), color-stop(23%, #263238), color-stop(23%, #7460ee), color-stop(99%, #7460ee));
     background: -o-linear-gradient(left, #263238 0%, #263238 23%, #7460ee 23%, #7460ee 99%);
     background: linear-gradient(to right, #263238 0%, #263238 23%, #7460ee 23%, #7460ee 99%); }
 
   .megna-dark-theme {
     background: #263238;
-    /* Old browsers */
+    /* Old browsers
     background: -moz-linear-gradient(left, #263238 0%, #263238 23%, #00897b 23%, #00897b 99%);
-    /* FF3.6-15 */
+    /* FF3.6-15
     background: -webkit-linear-gradient(left, #263238 0%, #263238 23%, #00897b 23%, #00897b 99%);
-    /* Chrome10-25,Safari5.1-6 */
+    /* Chrome10-25,Safari5.1-6
     background: -webkit-gradient(linear, left top, right top, from(#263238), color-stop(23%, #263238), color-stop(23%, #00897b), color-stop(99%, #00897b));
     background: -o-linear-gradient(left, #263238 0%, #263238 23%, #00897b 23%, #00897b 99%);
     background: linear-gradient(to right, #263238 0%, #263238 23%, #00897b 23%, #00897b 99%); }
 
   .red-dark-theme {
     background: #263238;
-    /* Old browsers */
+    /* Old browsers
     background: -moz-linear-gradient(left, #263238 0%, #263238 23%, #fc4b6c 23%, #fc4b6c 99%);
-    /* FF3.6-15 */
+    /* FF3.6-15
     background: -webkit-linear-gradient(left, #263238 0%, #263238 23%, #fc4b6c 23%, #fc4b6c 99%);
-    /* Chrome10-25,Safari5.1-6 */
+    /* Chrome10-25,Safari5.1-6
     background: -webkit-gradient(linear, left top, right top, from(#263238), color-stop(23%, #263238), color-stop(23%, #fc4b6c), color-stop(99%, #fc4b6c));
     background: -o-linear-gradient(left, #263238 0%, #263238 23%, #fc4b6c 23%, #fc4b6c 99%);
     background: linear-gradient(to right, #263238 0%, #263238 23%, #fc4b6c 23%, #fc4b6c 99%); }
 
   /*******************
   page title
-  *******************/
+  ******************
   .page-titles {
     padding-bottom: 20px; }
 
   /*******************
   Footer
-  *******************/
+  ******************
   .footer {
     bottom: 0;
     color: #67757c;
@@ -2346,7 +2354,7 @@
 
   /*******************
   Card title
-  *******************/
+  ******************
   .card {
     margin-bottom: 30px; }
     .card .card-subtitle {
@@ -2390,7 +2398,7 @@
 
   /*==============================================================
   Buttons page
-  ============================================================== */
+  ==============================================================
   .button-group .btn {
     margin-bottom: 5px;
     margin-right: 5px; }
@@ -2410,7 +2418,7 @@
 
   /*==============================================================
   Cards page
-  ============================================================== */
+  ==============================================================
   .card-actions {
     float: right; }
     .card-actions a {
@@ -2476,7 +2484,7 @@
 
   /*==============================================================
   Breadcrumb
-  ============================================================== */
+  ==============================================================
   .bc-colored .breadcrumb-item,
   .bc-colored .breadcrumb-item a {
     color: #ffffff; }
@@ -2492,7 +2500,7 @@
 
   /*==============================================================
   Ui-bootstrap
-  ============================================================== */
+  ==============================================================
   ul.list-icons {
     margin: 0px;
     padding: 0px; }
@@ -2520,13 +2528,13 @@
     ul.two-part li {
       width: 48.8%; }
 
-  /*Accordion*/
+  /*Accordion
   html body .accordion .card {
     margin-bottom: 0px; }
 
   /*==============================================================
   flot chart
-  ============================================================== */
+  ==============================================================
   .flot-chart {
     display: block;
     height: 400px; }
@@ -2545,7 +2553,7 @@
 
   /*==============================================================
   Easy pie chart
-  ============================================================== */
+  ==============================================================
   .chart {
     position: relative;
     display: inline-block;
@@ -2602,7 +2610,7 @@
 
   /*==============================================================
   Dashboard1 chart
-  ============================================================== */
+  ==============================================================
   .ct-charts {
     position: relative; }
 
@@ -2645,7 +2653,7 @@
 
   /*==============================================================
   Dashboard2 chart
-  ============================================================== */
+  ==============================================================
   .campaign {
     height: 280px; }
     .campaign .ct-series-a .ct-area {
@@ -2694,7 +2702,7 @@
 
   /*==============================================================
   Dashboard3 chart
-  ============================================================== */
+  ==============================================================
   .total-sales {
     position: relative; }
     .total-sales .chartist-tooltip {
@@ -2733,7 +2741,7 @@
 
   /*==============================================================
   Dashboard4 chart
-  ============================================================== */
+  ==============================================================
   .total-revenue4 {
     position: relative; }
     .total-revenue4 .ct-series-a .ct-line {
@@ -2757,19 +2765,19 @@
 
   /*==============================================================
   Dashboard6 chart
-  ============================================================== */
+  ==============================================================
   .product-overview.table tbody tr td {
     vertical-align: middle; }
 
   /*==============================================================
   Widget-data
-  ============================================================== */
+  ==============================================================
   .sparkchart {
     margin-bottom: -2px; }
 
   /*==============================================================
   File upload
-  ============================================================== */
+  ==============================================================
   .btn-file {
     overflow: hidden;
     position: relative;
@@ -2836,7 +2844,7 @@
 
   /*==============================================================
   widget-chart-page product review
-  ============================================================== */
+  ==============================================================
   .product-review {
     margin: 0px;
     padding: 25px; }
@@ -2868,8 +2876,8 @@
 
   /*==============================================================
   Form addons page
-  ============================================================== */
-  /*Bootstrap select*/
+  ==============================================================
+  /*Bootstrap select
   .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
     width: 100%; }
 
@@ -2890,8 +2898,8 @@
 
   /*==============================================================
   Form Material page
-  ============================================================== */
-  /*Material inputs*/
+  ==============================================================
+  /*Material inputs
   .form-material .form-group {
     overflow: hidden; }
 
@@ -2937,9 +2945,9 @@
     .form-control-line .form-control:focus {
       border-bottom: 1px solid #009efb; }
 
-  /*******************/
-  /*Floating Label*/
-  /*******************/
+  /******************
+  /*Floating Label
+  /******************
   .floating-labels .form-group {
     position: relative; }
 
@@ -3078,7 +3086,7 @@
 
   /*******************
   Pagination
-  ******************/
+  *****************
   .pagination-circle li.active a {
     background: #26c6da; }
 
@@ -3101,7 +3109,7 @@
 
   /*******************
   Form Dropzone
-  ******************/
+  *****************
   .dropzone {
     border: 1px dashed #d9d9d9; }
     .dropzone .dz-message {
@@ -3110,7 +3118,7 @@
 
   /*******************
   Form Pickers
-  ******************/
+  *****************
   .asColorPicker-dropdown {
     max-width: 260px; }
 
@@ -3149,7 +3157,7 @@
 
   /*******************
   Form icheck
-  ******************/
+  *****************
   .icolors,
   .icheck-list {
     padding: 0;
@@ -3208,7 +3216,7 @@
 
   /*******************
   Form summernote
-  ******************/
+  *****************
   .note-popover,
   .note-icon-caret {
     display: none; }
@@ -3224,7 +3232,7 @@
 
   /*******************
   Table-Layout
-  ******************/
+  *****************
   .table thead th,
   .table th {
     border: 0px; }
@@ -3455,7 +3463,7 @@
 
   /*******************
   Table-Data Table
-  ******************/
+  *****************
   .dt-buttons {
     display: inline-block;
     padding-top: 5px; }
@@ -3553,13 +3561,13 @@
 
   /*******************
   Table- responsive
-  ******************/
+  *****************
   .tablesaw-bar .btn-group label {
     color: #67757c !important; }
 
   /*******************
   Table- editable table
-  ******************/
+  *****************
   .dt-bootstrap {
     display: block; }
 
@@ -3579,7 +3587,7 @@
 
   /*******************
   Table- Footable
-  ******************/
+  *****************
   .footable .pagination {
     display: inline-block;
     padding: 8px 0; }
@@ -3602,7 +3610,7 @@
 
   /*******************
   Icon list fontawesom
-  ******************/
+  *****************
   .icon-list-demo div {
     cursor: pointer;
     line-height: 60px;
@@ -3642,13 +3650,13 @@
 
   /*******************
   Icon list material icon
-  ******************/
+  *****************
   .material-icon-list-demo .mdi {
     font-size: 21px; }
 
   /*******************
   Gridstack Dragable portlet
-  ******************/
+  *****************
   .grid-stack-item-content {
     background: #fff;
     color: #2b2b2b;
@@ -3660,7 +3668,7 @@
 
   /*******************
   Bootstrap Switch
-  ******************/
+  *****************
   .bootstrap-switch,
   .bootstrap-switch .bootstrap-switch-container {
     border-radius: 2px; }
@@ -3777,7 +3785,7 @@
 
   /*******************
   Date paginator page
-  ******************/
+  *****************
   .dp-selected[style] {
     background-color: #009efb !important; }
 
@@ -3792,13 +3800,13 @@
 
   /*******************
   sweet alert page
-  ******************/
+  *****************
   .model_img {
     cursor: pointer; }
 
   /*******************
   Grid page
-  ******************/
+  *****************
   .show-grid {
     margin-bottom: 10px;
     padding: 0 15px; }
@@ -3811,7 +3819,7 @@
 
   /*******************
   Vertical tabs
-  ******************/
+  *****************
   .vtabs {
     display: table; }
     .vtabs .tabs-vertical {
@@ -3837,7 +3845,7 @@
     border: 0px;
     color: #ffffff; }
 
-  /*Custom vertical tab*/
+  /*Custom vertical tab
   .customvtab .tabs-vertical li .nav-link.active,
   .customvtab .tabs-vertical li .nav-link:hover,
   .customvtab .tabs-vertical li .nav-link:focus {
@@ -3864,7 +3872,7 @@
 
   /*******************
   Progress bar
-  ******************/
+  *****************
   .progress.active .progress-bar,
   .progress-bar.active {
     -webkit-animation: progress-bar-stripes 2s linear infinite;
@@ -3909,7 +3917,7 @@
 
   /*******************
   Notification page Jquery toaster
-  ******************/
+  *****************
   .jq-icon-info {
     background-color: #1e88e5;
     color: #ffffff; }
@@ -3931,7 +3939,7 @@
 
   /*******************
   list and media
-  ******************/
+  *****************
   .list-group a.list-group-item:hover {
     background: #f2f4f8; }
 
@@ -3951,7 +3959,7 @@
 
   /*******************
   User card page
-  ******************/
+  *****************
   .el-element-overlay .white-box {
     padding: 0px; }
 
@@ -3986,7 +3994,7 @@
       .el-element-overlay .el-card-item .el-overlay-1:hover img {
         -ms-transform: scale(1.2) translateZ(0);
         -webkit-transform: scale(1.2) translateZ(0);
-        /* transform: scale(1.2) translateZ(0); */ }
+        /* transform: scale(1.2) translateZ(0);  }
       .el-element-overlay .el-card-item .el-overlay-1 .el-info {
         text-decoration: none;
         display: inline-block;
@@ -4048,7 +4056,7 @@
 
   /*******************
   Timeline page
-  ******************/
+  *****************
   .timeline {
     position: relative;
     padding: 20px 0 20px;
@@ -4177,7 +4185,7 @@
 
   /*******************
   Horizontal Timeline page
-  ******************/
+  *****************
   .cd-horizontal-timeline .events a {
     padding-bottom: 6px;
     color: #009efb; }
@@ -4218,7 +4226,7 @@
 
   /*******************
   ribbons page
-  ******************/
+  *****************
   .ribbon-wrapper,
   .ribbon-wrapper-reverse,
   .ribbon-wrapper-bottom,
@@ -4556,7 +4564,7 @@
 
   /*******************
   session ideal timeout page
-  ******************/
+  *****************
   #idletimeout {
     background: #009efb;
     border: 3px solid #009efb;
@@ -4581,7 +4589,7 @@
 
   /*******************
   Stylish tooltip
-  ******************/
+  *****************
   .mytooltip:hover .tooltip-content2, .mytooltip:hover .tooltip-content2 i {
     opacity: 1;
     font-size: 18px;
@@ -4769,12 +4777,12 @@
     margin: -7px 0 0 -15px;
     width: 30px;
     height: 20px;
-    /* background: url(../../assets/images/tooltip/tooltip1.svg) no-repeat center center; */
+    /* background: url(../../assets/images/tooltip/tooltip1.svg) no-repeat center center;
     background-size: 100%; }
 
   .tooltip-content3 {
     position: absolute;
-    /* background: url(../../assets/images/tooltip/shape1.svg) no-repeat center bottom; */
+    /* background: url(../../assets/images/tooltip/shape1.svg) no-repeat center bottom;
     background-size: 100% 100%;
     z-index: 9999;
     width: 200px;
@@ -5031,7 +5039,7 @@
 
   /*******************
   Error Page
-  ******************/
+  *****************
   .error-box {
     height: 100%;
     position: fixed;
@@ -5051,7 +5059,7 @@
 
   /*******************
   google map Page
-  ******************/
+  *****************
   .gmaps,
   .gmaps-panaroma {
     height: 300px; }
@@ -5093,7 +5101,7 @@
 
   /*******************
   vector map Page
-  ******************/
+  *****************
   .jvectormap-zoomin,
   .jvectormap-zoomout {
     width: 10px;
@@ -5105,7 +5113,7 @@
 
   /*******************
   Seach listing Page
-  ******************/
+  *****************
   .search-listing {
     padding: 0px;
     margin: 0px; }
@@ -5125,7 +5133,7 @@
 
   /*******************
   Login register and recover password Page
-  ******************/
+  *****************
   .login-register {
     background-size: cover;
     background-repeat: no-repeat;
@@ -5159,7 +5167,7 @@
 
   /*******************
   FAQs Page
-  ******************/
+  *****************
   .minimal-faq .card {
     border: 0px; }
     .minimal-faq .card .card-header {
@@ -5171,7 +5179,7 @@
 
   /*******************
   Pricing Page
-  ******************/
+  *****************
   .pricing-box {
     position: relative;
     text-align: center;
@@ -5226,7 +5234,7 @@
 
   /*******************
   chat application Page
-  ******************/
+  *****************
   .chat-main-box {
     position: relative;
     overflow: hidden; }
@@ -5292,7 +5300,7 @@
 
   /*******************
   Email inbox Page
-  ******************/
+  *****************
   .inbox-panel .list-group .list-group-item {
     border: 0px;
     border-radius: 0px;
@@ -5326,8 +5334,8 @@
 
   /*******************
   Contact app Page
-  ******************/
-  /*left-aside-column*/
+  *****************
+  /*left-aside-column
   .contact-page-aside {
     position: relative; }
 
@@ -5382,10 +5390,10 @@
   Author: Themedesigner
   Email: niravjoshi87@gmail.com
   File: scss
-  */
+
   /*******************
-  /*User mail widgets*/
-  /*******************/
+  /*User mail widgets
+  /******************
   .topbar .top-navbar .mailbox {
     width: 300px; }
     .topbar .top-navbar .mailbox ul {
@@ -5457,15 +5465,15 @@
           white-space: nowrap; }
 
   /*******************
-  /*Analytic info sparkline chart page*/
-  /*******************/
+  /*Analytic info sparkline chart page
+  /******************
   .analytics-info li span {
     font-size: 24px;
     vertical-align: middle; }
 
   /*******************
-  /*States row*/
-  /*******************/
+  /*States row
+  /******************
   .stats-row {
     margin-bottom: 20px; }
     .stats-row .stat-item {
@@ -5475,9 +5483,9 @@
         padding-left: 15px;
         border-left: 1px solid rgba(120, 130, 140, 0.13); }
 
-  /*******************/
-  /*Dashboard1 Weather*/
-  /*******************/
+  /******************
+  /*Dashboard1 Weather
+  /******************
   .city-weather-days {
     margin: 0px; }
     .city-weather-days li {
@@ -5495,9 +5503,9 @@
         font-weight: 300;
         margin-top: 5px; }
 
-  /*******************/
-  /*Comment widgets*/
-  /*******************/
+  /******************
+  /*Comment widgets
+  /******************
   .comment-widgets {
     position: relative;
     margin-bottom: 10px; }
@@ -5525,9 +5533,9 @@
       .comment-footer .action-icons a:hover, .comment-footer .action-icons a.active {
         color: #1e88e5; }
 
-  /*******************/
-  /*To do widgets*/
-  /*******************/
+  /******************
+  /*To do widgets
+  /******************
   .todo-list li {
     border: 0px;
     margin-bottom: 0px;
@@ -5559,9 +5567,9 @@
   .list-task .task-done span {
     text-decoration: line-through; }
 
-  /*******************/
-  /*Chat widget*/
-  /*******************/
+  /******************
+  /*Chat widget
+  /******************
   .chat-list {
     margin: 0px;
     padding: 0px; }
@@ -5611,7 +5619,7 @@
   Author: Themedesigner
   Email: niravjoshi87@gmail.com
   File: scss
-  */
+
   @media (min-width: 1600px) {
     .col-xlg-1, .col-xlg-10, .col-xlg-11, .col-xlg-12, .col-xlg-2, .col-xlg-3, .col-xlg-4, .col-xlg-5, .col-xlg-6, .col-xlg-7, .col-xlg-8, .col-xlg-9 {
       float: left; }
@@ -5821,7 +5829,7 @@
   Phone and below ipad(767px)
   ============================================================== */
   @media (max-width: 767px) {
-    /*Header*/
+    /*Header */
     .topbar {
       position: absolute; /*@@@*/
       width: 100%; }
@@ -5866,7 +5874,7 @@
       padding: 10px 0; }
     .vtabs .tabs-vertical {
       width: auto; }
-    /*Footer*/
+    /*Footer
     .footer {
       left: 0px; }
     .material-icon-list-demo .icons div {
@@ -5893,7 +5901,7 @@
       padding: 10% 0; }
       .login-sidebar .login-box {
         position: relative; }
-    /*This is for chat page*/
+    /*This is for chat page
     .chat-main-box .chat-left-aside {
       left: -250px;
       position: absolute;
@@ -5907,7 +5915,7 @@
         display: block; }
     .chat-main-box .chat-right-aside {
       width: 100%; }
-    /*Timeline*/
+    /*Timeline
     ul.timeline:before {
       left: 40px; }
     ul.timeline > li > .timeline-panel {
@@ -5930,7 +5938,7 @@
       left: -14px;
       border-right-width: 14px;
       border-left-width: 0; }
-    /*Contact app page*/
+    /*Contact app page
     .left-aside {
       width: 100%;
       position: relative;
@@ -5942,26 +5950,27 @@
       flex-wrap: wrap !important;
       -webkit-flex-wrap: wrap !important; }
     .chat-list li .chat-content {
-      width: calc(100% - 80px); } }
+      width: calc(100% - 80px); }
+    */}/*
 
   /*
   Template Name: Material Pro Admin
   Author: Themedesigner
   Email: niravjoshi87@gmail.com
   File: scss
-  */
+
   /*
   Template Name: Material Pro Admin
   Author: Themedesigner
   Email: niravjoshi87@gmail.com
   File: scss
-  */
-  /*Theme Colors*/
-  /*bootstrap Color*/
-  /*Light colors*/
-  /*Normal Color*/
-  /*Extra Variable*/
-  /*Preloader*/
+
+  /*Theme Colors
+  /*bootstrap Color
+  /*Light colors
+  /*Normal Color
+  /*Extra Variable
+  /*Preloader
   .preloader {
     width: 100%;
     height: 100%;
@@ -6014,7 +6023,7 @@
     -ms-transform-origin: left 0px;
     transform-origin: left 0px; }
 
-  /*panels*/
+  /*panels
   .card {
     -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1);
@@ -6033,7 +6042,7 @@
     right: 20px;
     padding: 25px; }
 
-  /*Radio button*/
+  /*Radio button
   @-webkit-keyframes ripple {
     0% {
       -webkit-box-shadow: 0px 0px 0px 1px transparent;
@@ -6055,3 +6064,4 @@
       -webkit-box-shadow: 0px 0px 0px 15px transparent;
       box-shadow: 0px 0px 0px 15px transparent; } }
 
+*/

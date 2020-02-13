@@ -25,22 +25,19 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   @Input() business: Empresa;
   @Output() tabSelect = new EventEmitter();
   conditions = new Rule();
-  pageInfo: PageInfo;
+  pageInfo: PageInfo = PageInfo.defaultPageInfo();
   records: Lancamento[] = [];
   tabsButtonClass: string[];
   account: string;
   errorText: string;
   errorText2: string;
   tipoLancamentoName: string;
-  tipoLancamento = 1;
   destroy: boolean;
   tabIsClicked = false;
   tipoMovimento = 'PAG';
+  pageSize = 1;
   remaining = 0;
-  page = 0;
   impact = 0;
-  counter = 0;
-  // ! Cuidado ao alterar o counter, fazer isto apenas através do tabsPattern() e do _remaining()
 
   constructor(
     // tslint:disable: variable-name
@@ -75,9 +72,8 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       skip: 'Deixar este lançamento para depois.',
       ok: 'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
       affecteds: 'Clique para visualizar os lançamentos afetados.',
-      provider: 'A conta informada será aplicada para todas as ocorrências deste fornecedor.',
-      info: `Agora clique nas palavras que justificam o lançamento ser aplicado a determinada conta ou ignorado.
-      Se necessário, informe a conta.`
+      provider: 'A conta informada será aplicada para todas as ocorrências deste fornecedor e qualquer outro campo marcado será ignorado.',
+      info: 'Selecione os termos que justificam o lançamento ser vinculado a determinada conta ou ser ignorado.'
     };
   }
 
@@ -130,7 +126,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   regra() {
-    const regra = new RuleCreateFormat(this.conditions.rules, this.business.cnpj, this.account);
+    const regra = new RuleCreateFormat(this.conditions.rules, this.business.cnpj, this.records[0].cnpjContabilidade, this.account);
     const observable = this._ruleService.createRule(regra);
     const verifications = [(this.account && this.account.length > 0), this.conditions.verify()];
     const errors = [
@@ -215,9 +211,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       case 'Complemento 5':
         this.conditions.complemento05 = s;
         break;
-      case 'Tipo da Planilha':
-        this.conditions.tipoPlanilha = s;
-        break;
       case 'Nome do Arquivo':
         this.conditions.nomeArquivo = s;
         break;
@@ -263,40 +256,39 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     dialogRef.afterClosed().subscribe(result => {
       this._subsAndDisable(obs);
-      this._historicService
-        .createHistoric(result)
-        .subscribe();
+      if (result) {
+        this._historicService
+          .createHistoric(result)
+          .subscribe();
+      }
     });
   }
 
   pag() {
-    this.tabsPattern(0, 1, 'PAG', 'pagamentos');
+    this.tabsPattern(0, 'PAG', 'pagamentos');
   }
 
   expag() {
-    this.tabsPattern(1, 1, 'EXPAG', 'extratos de débitos');
+    this.tabsPattern(1, 'EXPAG', 'extratos de débitos');
   }
 
   rec() {
-    this.tabsPattern(2, 1, 'REC', 'recebimentos');
+    this.tabsPattern(2, 'REC', 'recebimentos');
   }
 
   exrec() {
-    this.tabsPattern(3, 1, 'EXREC', 'extratos de recebimentos');
+    this.tabsPattern(3, 'EXREC', 'extratos de recebimentos');
   }
 
-  async tabsPattern(position: number, tipoLancamento: number, tipoMovimento: string, tipoLancamentoName: string) {
+  async tabsPattern(position: number, tipoMovimento: string, tipoLancamentoName: string) {
     this.destroy = true;
     this._resetButtons();
-    this.tabsButtonClass[position] = 'btn btn-light text-info col';
+    this.tabsButtonClass[position] = 'btn btn-info col';
     this.tabIsClicked = true;
     this.tabSelect.emit('true');
 
-    this.tipoLancamento = tipoLancamento;
     this.tipoMovimento = tipoMovimento;
     this.tipoLancamentoName = tipoLancamentoName;
-    this.counter = 0;
-    this.page = 0;
     this._partialDisable();
     this.nextPage();
     this.getByRule();
@@ -329,12 +321,13 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     ];
   }
 
-  private _remaining(autoIncrement?: boolean) {
+  private _remaining() {
     if (this.pageInfo) {
-      this.remaining = this.pageInfo.totalElements - this.counter;
+      this.remaining = this.pageInfo.totalElements;
     }
-    if (autoIncrement === true) {
-      this.counter++;
+
+    if (this.remaining < 0) {
+      this.remaining = 0;
     }
   }
 
@@ -348,9 +341,8 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     if (this.records.length === 0 && (!this.pageInfo || this.pageInfo.hasNext)) {
       this.nextPage();
-      this._remaining(true);
     } else if (this.records.length !== 0) {
-      this._remaining(true);
+      this._remaining();
     } else {
       this._remaining();
       this.resetErrors([`Você conclui todos os ${this.tipoLancamentoName} desta empresa.`]);
@@ -358,13 +350,15 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   nextPage() {
-    this._lancamentoService.getLancamentos(this.page, this.business, this.tipoLancamento, this.tipoMovimento).subscribe(imports => {
+    const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: this.pageInfo.pageSize };
+    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento: 1, tipoMovimento: this.tipoMovimento, tipoConta: 0};
+    Object.assign(filter, pageCriteria);
+
+    this._lancamentoService.getLancamentos(filter).subscribe(imports => {
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
-      if (this.counter === 0) {
-        this._remaining(true);
-      }
-      this.page++;
+
+      this._remaining();
       this.resetErrors();
     });
   }

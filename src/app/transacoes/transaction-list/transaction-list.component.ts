@@ -12,7 +12,7 @@ export class TransactionListComponent {
 
   get info() {
     return {
-      first: 'Para filtrar, insira o nome da empresa que deseja filtrar.',
+      first: 'Para filtrar, insira o nome da empresa desejada',
       second: 'Agora selecione entre "Pagamentos", "Extrato Débitos", "Recebimentos" ou "Extrato Créditos"'
     };
   }

@@ -16,9 +16,9 @@ export class LancamentoService {
 
   constructor(private http: HttpClient, private authService: AuthenticationService) { }
 
-  public getLancamentos(page: number, b: Empresa, tipoLancamento: number, tipoMovimento: string): Observable<GenericPageableResponse<Lancamento>> {
-    const url
-    = `${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}&tipoConta=0&tipoLancamento=${tipoLancamento}&tipoMovimento=${tipoMovimento}`;
+  public getLancamentos(searchCriteria: any): Observable<GenericPageableResponse<Lancamento>> {
+    const params = this.encode(searchCriteria);
+    const url = `${BASE_URL}/api/v1/lancamentos?${params}`;
     // const url = `${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}` // &tipoConta=0`;
     return this.http.get<GenericPageableResponse<Lancamento>>(url, this._headers);
   }
@@ -48,5 +48,11 @@ export class LancamentoService {
     return { headers };
   }
 
+
+  encode(params: any): string {
+    return Object.keys(params).map((key) => {
+      return [key, params[key]].map(encodeURIComponent).join('=');
+    }).join('&');
+  }
 }
 

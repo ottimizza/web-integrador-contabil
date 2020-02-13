@@ -4,6 +4,12 @@
   border: solid 1px rgb(226, 226, 226);
   background-color: white;
   border-radius: 0px 5px 5px 0px;
+  transition: 200ms;
+  &:hover {
+    border-top: solid 1px rgb(121, 121, 121);
+    border-right: solid 1px rgb(121, 121, 121);
+    border-bottom: solid 1px rgb(121, 121, 121);
+  }
 }
 
 .rc-center {
