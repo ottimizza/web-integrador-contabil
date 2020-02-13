@@ -98,7 +98,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     this._service.get(filter).subscribe(imports => {
       this.rows = imports.records;
       this.pageInfo = imports.pageInfo;
-      console.log(this.rows);
     });
     this.page++;
 

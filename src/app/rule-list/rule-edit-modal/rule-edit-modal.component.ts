@@ -21,9 +21,6 @@ export class RuleEditModalComponent implements OnInit {
     // ! O array local PRECISA ser feito desta forma ou de alguma outra que crie um NOVO array
     const rule = this.data.rule;
     const localArray = rule.regras.filter(() => true);
-    // rule.regras.forEach(regra => {
-    //   localArray.push(regra);
-    // });
     this.ruleDefault = new CompleteRule(
       rule.id,
       rule.posicao,
