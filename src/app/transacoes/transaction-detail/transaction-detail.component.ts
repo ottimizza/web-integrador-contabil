@@ -150,6 +150,13 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this._savePattern(observable, [verification], error);
   }
 
+  skip() {
+    const observable = this._lancamentoService.skip(this.records[0].id);
+    const verification = true;
+    const error = '';
+    this._savePattern(observable, [verification], [error]);
+  }
+
   private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[], rule?: boolean) {
 
     const verify = ArrayUtils.verify(verifications);
