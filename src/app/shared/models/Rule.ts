@@ -1,7 +1,7 @@
 export interface PostFormatRule {
 
     campo: string;
-    condicao: number;
+    condicao: Condicao;
     valor: string;
 
 }

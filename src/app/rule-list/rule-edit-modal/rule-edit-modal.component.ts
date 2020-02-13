@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { RuleCreateFormat } from '@shared/models/Rule';
-import { HashMapUtils } from '@shared/utils/hash-map.utils';
+import { RuleCreateFormat, PostFormatRule } from '@shared/models/Rule';
 
 @Component({
   templateUrl: './rule-edit-modal.component.html',
@@ -9,15 +8,19 @@ import { HashMapUtils } from '@shared/utils/hash-map.utils';
 })
 export class RuleEditModalComponent implements OnInit {
 
-  rules: RuleCreateFormat;
+  ruleDefault: RuleCreateFormat;
 
   constructor(
     public dialogRef: MatDialogRef<RuleEditModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { rules: RuleCreateFormat }
+    @Inject(MAT_DIALOG_DATA) public data: { regras: PostFormatRule[], cnpjContabilidade: string, cnpjEmpresa: string, contaMovimento: string }
   ) { }
 
   ngOnInit(): void {
-    this.rules = this.data.rules;
+    const localArray: PostFormatRule[] = [];
+    this.data.regras.forEach(rule => {
+      localArray.push(rule);
+    });
+    this.ruleDefault = new RuleCreateFormat(localArray, this.data.cnpjEmpresa, this.data.cnpjContabilidade, this.data.contaMovimento);
   }
 
   get info() {
@@ -31,7 +34,7 @@ export class RuleEditModalComponent implements OnInit {
   }
 
   remove(id: number) {
-    this.rules.regras.splice(id, 1);
+    this.ruleDefault.regras.splice(id, 1);
   }
 
 }
