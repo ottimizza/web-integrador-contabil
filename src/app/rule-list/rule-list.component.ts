@@ -7,6 +7,8 @@ import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { TabButton } from '@shared/components/tab/tab.component';
 import { Empresa } from '@shared/models/Empresa';
+import { RuleService } from '@shared/services/rule.service';
+import { CompleteRule } from '@shared/models/CompleteRule';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -14,13 +16,15 @@ import { Empresa } from '@shared/models/Empresa';
 })
 export class RuleListComponent implements OnInit, GenericDragDropList, GenericPagination {
 
-  rows: RuleCreateFormat[] = [];
+  rows: CompleteRule[] = [];
   business: Empresa;
   hasBusiness = false;
   pageInfo: PageInfo;
   page = 0;
   isSelected = false;
-  tabButton: TabButton;
+  tipoLancamento: number;
+
+  constructor(private _service: RuleService) { }
 
   ngOnInit(): void {
   }
@@ -43,7 +47,11 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   onClick(button: TabButton) {
     this.rows = [];
     this.isSelected = true;
-    this.tabButton = button;
+    if (button === TabButton.PAGAMENTO) {
+      this.tipoLancamento = 1;
+    } else if (button === TabButton.RECEBIMENTO) {
+      this.tipoLancamento = 0;
+    }
     this.nextPage();
   }
 
@@ -70,25 +78,29 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   nextPage() {
 
-    if (this.hasNext) {
-      this.page++;
-      for (let i = 0; i < 10; i++) {
-        this.rows.push(
-          new RuleCreateFormat(
-            [
-              { campo: 'descricao', condicao: 1, valor: i.toString() },
-              { campo: 'complemento01', condicao: 1, valor: 'ATRASADO' },
-              { campo: 'complemento02', condicao: 1, valor: 'EXTRA' },
-              // { campo: 'complemento03', condicao: 1, valor: 'terceirizado' },
-              // { campo: 'nomeArquivo', condicao: 1, valor: 'arquivo3214.xlsx' }
-            ],
-            'um cnpj bem daora',
-            'outro cnpj',
-            '1312418921'
-          )
-        );
-      }
-    }
+  //   const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: this.pageInfo.pageSize };
+  //   const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento: 1, tipoMovimento: this.tipoMovimento, tipoConta: 0};
+  //   Object.assign(filter, pageCriteria);
+
+  //   this._lancamentoService.getLancamentos(filter).subscribe(imports => {
+  //     this.records = imports.records;
+  //     this.pageInfo = imports.pageInfo;
+
+  //     this._remaining();
+  //     this.resetErrors();
+  //   });
+  // }
+    const pageCriteria = { pageIndex: this.page };
+    const sorting = { sortBy: 'posicao', sortOrder: 'asc' };
+    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento: this.tipoLancamento };
+    Object.assign(filter, pageCriteria, sorting);
+
+    this._service.get(filter).subscribe(imports => {
+      this.rows = imports.records;
+      this.pageInfo = imports.pageInfo;
+      console.log(this.rows);
+    });
+    this.page++;
 
   }
 }

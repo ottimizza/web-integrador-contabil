@@ -13,7 +13,7 @@
 
   <div class="pr-2 pl-2" *ngIf="hasBusiness">
     <div class="card ml-4 mr-4">
-      <app-tab (clicked)="onClick($event)"></app-tab>
+      <app-tab (clicked)="onClick($event)" [complete]="false"></app-tab>
     </div>
     <br>
   </div>
