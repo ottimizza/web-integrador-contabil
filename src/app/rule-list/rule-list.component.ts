@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
-import { RuleCreateFormat, PostFormatRule, Rule } from '@shared/models/Rule';
+import { RuleCreateFormat, PostFormatRule, Rule, Condicao } from '@shared/models/Rule';
 import { StringCutterUtils } from '@shared/utils/string-cutter.util';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { TabButton } from '@shared/components/tab/tab.component';
+import { Empresa } from '@shared/models/Empresa';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -14,28 +15,14 @@ import { TabButton } from '@shared/components/tab/tab.component';
 export class RuleListComponent implements OnInit, GenericDragDropList, GenericPagination {
 
   rows: RuleCreateFormat[] = [];
+  business: Empresa;
   hasBusiness = false;
   pageInfo: PageInfo;
   page = 0;
   isSelected = false;
+  tabButton: TabButton;
 
   ngOnInit(): void {
-    for (let i = 0; i < 10; i++) {
-      this.rows.push(
-        new RuleCreateFormat(
-            [
-              { campo: 'descricao', condicao: 1, valor: i.toString() },
-              { campo: 'complemento01', condicao: 1, valor: 'ATRASADO' },
-              { campo: 'complemento02', condicao: 1, valor: 'EXTRA' },
-              // { campo: 'complemento03', condicao: 1, valor: 'terceirizado' },
-              // { campo: 'nomeArquivo', condicao: 1, valor: 'arquivo3214.xlsx' }
-            ],
-            'um cnpj bem daora',
-            'outro cnpj',
-            '1312418921'
-          )
-      );
-    }
   }
 
   get info() {
@@ -54,17 +41,15 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   }
 
   onClick(button: TabButton) {
-    console.log(button);
+    this.rows = [];
     this.isSelected = true;
+    this.tabButton = button;
+    this.nextPage();
   }
 
-  getText(rule: PostFormatRule) {
-    const text = `Se ${Rule.getFieldName(rule.campo)} ${this.getCondition(rule.condicao)} ${rule.valor}`;
-    return StringCutterUtils.cut(text, 60);
-  }
-
-  getCondition(condition: number) {
-    return 'contém';
+  onFilter(event: string) {
+    this.hasBusiness = true;
+    this.business = JSON.parse(event);
   }
 
   drop(event: CdkDragDrop<RuleCreateFormat[]>) {

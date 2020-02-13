@@ -4,7 +4,7 @@
     <app-info [description]="info.text1"></app-info>
   </div>
 
-  <app-tfilter (empresa)="hasBusiness = true"></app-tfilter>
+  <app-tfilter (empresa)="onFilter($event)"></app-tfilter>
 
   <div *ngIf="hasBusiness" class="pl-4 pr-4">
     <app-info [description]="info.text2"></app-info>

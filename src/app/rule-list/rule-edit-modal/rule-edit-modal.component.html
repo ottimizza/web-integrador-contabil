@@ -18,7 +18,7 @@
 
     <br>
 
-    <div class="row w-100 m-0 mb-4 text-center" id="ruleFieldModal" *ngFor="let rule of rules.regras; let id = index">
+    <div class="row w-100 m-0 mb-4 text-center" id="ruleFieldModal" *ngFor="let rule of ruleDefault.regras; let id = index">
       <div class="col-1">
         <div class="p-3 clickIcon" (click)="remove(id)" [matTooltip]="info.remove" matTooltipShowDelay="300" matTooltipHideDelay="500">
           <i class="far fa-times text-danger fa-2x"></i>
@@ -75,7 +75,7 @@
         <p>Conta: </p>
       </div>
       <div class="col">
-        <input type="text" class="text-center" placeholder="Informa a conta de movimento atrelada à esta regra" *ngIf="rules.contaMovimento; else noaccount" [value]="rules.contaMovimento">
+        <input type="text" class="text-center" placeholder="Informa a conta de movimento atrelada à esta regra" *ngIf="ruleDefault.contaMovimento; else noaccount" [value]="ruleDefault.contaMovimento">
         <ng-template #noaccount>
           <input type="text" class="text-center" placeholder="Informa a conta de movimento atrelada à esta regra">
         </ng-template>
@@ -88,7 +88,7 @@
 
 <div mat-dialog-actions>
   <div class="row w-100 m-0">
-    <button class="col purple" cdkFocusInitial [mat-dialog-close]="rules">
+    <button class="col purple" cdkFocusInitial [mat-dialog-close]="ruleDefault">
       <i class="far fa-save mr-3"></i>
       Salvar
     </button>

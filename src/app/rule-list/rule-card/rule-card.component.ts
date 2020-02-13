@@ -51,7 +51,12 @@ export class RuleCardComponent {
     const dialogRef = this.dialog.open(RuleEditModalComponent, {
       width: '80%',
       maxWidth: '1300px',
-      data: { rules },
+      data: {
+        regras: rules.regras,
+        cnpjContabilidade: rules.cnpjContabilidade,
+        cnpjEmpresa: rules.cnpjEmpresa,
+        contaMovimento: rules.contaMovimento
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {

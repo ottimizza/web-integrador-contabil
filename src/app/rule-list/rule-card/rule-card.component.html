@@ -1,31 +1,5 @@
 <div class="cont" *ngIf="rules">
 
-
-  <!-- <div class="row w-100 m-0">
-    <button class="col red" (click)="modal('Modal de excluir')">
-      <i class="far fa-backspace"></i>
-      Excluir
-    </button>
-    <button class="col gray" (click)="modal('Modal de novo campo')">
-      <i class="far fa-plus-circle"></i>
-      Novo
-    </button>
-    <button class="col purple" (click)="openModal()">
-      <i class="far fa-edit"></i>
-      Editar
-    </button>
-  </div>
-
-  <br>
-
-  <div class="row w-100 m-0" *ngFor="let rule of rules.regras">
-    <span class="rc-center">{{ getText(rule) }}</span>
-  </div>
-  <hr>
-  <div class="row w-100 m-0 pb-3">
-    <p class="rc-center"><span>Conta: </span> <strong>{{ rules.contaMovimento }}</strong></p>
-  </div> -->
-
   <div class="row w-100 m-0">
     <div class="col-2 m-0 p-0">
       <button class="red" (click)="close()" [matTooltip]="info.trash" matTooltipShowDelay="300" matTooltipHideDelay="500">
@@ -48,8 +22,8 @@
       <p><span>Conta: </span><strong>{{ rules.contaMovimento }}</strong></p>
     </div>
     <div class="col m-0 p-0 mb-2 mt-2">
-      <div class="h-50 text-center clickIcon" (click)="up()" [matTooltip]="info.upAll" matTooltipShowDelay="300" matTooltipHideDelay="500"><i class="far fa-chevron-up"></i></div>
-      <div class="h-50 text-center clickIcon" (click)="down()" [matTooltip]="info.upDown" matTooltipShowDelay="300" matTooltipHideDelay="500"><i class="far fa-chevron-down"></i></div>
+      <div class="h-50 text-center"><i class="far fa-chevron-up clickIcon" (click)="up()" [matTooltip]="info.upAll" matTooltipShowDelay="300" matTooltipHideDelay="500"></i></div>
+      <div class="h-50 text-center"><i class="far fa-chevron-down clickIcon" (click)="down()" [matTooltip]="info.upDown" matTooltipShowDelay="300" matTooltipHideDelay="500"></i></div>
     </div>
   </div>
 
