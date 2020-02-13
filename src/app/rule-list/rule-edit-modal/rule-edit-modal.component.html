@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="col">
-        <select>
+        <select (change)="fieldChange($event, id)">
           <option value="" selected disabled hidden>Selecione um campo</option>
           <option value="descricao" *ngIf="rule.campo === 'descricao'" selected>Fornecedor</option>
           <option value="descricao" *ngIf="rule.campo !== 'descricao'">Fornecedor</option>
@@ -43,30 +43,27 @@
           <option value="complemento04" *ngIf="rule.campo !== 'complemento04'">Complemento 04</option>
           <option value="complemento05" *ngIf="rule.campo === 'complemento05'" selected>Complemento 05</option>
           <option value="complemento05" *ngIf="rule.campo !== 'complemento05'">Complemento 05</option>
-          <option value="tipoPlanilha" *ngIf="rule.campo === 'tipoPlanilha'" selected>Tipo da Planilha</option>
+          <option value="tipoPlanilha" *ngIf="rule.campo === 'tipoPlanilha'">Tipo da Planilha</option>
           <option value="tipoPlanilha" *ngIf="rule.campo !== 'tipoPlanilha'">Tipo da Planilha</option>
           <option value="nomeArquivo" *ngIf="rule.campo === 'nomeArquivo'" selected>Nome do Arquivo</option>
           <option value="nomeArquivo" *ngIf="rule.campo !== 'nomeArquivo'">Nome do Arquivo</option>
         </select>
       </div>
       <div class="col">
-        <select id="ruleConditionModal">
+        <select id="ruleConditionModal" (change)="conditionChange($event, id)">
           <option value="" selected disabled hidden>Selecione uma condição</option>
-          <option value="1" *ngIf="rule.condicao === 1" selected>Contém</option>
-          <option value="1" *ngIf="rule.condicao !== 1">Contém</option>
-          <option value="2" *ngIf="rule.condicao === 2" selected>Não contém</option>
-          <option value="2" *ngIf="rule.condicao !== 2">Não contém</option>
-          <option value="3" *ngIf="rule.condicao === 3" selected>Começa com</option>
-          <option value="3" *ngIf="rule.condicao !== 3">Começa com</option>
-          <option value="4" *ngIf="rule.condicao === 4" selected>Igual</option>
-          <option value="4" *ngIf="rule.condicao !== 4">Igual</option>
+          <option [value]="conditon.CONTEM" *ngIf="rule.condicao === 1" selected>Contém</option>
+          <option [value]="conditon.CONTEM" *ngIf="rule.condicao !== 1">Contém</option>
+          <option [value]="conditon.NAO_CONTEM" *ngIf="rule.condicao === 2" selected>Não contém</option>
+          <option [value]="conditon.NAO_CONTEM" *ngIf="rule.condicao !== 2">Não contém</option>
+          <option [value]="conditon.COMECAO_COM" *ngIf="rule.condicao === 3" selected>Começa com</option>
+          <option [value]="conditon.COMECAO_COM" *ngIf="rule.condicao !== 3">Começa com</option>
+          <option [value]="conditon.IGUAL" *ngIf="rule.condicao === 4" selected>Igual</option>
+          <option [value]="conditon.IGUAL" *ngIf="rule.condicao !== 4">Igual</option>
         </select>
       </div>
       <div class="col">
-        <input type="text" placeholder="Informe um valor" *ngIf="rule.valor; else novaluerule" [value]="rule.valor">
-        <ng-template #novaluerule>
-          <input type="text" placeholder="Informe um valor">
-        </ng-template>
+        <input type="text" placeholder="Informe um valor" [value]="rule.valor" (keyup)="valueChange($event, id)">
       </div>
     </div>
 
@@ -75,10 +72,7 @@
         <p>Conta: </p>
       </div>
       <div class="col">
-        <input type="text" class="text-center" placeholder="Informa a conta de movimento atrelada à esta regra" *ngIf="ruleDefault.contaMovimento; else noaccount" [value]="ruleDefault.contaMovimento">
-        <ng-template #noaccount>
-          <input type="text" class="text-center" placeholder="Informa a conta de movimento atrelada à esta regra">
-        </ng-template>
+        <input type="text" class="text-center" placeholder="Informa a conta de movimento atrelada à esta regra" [(ngModel)]="ruleDefault.contaMovimento">
       </div>
     </div>
 

@@ -23,6 +23,11 @@ export class LancamentoService {
     return this.http.get<GenericPageableResponse<Lancamento>>(url, this._headers);
   }
 
+  public skip(id: number): Observable<Lancamento> {
+    const url = `${BASE_URL}/api/v1/lancamentos/${id}`;
+    return this.http.patch<Lancamento>(url, { tipoConta: 4 }, this._headers);
+  }
+
   public getByRule(rules: PostFormatRule[], e: Empresa): Observable<GenericPageableResponse<Lancamento>> {
     const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}&tipoConta=0`;
     return this.http.post<GenericPageableResponse<Lancamento>>(url, rules, this._headers);

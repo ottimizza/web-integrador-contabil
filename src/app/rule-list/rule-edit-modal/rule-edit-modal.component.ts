@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { RuleCreateFormat, PostFormatRule } from '@shared/models/Rule';
+import { RuleCreateFormat, PostFormatRule, Condicao } from '@shared/models/Rule';
 
 @Component({
   templateUrl: './rule-edit-modal.component.html',
@@ -16,10 +16,12 @@ export class RuleEditModalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // ! O array local deve ser gerado desta forma ou através de algum outro método que gere UM NOVO array.
     const localArray: PostFormatRule[] = [];
     this.data.regras.forEach(rule => {
       localArray.push(rule);
     });
+
     this.ruleDefault = new RuleCreateFormat(localArray, this.data.cnpjEmpresa, this.data.cnpjContabilidade, this.data.contaMovimento);
   }
 
@@ -29,12 +31,28 @@ export class RuleEditModalComponent implements OnInit {
     };
   }
 
+  fieldChange(event: any, index: number) {
+    this.ruleDefault.regras[index].campo = event.target.value;
+  }
+
+  conditionChange(event: any, index: number) {
+    this.ruleDefault.regras[index].condicao = event.target.value;
+  }
+
+  valueChange(event: any, index: number) {
+    this.ruleDefault.regras[index].valor = event.target.value;
+  }
+
   onNoClick() {
     this.dialogRef.close();
   }
 
   remove(id: number) {
     this.ruleDefault.regras.splice(id, 1);
+  }
+
+  get conditon() {
+    return Condicao;
   }
 
 }
