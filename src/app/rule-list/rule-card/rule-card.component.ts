@@ -15,6 +15,7 @@ export class RuleCardComponent {
   @Input() index: number;
   @Output() downAll: EventEmitter<number> = new EventEmitter();
   @Output() upAll: EventEmitter<number> = new EventEmitter();
+  @Output() delete: EventEmitter<number> = new EventEmitter();
 
   constructor(public dialog: MatDialog) { }
 
@@ -42,6 +43,7 @@ export class RuleCardComponent {
 
   close() {
     this.rules = null;
+    this.delete.emit(this.index);
   }
 
   openModal(newCamp?: boolean) {
