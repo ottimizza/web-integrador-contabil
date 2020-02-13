@@ -8,10 +8,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RuleListComponent } from './rule-list.component';
 import { CardModule } from '@shared/components/card/card.module';
 import { RuleCardModule } from './rule-card/rule-card.module';
-import { RuleEditModalModule } from './rule-edit-modal/rule-edit-modal.module';
-import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 import { InfoModule } from '@shared/components/info/info.module';
 import { FilterModule } from 'app/transacoes/transaction-list/filter/filter.module';
+import { TabModule } from '@shared/components/tab/tab.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +24,8 @@ import { FilterModule } from 'app/transacoes/transaction-list/filter/filter.modu
     RuleCardModule,
     MatDialogModule,
     InfoModule,
-    FilterModule
+    FilterModule,
+    TabModule
   ]
 })
 export class RuleListModule { }

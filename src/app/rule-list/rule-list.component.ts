@@ -5,6 +5,7 @@ import { RuleCreateFormat, PostFormatRule, Rule } from '@shared/models/Rule';
 import { StringCutterUtils } from '@shared/utils/string-cutter.util';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
+import { TabButton } from '@shared/components/tab/tab.component';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -16,6 +17,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   hasBusiness = false;
   pageInfo: PageInfo;
   page = 0;
+  isSelected = false;
 
   ngOnInit(): void {
     for (let i = 0; i < 10; i++) {
@@ -38,7 +40,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   get info() {
     return {
-      text1: 'Insira o nome da empresa que deseja filtrar',
+      text1: 'Para filtrar, insira o nome da empresa desejada',
       text2: 'Selecione entre Recebimentos, Extrato Débitos, Pagamentos e Extrato Créditos'
     };
   }
@@ -49,6 +51,11 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     } else {
       return false;
     }
+  }
+
+  onClick(button: TabButton) {
+    console.log(button);
+    this.isSelected = true;
   }
 
   getText(rule: PostFormatRule) {
@@ -62,6 +69,14 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   drop(event: CdkDragDrop<RuleCreateFormat[]>) {
     moveItemInArray(this.rows, event.previousIndex, event.currentIndex);
+  }
+
+  upAll(previousIndex: number) {
+    moveItemInArray(this.rows, previousIndex, 0);
+  }
+
+  downAll(previousIndex: number) {
+    moveItemInArray(this.rows, previousIndex, this.rows.length - 1);
   }
 
   delete(id: number) {

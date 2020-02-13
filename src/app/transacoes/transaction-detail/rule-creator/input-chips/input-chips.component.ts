@@ -67,7 +67,8 @@ export class InputChipsComponent implements OnInit, OnChanges {
           this.props = this._verifyWord(DateUtils.ymdToDmy(this.property).split('/'));
           break;
         case 'Valor':
-          this.props = [this.property];
+          const value = (+this.property).toFixed(2).replace(/\./g, ',');
+          this.props = [value];
           break;
         case 'Complementos':
           this.comps = JSON.parse(this.property);

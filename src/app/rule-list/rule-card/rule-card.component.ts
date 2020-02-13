@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RuleCreateFormat, PostFormatRule, Rule, Condicao } from '@shared/models/Rule';
 import { RuleEditModalComponent } from '../rule-edit-modal/rule-edit-modal.component';
@@ -11,8 +11,29 @@ import { RuleEditModalComponent } from '../rule-edit-modal/rule-edit-modal.compo
 export class RuleCardComponent {
 
   @Input() rules: RuleCreateFormat;
+  @Input() index: number;
+  @Output() downAll: EventEmitter<number> = new EventEmitter();
+  @Output() upAll: EventEmitter<number> = new EventEmitter();
 
   constructor(public dialog: MatDialog) { }
+
+  get info() {
+    return {
+      upAll: 'Enviar para o topo da lista',
+      upDown: 'Enviar para o final da lista',
+      trash: 'Excluir esta regra',
+      plus: 'Adicionar um novo campo a esta regra',
+      edit: 'Alterar esta regra'
+    };
+  }
+
+  up() {
+    this.upAll.emit(this.index);
+  }
+
+  down() {
+    this.downAll.emit(this.index);
+  }
 
   getText(rule: PostFormatRule) {
     return `${Rule.getFieldName(rule.campo)} ${this._getCondition(rule.condicao)} ${rule.valor}`;
