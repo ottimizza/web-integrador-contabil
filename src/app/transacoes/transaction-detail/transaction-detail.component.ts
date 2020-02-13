@@ -14,7 +14,6 @@ import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { RuleService } from '@shared/services/rule.service';
-import { RuleApplierService } from '@shared/services/rule-applier.service';
 
 @Component({
   selector: 'app-tdetail',
@@ -26,31 +25,25 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   @Input() business: Empresa;
   @Output() tabSelect = new EventEmitter();
   conditions = new Rule();
-  pageInfo: PageInfo;
+  pageInfo: PageInfo = PageInfo.defaultPageInfo();
   records: Lancamento[] = [];
   tabsButtonClass: string[];
   account: string;
   errorText: string;
   errorText2: string;
   tipoLancamentoName: string;
-  tipoLancamento = 1;
   destroy: boolean;
   tabIsClicked = false;
   tipoMovimento = 'PAG';
   pageSize = 1;
   remaining = 0;
-  page = 0;
   impact = 0;
-  impactCounter = 0;
-  counter = 0;
-  // ! Cuidado ao alterar o counter, fazer isto apenas através do tabsPattern() e do _remaining()
 
   constructor(
     // tslint:disable: variable-name
     private _lancamentoService: LancamentoService,
     private _ruleService: RuleService,
     private _historicService: HistoricService,
-    private _ruleApplier: RuleApplierService,
     public dialog: MatDialog
   ) { }
 
@@ -133,7 +126,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   regra() {
-    // const regra = new RuleCreateFormat(this.conditions.rules, this.business.cnpj, this.account);
     const regra = new RuleCreateFormat(this.conditions.rules, this.business.cnpj, this.records[0].cnpjContabilidade, this.account);
     const observable = this._ruleService.createRule(regra);
     const verifications = [(this.account && this.account.length > 0), this.conditions.verify()];
@@ -141,7 +133,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       'Para salvar uma regra você deve informar uma conta contábil.',
       'Para salvar uma regra você deve informar as condições da regra.'
     ];
-    // this._applyRule();
     this._savePattern(observable, verifications, errors, true);
   }
 
@@ -149,7 +140,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     const observable = this._lancamentoService.ignoreLancamento(this.records[0]);
     const verification = this.conditions.verify();
     const error = ['Para salvar uma regra de ignorar, você deve informar as condições da regra.'];
-    // this._applyRule();
     this._savePattern(observable, [verification], error);
   }
 
@@ -275,33 +265,30 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   pag() {
-    this.tabsPattern(0, 1, 'PAG', 'pagamentos');
+    this.tabsPattern(0, 'PAG', 'pagamentos');
   }
 
   expag() {
-    this.tabsPattern(1, 1, 'EXPAG', 'extratos de débitos');
+    this.tabsPattern(1, 'EXPAG', 'extratos de débitos');
   }
 
   rec() {
-    this.tabsPattern(2, 1, 'REC', 'recebimentos');
+    this.tabsPattern(2, 'REC', 'recebimentos');
   }
 
   exrec() {
-    this.tabsPattern(3, 1, 'EXREC', 'extratos de recebimentos');
+    this.tabsPattern(3, 'EXREC', 'extratos de recebimentos');
   }
 
-  async tabsPattern(position: number, tipoLancamento: number, tipoMovimento: string, tipoLancamentoName: string) {
+  async tabsPattern(position: number, tipoMovimento: string, tipoLancamentoName: string) {
     this.destroy = true;
     this._resetButtons();
     this.tabsButtonClass[position] = 'btn btn-info col';
     this.tabIsClicked = true;
     this.tabSelect.emit('true');
 
-    this.tipoLancamento = tipoLancamento;
     this.tipoMovimento = tipoMovimento;
     this.tipoLancamentoName = tipoLancamentoName;
-    this.counter = 0;
-    this.page = 0;
     this._partialDisable();
     this.nextPage();
     this.getByRule();
@@ -312,10 +299,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   async disable() {
     // Reseta todas as variáveis locais após executar uma ação para permitir
     // que a próxima ação esteja pronta para ser executada.
-
-    // O impactCounter recebe o impact menos 1 pois este "1" é o lançamento atual que já é contado através do counter
-    this.impactCounter += this.impact - 1;
-
     this.destroy = true;
     this._partialDisable();
     this._next();
@@ -338,24 +321,18 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     ];
   }
 
-  private _remaining(autoIncrement?: boolean) {
+  private _remaining() {
     if (this.pageInfo) {
-      this.remaining = this.pageInfo.totalElements - (this.counter + this.impactCounter);
-      if (this.remaining < 0) {
-        this.remaining = 0;
-      }
+      this.remaining = this.pageInfo.totalElements;
     }
-    if (autoIncrement === true) {
-      this.counter++;
+
+    if (this.remaining < 0) {
+      this.remaining = 0;
     }
   }
 
   private _delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  private _applyRule() {
-    this.records = this._ruleApplier.apply(this.conditions, this.records);
   }
 
   private _next() {
@@ -364,27 +341,24 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     if (this.records.length === 0 && (!this.pageInfo || this.pageInfo.hasNext)) {
       this.nextPage();
-      this._remaining(true);
     } else if (this.records.length !== 0) {
-      this._remaining(true);
+      this._remaining();
     } else {
       this._remaining();
       this.resetErrors([`Você conclui todos os ${this.tipoLancamentoName} desta empresa.`]);
     }
-    console.log(this.records);
-    // console.log(this._ruleApplier.apply(this.ruleArray, this.records));
   }
 
   nextPage() {
-    this._lancamentoService.getLancamentos(this.page, this.business, this.tipoLancamento, this.tipoMovimento, this.pageSize).subscribe(imports => {
+    const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: this.pageInfo.pageSize };
+    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento: 1, tipoMovimento: this.tipoMovimento, tipoConta: 0};
+    Object.assign(filter, pageCriteria);
+
+    this._lancamentoService.getLancamentos(filter).subscribe(imports => {
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
-      this.impactCounter = 0;
-      this._remaining(this.counter === 0);
-      // if (this.counter === 0) {
-      //   this._remaining(true);
-      // }
-      this.page++;
+
+      this._remaining();
       this.resetErrors();
     });
   }
