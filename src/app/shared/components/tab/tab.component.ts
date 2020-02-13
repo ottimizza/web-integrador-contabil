@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+
+export enum TabButton {
+  PAGAMENTO = 'pag',
+  EXTRATO_DEBITO = 'expag',
+  RECEBIMENTO = 'rec',
+  EXTRATO_CREDITO = 'exrec'
+}
 
 @Component({
   selector: 'app-tab',
@@ -7,10 +14,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TabComponent implements OnInit {
 
+  @Output() clicked: EventEmitter<TabButton> = new EventEmitter();
   classes: string[];
 
   ngOnInit(): void {
     this._resetClasses();
+  }
+
+  get tabButton() {
+    return TabButton;
+  }
+
+  click(position: number, button: TabButton) {
+    this.update(position);
+    this.clicked.emit(button);
+  }
+
+  update(position: number) {
+    this._resetClasses();
+    this.classes[position] = 'btn btn-info col';
   }
 
   private _resetClasses() {
@@ -20,11 +42,6 @@ export class TabComponent implements OnInit {
       'btn btn-outline-link col',
       'btn btn-outline-link col'
     ];
-  }
-
-  update(position: number) {
-    this._resetClasses();
-    this.classes[position] = 'btn btn-info col';
   }
 
 }

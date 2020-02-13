@@ -1,3 +1,6 @@
-<div class="row w-100 m-0">
-  <button></button>
+<div class="row w-100 m-0" *ngIf="classes.length">
+  <button [ngClass]="classes[0]" class="col" (click)="click(0, tabButton.PAGAMENTO)">Pagamento</button>
+  <button [ngClass]="classes[1]" class="col" (click)="click(1, tabButton.EXTRATO_DEBITO)">Extrado Débitos</button>
+  <button [ngClass]="classes[2]" class="col" (click)="click(2, tabButton.RECEBIMENTO)">Recebimentos</button>
+  <button [ngClass]="classes[3]" class="col" (click)="click(3, tabButton.EXTRATO_CREDITO)">Extrato Créditos</button>
 </div>
