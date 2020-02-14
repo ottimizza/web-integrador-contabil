@@ -12,6 +12,8 @@ import { RuleCardModule } from './rule-card/rule-card.module';
 import { InfoModule } from '@shared/components/info/info.module';
 import { FilterModule } from 'app/transacoes/transaction-list/filter/filter.module';
 import { TabModule } from '@shared/components/tab/tab.module';
+import { RuleEditModalModule } from './rule-edit-modal/rule-edit-modal.module';
+import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,11 @@ import { TabModule } from '@shared/components/tab/tab.module';
     InfoModule,
     FilterModule,
     TabModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    RuleEditModalModule
+  ],
+  entryComponents: [
+    RuleEditModalComponent
   ]
 })
 export class RuleListModule { }

@@ -11,6 +11,8 @@ import { Empresa } from '@shared/models/Empresa';
 import { RuleService } from '@shared/services/rule.service';
 import { CompleteRule } from '@shared/models/CompleteRule';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -28,7 +30,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   constructor(
     private _service: RuleService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -57,12 +60,39 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       .subscribe((info: any) => {
         if (info.message === 'Grupo de Regra removido com sucesso!') {
           this.rows.splice(event, 1);
-          this._snackBar.open('Regra excluída com sucesso!', 'Ok', { duration: 1200 });
+          this._openSnack('Regra excluída com sucesso');
         } else {
-          this._snackBar.open('Falha ao excluir regra.', 'Ok', { duration: 1200 });
+          this._openSnack('Falha ao excluir regra.');
         }
 
       });
+  }
+
+  onUpdate(event: string) {
+    const rule = JSON.parse(event) as CompleteRule;
+    const dialogRef = this.dialog.open(RuleEditModalComponent, {
+      width: '80%',
+      maxWidth: '1300px',
+      data: {
+        rule
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: CompleteRule) => {
+      if (result && result.regras && result.contaMovimento) {
+        this._service
+          .update(result.id, { regras: result.regras, contaMovimento: result.contaMovimento })
+          .subscribe((info: any) => {
+            this.rows[this.rows.indexOf(rule)] = info.record;
+            this.rows.forEach(regra => {
+              if (regra.id === info.record.id) {
+                this.rows[this.rows.indexOf(regra)] = info.record;
+                this._openSnack('Regra alterada com sucesso!');
+              }
+            });
+          });
+      }
+    });
   }
 
   onClick(button: TabButton) {
@@ -110,5 +140,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       this.pageInfo = imports.pageInfo;
     });
     this.page++;
+  }
+
+  private _openSnack(text: string) {
+    this._snackBar.open(text, 'Ok', { duration: 1200 });
   }
 }

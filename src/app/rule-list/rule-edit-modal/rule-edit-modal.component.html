@@ -19,7 +19,7 @@
     <br>
 
     <div class="row w-100 m-0 mb-4 text-center" id="ruleFieldModal" *ngFor="let rule of ruleDefault.regras; let id = index">
-      <div class="col-1">
+      <div class="col-1" *ngIf="ruleDefault.regras.length > 1">
         <div class="p-3 clickIcon" (click)="remove(id)" [matTooltip]="info.remove" matTooltipShowDelay="300" matTooltipHideDelay="500">
           <i class="far fa-times text-danger fa-2x"></i>
         </div>
@@ -81,8 +81,11 @@
 
 
 <div mat-dialog-actions>
+  <div class="row w-100 m-0 mb-4" *ngIf="accountError">
+    <strong class="text-danger">Para salvar, insira uma conta.</strong>
+  </div>
   <div class="row w-100 m-0">
-    <button class="col purple" cdkFocusInitial [mat-dialog-close]="ruleDefault">
+    <button class="col purple" cdkFocusInitial (click)="save()">
       <i class="far fa-save mr-3"></i>
       Salvar
     </button>
