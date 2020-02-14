@@ -16,8 +16,7 @@ export class RuleCardComponent {
   @Output() downAll: EventEmitter<number> = new EventEmitter();
   @Output() upAll: EventEmitter<number> = new EventEmitter();
   @Output() delete: EventEmitter<number> = new EventEmitter();
-
-  constructor(public dialog: MatDialog) { }
+  @Output() update: EventEmitter<string> = new EventEmitter();
 
   get info() {
     return {
@@ -47,20 +46,12 @@ export class RuleCardComponent {
   }
 
   openModal(newCamp?: boolean) {
-    const rules = this.rules;
+    const text = JSON.stringify(this.rules);
+    const rules = JSON.parse(text);
     if (newCamp) {
       rules.regras.push({ campo: null, condicao: null, grupoRegra: null, id: null, valor: null });
     }
-    const dialogRef = this.dialog.open(RuleEditModalComponent, {
-      width: '80%',
-      maxWidth: '1300px',
-      data: {
-        rule: rules
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-    });
+    this.update.emit(JSON.stringify(rules));
   }
 
   private _getCondition(condition: Condicao) {
