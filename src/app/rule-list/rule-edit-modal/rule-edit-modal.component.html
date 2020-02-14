@@ -3,7 +3,6 @@
 
 
 <div mat-dialog-content>
-  <p>Sinta-se à vontade, você pode desfazer isto a qualquer momento</p>
     <div class="row w-100 m-0 mt-4 text-center">
       <div class="col">
         <h4>Campo</h4>
@@ -68,7 +67,7 @@
     </div>
 
     <div class="row w-100 m-4 text-center">
-      <div class="center clickIcon" (click)="add()">
+      <div class="center clickIcon" (click)="add()" [matTooltip]="info.add" matTooltipShowDelay="300" matTooltipHideDelay="500">
         <i class="far fa-plus-circle fa-2x"></i>
       </div>
     </div>

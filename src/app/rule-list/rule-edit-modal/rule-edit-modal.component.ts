@@ -38,7 +38,8 @@ export class RuleEditModalComponent implements OnInit {
 
   get info() {
     return {
-      remove: 'Remover esta linha da regra'
+      remove: 'Remover esta linha da regra',
+      add: 'Adicionar uma nova linha à regra'
     };
   }
 
