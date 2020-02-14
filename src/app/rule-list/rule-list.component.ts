@@ -112,6 +112,12 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     this.business = JSON.parse(event);
   }
 
+  onClone(event: RuleCreateFormat) {
+    this._service.createRule(event).subscribe(results => {
+      this._openSnack('Regra clonada com sucesso!');
+    });
+  }
+
   drop(event: CdkDragDrop<RuleCreateFormat[]>) {
     moveItemInArray(this.rows, event.previousIndex, event.currentIndex);
   }
