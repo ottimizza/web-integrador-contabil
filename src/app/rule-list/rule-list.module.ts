@@ -14,6 +14,7 @@ import { FilterModule } from 'app/transacoes/transaction-list/filter/filter.modu
 import { TabModule } from '@shared/components/tab/tab.module';
 import { RuleEditModalModule } from './rule-edit-modal/rule-edit-modal.module';
 import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
+import { RuleFilterModule } from './rule-filter/rule-filter.module';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.compon
     FilterModule,
     TabModule,
     MatSnackBarModule,
-    RuleEditModalModule
+    RuleEditModalModule,
+    RuleFilterModule
   ],
   entryComponents: [
     RuleEditModalComponent

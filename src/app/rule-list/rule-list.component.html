@@ -20,6 +20,10 @@
 
   <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" *ngIf="rows.length && isSelected">
 
+    <div class="divFilter mb-4">
+      <app-rule-filter></app-rule-filter>
+    </div>
+
     <div *ngFor="let rule of rows; let i = index" cdkDrag>
       <div style="margin-bottom: 20px;">
       <!-- <div style="margin-bottom: 20px;" *ngIf="rule.regras.length"> -->
