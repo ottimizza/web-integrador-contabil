@@ -15,7 +15,7 @@
   </form>
   <div class="row m-4" *ngIf="params && params.length > 0">
     <p class="mr-4">Histórico Final:</p>
-    <p class="font-weight-bold">{{ params }}</p>
+    <p class="font-weight-bold" *ngIf="params && params.length > 0">{{ params }}</p>
   </div>
 
 </div>
