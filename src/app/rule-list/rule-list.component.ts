@@ -117,6 +117,14 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   onClone(event: RuleCreateFormat) {
     this._service.createRule(event).subscribe(() => {
+
+      const page = this.page;
+      this.rows = [];
+      for (let i = 0; i < page; i++) {
+        this.page = i;
+        this.nextPage();
+      }
+
       this._openSnack('Regra clonada com sucesso!');
     });
   }
