@@ -10,7 +10,7 @@ import { CompleteRule } from '@shared/models/CompleteRule';
 export class RuleEditModalComponent implements OnInit {
 
   ruleDefault: CompleteRule;
-  accountError: boolean;
+  errorText: string;
 
   constructor(
     public dialogRef: MatDialogRef<RuleEditModalComponent>,
@@ -42,6 +42,10 @@ export class RuleEditModalComponent implements OnInit {
     };
   }
 
+  add() {
+    this.ruleDefault.regras.push({ campo: null, condicao: null, grupoRegra: null, id: null, valor: null });
+  }
+
   fieldChange(event: any, index: number) {
     this.ruleDefault.regras[index].campo = event.target.value;
   }
@@ -68,23 +72,23 @@ export class RuleEditModalComponent implements OnInit {
       this.ruleDefault.regras.forEach(rule => {
         if (!rule.campo || !rule.campo.length) {
           verify = false;
-          this.accountError = true;
+          this.errorText = 'Preencha todos os campos de regra';
         } else if (!rule.condicao) {
           verify = false;
-          this.accountError = true;
+          this.errorText = 'Preencha todos os campos de regra';
         } else if (!rule.valor || !rule.valor.length) {
           verify = false;
-          this.accountError = true;
+          this.errorText = 'Preencha todos os campos de regra';
         }
       });
       if (verify) {
-        this.accountError = false;
+        this.errorText = null;
         this.dialogRef.close(this.ruleDefault);
       } else {
-        this.accountError = true;
+        this.errorText = 'Preencha todos os campos de regra';
       }
     } else {
-      this.accountError = true;
+      this.errorText = 'Insira uma conta movimento';
     }
   }
 
