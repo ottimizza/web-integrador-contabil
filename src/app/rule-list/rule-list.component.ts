@@ -120,10 +120,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
       const page = this.page;
       this.rows = [];
-      for (let i = 0; i < page; i++) {
-        this.page = i;
-        this.nextPage();
-      }
 
       this._openSnack('Regra clonada com sucesso!');
     });
