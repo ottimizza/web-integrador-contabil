@@ -366,8 +366,14 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   nextPage() {
+    let tipoLancamento: number;
+    if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'EXPAG') {
+      tipoLancamento = 1;
+    } else if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXREC') {
+      tipoLancamento = 2;
+    }
     const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: this.pageInfo.pageSize };
-    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento: 1, tipoMovimento: this.tipoMovimento, tipoConta: 0};
+    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: 0};
     Object.assign(filter, pageCriteria);
 
     this._lancamentoService.getLancamentos(filter).subscribe(imports => {

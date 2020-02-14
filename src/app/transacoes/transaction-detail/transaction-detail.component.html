@@ -23,11 +23,13 @@
             matTooltipHideDelay="500"
             >{{ impact }}</span
           >
-          <span class="font-weight-normal" (click)="openGrid()"> lançamentos.</span
-          >
+          <span class="font-weight-normal" (click)="openGrid()"> lançamentos.</span>
+          <div class="row w-100 m-0">
+            <strong>OBS: Lançamentos já afetados por outras regras também podem ser afetados por esta.</strong>
+          </div>
         </div>
         <div class="col">
-          <div class="float-right">
+          <div>
             <span class="defaultSpan">Lançamentos restantes: </span>
             <span class="defaultSpan">{{ remaining }}</span>
           </div>

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+
 import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
 import { RuleCreateFormat, PostFormatRule, Rule, Condicao } from '@shared/models/Rule';
-import { StringCutterUtils } from '@shared/utils/string-cutter.util';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { TabButton } from '@shared/components/tab/tab.component';
@@ -27,6 +28,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   constructor(private _service: RuleService) { }
 
   ngOnInit(): void {
+    this.rows = [];
   }
 
   get info() {
@@ -54,8 +56,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     if (button === TabButton.PAGAMENTO) {
       this.tipoLancamento = 1;
     } else if (button === TabButton.RECEBIMENTO) {
-      this.tipoLancamento = 0;
+      this.tipoLancamento = 2;
     }
+    this.page = 0;
     this.nextPage();
   }
 
@@ -88,10 +91,11 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     Object.assign(filter, pageCriteria, sorting);
 
     this._service.get(filter).subscribe(imports => {
-      this.rows = imports.records;
+      imports.records.forEach(rec => this.rows.push(rec));
       this.pageInfo = imports.pageInfo;
     });
     this.page++;
 
   }
 }
+
