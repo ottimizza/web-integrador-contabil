@@ -95,6 +95,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     });
   }
 
+  onSearch(event: string) {
+  }
+
   onClick(button: TabButton) {
     this.rows = [];
     this.isSelected = true;

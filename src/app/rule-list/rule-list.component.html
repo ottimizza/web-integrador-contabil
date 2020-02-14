@@ -21,7 +21,7 @@
   <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" *ngIf="rows.length && isSelected">
 
     <div class="divFilter mb-4">
-      <app-rule-filter></app-rule-filter>
+      <app-rule-filter (search)="onSearch($event)"></app-rule-filter>
     </div>
 
     <div *ngFor="let rule of rows; let i = index" cdkDrag>

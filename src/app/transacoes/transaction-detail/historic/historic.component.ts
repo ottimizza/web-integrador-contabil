@@ -22,10 +22,10 @@ export class HistoricComponent implements OnInit {
   ngOnInit(): void {
     // Define os labels dos campos que serão exibidos
     this.fields = [
-      { span: 'Comentário Inicial', name: 'Campo 1:' },
-      { span: 'Comentário 2', name: 'Campo 2:' },
-      { span: 'Comentário 3', name: 'Campo 3:' },
-      { span: 'Comentário 4' }
+      { span: 'Texto Inicial', name: 'Campo 1:' },
+      { span: 'Texto 2', name: 'Campo 2:' },
+      { span: 'Texto 3', name: 'Campo 3:' },
+      { span: 'Texto 4' }
     ];
     this.historicObj = new Historic();
     this.lancamento = this.data.lancamento;
@@ -69,7 +69,13 @@ export class HistoricComponent implements OnInit {
   }
 
   get params(): string {
-    return this.historicObj.preview;
+    let params: string;
+    if (this.id) {
+      params = `ID do Histórico: ${this.id}. ${this.historicObj.preview}`;
+    } else {
+      params = this.historicObj.preview;
+    }
+    return params;
   }
 
   private _update(): void {
