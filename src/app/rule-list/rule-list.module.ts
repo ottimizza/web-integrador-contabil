@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { RuleListComponent } from './rule-list.component';
 import { CardModule } from '@shared/components/card/card.module';
@@ -25,7 +26,8 @@ import { TabModule } from '@shared/components/tab/tab.module';
     MatDialogModule,
     InfoModule,
     FilterModule,
-    TabModule
+    TabModule,
+    MatSnackBarModule
   ]
 })
 export class RuleListModule { }
