@@ -60,7 +60,6 @@ export class RuleCardComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log(result);
     });
   }
 

@@ -3,13 +3,14 @@ import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
-import { RuleCreateFormat, PostFormatRule, Rule, Condicao } from '@shared/models/Rule';
+import { RuleCreateFormat } from '@shared/models/Rule';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { TabButton } from '@shared/components/tab/tab.component';
 import { Empresa } from '@shared/models/Empresa';
 import { RuleService } from '@shared/services/rule.service';
 import { CompleteRule } from '@shared/models/CompleteRule';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -25,7 +26,10 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   isSelected = false;
   tipoLancamento: number;
 
-  constructor(private _service: RuleService) { }
+  constructor(
+    private _service: RuleService,
+    private _snackBar: MatSnackBar
+  ) { }
 
   ngOnInit(): void {
     this.rows = [];
@@ -50,9 +54,14 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     const rule = this.rows[event];
     this._service
       .delete(rule.id)
-      .subscribe(info => {
-        console.log(info);
-        this.rows.splice(event, 1);
+      .subscribe((info: any) => {
+        if (info.message === 'Grupo de Regra removido com sucesso!') {
+          this.rows.splice(event, 1);
+          this._snackBar.open('Regra excluída com sucesso!', 'Ok', { duration: 1200 });
+        } else {
+          this._snackBar.open('Falha ao excluir regra.', 'Ok', { duration: 1200 });
+        }
+
       });
   }
 
