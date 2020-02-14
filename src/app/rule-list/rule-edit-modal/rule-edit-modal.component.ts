@@ -10,6 +10,7 @@ import { CompleteRule } from '@shared/models/CompleteRule';
 export class RuleEditModalComponent implements OnInit {
 
   ruleDefault: CompleteRule;
+  accountError: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<RuleEditModalComponent>,
@@ -59,6 +60,32 @@ export class RuleEditModalComponent implements OnInit {
 
   remove(id: number) {
     this.ruleDefault.regras.splice(id, 1);
+  }
+
+  save() {
+    if (this.ruleDefault.contaMovimento && this.ruleDefault.contaMovimento.length) {
+      let verify = true;
+      this.ruleDefault.regras.forEach(rule => {
+        if (!rule.campo || !rule.campo.length) {
+          verify = false;
+          this.accountError = true;
+        } else if (!rule.condicao) {
+          verify = false;
+          this.accountError = true;
+        } else if (!rule.valor || !rule.valor.length) {
+          verify = false;
+          this.accountError = true;
+        }
+      });
+      if (verify) {
+        this.accountError = false;
+        this.dialogRef.close(this.ruleDefault);
+      } else {
+        this.accountError = true;
+      }
+    } else {
+      this.accountError = true;
+    }
   }
 
   get conditon() {
