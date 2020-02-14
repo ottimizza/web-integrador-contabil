@@ -47,7 +47,13 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   }
 
   onDelete(event: number) {
-    this.rows.splice(event, 1);
+    const rule = this.rows[event];
+    this._service
+      .delete(rule.id)
+      .subscribe(info => {
+        console.log(info);
+        this.rows.splice(event, 1);
+      });
   }
 
   onClick(button: TabButton) {
@@ -95,7 +101,5 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       this.pageInfo = imports.pageInfo;
     });
     this.page++;
-
   }
 }
-
