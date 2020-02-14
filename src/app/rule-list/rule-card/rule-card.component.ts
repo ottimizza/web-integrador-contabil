@@ -17,13 +17,14 @@ export class RuleCardComponent {
   @Output() upAll: EventEmitter<number> = new EventEmitter();
   @Output() delete: EventEmitter<number> = new EventEmitter();
   @Output() update: EventEmitter<string> = new EventEmitter();
+  @Output() clone: EventEmitter<RuleCreateFormat> = new EventEmitter();
 
   get info() {
     return {
       upAll: 'Enviar para o topo da lista',
       upDown: 'Enviar para o final da lista',
       trash: 'Excluir esta regra',
-      plus: 'Adicionar um novo campo a esta regra',
+      clone: 'Clonar esta regra',
       edit: 'Alterar esta regra'
     };
   }
@@ -38,6 +39,21 @@ export class RuleCardComponent {
 
   getText(rule: PostFormatRule) {
     return `${Rule.getFieldName(rule.campo)} ${this._getCondition(rule.condicao)} ${rule.valor}`;
+  }
+
+  cloning() {
+    const regras: PostFormatRule[] = [];
+    this.rules.regras.forEach(r => {
+      regras.push({ campo: r.campo, condicao: r.condicao, valor: r.valor });
+    });
+    this.clone.emit(new RuleCreateFormat(
+      regras,
+      this.rules.cnpjEmpresa,
+      this.rules.cnpjContabilidade,
+      this.rules.tipoLancamento,
+      this.rules.idRoteiro,
+      this.rules.contaMovimento
+    ));
   }
 
   close() {
