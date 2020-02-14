@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@env';
 import { HttpClient } from '@angular/common/http';
-import { RuleCreateFormat } from '@shared/models/Rule';
+import { RuleCreateFormat, PostFormatRule } from '@shared/models/Rule';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '@app/authentication/authentication.service';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
@@ -24,6 +24,16 @@ export class RuleService {
     const params = this.encode(searchCriteria);
     const url = `${BASE_URL}/api/v1/regras?${params}`;
     return this._http.get<GenericPageableResponse<any>>(url, this._headers);
+  }
+
+  delete(id: number) {
+    const url = `${BASE_URL}/api/v1/regras/${id}`;
+    return this._http.delete(url, this._headers);
+  }
+
+  update(id: number, rule: { regras: PostFormatRule[], contaMovimento: string }) {
+    const url = `${BASE_URL}/api/v1/regras/${id}`;
+    return this._http.put(url, rule, this._headers);
   }
 
   private get _headers() {
