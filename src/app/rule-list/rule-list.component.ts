@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 
 import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
 import { RuleCreateFormat } from '@shared/models/Rule';
@@ -10,8 +12,6 @@ import { TabButton } from '@shared/components/tab/tab.component';
 import { Empresa } from '@shared/models/Empresa';
 import { RuleService } from '@shared/services/rule.service';
 import { CompleteRule } from '@shared/models/CompleteRule';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
 import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 
 @Component({
