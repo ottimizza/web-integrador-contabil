@@ -67,6 +67,12 @@
       </div>
     </div>
 
+    <div class="row w-100 m-4 text-center">
+      <div class="center clickIcon" (click)="add()">
+        <i class="far fa-plus-circle fa-2x"></i>
+      </div>
+    </div>
+
     <div class="row text-center">
       <div class="col">
         <p>Conta: </p>
@@ -81,8 +87,8 @@
 
 
 <div mat-dialog-actions>
-  <div class="row w-100 m-0 mb-4" *ngIf="accountError">
-    <strong class="text-danger">Para salvar, insira uma conta.</strong>
+  <div class="row w-100 m-0 mb-4">
+    <strong class="text-danger">{{ errorText }}</strong>
   </div>
   <div class="row w-100 m-0">
     <button class="col purple" cdkFocusInitial (click)="save()">
