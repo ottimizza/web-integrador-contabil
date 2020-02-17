@@ -20,13 +20,12 @@
 
   <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" *ngIf="rows.length && isSelected">
 
-    <div class="divFilter mb-4">
+    <!-- <div class="divFilter mb-4">
       <app-rule-filter (search)="onSearch($event)"></app-rule-filter>
-    </div>
+    </div> -->
 
     <div *ngFor="let rule of rows; let i = index" cdkDrag>
       <div style="margin-bottom: 20px;">
-      <!-- <div style="margin-bottom: 20px;" *ngIf="rule.regras.length"> -->
         <app-ruleico (clone)="onClone($event)" [rules]="rule" [index]="i" (downAll)="downAll($event)" (upAll)="upAll($event)" (delete)="onDelete($event)" (update)="onUpdate($event)"></app-ruleico>
       </div>
     </div>
