@@ -126,9 +126,8 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     }
   }
 
-  regra() {
-    // const regra = new RuleCreateFormat(this.conditions.rules, this.business.cnpj, this.records[0].cnpjContabilidade, this.account);
-    const regra = new RuleCreateFormat(
+  get ruleCreateFormat() {
+    return new RuleCreateFormat(
       this.conditions.rules,
       this.business.cnpj,
       this.records[0].cnpjContabilidade,
@@ -136,6 +135,11 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this.records[0].idRoteiro,
       this.account
     );
+  }
+
+  regra() {
+    // const regra = new RuleCreateFormat(this.conditions.rules, this.business.cnpj, this.records[0].cnpjContabilidade, this.account);
+    const regra = this.ruleCreateFormat;
     const observable = this._ruleService.createRule(regra);
     const verifications = [(this.account && this.account.length > 0), this.conditions.verify()];
     const errors = [
@@ -146,7 +150,14 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   ignorar() {
-    const observable = this._lancamentoService.ignoreLancamento(this.records[0]);
+    let observable = this._lancamentoService.ignoreLancamento(this.records[0]);
+    this.conditions.rules.forEach(rule => {
+      if (rule.campo !== 'descricao') {
+        const regra = this.ruleCreateFormat;
+        regra.contaMovimento = 'IGNORAR';
+        observable = this._ruleService.createRule(regra);
+      }
+    });
     const verification = this.conditions.verify();
     const error = ['Para salvar uma regra de ignorar, você deve informar as condições da regra.'];
     this._savePattern(observable, [verification], error);
@@ -378,12 +389,30 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     Object.assign(filter, pageCriteria);
 
     this._lancamentoService.getLancamentos(filter).subscribe(imports => {
+
+      if (imports.pageInfo.hasNext) {
+        this.records = imports.records;
+        this.pageInfo = imports.pageInfo;
+        this._remaining();
+        this.resetErrors();
+      } else {
+        this.nextPageSkipped(filter);
+      }
+
+    });
+  }
+
+  nextPageSkipped(filter: any) {
+    filter.tipoConta = 4;
+
+    this._lancamentoService.getLancamentos(filter).subscribe(imports => {
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
 
       this._remaining();
       this.resetErrors();
     });
+
   }
 
 }
