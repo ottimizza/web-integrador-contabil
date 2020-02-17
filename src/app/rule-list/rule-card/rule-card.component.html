@@ -1,4 +1,4 @@
-<div class="cont" *ngIf="rules">
+<!-- <div class="cont" *ngIf="rules">
 
   <div class="row w-100 m-0">
     <div class="col-2 m-0 p-0">
@@ -29,4 +29,43 @@
 
 
 </div>
+ -->
 
+
+<div class="cont row m-0 w-100">
+
+
+
+  <div class="col-2 p-0">
+      <button class="red" (click)="close()" [matTooltip]="info.trash" matTooltipShowDelay="300" matTooltipHideDelay="500">
+        <i class="far fa-trash-alt"></i>
+      </button>
+      <button class="gray" (click)="cloning()" [matTooltip]="info.clone" matTooltipShowDelay="300" matTooltipHideDelay="500">
+        <i class="far fa-clone"></i>
+      </button>
+      <button class="purple" (click)="openModal()" [matTooltip]="info.edit" matTooltipShowDelay="300" matTooltipHideDelay="500">
+        <i class="far fa-edit"></i>
+      </button>
+  </div>
+
+
+  <div class="col-7 p-0 pt-3 pb-3">
+    <div *ngFor="let rule of rules.regras">
+      <span>{{ getText(rule) }}</span>
+    </div>
+  </div>
+
+
+  <div class="col-2 p-3">
+    <strong>{{ rules.contaMovimento }}</strong>
+  </div>
+
+
+  <div class="col-1 p-0">
+    <div class="h-50 w-100"><i class="far fa-chevron-up clickIcon" (click)="up()" [matTooltip]="info.upAll" matTooltipShowDelay="300" matTooltipHideDelay="500"></i></div>
+    <div class="h-50 w-100"><i class="far fa-chevron-down clickIcon" (click)="down()" [matTooltip]="info.upDown" matTooltipShowDelay="300" matTooltipHideDelay="500"></i></div>
+  </div>
+
+
+
+</div>
