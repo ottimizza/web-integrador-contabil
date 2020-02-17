@@ -23,7 +23,7 @@
               onError="this.src='./assets/images/Portrait_Placeholder.png';">
           </a>
           <mat-menu #menu="matMenu">
-            <a [routerLink]="['/dashboard/users/', currentUser.id]"
+            <a [routerLink]="['/lancamentos']"
               class="dropdown-header dropdown-item text-center mt-0 py-3">
               <h6 class="text-dark m-0">{{ currentUser.firstName + ' ' + currentUser.lastName }}</h6>
               <small class="text-muted text-lowercase">{{ currentUser.email }}</small>

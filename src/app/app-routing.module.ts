@@ -13,11 +13,11 @@ import { RuleListComponent } from './rule-list/rule-list.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard/',
+    redirectTo: 'lancamentos/',
     pathMatch: 'full'
   },
   {
-    path: 'dashboard/',
+    path: 'lancamentos/',
     component: ContentLayoutComponent,
     canActivate: [AuthGuard], // Should be replaced with actual auth guard
     children: [
@@ -50,12 +50,12 @@ const routes: Routes = [
   }, //
   {
     path: '**',
-    redirectTo: 'dashboard/',
+    redirectTo: 'lancamentos/',
     pathMatch: 'full'
   },
   {
-    path: 'dashboard/:ReportId',
-    redirectTo: 'dashboard/',
+    path: 'lancamentos/:ReportId',
+    redirectTo: 'lancamentos/',
     pathMatch: 'full'
   }
 ];
