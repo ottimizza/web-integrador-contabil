@@ -26,6 +26,11 @@ export class RuleService {
     return this._http.get<GenericPageableResponse<any>>(url, this._headers);
   }
 
+  move(rule: CompleteRule) {
+    const url = `${BASE_URL}/api/v1/regras/${rule.id}/alterar_posicao?cnpjEmpresa=${rule.cnpjEmpresa}&tipoLancamento=${rule.tipoLancamento}`;
+    return this._http.put(url, { posicao: rule.posicao }, this._headers);
+  }
+
   delete(id: number) {
     const url = `${BASE_URL}/api/v1/regras/${id}`;
     return this._http.delete(url, this._headers);

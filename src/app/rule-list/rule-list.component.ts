@@ -127,15 +127,37 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   }
 
   drop(event: CdkDragDrop<RuleCreateFormat[]>) {
-    moveItemInArray(this.rows, event.previousIndex, event.currentIndex);
+    const rule = this.rows[event.previousIndex];
+    const position = this.rows[event.currentIndex].posicao;
+    rule.posicao = position;
+    this._service.move(rule).subscribe(info => {
+      moveItemInArray(this.rows, event.previousIndex, event.currentIndex);
+      this._openSnack('Regra movida com sucesso!');
+    });
   }
 
   upAll(previousIndex: number) {
-    moveItemInArray(this.rows, previousIndex, 0);
+    const rule = this.rows[previousIndex];
+    const position = this.rows[0].posicao;
+    rule.posicao = position;
+    this._service.move(rule).subscribe(() => {
+      moveItemInArray(this.rows, previousIndex, 0);
+      this._openSnack('Regra movida com sucesso!');
+    });
   }
 
   downAll(previousIndex: number) {
-    moveItemInArray(this.rows, previousIndex, this.rows.length - 1);
+    const rule = this.rows[previousIndex];
+    const position = this.pageInfo.totalElements;
+    rule.posicao = position;
+    this._service.move(rule).subscribe(() => {
+      this.rows = [];
+      for (let i = 0; i < this.page; i++) {
+        this.page = i;
+        this.nextPage();
+      }
+      this._openSnack('Regra movida com sucesso!');
+    });
   }
 
   delete(id: number) {
