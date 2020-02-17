@@ -14,6 +14,7 @@ import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { RuleService } from '@shared/services/rule.service';
+import { ToastService } from '@shared/services/toast.service';
 
 @Component({
   selector: 'app-tdetail',
@@ -44,6 +45,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     private _lancamentoService: LancamentoService,
     private _ruleService: RuleService,
     private _historicService: HistoricService,
+    private _toast: ToastService,
     public dialog: MatDialog
   ) { }
 
@@ -177,7 +179,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this._savePattern(observable, [verification], [error]);
   }
 
-  private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[], rule?: boolean) {
+  private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[], rule?: boolean, skip?: boolean) {
 
     const verify = ArrayUtils.verify(verifications);
 
@@ -388,6 +390,8 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: 0};
     Object.assign(filter, pageCriteria);
 
+    this._toast.showSnack('Aguardando resposta');
+
     this._lancamentoService.getLancamentos(filter).subscribe(imports => {
 
       if (imports.pageInfo.hasNext) {
@@ -395,6 +399,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         this.pageInfo = imports.pageInfo;
         this._remaining();
         this.resetErrors();
+        this._toast.hideSnack();
       } else {
         this.nextPageSkipped(filter);
       }
@@ -411,6 +416,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
       this._remaining();
       this.resetErrors();
+      this._toast.hideSnack();
     });
 
   }

@@ -1,5 +1,3 @@
-import { RuleCreateFormat, PostFormatRule } from './Rule';
-
 class GrupoRegra {
   public id: number;
   public posicao: number;

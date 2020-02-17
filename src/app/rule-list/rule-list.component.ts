@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,6 +13,7 @@ import { Empresa } from '@shared/models/Empresa';
 import { RuleService } from '@shared/services/rule.service';
 import { CompleteRule } from '@shared/models/CompleteRule';
 import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
+import { ToastService } from '@shared/services/toast.service';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -27,10 +28,11 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   page = 0;
   isSelected = false;
   tipoLancamento: number;
+  artificial: CompleteRule;
 
   constructor(
     private _service: RuleService,
-    private _snackBar: MatSnackBar,
+    private _snackBar: ToastService,
     public dialog: MatDialog
   ) { }
 
@@ -60,9 +62,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       .subscribe((info: any) => {
         if (info.message === 'Grupo de Regra removido com sucesso!') {
           this.rows.splice(event, 1);
-          this._openSnack('Regra excluída com sucesso');
+          this._openSnack('Regra excluída com sucesso', 'success');
         } else {
-          this._openSnack('Falha ao excluir regra.');
+          this._openSnack('Falha ao excluir regra.', 'danger');
         }
 
       });
@@ -87,7 +89,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
             this.rows.forEach(regra => {
               if (regra.id === info.record.id) {
                 this.rows[this.rows.indexOf(regra)] = info.record;
-                this._openSnack('Regra alterada com sucesso!');
+                this._openSnack('Regra alterada com sucesso!', 'success');
               }
             });
           });
@@ -115,13 +117,21 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     this.business = JSON.parse(event);
   }
 
-  onClone(event: RuleCreateFormat) {
-    this._service.createRule(event).subscribe(info => {
+  onClone(event: { rule: RuleCreateFormat, position: number }) {
+    this._service.createRule(event.rule).subscribe(info => {
       // const page = this.page;
       // this.rows = [];
-      this._openSnack('Regra clonada com sucesso!');
+      const regra: CompleteRule = info.record;
+      regra.posicao = event.position;
+      this._service.move(regra).subscribe(() => {
+        this.rows.push(regra);
+        this.rows.sort((a, b) => a.posicao - b.posicao);
+        this.artificial = regra;
+        this._openSnack('Regra clonada com sucesso!', 'success');
+      });
     });
   }
+
 
   drop(event: CdkDragDrop<RuleCreateFormat[]>) {
     const rule = this.rows[event.previousIndex];
@@ -129,7 +139,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     rule.posicao = position;
     this._service.move(rule).subscribe(info => {
       moveItemInArray(this.rows, event.previousIndex, event.currentIndex);
-      this._openSnack('Regra movida com sucesso!');
+      this._openSnack('Regra movida com sucesso!', 'success');
     });
   }
 
@@ -139,7 +149,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     rule.posicao = position;
     this._service.move(rule).subscribe(() => {
       moveItemInArray(this.rows, previousIndex, 0);
-      this._openSnack('Regra movida com sucesso!');
+      this._openSnack('Regra movida com sucesso!', 'success');
     });
   }
 
@@ -157,7 +167,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       if (this.rows.length + 1 === this.pageInfo.totalElements) {
         this.rows.push(rule);
       }
-      this._openSnack('Regra movida com sucesso!');
+      this._openSnack('Regra movida com sucesso!', 'success');
     });
   }
 
@@ -165,21 +175,38 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     this.rows.splice(id, 1);
   }
 
-  nextPage() {
 
+  nextPage() {
     const pageCriteria = { pageIndex: this.page };
     const sorting = { sortBy: 'posicao', sortOrder: 'asc' };
     const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento: this.tipoLancamento };
     Object.assign(filter, pageCriteria, sorting);
 
+    this._snackBar.showSnack('Aguardando resposta');
+
     this._service.get(filter).subscribe(imports => {
+
+      if (JSON.stringify(this.artificial) === JSON.stringify(this.rows[this.rows.length - 1])) {
+        /*
+        Sempre que uma regra é clonada, o clone é artificialmente inserido no array local para que não seja necessário
+        bombardear o servidor com novos requests.
+        Esta verificação garante que o último item do array local não seja literalmente uma cópia (cópia !== clone) do primeiro item
+        do array do request.
+        */
+        this.rows.splice(this.rows.length - 1, 1);
+        this.artificial = null;
+      }
+
       imports.records.forEach(rec => this.rows.push(rec));
       this.pageInfo = imports.pageInfo;
+      this._snackBar.hideSnack();
     });
     this.page++;
   }
 
-  private _openSnack(text: string) {
-    this._snackBar.open(text, 'Ok', { duration: 1200 });
+
+  private _openSnack(text: string, color: 'danger' | 'primary' | 'success' | 'warning') {
+    this._snackBar.show(text, color);
   }
+
 }
