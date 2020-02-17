@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -148,10 +148,14 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     const position = this.pageInfo.totalElements;
     rule.posicao = position;
     this._service.move(rule).subscribe(() => {
-      this.rows = [];
-      for (let i = 0; i < this.page; i++) {
-        this.page = i;
-        this.nextPage();
+      // this.rows = [];
+      // for (let i = 0; i < this.page; i++) {
+      //   this.page = i;
+      //   this.nextPage();
+      // }
+      this.rows.splice(previousIndex, 1);
+      if (this.rows.length + 1 === this.pageInfo.totalElements) {
+        this.rows.push(rule);
       }
       this._openSnack('Regra movida com sucesso!');
     });
