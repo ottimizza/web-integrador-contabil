@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -115,13 +115,20 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     this.business = JSON.parse(event);
   }
 
-  onClone(event: RuleCreateFormat) {
-    this._service.createRule(event).subscribe(info => {
+  onClone(event: { rule: RuleCreateFormat, position: number }) {
+    this._service.createRule(event.rule).subscribe(info => {
       // const page = this.page;
       // this.rows = [];
-      this._openSnack('Regra clonada com sucesso!');
+      const regra: CompleteRule = info.record;
+      regra.posicao = event.position;
+      this._service.move(regra).subscribe(() => {
+        this._openSnack('Regra clonada com sucesso!');
+        this.rows.push(regra);
+        this.rows.sort((a, b) => a.posicao - b.posicao);
+      });
     });
   }
+
 
   drop(event: CdkDragDrop<RuleCreateFormat[]>) {
     const rule = this.rows[event.previousIndex];
