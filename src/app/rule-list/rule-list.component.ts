@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 
 import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
@@ -33,7 +32,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   constructor(
     private _service: RuleService,
     private _snackBar: ToastService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -175,7 +174,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     this.rows.splice(id, 1);
   }
 
-
   nextPage() {
     const pageCriteria = { pageIndex: this.page };
     const sorting = { sortBy: 'posicao', sortOrder: 'asc' };
@@ -203,7 +201,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     });
     this.page++;
   }
-
 
   private _openSnack(text: string, color: 'danger' | 'primary' | 'success' | 'warning') {
     this._snackBar.show(text, color);

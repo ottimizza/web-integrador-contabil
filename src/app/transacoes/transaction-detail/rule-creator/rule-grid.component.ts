@@ -7,6 +7,7 @@ import { LancamentoService } from '@shared/services/lancamento.service';
 import { PostFormatRule } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
 import { of } from 'rxjs';
+import { ToastService } from '@shared/services/toast.service';
 
 @Component({
   templateUrl: './rule-grid.component.html'
@@ -23,7 +24,8 @@ export class RuleGridComponent implements OnInit, GenericPagination {
   constructor(
     public dialogRef: MatDialogRef<RuleGridComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private _service: LancamentoService
+    private _service: LancamentoService,
+    private _toast: ToastService
   ) { }
 
   ngOnInit(): void {
@@ -35,6 +37,7 @@ export class RuleGridComponent implements OnInit, GenericPagination {
 
 
   nextPage(): void {
+    this._toast.showSnack('Aguardando resposta');
     if (this.hasNext()) {
       this._service
         .getByRulePaginated(this.rules, this.business, this.page)
@@ -42,6 +45,7 @@ export class RuleGridComponent implements OnInit, GenericPagination {
           imports.records.forEach(lanc => this.info.push(lanc));
           this.pageInfo = imports.pageInfo;
           this.page++;
+          this._toast.hideSnack();
         });
     }
   }
