@@ -81,6 +81,7 @@ body {
 .main-wrapper, .page-wrapper {
   background-color: #f5f5f5;
   transition: 0.15s ease-out;
+  min-height: calc(100vh - 70px);
 }
 
 /* ******************************************** *
