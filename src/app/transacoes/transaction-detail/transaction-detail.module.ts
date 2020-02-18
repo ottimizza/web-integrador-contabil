@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTabsModule } from '@angular/material';
 
 import { TransactionDetailComponent } from './transaction-detail.component';
 import { TransactionInfoModule } from './transaction-info/transaction-info.module';
@@ -14,7 +15,6 @@ import { CardModule } from '@shared/components/card/card.module';
 import { InfoModule } from '@shared/components/info/info.module';
 import { HistoricModule } from './historic/historic.module';
 import { HistoricComponent } from './historic/historic.component';
-import { TabModule } from '@shared/components/tab/tab.module';
 
 @NgModule({
     declarations: [TransactionDetailComponent],
@@ -28,7 +28,8 @@ import { TabModule } from '@shared/components/tab/tab.module';
         CardModule,
         MatProgressBarModule,
         InfoModule,
-        HistoricModule
+        HistoricModule,
+        MatTabsModule
     ],
     entryComponents: [
       RuleGridComponent,

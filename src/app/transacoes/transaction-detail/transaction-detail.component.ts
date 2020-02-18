@@ -15,6 +15,7 @@ import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { RuleService } from '@shared/services/rule.service';
 import { ToastService } from '@shared/services/toast.service';
+import { MatTabChangeEvent } from '@angular/material';
 
 @Component({
   selector: 'app-tdetail',
@@ -35,6 +36,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   tipoLancamentoName: string;
   destroy: boolean;
   tabIsClicked = false;
+  started = false;
   tipoMovimento = 'PAG';
   pageSize = 1;
   remaining = 0;
@@ -50,7 +52,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   ) { }
 
   ngOnInit(): void {
-    this._resetButtons();
+    this.onTab({ tab: null, index: 0 }, true);
   }
 
   get suggestions() {
@@ -296,28 +298,25 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     });
   }
 
-  pag() {
-    this.tabsPattern(0, 'PAG', 'pagamentos');
+  onTab(event: MatTabChangeEvent, isFirst: boolean) {
+    const id = event.index;
+    if (id === 0) {
+      this.tabsPattern('PAG', 'pagamentos', isFirst);
+    } else if (id === 1) {
+      this.tabsPattern('EXPAG', 'extratos de débitos', isFirst);
+    } else if (id === 2) {
+      this.tabsPattern('REC', 'recebimentos', isFirst);
+    } else if (id === 3) {
+      this.tabsPattern('EXREC', 'extratos de recebimentos', isFirst);
+    }
   }
 
-  expag() {
-    this.tabsPattern(1, 'EXPAG', 'extratos de débitos');
-  }
-
-  rec() {
-    this.tabsPattern(2, 'REC', 'recebimentos');
-  }
-
-  exrec() {
-    this.tabsPattern(3, 'EXREC', 'extratos de recebimentos');
-  }
-
-  async tabsPattern(position: number, tipoMovimento: string, tipoLancamentoName: string) {
+  async tabsPattern(tipoMovimento: string, tipoLancamentoName: string, isFirst: boolean) {
     this.destroy = true;
-    this._resetButtons();
-    this.tabsButtonClass[position] = 'btn btn-info col';
-    this.tabIsClicked = true;
-    this.tabSelect.emit('true');
+    if (!isFirst) {
+      this.tabIsClicked = true;
+      this.tabSelect.emit('true');
+    }
 
     this.tipoMovimento = tipoMovimento;
     this.tipoLancamentoName = tipoLancamentoName;
@@ -344,14 +343,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this.account = null;
   }
 
-  private _resetButtons() {
-    this.tabsButtonClass = [
-      'btn btn-outline-link col',
-      'btn btn-outline-link col',
-      'btn btn-outline-link col',
-      'btn btn-outline-link col'
-    ];
-  }
 
   private _remaining() {
     if (this.pageInfo) {
@@ -395,6 +386,10 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this._toast.showSnack('Aguardando resposta');
 
     this._lancamentoService.getLancamentos(filter).subscribe(imports => {
+
+      if (!this.started) {
+        this.started = true;
+      }
 
       if (imports.pageInfo.hasNext) {
         this.records = imports.records;

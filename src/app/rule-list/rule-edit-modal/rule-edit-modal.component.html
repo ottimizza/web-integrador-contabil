@@ -3,6 +3,8 @@
 
 
 <div mat-dialog-content>
+
+
     <div class="row w-100 m-0 mt-4 text-center">
       <div class="col">
         <h4>Campo</h4>
@@ -19,7 +21,7 @@
 
     <div class="row w-100 m-0 mb-4 text-center" id="ruleFieldModal" *ngFor="let rule of ruleDefault.regras; let id = index">
       <div class="col-1" *ngIf="ruleDefault.regras.length > 1">
-        <div class="p-3 clickIcon" (click)="remove(id)" [matTooltip]="info.remove" matTooltipShowDelay="300" matTooltipHideDelay="500">
+        <div class="p-3 pt-0 clickIcon" (click)="remove(id)" [matTooltip]="info.remove" matTooltipShowDelay="300" matTooltipHideDelay="500">
           <i class="far fa-times text-danger fa-2x"></i>
         </div>
       </div>
@@ -62,7 +64,7 @@
         </select>
       </div>
       <div class="col">
-        <input type="text" placeholder="Informe um valor" [value]="rule.valor" (keyup)="valueChange($event, id)">
+        <input matInput placeholder="Informe um valor" [value]="rule.valor" (keyup)="valueChange($event, id)">
       </div>
     </div>
 
@@ -80,6 +82,8 @@
         <input type="text" class="text-center" placeholder="Informa a conta de movimento atrelada à esta regra" [(ngModel)]="ruleDefault.contaMovimento">
       </div>
     </div>
+
+
 
 </div>
 
