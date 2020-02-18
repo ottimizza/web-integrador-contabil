@@ -415,7 +415,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this._lancamentoService.getLancamentos(filter).subscribe(imports => {
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
-
       this._remaining();
       this.resetErrors();
       this._toast.hideSnack();
