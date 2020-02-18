@@ -26,3 +26,14 @@ export class AppComponent implements OnInit {
   }
 
 }
+
+
+// class TestandoCoisas {
+//   name: string;
+// }
+
+// function TesteDecorator(config: { age: number }) {
+//   return target => {
+//     Object.defineProperty(target.prototype, 'idade',)
+//   }
+// }

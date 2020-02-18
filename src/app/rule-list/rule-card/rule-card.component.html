@@ -51,7 +51,9 @@
 
   <div class="col-7 p-0 pt-3 pb-3">
     <div *ngFor="let rule of rules.regras">
-      <span>{{ getText(rule) }}</span>
+      <strong>{{ getText(rule).field }}</strong>
+      <span>{{ getText(rule).text }}</span>
+      <strong>{{ getText(rule).value }}</strong>
     </div>
   </div>
 

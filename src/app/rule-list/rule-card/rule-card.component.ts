@@ -38,7 +38,12 @@ export class RuleCardComponent {
   }
 
   getText(rule: PostFormatRule) {
-    return `${Rule.getFieldName(rule.campo)} ${this._getCondition(rule.condicao)} ${rule.valor}`;
+    // return `${Rule.getFieldName(rule.campo)} ${this._getCondition(rule.condicao)} ${rule.valor}`;
+    return {
+      field: Rule.getFieldName(rule.campo),
+      text: ` ${this._getCondition(rule.condicao)} `,
+      value: rule.valor
+    };
   }
 
   cloning() {
