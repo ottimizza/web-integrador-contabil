@@ -20,10 +20,10 @@ import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.modul
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpErrorInterceptor, ErrorInterceptorProvider } from '@app/interceptor/http.interceptor';
-import { NavbarLayoutModule } from './layout/navbar-layout/navbar-layout.module';
-import { TransactionModule } from './transacoes/transaction.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { RuleListModule } from './rule-list/rule-list.module';
+import { NavbarLayoutModule } from './layout/navbar-layout/navbar-layout.module';
+import { RuleListModule } from '@modules/rule-list/rule-list.module';
+import { TransactionModule } from '@modules/transacoes/transaction.module';
 
 @NgModule({
   declarations: [

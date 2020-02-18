@@ -6,9 +6,8 @@ import { ContentLayoutComponent } from './layout/content-layout/content-layout.c
 
 import { AuthGuard } from '@app/guard/auth.guard';
 import { NoAuthGuard } from '@app/guard/no-auth.guard';
-import { TransactionModule } from './transacoes/transaction.module';
-import { TransactionListComponent } from './transacoes/transaction-list/transaction-list.component';
-import { RuleListComponent } from './rule-list/rule-list.component';
+import { TransactionListComponent } from '@modules/transacoes/transaction-list/transaction-list.component';
+import { RuleListComponent } from '@modules/rule-list/rule-list.component';
 
 const routes: Routes = [
   {
