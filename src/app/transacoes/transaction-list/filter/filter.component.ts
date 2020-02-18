@@ -4,6 +4,7 @@ import { Empresa } from '@shared/models/Empresa';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
+import { ToastService } from '@shared/services/toast.service';
 
 @Component({
   selector: 'app-tfilter',
@@ -17,7 +18,10 @@ export class FilterComponent implements OnInit {
   suggestions: string[] = [];
   business: Empresa[] = [];
 
-  constructor(private _service: BusinessService) { }
+  constructor(
+    private _service: BusinessService,
+    private _toast: ToastService
+  ) { }
 
   ngOnInit(): void {
     this.change();
@@ -73,7 +77,6 @@ export class FilterComponent implements OnInit {
             this.suggestions.push(`${rec.codigoERP} - ${rec.razaoSocial}`);
           });
         }
-
         subs2.unsubscribe();
       });
 

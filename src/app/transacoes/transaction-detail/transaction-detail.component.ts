@@ -179,7 +179,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this._savePattern(observable, [verification], [error]);
   }
 
-  private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[], rule?: boolean, skip?: boolean) {
+  private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[], rule?: boolean) {
 
     const verify = ArrayUtils.verify(verifications);
 
@@ -289,7 +289,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       if (result) {
         this._historicService
           .createHistoric(result)
-          .subscribe();
+          .subscribe(() => {
+            this.disable();
+          });
       }
     });
   }
