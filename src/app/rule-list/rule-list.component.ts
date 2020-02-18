@@ -13,6 +13,7 @@ import { CompleteRule } from '@shared/models/CompleteRule';
 import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 import { ToastService } from '@shared/services/toast.service';
 import { MatTabChangeEvent } from '@angular/material';
+import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -42,7 +43,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     return {
       text1: 'Para filtrar, insira o nome da empresa desejada.',
       text2: 'Selecione entre Recebimentos e Pagamentos.',
-      crm: 'Salvar no CRM'
+      crm: 'Exportar para o CRM'
     };
   }
 
@@ -97,18 +98,20 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     });
   }
 
+  openConfirmation() {
+    const dialogRef = this.dialog.open(ExportConfirmModalComponent, {
+      data: this.business,
+      maxWidth: '600px'
+    });
 
-  // onClick(button: TabButton) {
-  //   this.rows = [];
-  //   this.isSelected = true;
-  //   if (button === TabButton.PAGAMENTO) {
-  //     this.tipoLancamento = 1;
-  //   } else if (button === TabButton.RECEBIMENTO) {
-  //     this.tipoLancamento = 2;
-  //   }
-  //   this.page = 0;
-  //   this.nextPage();
-  // }
+    dialogRef.afterClosed().subscribe(results => {
+      if (results) {
+        this._openSnack('Regras exportadas com sucesso!', 'success');
+      } else {
+        this._openSnack('Exportação cancelada', 'warning');
+      }
+    });
+  }
 
   onTab(event: MatTabChangeEvent) {
     this.rows = [];

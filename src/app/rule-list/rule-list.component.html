@@ -22,7 +22,7 @@
     <br>
   </div>
 
-  <div class="crm clickIcon" [matTooltip]="info.crm" matTooltipShowDelay="300" matTooltipHideDelay="500"><i class="fad fa-object-ungroup"></i></div>
+  <div *ngIf="hasBusiness" (click)="openConfirmation()" class="crm clickIcon" [matTooltip]="info.crm" matTooltipShowDelay="300" matTooltipHideDelay="500"><i class="fad fa-object-ungroup"></i></div>
 
   <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" *ngIf="rows.length && isSelected">
 
