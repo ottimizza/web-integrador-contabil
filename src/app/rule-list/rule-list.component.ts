@@ -7,12 +7,12 @@ import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
 import { RuleCreateFormat } from '@shared/models/Rule';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
-import { TabButton } from '@shared/components/tab/tab.component';
 import { Empresa } from '@shared/models/Empresa';
 import { RuleService } from '@shared/services/rule.service';
 import { CompleteRule } from '@shared/models/CompleteRule';
 import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 import { ToastService } from '@shared/services/toast.service';
+import { MatTabChangeEvent } from '@angular/material';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -26,7 +26,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   pageInfo: PageInfo;
   page = 0;
   isSelected = false;
-  tipoLancamento: number;
+  tipoLancamento = 1;
   artificial: CompleteRule;
 
   constructor(
@@ -36,7 +36,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   ) { }
 
   ngOnInit(): void {
-    this.rows = [];
   }
 
   get info() {
@@ -53,6 +52,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       return false;
     }
   }
+
 
   onDelete(event: number) {
     const rule = this.rows[event];
@@ -96,17 +96,23 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     });
   }
 
-  onSearch(event: string) {
-  }
 
-  onClick(button: TabButton) {
+  // onClick(button: TabButton) {
+  //   this.rows = [];
+  //   this.isSelected = true;
+  //   if (button === TabButton.PAGAMENTO) {
+  //     this.tipoLancamento = 1;
+  //   } else if (button === TabButton.RECEBIMENTO) {
+  //     this.tipoLancamento = 2;
+  //   }
+  //   this.page = 0;
+  //   this.nextPage();
+  // }
+
+  onTab(event: MatTabChangeEvent) {
     this.rows = [];
     this.isSelected = true;
-    if (button === TabButton.PAGAMENTO) {
-      this.tipoLancamento = 1;
-    } else if (button === TabButton.RECEBIMENTO) {
-      this.tipoLancamento = 2;
-    }
+    this.tipoLancamento = event.index + 1;
     this.page = 0;
     this.nextPage();
   }
@@ -114,6 +120,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   onFilter(event: string) {
     this.hasBusiness = true;
     this.business = JSON.parse(event);
+    this._reset();
   }
 
   onClone(event: { rule: RuleCreateFormat, position: number }) {
@@ -204,6 +211,10 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   private _openSnack(text: string, color: 'danger' | 'primary' | 'success' | 'warning') {
     this._snackBar.show(text, color);
+  }
+
+  private _reset() {
+    this.onTab({ tab: null, index: this.tipoLancamento - 1 });
   }
 
 }

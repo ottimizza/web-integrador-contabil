@@ -4,14 +4,20 @@
 
 <form autocomplete="off">
   <div class="card">
-    <div class="row w-100 m-0">
+    <!-- <div class="row w-100 m-0">
       <button [ngClass]="tabsButtonClass[0]" (click)="pag()">Pagamentos</button>
       <button [ngClass]="tabsButtonClass[1]" (click)="expag()">Extrato Débitos</button>
       <button [ngClass]="tabsButtonClass[2]" (click)="rec()">Recebimentos</button>
       <button [ngClass]="tabsButtonClass[3]" (click)="exrec()">Extrato Créditos</button>
-    </div>
+    </div> -->
+    <mat-tab-group mat-align-tabs="center" (selectedTabChange)="onTab($event, false)">
+      <mat-tab label="Pagamentos"></mat-tab>
+      <mat-tab label="Extrato Débitos"></mat-tab>
+      <mat-tab label="Recebimentos"></mat-tab>
+      <mat-tab label="Extrato Créditos"></mat-tab>
+    </mat-tab-group>
 
-    <div class="p-4" *ngIf="tabIsClicked">
+    <div class="p-4">
       <div class="row m-0 mb-4 d-inline-block">
         <div class="col" *ngIf="impact > 0">
           <span class="defaultSpan">Impacto: </span>
