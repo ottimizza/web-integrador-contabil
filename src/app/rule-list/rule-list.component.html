@@ -25,7 +25,7 @@
     </div> -->
 
     <div *ngFor="let rule of rows; let i = index" cdkDrag>
-      <div style="margin-bottom: 20px;">
+      <div class="mb10">
         <app-ruleico (clone)="onClone($event)" [rules]="rule" [index]="i" (downAll)="downAll($event)" (upAll)="upAll($event)" (delete)="onDelete($event)" (update)="onUpdate($event)"></app-ruleico>
       </div>
     </div>
