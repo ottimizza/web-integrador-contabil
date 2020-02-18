@@ -41,7 +41,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   get info() {
     return {
       text1: 'Para filtrar, insira o nome da empresa desejada.',
-      text2: 'Selecione entre Recebimentos e Pagamentos.'
+      text2: 'Selecione entre Recebimentos e Pagamentos.',
+      crm: 'Salvar no CRM'
     };
   }
 
