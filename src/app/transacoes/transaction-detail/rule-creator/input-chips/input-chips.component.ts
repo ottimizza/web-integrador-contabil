@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, Inject, SimpleChanges, OnChanges } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { collectionForUtils } from '@shared/utils/collection-for.utils';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { DateUtils } from '@shared/utils/date-utils';
 
@@ -61,6 +60,13 @@ export class InputChipsComponent implements OnInit, OnChanges {
   }
 
   private _change() {
+    /*
+     * Caso seja data, a string será cortada por traço e serão adicionadas barras.
+     * Caso seja valor, a string será transformada em um number, arredondada para duas casas decimais e o ponto será substituido por vírgula.
+     * Caso sejam complementos, a string será transformada em um objeto interativo.
+     * Caso seja banco, a string será cortada por espaço e por vírgula.
+     * Nos outros casos, a string será cortada por espaço, por ponto e por vírgula.
+     */
     if (this.property) {
       switch (this.name) {
         case 'Data':
@@ -73,9 +79,13 @@ export class InputChipsComponent implements OnInit, OnChanges {
         case 'Complementos':
           this.comps = JSON.parse(this.property);
           break;
+        case 'Banco':
+          const props = ArrayUtils.split(this.property, ' ', ',');
+          this.props = this._verifyWord(props);
+          break;
         default:
-        const array = ArrayUtils.split(this.property, ' ', '.', ',');
-        this.props = this._verifyWord(array);
+          const array = ArrayUtils.split(this.property, ' ', '.', ',');
+          this.props = this._verifyWord(array);
       }
     }
   }
