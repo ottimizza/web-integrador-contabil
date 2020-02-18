@@ -37,8 +37,8 @@ export class RuleGridComponent implements OnInit, GenericPagination {
 
 
   nextPage(): void {
-    this._toast.showSnack('Aguardando resposta');
     if (this.hasNext()) {
+      this._toast.showSnack('Aguardando resposta');
       this._service
         .getByRulePaginated(this.rules, this.business, this.page)
         .subscribe(imports => {
