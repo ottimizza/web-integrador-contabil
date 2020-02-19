@@ -26,10 +26,26 @@ export class RuleService {
     return this._http.get<GenericPageableResponse<any>>(url, this._headers);
   }
 
-  move(rule: CompleteRule) {
-    const url = `${BASE_URL}/api/v1/regras/${rule.id}/alterar_posicao?cnpjEmpresa=${rule.cnpjEmpresa}&tipoLancamento=${rule.tipoLancamento}`;
+  changePosition(rule: CompleteRule) {
+    const url = `${BASE_URL}/api/v1/regras/${rule.id}/posicao`;
     return this._http.put(url, { posicao: rule.posicao }, this._headers);
   }
+
+  moveToTop(id: number) {
+    const url = `${BASE_URL}/api/v1/regras/${id}/posicao/inicio`;
+    return this._http.put(url, {}, this._headers);
+  }
+
+  moveToBottom(id: number) {
+    const url = `${BASE_URL}/api/v1/regras/${id}/posicao/final`;
+    return this._http.put(url, {}, this._headers);
+  }
+
+  // ! DEPRECATED
+  // move(rule: CompleteRule) {
+  //   const url = `${BASE_URL}/api/v1/regras/${rule.id}/alterar_posicao?cnpjEmpresa=${rule.cnpjEmpresa}&tipoLancamento=${rule.tipoLancamento}`;
+  //   return this._http.put(url, { posicao: rule.posicao }, this._headers);
+  // }
 
   delete(id: number) {
     const url = `${BASE_URL}/api/v1/regras/${id}`;
