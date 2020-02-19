@@ -6,9 +6,9 @@
   <div class="card">
     <!-- <div class="row w-100 m-0">
       <button [ngClass]="tabsButtonClass[0]" (click)="pag()">Pagamentos</button>
-      <button [ngClass]="tabsButtonClass[1]" (click)="expag()">Extrato Débitos</button>
+      <button [ngClass]="tabsButtonClass[1]" (click)="exdeb()">Extrato Débitos</button>
       <button [ngClass]="tabsButtonClass[2]" (click)="rec()">Recebimentos</button>
-      <button [ngClass]="tabsButtonClass[3]" (click)="exrec()">Extrato Créditos</button>
+      <button [ngClass]="tabsButtonClass[3]" (click)="excre()">Extrato Créditos</button>
     </div> -->
     <mat-tab-group mat-align-tabs="center" (selectedTabChange)="onTab($event, false)">
       <mat-tab label="Pagamentos"></mat-tab>
@@ -110,7 +110,7 @@
 
             <!-- <div
               class="row m-0 mb-2"
-              ngIf="records[0].nomeArquivo || (records[0].tipoPlanilha && (tipoMovimento == 'EXPAG' || tipoMovimento == 'EXREC'))"
+              ngIf="records[0].nomeArquivo || (records[0].tipoPlanilha && (tipoMovimento == 'EXDEB' || tipoMovimento == 'EXCRE'))"
             > -->
             <div
               class="row m-0 mb-2"
@@ -129,7 +129,7 @@
                 name="Tipo da Planilha"
                 [property]="records[0].tipoPlanilha"
                 class="col"
-                ngIf="records[0].tipoPlanilha && (tipoMovimento == 'EXPAG' || tipoMovimento == 'EXREC')"
+                ngIf="records[0].tipoPlanilha && (tipoMovimento == 'EXDEB' || tipoMovimento == 'EXCRE')"
                 (selectedInfos)="onDevolve($event)"
               ></app-chips> -->
             </div>
