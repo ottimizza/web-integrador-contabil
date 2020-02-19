@@ -215,37 +215,50 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   onDevolve(event: any) {
     const s = event.selecteds;
 
-    if (this.tipoMovimento === 'EXPAG' || this.tipoMovimento === 'EXREC') {
-      this.conditions.tipoPlanilha = ['EXTRATO'];
-    }
+    const ex = cond => {
+      if (this.tipoMovimento === 'EXPAG' || this.tipoMovimento === 'EXREC') {
+        if (cond) {
+          this.conditions.tipoPlanilha = ['EXTRATO'];
+        }
+      }
+    };
 
     switch (event.title) {
       case 'Fornecedor':
         this.conditions.descricao = s;
+        ex(s);
         break;
       case 'Documento':
         this.conditions.documento = s;
+        ex(s);
         break;
       case 'Banco':
         this.conditions.portador = s;
+        ex(s);
         break;
       case 'Complemento 1':
         this.conditions.complemento01 = s;
+        ex(s);
         break;
       case 'Complemento 2':
         this.conditions.complemento02 = s;
+        ex(s);
         break;
       case 'Complemento 3':
         this.conditions.complemento03 = s;
+        ex(s);
         break;
       case 'Complemento 4':
         this.conditions.complemento04 = s;
+        ex(s);
         break;
       case 'Complemento 5':
         this.conditions.complemento05 = s;
+        ex(s);
         break;
       case 'Nome do Arquivo':
         this.conditions.nomeArquivo = s;
+        ex(s);
         break;
       case 'Tipo da Planilha':
         this.conditions.tipoPlanilha = s;
@@ -326,6 +339,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this.tipoMovimento = tipoMovimento;
     this.tipoLancamentoName = tipoLancamentoName;
     this._partialDisable();
+    this.resetErrors();
     this.nextPage();
     this.getByRule();
     await this._delay(300);

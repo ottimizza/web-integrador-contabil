@@ -2,7 +2,7 @@ var gulp = require('gulp');
 var gzip = require('gulp-gzip');
 
 gulp.task('compress', function() {
-  return gulp.src(['./dist/ng-accounts/*.*'])
+  return gulp.src(['./dist/OIC/*.*'])
              .pipe(gzip())
-             .pipe(gulp.dest('./dist/ng-accounts'))
+             .pipe(gulp.dest('./dist/OIC'))
 });
