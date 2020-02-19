@@ -215,6 +215,10 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   onDevolve(event: any) {
     const s = event.selecteds;
 
+    if (this.tipoMovimento === 'EXPAG' || this.tipoMovimento === 'EXREC') {
+      this.conditions.tipoPlanilha = ['EXTRATO'];
+    }
+
     switch (event.title) {
       case 'Fornecedor':
         this.conditions.descricao = s;

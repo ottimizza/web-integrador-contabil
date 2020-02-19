@@ -108,9 +108,13 @@
               ></app-chips>
             </div>
 
+            <!-- <div
+              class="row m-0 mb-2"
+              ngIf="records[0].nomeArquivo || (records[0].tipoPlanilha && (tipoMovimento == 'EXPAG' || tipoMovimento == 'EXREC'))"
+            > -->
             <div
               class="row m-0 mb-2"
-              *ngIf="records[0].nomeArquivo || (records[0].tipoPlanilha && (tipoMovimento == 'EXPAG' || tipoMovimento == 'EXREC'))"
+              *ngIf="records[0].nomeArquivo"
             >
               <app-chips
                 [reset]="destroy"
@@ -120,14 +124,14 @@
                 *ngIf="records[0].nomeArquivo"
                 (selectedInfos)="onDevolve($event)"
               ></app-chips>
-              <app-chips
+              <!-- <app-chips
                 [reset]="destroy"
                 name="Tipo da Planilha"
                 [property]="records[0].tipoPlanilha"
                 class="col"
-                *ngIf="records[0].tipoPlanilha && (tipoMovimento == 'EXPAG' || tipoMovimento == 'EXREC')"
+                ngIf="records[0].tipoPlanilha && (tipoMovimento == 'EXPAG' || tipoMovimento == 'EXREC')"
                 (selectedInfos)="onDevolve($event)"
-              ></app-chips>
+              ></app-chips> -->
             </div>
           </app-card>
         </app-card>
