@@ -31,9 +31,6 @@
           >
           <span class="font-weight-normal" (click)="openGrid()"> lançamentos.</span>
           <i class="ml-2 fad fa-question-circle" [matTooltip]="info.affectedsOrientation" matTooltipShowDelay="300" matTooltipHideDelay="500"></i>
-          <div class="row w-100 m-0">
-            <!-- <strong>OBS: Lançamentos já parametrizados podem ser afetados.</strong> -->
-          </div>
         </div>
         <div class="col">
           <div>
@@ -113,7 +110,7 @@
 
             <div
               class="row m-0 mb-2"
-              *ngIf="records[0].nomeArquivo"
+              *ngIf="records[0].nomeArquivo || (records[0].tipoPlanilha && (tipoMovimento == 'EXPAG' || tipoMovimento == 'EXREC'))"
             >
               <app-chips
                 [reset]="destroy"
@@ -121,6 +118,14 @@
                 [property]="records[0].nomeArquivo"
                 class="col"
                 *ngIf="records[0].nomeArquivo"
+                (selectedInfos)="onDevolve($event)"
+              ></app-chips>
+              <app-chips
+                [reset]="destroy"
+                name="Tipo da Planilha"
+                [property]="records[0].tipoPlanilha"
+                class="col"
+                *ngIf="records[0].tipoPlanilha && (tipoMovimento == 'EXPAG' || tipoMovimento == 'EXREC')"
                 (selectedInfos)="onDevolve($event)"
               ></app-chips>
             </div>

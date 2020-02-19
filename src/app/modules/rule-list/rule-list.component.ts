@@ -144,13 +144,15 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
 
   drop(event: CdkDragDrop<RuleCreateFormat[]>) {
-    const rule = this.rows[event.previousIndex];
-    const position = this.rows[event.currentIndex].posicao;
-    rule.posicao = position;
-    this._service.move(rule).subscribe(info => {
-      moveItemInArray(this.rows, event.previousIndex, event.currentIndex);
-      this._openSnack('Regra movida com sucesso!', 'success');
-    });
+    if (event.previousIndex !== event.currentIndex) {
+      const rule = this.rows[event.previousIndex];
+      const position = this.rows[event.currentIndex].posicao;
+      rule.posicao = position;
+      this._service.move(rule).subscribe(info => {
+        moveItemInArray(this.rows, event.previousIndex, event.currentIndex);
+        this._openSnack('Regra movida com sucesso!', 'success');
+      });
+    }
   }
 
   upAll(previousIndex: number) {
