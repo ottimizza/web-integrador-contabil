@@ -41,7 +41,7 @@ fs.writeFile(`./src/environments/environment.ts`, environmentFile, (err) => {
 //
 let PACKAGE_NAME = getEnvironmentVariable('npm_package_name');
 
-PACKAGE_NAME = 'ng-accounts';
+PACKAGE_NAME = 'OIC';
 
 
 const forceSSL = function () {
