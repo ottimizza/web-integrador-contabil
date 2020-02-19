@@ -525,14 +525,15 @@ $full-sidebar-width: 240px;
   }
 }
 
-// .mat-tab-label {
-//     line-height: 48px;
-//     height: 48px;
-//     padding: 0 12px;
-//     cursor: pointer;
-//     box-sizing: border-box;
-//     opacity: .6;
-//     min-width: 160px;
-//     text-align: center;
-//     position: relative;
-// }
+.mat-tab-label {
+    line-height: 48px;
+    height: 48px;
+    padding: 0 12px;
+    cursor: pointer;
+    box-sizing: border-box;
+    opacity: .6;
+    min-width: 160px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+}

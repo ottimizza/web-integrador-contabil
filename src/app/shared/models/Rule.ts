@@ -31,6 +31,7 @@ export class Rule {
     public complemento04: string[];
     public complemento05: string[];
     public nomeArquivo: string[];
+    public tipoPlanilha: string[];
 
     public static getFieldName(field: string): string {
       let strName = '';
@@ -106,6 +107,7 @@ export class Rule {
       this._newRule('complemento04', this.complemento04);
       this._newRule('complemento05', this.complemento05);
       this._newRule('nomeArquivo', this.nomeArquivo);
+      this._newRule('tipoPlanilha', this.tipoPlanilha);
       return this._rules;
     }
 
