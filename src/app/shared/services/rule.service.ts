@@ -62,7 +62,6 @@ export class RuleService {
     return { headers };
   }
 
-
   private encode(params: any): string {
     return Object.keys(params).map((key) => {
       return [key, params[key]].map(encodeURIComponent).join('=');
