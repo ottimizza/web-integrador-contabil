@@ -225,6 +225,8 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         } else {
           this.conditions.tipoPlanilha = ['MOVIMENTO'];
         }
+      } else {
+        this.conditions.tipoPlanilha = undefined;
       }
     };
 
