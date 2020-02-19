@@ -243,6 +243,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       case 'Nome do Arquivo':
         this.conditions.nomeArquivo = s;
         break;
+      case 'Tipo da Planilha':
+        this.conditions.tipoPlanilha = s;
+        break;
     }
     this.getByRule();
   }
