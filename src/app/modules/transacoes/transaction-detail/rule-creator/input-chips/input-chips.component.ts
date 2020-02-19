@@ -10,7 +10,7 @@ import { DateUtils } from '@shared/utils/date-utils';
 })
 export class InputChipsComponent implements OnInit, OnChanges {
 
-    @Input() name: string;
+  @Input() name: string;
   @Input() property: string;
   @Input() reset: boolean;
   @Output() selectedInfos = new EventEmitter();
