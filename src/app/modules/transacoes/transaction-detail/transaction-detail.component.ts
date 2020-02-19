@@ -29,7 +29,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   conditions = new Rule();
   pageInfo = PageInfo.defaultPageInfo();
   records: Lancamento[] = [];
-  tabsButtonClass: string[];
   account: string;
   errorText: string;
   errorText2: string;
@@ -38,7 +37,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   tabIsClicked = false;
   started = false;
   tipoMovimento = 'PAG';
-  pageSize = 1;
   remaining = 0;
   impact = 0;
 

@@ -26,7 +26,6 @@ export class SidebarLayoutComponent implements OnInit {
 
   public hide(e) {
     this.document.getElementsByTagName('body')[0].classList.remove('show-sidebar');
-
   }
 
   ngOnInit() {
