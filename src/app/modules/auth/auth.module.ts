@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { AuthCallbackComponent } from './page/callback/callback.component';
 import { AuthRoutingModule } from './auth.routing';
+import { LogoutComponent } from './page/logout/logout.component';
 
 // import { SharedModule } from '@shared/shared.module';
 
@@ -8,7 +9,8 @@ import { AuthRoutingModule } from './auth.routing';
 
 @NgModule({
   declarations: [
-    AuthCallbackComponent
+    AuthCallbackComponent,
+    LogoutComponent
     // UserDetailsComponent
   ],
   imports: [
