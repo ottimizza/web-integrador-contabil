@@ -220,7 +220,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     const ex = cond => {
       if (cond) {
-        if (this.tipoMovimento === 'EXPAG' || this.tipoMovimento === 'EXREC') {
+        if (this.tipoMovimento === 'EXDEB' || this.tipoMovimento === 'EXCRE') {
           this.conditions.tipoPlanilha = ['EXTRATO'];
         } else {
           this.conditions.tipoPlanilha = ['MOVIMENTO'];
@@ -328,11 +328,11 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     if (id === 0) {
       this.tabsPattern('PAG', 'pagamentos', isFirst);
     } else if (id === 1) {
-      this.tabsPattern('EXPAG', 'extratos de débitos', isFirst);
+      this.tabsPattern('EXDEB', 'extratos de débitos', isFirst);
     } else if (id === 2) {
       this.tabsPattern('REC', 'recebimentos', isFirst);
     } else if (id === 3) {
-      this.tabsPattern('EXREC', 'extratos de recebimentos', isFirst);
+      this.tabsPattern('EXCRE', 'extratos de recebimentos', isFirst);
     }
   }
 
@@ -400,9 +400,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
   nextPage() {
     let tipoLancamento: number;
-    if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'EXPAG') {
+    if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'EXDEB') {
       tipoLancamento = 1;
-    } else if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXREC') {
+    } else if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE') {
       tipoLancamento = 2;
     }
     const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: this.pageInfo.pageSize };

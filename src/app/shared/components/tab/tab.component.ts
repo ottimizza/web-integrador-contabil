@@ -2,9 +2,9 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 export enum TabButton {
   PAGAMENTO = 'pag',
-  EXTRATO_DEBITO = 'expag',
+  EXTRATO_DEBITO = 'exdeb',
   RECEBIMENTO = 'rec',
-  EXTRATO_CREDITO = 'exrec'
+  EXTRATO_CREDITO = 'excred'
 }
 
 @Component({
