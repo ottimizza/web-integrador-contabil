@@ -133,7 +133,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       // this.rows = [];
       const regra: CompleteRule = info.record;
       regra.posicao = event.position;
-      this._service.move(regra).subscribe(() => {
+      this._service.changePosition(regra).subscribe(() => {
         this.rows.push(regra);
         this.rows.sort((a, b) => a.posicao - b.posicao);
         this.artificial = regra;
@@ -148,7 +148,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       const rule = this.rows[event.previousIndex];
       const position = this.rows[event.currentIndex].posicao;
       rule.posicao = position;
-      this._service.move(rule).subscribe(info => {
+      this._service.changePosition(rule).subscribe(info => {
         moveItemInArray(this.rows, event.previousIndex, event.currentIndex);
         this._openSnack('Regra movida com sucesso!', 'success');
       });
@@ -157,9 +157,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   upAll(previousIndex: number) {
     const rule = this.rows[previousIndex];
-    const position = this.rows[0].posicao;
-    rule.posicao = position;
-    this._service.move(rule).subscribe(() => {
+    this._service.moveToTop(rule.id).subscribe(() => {
       moveItemInArray(this.rows, previousIndex, 0);
       this._openSnack('Regra movida com sucesso!', 'success');
     });
@@ -167,18 +165,18 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   downAll(previousIndex: number) {
     const rule = this.rows[previousIndex];
-    const position = this.pageInfo.totalElements;
-    rule.posicao = position;
-    this._service.move(rule).subscribe(() => {
+    this._service.moveToBottom(rule.id).subscribe(() => {
       // this.rows = [];
       // for (let i = 0; i < this.page; i++) {
       //   this.page = i;
       //   this.nextPage();
       // }
-      this.rows.splice(previousIndex, 1);
-      if (this.rows.length + 1 === this.pageInfo.totalElements) {
+      // alert(this.rows.length);
+      // alert(this.pageInfo.totalElements);
+      if (this.rows.length === this.pageInfo.totalElements) {
         this.rows.push(rule);
       }
+      this.rows.splice(previousIndex, 1);
       this._openSnack('Regra movida com sucesso!', 'success');
     });
   }
