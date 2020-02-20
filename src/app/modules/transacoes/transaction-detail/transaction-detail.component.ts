@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { MatDialog } from '@angular/material/dialog';
+import { MatTabChangeEvent } from '@angular/material';
 
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { Empresa } from '@shared/models/Empresa';
@@ -15,7 +16,6 @@ import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { RuleService } from '@shared/services/rule.service';
 import { ToastService } from '@shared/services/toast.service';
-import { MatTabChangeEvent } from '@angular/material';
 
 @Component({
   selector: 'app-tdetail',
@@ -39,9 +39,10 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   tipoMovimento = 'PAG';
   remaining = 0;
   impact = 0;
+  tipoConta = 0;
 
   constructor(
-    // tslint:disable: variable-name
+    // tslint:disable
     private _lancamentoService: LancamentoService,
     private _ruleService: RuleService,
     private _historicService: HistoricService,
@@ -56,13 +57,15 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   get suggestions() {
     if (this.records.length > 0 && this.records[0].contaSugerida) {
       const account = this.records[0].contaSugerida;
-      if (account === 'null' || account === 'IGNORAR') {
-        return '';
-      } else {
-        return account;
-      }
+        const array = account.split(',');
+        for (let i = 0; i < array.length; i++) {
+          if (array[i] === 'null' || array[i] === 'IGNORAR') {
+            array.splice(i, 1);
+          }
+        }
+        return array
     } else {
-      return '';
+      return [];
     }
   }
 
@@ -332,7 +335,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     } else if (id === 2) {
       this.tabsPattern('REC', 'recebimentos', isFirst);
     } else if (id === 3) {
-      this.tabsPattern('EXCRE', 'extratos de recebimentos', isFirst);
+      this.tabsPattern('EXCRE', 'extratos de créditos', isFirst);
     }
   }
 
@@ -405,8 +408,13 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     } else if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE') {
       tipoLancamento = 2;
     }
+
+    if (!this.pageInfo.hasNext && this.tipoConta === 0) {
+      this.tipoConta = 4;
+    }
+
     const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: this.pageInfo.pageSize };
-    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: 0};
+    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: this.tipoConta};
     Object.assign(filter, pageCriteria);
 
     this._toast.showSnack('Aguardando resposta');
@@ -417,30 +425,14 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         this.started = true;
       }
 
-      if (imports.pageInfo.hasNext) {
-        this.records = imports.records;
-        this.pageInfo = imports.pageInfo;
-        this._remaining();
-        this.resetErrors();
-        this._toast.hideSnack();
-      } else {
-        this.nextPageSkipped(filter);
-      }
-
-    });
-  }
-
-  nextPageSkipped(filter: any) {
-    filter.tipoConta = 4;
-
-    this._lancamentoService.getLancamentos(filter).subscribe(imports => {
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
       this._remaining();
       this.resetErrors();
       this._toast.hideSnack();
-    });
 
+    });
   }
+
 
 }

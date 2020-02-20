@@ -164,7 +164,7 @@
             matTooltipHideDelay="500"
           />
           <datalist id="suggestions">
-            <option [value]="suggestions"></option>
+            <option *ngFor="let s of suggestions" [value]="s"></option>
           </datalist>
         </div>
 
