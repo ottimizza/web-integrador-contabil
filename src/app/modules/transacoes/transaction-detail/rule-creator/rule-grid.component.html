@@ -11,7 +11,7 @@
         <th *ngIf="hasData">Data do Movimento</th>
         <th *ngIf="hasValor">Valor</th>
         <th *ngIf="hasDocumento">Documento</th>
-        <th *ngIf="hasNomeArquivo">Nome do Arquivo</th>
+        <th *ngIf="hasAnyNomeArquivo">Nome do Arquivo</th>
         <th *ngIf="hasTipoPlanilha">Tipo da Planilha</th>
         <th *ngIf="hasComplemento1">Complemento 1</th>
         <th *ngIf="hasComplemento2">Complemento 2</th>
@@ -28,7 +28,7 @@
         <td *ngIf="hasData">{{ dateFormat(i.dataMovimento) }}</td>
         <td *ngIf="hasValor">R$ {{ i.valorOriginal }}</td>
         <td *ngIf="hasDocumento">{{ i.documento }}</td>
-        <td *ngIf="hasNomeArquivo">{{ i.nomeArquivo }}</td>
+        <td *ngIf="hasNomeArquivo(getNomeArquivo(i))">{{ getNomeArquivo(i) }}</td>
         <td *ngIf="hasTipoPlanilha">{{ i.tipoPlanilha }}</td>
         <td *ngIf="hasComplemento1">{{ i.complemento01 }}</td>
         <td *ngIf="hasComplemento2">{{ i.complemento02 }}</td>
@@ -40,7 +40,7 @@
 
   </table>
 
-  <button class="btn btn-dark mb-4" mat-button *ngIf="hasNext()" (click)="nextPage()">Carregar mais</button>
+  <!-- <button class="btn btn-dark mb-4" mat-button *ngIf="hasNext()" (click)="nextPage()">Carregar mais</button> -->
 
 </div>
 <div mat-dialog-actions>

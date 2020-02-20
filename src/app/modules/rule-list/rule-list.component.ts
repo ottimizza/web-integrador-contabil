@@ -14,6 +14,8 @@ import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.compon
 import { ToastService } from '@shared/services/toast.service';
 import { MatTabChangeEvent } from '@angular/material';
 import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
+import { User } from '@shared/models/User';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -34,9 +36,14 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     private _service: RuleService,
     private _snackBar: ToastService,
     public dialog: MatDialog,
+    private _router: Router
   ) { }
 
   ngOnInit(): void {
+    const user = User.fromLocalStorage();
+    if (!user.email.toUpperCase().includes('OTTIMIZZA') && user.type !== 0) {
+      this._router.navigate(['/']);
+    }
   }
 
   get info() {
