@@ -12,7 +12,7 @@
         <th *ngIf="hasValor">Valor</th>
         <th *ngIf="hasDocumento">Documento</th>
         <th *ngIf="hasAnyNomeArquivo">Nome do Arquivo</th>
-        <!-- <th *ngIf="hasTipoPlanilha">Tipo da Planilha</th> -->
+        <th *ngIf="hasTipoPlanilha">Tipo da Planilha</th>
         <th *ngIf="hasComplemento1">Complemento 1</th>
         <th *ngIf="hasComplemento2">Complemento 2</th>
         <th *ngIf="hasComplemento3">Complemento 3</th>
@@ -29,7 +29,7 @@
         <td *ngIf="hasValor">R$ {{ i.valorOriginal }}</td>
         <td *ngIf="hasDocumento">{{ i.documento }}</td>
         <td *ngIf="hasNomeArquivo(getNomeArquivo(i))">{{ getNomeArquivo(i) }}</td>
-        <!-- <td *ngIf="hasTipoPlanilha">{{ i.tipoPlanilha }}</td> -->
+        <td *ngIf="hasTipoPlanilha">{{ i.tipoPlanilha }}</td>
         <td *ngIf="hasComplemento1">{{ i.complemento01 }}</td>
         <td *ngIf="hasComplemento2">{{ i.complemento02 }}</td>
         <td *ngIf="hasComplemento3">{{ i.complemento03 }}</td>

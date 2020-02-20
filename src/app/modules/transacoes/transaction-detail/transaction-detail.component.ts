@@ -24,23 +24,23 @@ import { ToastService } from '@shared/services/toast.service';
 })
 export class TransactionDetailComponent implements OnInit, GenericPagination {
 
-  @Input() business: Empresa;
   @Output() tabSelect = new EventEmitter();
-  conditions = new Rule();
+  @Input() business: Empresa;
   pageInfo = PageInfo.defaultPageInfo();
   records: Lancamento[] = [];
-  account: string;
-  errorText: string;
-  errorText2: string;
+  conditions = new Rule();
+  tipoMovimento = 'PAG';
   tipoLancamentoName: string;
+  errorText2: string;
+  errorText: string;
+  account: string;
   destroy: boolean;
+  newTab: boolean;
   tabIsClicked = false;
   started = false;
-  tipoMovimento = 'PAG';
   remaining = 0;
-  impact = 0;
   tipoConta = 0;
-  newTab: boolean;
+  impact = 0;
 
   constructor(
     // tslint:disable
@@ -229,60 +229,48 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   onDevolve(event: any) {
     const s = event.selecteds;
 
-    const ex = cond => {
-      if (cond) {
-        this.conditions.tipoPlanilha = [this.records[0].tipoPlanilha];
-        // this.conditions.tipoLancamento = [this.records[0].tipoLancamento];
-        this.conditions.tipoMovimento = [this.tipoMovimento];
-      } else {
-        this.conditions.tipoPlanilha = undefined;
-        // this.conditions.tipoLancamento = undefined;
-        this.conditions.tipoMovimento = undefined;
-      }
-
-    };
+    this.conditions.tipoPlanilha = undefined;
+    this.conditions.tipoMovimento = undefined;
 
     switch (event.title) {
       case 'Fornecedor':
         this.conditions.descricao = s;
-        ex(s);
         break;
       case 'Documento':
         this.conditions.documento = s;
-        ex(s);
         break;
       case 'Banco':
         this.conditions.portador = s;
-        ex(s);
         break;
       case 'Complemento 1':
         this.conditions.complemento01 = s;
-        ex(s);
         break;
       case 'Complemento 2':
         this.conditions.complemento02 = s;
-        ex(s);
         break;
       case 'Complemento 3':
         this.conditions.complemento03 = s;
-        ex(s);
         break;
       case 'Complemento 4':
         this.conditions.complemento04 = s;
-        ex(s);
         break;
       case 'Complemento 5':
         this.conditions.complemento05 = s;
-        ex(s);
         break;
       case 'Nome do Arquivo':
         this.conditions.nomeArquivo = s;
-        ex(s);
         break;
       case 'Tipo da Planilha':
         this.conditions.tipoPlanilha = s;
         break;
     }
+
+    if (this.conditions.rules.length) {
+      this.conditions.tipoPlanilha = [this.records[0].tipoPlanilha];
+      // this.conditions.tipoLancamento = [this.records[0].tipoLancamento];
+      this.conditions.tipoMovimento = [this.tipoMovimento];
+    }
+
     this.getByRule();
   }
 
@@ -420,7 +408,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       tipoLancamento = 2;
     }
 
-    const a = [true, true];
     if (!this.pageInfo.hasNext && this.tipoConta === 0 && this.started && !this.newTab) {
       this.tipoConta = 4;
     }
