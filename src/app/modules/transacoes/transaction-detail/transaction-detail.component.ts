@@ -45,8 +45,8 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   constructor(
     // tslint:disable
     private _lancamentoService: LancamentoService,
-    private _ruleService: RuleService,
     private _historicService: HistoricService,
+    private _ruleService: RuleService,
     private _toast: ToastService,
     public dialog: MatDialog
   ) { }
@@ -72,15 +72,15 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
   get info() {
     return {
+      provider: 'A conta informada será aplicada para todas as ocorrências deste fornecedor e qualquer outro campo marcado será ignorado.',
+      ok: 'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
+      info: 'Selecione os termos que justificam o lançamento ser vinculado a determinada conta ou ser ignorado.',
       account: 'Insira neste campo, a conta relativa a este lançamento ou selecione uma das sugeridas.',
       rule: 'A conta informada deve ser aplicada em todas as ocorrências das palavras selecionada.',
       ignore: 'Todos os lançamentos com as palavras selecionada serão ignorados.',
-      skip: 'Deixar este lançamento para depois.',
-      ok: 'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
-      affecteds: 'Clique para visualizar os lançamentos afetados.',
       affectedsOrientation: 'Lançamentos já parametrizados podem ser afetados',
-      provider: 'A conta informada será aplicada para todas as ocorrências deste fornecedor e qualquer outro campo marcado será ignorado.',
-      info: 'Selecione os termos que justificam o lançamento ser vinculado a determinada conta ou ser ignorado.'
+      affecteds: 'Clique para visualizar os lançamentos afetados.',
+      skip: 'Deixar este lançamento para depois.'
     };
   }
 
@@ -286,6 +286,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     } else {
       this.impact = 0;
     }
+
   }
 
   openGrid(): void {
