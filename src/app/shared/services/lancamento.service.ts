@@ -29,7 +29,6 @@ export class LancamentoService {
   }
 
   public getByRule(rules: PostFormatRule[], e: Empresa): Observable<GenericPageableResponse<Lancamento>> {
-    console.log(rules);
     const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}`;
     return this.http.post<GenericPageableResponse<Lancamento>>(url, rules, this._headers);
   }

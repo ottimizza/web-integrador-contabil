@@ -7,7 +7,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { InputChipsComponent } from './input-chips/input-chips.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule, MatTableModule } from '@angular/material';
+import { ScrollTrackerModule } from '@shared/directives/scroll-tracker.module';
 
 @NgModule({
   declarations: [
@@ -21,10 +22,12 @@ import { MatButtonModule } from '@angular/material';
     MatFormFieldModule,
     MatChipsModule,
     MatTooltipModule,
-    MatButtonModule
+    MatButtonModule,
+    ScrollTrackerModule,
+    MatTableModule
   ],
   exports: [
     InputChipsComponent
-  ]
+  ],
 })
 export class RuleGridModule { }
