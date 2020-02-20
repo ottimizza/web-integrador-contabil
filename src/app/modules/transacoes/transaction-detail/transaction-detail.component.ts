@@ -181,9 +181,8 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
   skip() {
     const observable = this._lancamentoService.skip(this.records[0].id);
-    const verification = true;
     const error = '';
-    this._savePattern(observable, [verification], [error]);
+    this._savePattern(observable, [true], [error]);
   }
 
   private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[], rule?: boolean) {
@@ -421,6 +420,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       tipoLancamento = 2;
     }
 
+    const a = [true, true];
     if (!this.pageInfo.hasNext && this.tipoConta === 0 && this.started && !this.newTab) {
       this.tipoConta = 4;
     }
@@ -438,12 +438,15 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       if (!this.started) {
         this.started = true;
       }
-
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
       this._remaining();
       this.resetErrors();
       this._toast.hideSnack();
+
+      if (!imports.records.length && this.tipoConta === 0) {
+        this.nextPage();
+      }
 
     });
   }
