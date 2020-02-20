@@ -213,6 +213,14 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     }
   }
 
+  get nomeArquivo() {
+    if (this.records.length) {
+      return this.records[0].nomeArquivo ? this.records[0].nomeArquivo : this.records[0].arquivo.nome;
+    } else {
+      return '';
+    }
+  }
+
   private _subsAndDisable(obs: Observable<any>) {
     obs.subscribe(() => {
       this.disable();
@@ -224,14 +232,13 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     const ex = cond => {
       if (cond) {
-        // this.conditions.tipoPlanilha = [this.records[0].tipoPlanilha];
+        this.conditions.tipoPlanilha = [this.records[0].tipoPlanilha];
         // this.conditions.tipoLancamento = [this.records[0].tipoLancamento];
         this.conditions.tipoMovimento = [this.tipoMovimento];
       } else {
-        // this.conditions.tipoPlanilha = undefined;
+        this.conditions.tipoPlanilha = undefined;
         // this.conditions.tipoLancamento = undefined;
         this.conditions.tipoMovimento = undefined;
-
       }
 
     };
