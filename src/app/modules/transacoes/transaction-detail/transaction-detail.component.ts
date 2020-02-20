@@ -223,14 +223,16 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     const ex = cond => {
       if (cond) {
-        if (this.tipoMovimento === 'EXDEB' || this.tipoMovimento === 'EXCRE') {
-          this.conditions.tipoPlanilha = ['EXTRATO'];
-        } else {
-          this.conditions.tipoPlanilha = ['MOVIMENTO'];
-        }
+        this.conditions.tipoPlanilha = [this.records[0].tipoPlanilha];
+        // this.conditions.tipoLancamento = [this.records[0].tipoLancamento];
+        this.conditions.tipoMovimento = [this.tipoMovimento];
       } else {
         this.conditions.tipoPlanilha = undefined;
+        // this.conditions.tipoLancamento = undefined;
+        this.conditions.tipoMovimento = undefined;
+
       }
+
     };
 
     switch (event.title) {

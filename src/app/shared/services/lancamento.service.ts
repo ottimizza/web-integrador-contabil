@@ -29,10 +29,10 @@ export class LancamentoService {
   }
 
   public getByRule(rules: PostFormatRule[], e: Empresa): Observable<GenericPageableResponse<Lancamento>> {
-    const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}&tipoConta=0`;
+    console.log(rules);
+    const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}`;
     return this.http.post<GenericPageableResponse<Lancamento>>(url, rules, this._headers);
   }
-
   public getByRulePaginated(rules: PostFormatRule[], e: Empresa, page: number) {
     const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}&pageIndex=${page}&tipoConta=0`;
     return this.http.post<GenericPageableResponse<Lancamento>>(url, rules, this._headers);
