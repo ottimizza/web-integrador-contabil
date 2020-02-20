@@ -340,6 +340,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   async tabsPattern(tipoMovimento: string, tipoLancamentoName: string, isFirst: boolean) {
+    this.tipoConta = 0;
     this.destroy = true;
     if (!isFirst) {
       this.tabIsClicked = true;
@@ -409,12 +410,13 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       tipoLancamento = 2;
     }
 
-    if (!this.pageInfo.hasNext && this.tipoConta === 0) {
+    if (!this.pageInfo.hasNext && this.tipoConta === 0 && this.started) {
       this.tipoConta = 4;
     }
 
     const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: this.pageInfo.pageSize };
-    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: this.tipoConta};
+    // const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento };
+    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: this.tipoConta };
     Object.assign(filter, pageCriteria);
 
     this._toast.showSnack('Aguardando resposta');
