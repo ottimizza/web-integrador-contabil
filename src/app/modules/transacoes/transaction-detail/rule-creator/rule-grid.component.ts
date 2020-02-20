@@ -54,6 +54,12 @@ export class RuleGridComponent implements OnInit, GenericPagination {
     return !this.pageInfo || this.pageInfo.hasNext;
   }
 
+  onScroll(event: boolean) {
+    if (event) {
+      this.nextPage();
+    }
+  }
+
   dateFormat(date: string) {
     const dates = date.split('-');
     return `${dates[2]}/${dates[1]}/${dates[0]}`;

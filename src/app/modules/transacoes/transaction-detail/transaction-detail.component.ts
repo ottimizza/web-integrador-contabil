@@ -40,6 +40,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   remaining = 0;
   impact = 0;
   tipoConta = 0;
+  newTab: boolean;
 
   constructor(
     // tslint:disable
@@ -329,6 +330,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   onTab(event: MatTabChangeEvent, isFirst: boolean) {
+    this.newTab = true;
     const id = event.index;
     if (id === 0) {
       this.tabsPattern('PAG', 'pagamentos', isFirst);
@@ -412,9 +414,10 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       tipoLancamento = 2;
     }
 
-    if (!this.pageInfo.hasNext && this.tipoConta === 0 && this.started) {
+    if (!this.pageInfo.hasNext && this.tipoConta === 0 && this.started && !this.newTab) {
       this.tipoConta = 4;
     }
+    this.newTab = false;
 
     const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: this.pageInfo.pageSize };
     // const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento };
