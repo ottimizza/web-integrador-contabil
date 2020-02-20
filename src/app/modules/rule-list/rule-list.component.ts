@@ -213,6 +213,13 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     this.page++;
   }
 
+  onScroll(event: boolean) {
+    console.log(event);
+    if (event && this.pageInfo.hasNext) {
+      this.nextPage();
+    }
+  }
+
   private _openSnack(text: string, color: 'danger' | 'primary' | 'success' | 'warning') {
     this._snackBar.show(text, color);
   }

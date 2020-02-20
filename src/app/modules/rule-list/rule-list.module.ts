@@ -18,6 +18,7 @@ import { RuleFilterModule } from './rule-filter/rule-filter.module';
 import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
 import { ExportConfirmModalModule } from './export-confirm-modal/export-confirm-modal.module';
 import { FilterModule } from '@modules/transacoes/transaction-list/filter/filter.module';
+import { ScrollTrackerModule } from '@shared/directives/scroll-tracker.module';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { FilterModule } from '@modules/transacoes/transaction-list/filter/filter
     RuleFilterModule,
     MatTabsModule,
     ExportConfirmModalModule,
-    MatButtonModule
+    MatButtonModule,
+    ScrollTrackerModule
   ],
   entryComponents: [
     RuleEditModalComponent,
