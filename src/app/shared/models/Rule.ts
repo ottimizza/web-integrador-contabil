@@ -32,6 +32,8 @@ export class Rule {
     public complemento05: string[];
     public nomeArquivo: string[];
     public tipoPlanilha: string[];
+    public tipoLancamento: number[];
+    public tipoMovimento: string[];
 
     public static getFieldName(field: string): string {
       let strName = '';
@@ -65,6 +67,12 @@ export class Rule {
           break;
         case 'nomeArquivo':
           strName = 'NOME DO ARQUIVO';
+          break;
+        case 'tipoLancamento':
+          strName = 'TIPO DO LANÇAMENTO';
+          break;
+        case 'tipoMovimento':
+          strName = 'TIPO DO MOVIMENTO';
           break;
       }
       return strName;
@@ -108,10 +116,12 @@ export class Rule {
       this._newRule('complemento05', this.complemento05);
       this._newRule('nomeArquivo', this.nomeArquivo);
       this._newRule('tipoPlanilha', this.tipoPlanilha);
+      this._newRule('tipoLancamento', this.tipoLancamento);
+      this._newRule('tipoMovimento', this.tipoMovimento);
       return this._rules;
     }
 
-    private _newRule(name: string, values: string[]) {
+    private _newRule(name: string, values: any[]) {
       if (values && values.length > 0) {
         values.forEach(value => {
           this._rules.push(
