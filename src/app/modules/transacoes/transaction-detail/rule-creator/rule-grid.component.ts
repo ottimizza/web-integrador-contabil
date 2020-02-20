@@ -55,7 +55,7 @@ export class RuleGridComponent implements OnInit, GenericPagination {
   }
 
   onScroll(event: boolean) {
-    if (event) {
+    if (event && this.pageInfo.hasNext) {
       this.nextPage();
     }
   }

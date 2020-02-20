@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>Lançamentos afetados</h1>
-<div mat-dialog-content scrollTracker>
+<div mat-dialog-content scrollTracker (scrollEnd)="onScroll($event)">
   <p>Estes serão os lançamentos afetados</p>
 
   <table class="table table-bordered">
