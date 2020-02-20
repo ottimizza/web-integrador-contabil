@@ -14,11 +14,11 @@ export class ScrollTrackerDirective {
     const limit = target.scrollHeight - target.clientHeight;
     if (event.target.scrollTop === limit) {
       this.scrollEnd.emit(true);
-    } else {
-      this.scrollEnd.emit(false);
     }
+    // } else {
+    //   this.scrollEnd.emit(false);
+    // }
 
   }
 
-  // constructor() {}
 }
