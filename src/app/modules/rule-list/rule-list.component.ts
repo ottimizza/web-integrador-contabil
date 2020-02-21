@@ -1,7 +1,9 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTabChangeEvent } from '@angular/material';
 
 import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
 import { RuleCreateFormat } from '@shared/models/Rule';
@@ -12,10 +14,8 @@ import { RuleService } from '@shared/services/rule.service';
 import { CompleteRule } from '@shared/models/CompleteRule';
 import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 import { ToastService } from '@shared/services/toast.service';
-import { MatTabChangeEvent } from '@angular/material';
 import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
 import { User } from '@shared/models/User';
-import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -173,23 +173,13 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   downAll(previousIndex: number) {
     const rule = this.rows[previousIndex];
     this._service.moveToBottom(rule.id).subscribe(() => {
-      // this.rows = [];
-      // for (let i = 0; i < this.page; i++) {
-      //   this.page = i;
-      //   this.nextPage();
-      // }
-      // alert(this.rows.length);
-      // alert(this.pageInfo.totalElements);
+
       if (this.rows.length === this.pageInfo.totalElements) {
         this.rows.push(rule);
       }
       this.rows.splice(previousIndex, 1);
       this._openSnack('Regra movida com sucesso!', 'success');
     });
-  }
-
-  delete(id: number) {
-    this.rows.splice(id, 1);
   }
 
   nextPage() {
@@ -221,7 +211,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   }
 
   onScroll(event: boolean) {
-    console.log(event);
     if (event && this.pageInfo.hasNext) {
       this.nextPage();
     }
