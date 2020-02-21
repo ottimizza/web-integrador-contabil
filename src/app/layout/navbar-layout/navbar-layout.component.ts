@@ -23,7 +23,8 @@ export class NavbarLayoutComponent implements OnInit {
   constructor(
     @Inject(DOCUMENT) public document: Document,
     public storageService: StorageService,
-    public authorizationService: AuthenticationService
+    public authorizationService: AuthenticationService,
+    public router: Router
   ) { }
 
   public toggleSidebar() {
@@ -35,12 +36,18 @@ export class NavbarLayoutComponent implements OnInit {
   }
 
   public logout() {
-    this.authorizationService.revokeToken().subscribe((r1: any) => {
-      this.authorizationService.clearStorage();
-      return this.authorizationService.logout().subscribe((r2: any) => {
-        this.authorizationService.authorize();
-      });
-    });
+    this.router.navigate(['auth', 'logout']);
+    // // alert(1);
+    // this.authorizationService.revokeToken().subscribe((r1: any) => {
+    //   // alert(2);
+    //   this.authorizationService.clearStorage();
+    //   // alert(3);
+    //   this.authorizationService.logout().subscribe((r2: any) => {
+    //     // alert(4);
+    //     this.authorizationService.authorize();
+    //     // alert(5);
+    //   });
+    // });
   }
 
   public altToggleSidebar() {

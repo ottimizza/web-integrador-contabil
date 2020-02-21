@@ -14,4 +14,5 @@ export class ContentLayoutComponent /* implements OnInit */ {
   //     console.log(queryParams);
   //   });
   // }
+
 }

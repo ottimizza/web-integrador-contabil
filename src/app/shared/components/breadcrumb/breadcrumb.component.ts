@@ -49,7 +49,7 @@ export class BreadcrumbComponent implements OnInit {
       url += `/${routeURL}`;
       const breadcrumb: BreadCrumb = {
         label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
-        params: {}, //child.snapshot.params,
+        params: {}, // child.snapshot.params,
         url: child.snapshot.data[ROUTE_DATA_PATH] || url
       };
       breadcrumbs.push(breadcrumb);

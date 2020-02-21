@@ -9,7 +9,7 @@ export class Lancamento {
   public arquivo: Arquivo;
   public tipoPlanilha: string;
   public tipoLancamento: number;
-  public tipoMovimento: string; // 1 = Pagamento; 2 = Recebimento
+  public tipoMovimento: string;
   public contaMovimento: string;
   public contaSugerida: string;
   public contaContraPartida: string;
@@ -28,6 +28,7 @@ export class Lancamento {
   public cnpjContabilidade: string;
   public idRoteiro: string;
   public nomeArquivo: string;
+  public ativo: boolean;
 
 }
 

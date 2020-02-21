@@ -6,18 +6,17 @@ import { ContentLayoutComponent } from './layout/content-layout/content-layout.c
 
 import { AuthGuard } from '@app/guard/auth.guard';
 import { NoAuthGuard } from '@app/guard/no-auth.guard';
-import { TransactionModule } from './transacoes/transaction.module';
-import { TransactionListComponent } from './transacoes/transaction-list/transaction-list.component';
-import { RuleListComponent } from './rule-list/rule-list.component';
+import { TransactionListComponent } from '@modules/transacoes/transaction-list/transaction-list.component';
+import { RuleListComponent } from '@modules/rule-list/rule-list.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard/',
+    redirectTo: 'lancamentos/',
     pathMatch: 'full'
   },
   {
-    path: 'dashboard/',
+    path: 'lancamentos/',
     component: ContentLayoutComponent,
     canActivate: [AuthGuard], // Should be replaced with actual auth guard
     children: [
@@ -30,32 +29,32 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'auth/callback',
+    path: 'auth',
     component: AuthLayoutComponent,
     loadChildren: () =>
     import('@modules/auth/auth.module').then(m => m.AuthModule)
   },
-  // {
-  //   path: 'regras',
-  //   component: ContentLayoutComponent,
-  //   canActivate: [AuthGuard], // Should be replaced with actual auth guard
-  //   children: [
-  //     {
-  //       path: '',
-  //       component: RuleListComponent,
-  //       pathMatch: 'full',
-  //       canActivate: [AuthGuard]
-  //     }
-  //   ]
-  // },
+  {
+    path: 'regras',
+    component: ContentLayoutComponent,
+    canActivate: [AuthGuard], // Should be replaced with actual auth guard
+    children: [
+      {
+        path: '',
+        component: RuleListComponent,
+        pathMatch: 'full',
+        canActivate: [AuthGuard]
+      }
+    ],
+  },
   {
     path: '**',
-    redirectTo: 'dashboard/',
+    redirectTo: 'lancamentos/',
     pathMatch: 'full'
   },
   {
-    path: 'dashboard/:ReportId',
-    redirectTo: 'dashboard/',
+    path: 'lancamentos/:ReportId',
+    redirectTo: 'lancamentos/',
     pathMatch: 'full'
   }
 ];

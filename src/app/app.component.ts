@@ -1,8 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { RxEvent } from '@app/services/rx-event.service';
 import { DOCUMENT } from '@angular/common';
-import { HashMapUtils } from '@shared/utils/hash-map.utils';
-import { TestHelper } from '@shared/test-helpers/test-helpers';
 
 @Component({
   selector: 'app-root',

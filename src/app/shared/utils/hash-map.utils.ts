@@ -47,10 +47,10 @@ export class HashMapUtils {
 
   private static get _newKey() {
     const length = Math.round(Math.random() * 1000);
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345678!@#$%&*';
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*';
     let key = '';
     for (let i = 0; i < length; i++) {
-      const index = Math.round(Math.random() * 67);
+      const index = Math.round(Math.random() * 68);
       key += chars.charAt(index);
     }
 

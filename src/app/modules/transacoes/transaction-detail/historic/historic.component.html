@@ -1,0 +1,27 @@
+<div mat-dialog-title>
+  <h2 class="ml-4">Histórico do Lançamento</h2>
+  <app-hrow span="Código do Histórico" col="4" (write)="id = $event"></app-hrow>
+  <span class="text-danger ml-4" id="warn-historic">* Caso sua contabilidade não utilize Código do Histórico, desconsidere esse campo</span>
+</div>
+<div mat-dialog-content>
+
+
+  <form>
+
+    <app-hrow *ngFor="let f of fields; let id = index" [span]="f.span" (write)="onKeyup($event, id)">
+      <app-historic-field *ngIf="f.name" [name]="f.name" [lancamento]="lancamento" (selectOne)="onChange($event, id)"></app-historic-field>
+    </app-hrow>
+
+  </form>
+  <div class="row m-4" *ngIf="params && params.length > 0">
+    <p class="mr-4">Histórico Final:</p>
+    <p class="font-weight-bold" *ngIf="params && params.length > 0">{{ params }}</p>
+  </div>
+
+</div>
+<div mat-dialog-actions>
+  <div class="row w-100 m-0">
+    <button [mat-dialog-close]="data.regra" class="btn btn-outline-info m-4 mr-2 col">Confirmar</button>
+    <button (click)="onNoClick()" class="btn btn-outline-danger m-4 ml-2 col">Ignorar</button>
+  </div>
+</div>

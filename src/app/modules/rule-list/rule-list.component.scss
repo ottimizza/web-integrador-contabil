@@ -1,0 +1,89 @@
+.example-list {
+  text-align: center;
+  margin: 0 auto;
+  width: 85%;
+  max-width: 100%;
+  // border: solid 1px #ccc;
+  min-height: 60px;
+  display: block;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.example-box {
+  padding: 20px 10px;
+  border-bottom: solid 1px #ccc;
+  color: rgba(0, 0, 0, 0.87);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  background: white;
+  font-size: 14px;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-box:last-child {
+  border: none;
+}
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+i {
+  font-size: 150%;
+}
+
+.divFilter {
+  margin: 0 auto;
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+
+.crm {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px;
+  border-radius: 30px;
+  box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.3);
+  transition: 200ms;
+  background-color: white;
+
+  i {
+    font-size: 30px;
+    color: rgb(0, 110, 255);
+  }
+
+  &:hover {
+    box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+    i {
+      font-size: 32px;
+    }
+  }
+}
+
+.scrollField {
+  overflow: auto;
+  max-height: calc(100vh - 70px);
+}

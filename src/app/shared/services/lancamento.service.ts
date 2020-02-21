@@ -16,18 +16,22 @@ export class LancamentoService {
 
   constructor(private http: HttpClient, private authService: AuthenticationService) { }
 
-  public getLancamentos(page: number, b: Empresa, tipoLancamento: number, tipoMovimento: string): Observable<GenericPageableResponse<Lancamento>> {
-    const url
-    = `${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}&tipoConta=0&tipoLancamento=${tipoLancamento}&tipoMovimento=${tipoMovimento}`;
+  public getLancamentos(searchCriteria: any): Observable<GenericPageableResponse<Lancamento>> {
+    const params = this.encode(searchCriteria);
+    const url = `${BASE_URL}/api/v1/lancamentos?${params}`;
     // const url = `${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}` // &tipoConta=0`;
     return this.http.get<GenericPageableResponse<Lancamento>>(url, this._headers);
   }
 
-  public getByRule(rules: PostFormatRule[], e: Empresa): Observable<GenericPageableResponse<Lancamento>> {
-    const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}&tipoConta=0`;
-    return this.http.post<GenericPageableResponse<Lancamento>>(url, rules, this._headers);
+  public skip(id: number): Observable<Lancamento> {
+    const url = `${BASE_URL}/api/v1/lancamentos/${id}`;
+    return this.http.patch<Lancamento>(url, { tipoConta: 4 }, this._headers);
   }
 
+  public getByRule(rules: PostFormatRule[], e: Empresa): Observable<GenericPageableResponse<Lancamento>> {
+    const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}`;
+    return this.http.post<GenericPageableResponse<Lancamento>>(url, rules, this._headers);
+  }
   public getByRulePaginated(rules: PostFormatRule[], e: Empresa, page: number) {
     const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}&pageIndex=${page}&tipoConta=0`;
     return this.http.post<GenericPageableResponse<Lancamento>>(url, rules, this._headers);
@@ -48,5 +52,11 @@ export class LancamentoService {
     return { headers };
   }
 
+
+  encode(params: any): string {
+    return Object.keys(params).map((key) => {
+      return [key, params[key]].map(encodeURIComponent).join('=');
+    }).join('&');
+  }
 }
 

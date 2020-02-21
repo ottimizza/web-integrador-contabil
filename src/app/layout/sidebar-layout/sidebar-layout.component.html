@@ -3,10 +3,10 @@
 <aside class="left-sidebar">
   <div class="scroll-sidebar">
     <nav class="sidebar-nav">
-      <ul id="sidebarnav">
+    <ul id="sidebarnav">
         <li *ngFor="let item of items">
-          <a class="waves-effect waves-dark" [routerLink]="item.url" aria-expanded="false">
-            <i class="fa-fw" [class]="item.icon"></i><span class="hide-menu">{{item.label}}</span>
+          <a class="waves-effect waves-dark pl-0" [routerLink]="item.url" aria-expanded="false">
+            <i class="fa-fw ml-1 mr-4" [class]="item.icon"></i><span class="hide-menu">{{item.label}}</span>
           </a>
         </li>
       </ul>

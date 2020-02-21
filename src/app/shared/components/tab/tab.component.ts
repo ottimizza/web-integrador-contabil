@@ -1,14 +1,48 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { StringCutterUtils } from '@shared/utils/string-cutter.util';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+
+export enum TabButton {
+  PAGAMENTO = 'pag',
+  EXTRATO_DEBITO = 'exdeb',
+  RECEBIMENTO = 'rec',
+  EXTRATO_CREDITO = 'excred'
+}
 
 @Component({
   selector: 'app-tab',
   templateUrl: './tab.component.html',
   styleUrls: ['./tab.component.scss']
 })
-export class TabComponent {
+export class TabComponent implements OnInit {
 
-  @Input() value: string;
-  @Input() main = false;
+  @Input() complete = true;
+  @Output() clicked: EventEmitter<TabButton> = new EventEmitter();
+  classes: string[];
+
+  ngOnInit(): void {
+    this._resetClasses();
+  }
+
+  get tabButton() {
+    return TabButton;
+  }
+
+  click(position: number, button: TabButton) {
+    this.update(position);
+    this.clicked.emit(button);
+  }
+
+  update(position: number) {
+    this._resetClasses();
+    this.classes[position] = 'btn btn-info col';
+  }
+
+  private _resetClasses() {
+    this.classes = [
+      'btn btn-outline-link col',
+      'btn btn-outline-link col',
+      'btn btn-outline-link col',
+      'btn btn-outline-link col'
+    ];
+  }
 
 }

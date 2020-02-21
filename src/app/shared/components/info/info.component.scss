@@ -7,14 +7,15 @@
   transition: 300ms;
   // background-color: rgba(255, 234, 0, .6);
   background-color: rgb(255, 219, 133);
+  padding: 15px;
 
   &:hover {
     transform: scale(1.03);
     // box-shadow: 1px -1px 5px 1px rgba(0, 0, 0, .1);
   }
 
-  p {
-  color: black;
-  font-size: 13px;
+  span {
+    color: black;
+    font-size: 17px;
   }
 }

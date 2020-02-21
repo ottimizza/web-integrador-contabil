@@ -31,7 +31,7 @@ export class AuthCallbackComponent implements OnInit {
               //   storeUserInfo,
               //   storeTokenInfo
               // ]).then((values) => {
-              that.router.navigate(['dashboard']);
+              that.router.navigate(['lancamentos']);
               // }).catch((e) => {
               //   console.log(e);
               // });
