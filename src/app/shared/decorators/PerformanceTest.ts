@@ -1,3 +1,5 @@
+import { LoggerUtils } from '@shared/utils/logger.utills';
+
 export function PerformanceTest() {
   return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
 
@@ -7,7 +9,7 @@ export function PerformanceTest() {
       const timer1 = performance.now();
       const returning = from.apply(this, args);
       const timer2 = performance.now();
-      console.log(timer2 - timer1);
+      LoggerUtils.log(timer2 - timer1);
       return returning;
     };
 

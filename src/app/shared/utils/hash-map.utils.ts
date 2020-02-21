@@ -1,3 +1,5 @@
+import { LoggerUtils } from './logger.utills';
+
 export class HashMapUtils {
 
   // tslint:disable-next-line: variable-name
@@ -8,7 +10,7 @@ export class HashMapUtils {
       if (this._verifyKey(key)) {
         this._values.push([key, JSON.stringify(item)]);
       } else {
-        throw new Error('This HashMapUtils key is already in use');
+        LoggerUtils.throw(new Error('This HashMapUtils key is already in use'));
       }
     } else {
       const newKey = this._newKey;
