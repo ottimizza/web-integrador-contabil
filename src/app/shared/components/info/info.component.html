@@ -1,9 +1,3 @@
-<div
-  class="info-container"
-  matTooltip="Clique para fechar"
-  matTooltipShowDelay="300"
-  matTooltipHideDelay="500"
-  *ngIf="isOpen"
-  (click)="close()">
+<div class="info-container" matTooltip="Clique para fechar" matTooltipShowDelay="300" matTooltipHideDelay="500" *ngIf="isOpen" (click)="close()">
   <span>{{ description }}</span>
 </div>

@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>Lançamentos afetados</h1>
-<div mat-dialog-content scrollTracker (scrollEnd)="onScroll($event)">
+<div mat-dialog-content appScrollTracker (scrollEnd)="onScroll($event)">
   <p>Estes serão os lançamentos afetados</p>
 
   <table class="table table-bordered">
@@ -39,7 +39,6 @@
     </tbody>
 
   </table>
-
 
   <!-- <button class="btn btn-dark mb-4" mat-button *ngIf="hasNext()" (click)="nextPage()">Carregar mais</button> -->
 

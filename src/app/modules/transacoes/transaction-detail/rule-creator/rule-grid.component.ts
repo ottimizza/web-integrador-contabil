@@ -34,6 +34,9 @@ export class RuleGridComponent implements OnInit, GenericPagination {
     this.nextPage();
   }
 
+  get displayedCols() {
+    return ['descricao', 'portador', 'dataMovimento'];
+  }
 
   nextPage(): void {
     if (this.hasNext()) {
