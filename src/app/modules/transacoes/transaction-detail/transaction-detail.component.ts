@@ -334,6 +334,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
   async tabsPattern(tipoMovimento: string, tipoLancamentoName: string, isFirst: boolean) {
     this.tipoConta = 0;
+    this.newTab = true;
     this.destroy = true;
     if (!isFirst) {
       this.tabIsClicked = true;
@@ -417,7 +418,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     this._lancamentoService.getLancamentos(filter).subscribe(imports => {
 
-      LoggerUtils.log(imports.records[0]);
 
       if (!this.started) {
         this.started = true;
@@ -428,10 +428,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this.resetErrors();
       this._toast.hideSnack();
 
-      if (!imports.records.length && this.tipoConta === 0) {
-        LoggerUtils.log('-----------------------');
-        LoggerUtils.log(imports.records);
-        LoggerUtils.log('-----------------------');
+      if (imports.records.length < 1 && this.tipoConta === 0) {
         this.nextPage();
       }
 

@@ -114,7 +114,9 @@ export class Rule {
 
       this._rules = [];
       for (let i = 0; i < keys.length; i++) {
-        this._newRule(keys[i], values[i]);
+        if (values[i] !== undefined) {
+          this._newRule(keys[i], values[i]);
+        }
       }
       // this._newRule('descricao', this.descricao);
       // this._newRule('documento', this.documento);
