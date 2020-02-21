@@ -6,7 +6,6 @@ import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { LancamentoService } from '@shared/services/lancamento.service';
 import { PostFormatRule } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
-import { of } from 'rxjs';
 import { ToastService } from '@shared/services/toast.service';
 
 @Component({

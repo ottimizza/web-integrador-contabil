@@ -97,4 +97,20 @@ export class RuleEditModalComponent implements OnInit {
     return Condicao;
   }
 
+  get itens(): { value: string, label: string }[] {
+    return [
+      { value: 'descricao', label: 'Fornecedor' },
+      { value: 'documento', label: 'Documento' },
+      { value: 'portador', label: 'Banco' },
+      { value: 'complemento01', label: 'Complemento 01' },
+      { value: 'complemento02', label: 'Complemento 02' },
+      { value: 'complemento03', label: 'Complemento 03' },
+      { value: 'complemento04', label: 'Complemento 04' },
+      { value: 'complemento05', label: 'Complemento 05' },
+      { value: 'tipoPlanilha', label: 'Tipo da Planilha' },
+      { value: 'nomeArquivo', label: 'Nome do Arquivo' },
+      { value: 'tipoMovimento', label: 'Tipo do Movimento' }
+    ];
+  }
+
 }

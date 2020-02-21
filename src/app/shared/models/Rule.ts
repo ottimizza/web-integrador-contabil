@@ -105,19 +105,28 @@ export class Rule {
     }
 
     public get rules(): PostFormatRule[] {
+      const keys = Object.keys(this);
+      const values = Object.values(this);
+      keys.splice(0, 1);
+      values.splice(0, 1);
+
       this._rules = [];
-      this._newRule('descricao', this.descricao);
-      this._newRule('documento', this.documento);
-      this._newRule('portador', this.portador);
-      this._newRule('complemento01', this.complemento01);
-      this._newRule('complemento02', this.complemento02);
-      this._newRule('complemento03', this.complemento03);
-      this._newRule('complemento04', this.complemento04);
-      this._newRule('complemento05', this.complemento05);
-      this._newRule('nomeArquivo', this.nomeArquivo);
-      this._newRule('tipoPlanilha', this.tipoPlanilha);
-      this._newRule('tipoLancamento', this.tipoLancamento);
-      this._newRule('tipoMovimento', this.tipoMovimento);
+      for (let i = 0; i < keys.length; i++) {
+        this._newRule(keys[i], values[i]);
+      }
+      // this._newRule('descricao', this.descricao);
+      // this._newRule('documento', this.documento);
+      // this._newRule('portador', this.portador);
+      // this._newRule('complemento01', this.complemento01);
+      // this._newRule('complemento02', this.complemento02);
+      // this._newRule('complemento03', this.complemento03);
+      // this._newRule('complemento04', this.complemento04);
+      // this._newRule('complemento05', this.complemento05);
+      // this._newRule('nomeArquivo', this.nomeArquivo);
+      // this._newRule('tipoPlanilha', this.tipoPlanilha);
+      // this._newRule('tipoLancamento', this.tipoLancamento);
+      // this._newRule('tipoMovimento', this.tipoMovimento);
+      // console.log(this._rules);
       return this._rules;
     }
 
