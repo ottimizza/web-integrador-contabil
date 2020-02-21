@@ -16,6 +16,8 @@ import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { RuleService } from '@shared/services/rule.service';
 import { ToastService } from '@shared/services/toast.service';
+import { LoggerUtils } from '@shared/utils/logger.utills';
+import { PerformanceTest } from '@shared/decorators/PerformanceTest';
 
 @Component({
   selector: 'app-tdetail',
@@ -422,6 +424,8 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this._toast.showSnack('Aguardando resposta');
 
     this._lancamentoService.getLancamentos(filter).subscribe(imports => {
+
+      LoggerUtils.log(imports.records[0]);
 
       if (!this.started) {
         this.started = true;
