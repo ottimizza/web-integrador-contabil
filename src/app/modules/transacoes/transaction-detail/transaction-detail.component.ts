@@ -17,7 +17,7 @@ import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { RuleService } from '@shared/services/rule.service';
 import { ToastService } from '@shared/services/toast.service';
 import { LoggerUtils } from '@shared/utils/logger.utills';
-import { PerformanceTest } from '@shared/decorators/PerformanceTest';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tdetail',
@@ -37,7 +37,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   errorText: string;
   account: string;
   destroy: boolean;
-  newTab: boolean;
   tabIsClicked = false;
   started = false;
   remaining = 0;
@@ -319,7 +318,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   onTab(event: MatTabChangeEvent, isFirst: boolean) {
-    this.newTab = true;
     const id = event.index;
     if (id === 0) {
       this.tabsPattern('PAG', 'pagamentos', isFirst);
@@ -333,8 +331,8 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   async tabsPattern(tipoMovimento: string, tipoLancamentoName: string, isFirst: boolean) {
+      // this.tabsPattern('EXDEB', 'extratos de débitos', isFirst);
     this.tipoConta = 0;
-    this.newTab = true;
     this.destroy = true;
     if (!isFirst) {
       this.tabIsClicked = true;
@@ -404,10 +402,10 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       tipoLancamento = 2;
     }
 
-    if (!this.pageInfo.hasNext && this.tipoConta === 0 && this.started && !this.newTab) {
-      this.tipoConta = 4;
-    }
-    this.newTab = false;
+    // if () {
+    //   this.tipoConta = 4;
+    // }
+
 
     const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: this.pageInfo.pageSize };
     // const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento };
@@ -418,17 +416,16 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     this._lancamentoService.getLancamentos(filter).subscribe(imports => {
 
+      this.started = true;
 
-      if (!this.started) {
-        this.started = true;
-      }
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
       this._remaining();
       this.resetErrors();
       this._toast.hideSnack();
 
-      if (imports.records.length < 1 && this.tipoConta === 0) {
+      if (imports.records.length === 0 && this.tipoConta) {
+        this.tipoConta = 4;
         this.nextPage();
       }
 
