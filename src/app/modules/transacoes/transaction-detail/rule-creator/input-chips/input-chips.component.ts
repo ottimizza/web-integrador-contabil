@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, Inject, SimpleChanges, 
 import { DOCUMENT } from '@angular/common';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { DateUtils } from '@shared/utils/date-utils';
+import { LoggerUtils } from '@shared/utils/logger.utills';
 
 @Component({
   selector: 'app-chips',
@@ -51,7 +52,11 @@ export class InputChipsComponent implements OnInit, OnChanges {
   }
 
   get chips() {
-    return this._document.querySelectorAll(`.chip${this.name}`);
+    let name = this.name;
+    if (name === 'Nome do Arquivo') {
+      name = 'Nome';
+    }
+    return this._document.querySelectorAll(`.chip${name}`);
   }
 
   isDefault() {
@@ -211,7 +216,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
     if (countSelected < 1) {
       this.emit(title, undefined);
     } else {
-      this.emit(title, [selecteds]);
+      this.emit(title, selecteds ? [selecteds] : undefined);
     }
   }
 
