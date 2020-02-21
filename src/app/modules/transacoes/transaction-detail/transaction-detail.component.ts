@@ -214,14 +214,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     }
   }
 
-  get nomeArquivo() {
-    if (this.records.length) {
-      return this.records[0].nomeArquivo ? this.records[0].nomeArquivo : this.records[0].arquivo.nome;
-    } else {
-      return '';
-    }
-  }
-
   private _subsAndDisable(obs: Observable<any>) {
     obs.subscribe(() => {
       this.disable();
