@@ -437,6 +437,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this._toast.hideSnack();
 
       if (!imports.records.length && this.tipoConta === 0) {
+        LoggerUtils.log('-----------------------');
+        LoggerUtils.log(imports.records);
+        LoggerUtils.log('-----------------------');
         this.nextPage();
       }
 

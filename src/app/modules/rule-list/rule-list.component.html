@@ -1,4 +1,4 @@
-<div class="main-wrapper pt-3 text-center scrollField" scrollTracker (scrollEnd)="onScroll($event)">
+<div class="main-wrapper pt-3 text-center scrollField" appScrollTracker (scrollEnd)="onScroll($event)">
 
   <div class="pl-4 pr-4" *ngIf="!hasBusiness">
     <app-info [description]="info.text1"></app-info>
