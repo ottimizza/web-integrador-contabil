@@ -108,19 +108,19 @@
               ></app-chips>
             </div>
 
-            <!-- <div
+            <div
               class="row m-0 mb-2"
-              *ngIf="nomeArquivo"
+              *ngIf="records[0].nomeArquivo"
             >
               <app-chips
                 [reset]="destroy"
                 name="Nome do Arquivo"
-                [property]="nomeArquivo"
+                [property]="records[0].nomeArquivo"
                 class="col"
-                *ngIf="nomeArquivo"
+                *ngIf="records[0].nomeArquivo"
                 (selectedInfos)="onDevolve($event)"
               ></app-chips>
-            </div> -->
+            </div>
           </app-card>
         </app-card>
       </app-card>

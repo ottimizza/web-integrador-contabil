@@ -52,10 +52,6 @@ export class RuleGridComponent implements OnInit, GenericPagination {
     }
   }
 
-  getNomeArquivo(record: Lancamento) {
-      return record.nomeArquivo ? record.nomeArquivo : record.arquivo.nome;
-  }
-
   hasNext() {
     return !this.pageInfo || this.pageInfo.hasNext;
   }
@@ -96,17 +92,7 @@ export class RuleGridComponent implements OnInit, GenericPagination {
   }
 
   hasNomeArquivo(nomeArquivo: string): boolean {
-    return !!nomeArquivo.length;
-  }
-
-  get hasAnyNomeArquivo() {
-    let verify = false;
-    this.info.forEach(lanc => {
-      if (this.getNomeArquivo(lanc)) {
-        verify = true;
-      }
-    });
-    return verify;
+    return this._hasPattern('nomeArquivo');
   }
 
   get hasTipoPlanilha(): boolean {
