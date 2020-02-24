@@ -86,11 +86,11 @@ export class InputChipsComponent implements OnInit, OnChanges {
           this.comps = JSON.parse(this.property);
           break;
         case 'Banco':
-          const props = ArrayUtils.split(this.property, ' ', ',');
+          const props = ArrayUtils.split(this.property, ' ', ',', '_');
           this.props = this._verifyWord(props);
           break;
         default:
-          const array = ArrayUtils.split(this.property, ' ', '.', ',');
+          const array = ArrayUtils.split(this.property, ' ', '.', ',', '_');
           this.props = this._verifyWord(array);
       }
     }

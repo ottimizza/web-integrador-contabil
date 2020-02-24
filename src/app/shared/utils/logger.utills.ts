@@ -26,7 +26,7 @@ export class LoggerUtils {
     if (!this._environment) {
       this._environment = environment;
     }
-    if (environment.production === false) {
+    if (this._environment.production === false) {
       callbackFn();
     }
   }

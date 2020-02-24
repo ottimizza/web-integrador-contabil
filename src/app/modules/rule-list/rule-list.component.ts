@@ -25,12 +25,11 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   rows: CompleteRule[] = [];
   business: Empresa;
-  hasBusiness = false;
   pageInfo: PageInfo;
   page = 0;
-  isSelected = false;
+  tabIsSelected = false;
   tipoLancamento = 1;
-  artificial: CompleteRule;
+  artificialClone: CompleteRule;
 
   constructor(
     private _service: RuleService,
@@ -122,16 +121,15 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   onTab(event: MatTabChangeEvent) {
     this.rows = [];
-    this.isSelected = true;
+    this.tabIsSelected = true;
     this.tipoLancamento = event.index + 1;
     this.page = 0;
     this.nextPage();
   }
 
   onFilter(event: string) {
-    this.hasBusiness = true;
     this.business = JSON.parse(event);
-    this._reset();
+    this.onTab({ tab: null, index: this.tipoLancamento - 1 });
   }
 
   onClone(event: { rule: RuleCreateFormat, position: number }) {
@@ -143,7 +141,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       this._service.changePosition(regra).subscribe(() => {
         this.rows.push(regra);
         this.rows.sort((a, b) => a.posicao - b.posicao);
-        this.artificial = regra;
+        this.artificialClone = regra;
         this._openSnack('Regra clonada com sucesso!', 'success');
       });
     });
@@ -192,7 +190,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
     this._service.get(filter).subscribe(imports => {
 
-      if (JSON.stringify(this.artificial) === JSON.stringify(this.rows[this.rows.length - 1])) {
+      if (JSON.stringify(this.artificialClone) === JSON.stringify(this.rows[this.rows.length - 1])) {
         /*
         Sempre que uma regra é clonada, o clone é artificialmente inserido no array local para que não seja necessário
         bombardear o servidor com novos requests.
@@ -200,7 +198,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
         do array do request.
         */
         this.rows.splice(this.rows.length - 1, 1);
-        this.artificial = null;
+        this.artificialClone = null;
       }
 
       imports.records.forEach(rec => this.rows.push(rec));
@@ -216,12 +214,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     }
   }
 
-  private _openSnack(text: string, color: 'danger' | 'primary' | 'success' | 'warning') {
+  private _openSnack(text: string, color: 'danger' | 'primary' | 'success' | 'warning' = 'success') {
     this._snackBar.show(text, color);
   }
 
-  private _reset() {
-    this.onTab({ tab: null, index: this.tipoLancamento - 1 });
-  }
 
 }
