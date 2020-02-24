@@ -17,7 +17,6 @@ import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { RuleService } from '@shared/services/rule.service';
 import { ToastService } from '@shared/services/toast.service';
 import { LoggerUtils } from '@shared/utils/logger.utills';
-import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tdetail',
@@ -195,6 +194,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         this._historicService
           .getHistoric(this.business, this.account)
           .subscribe(data => {
+            LoggerUtils.log(data);
             if (!data.records.length) {
               this.openHistoric(obs);
             } else {
@@ -279,7 +279,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     } else {
       this.impact = 0;
     }
-
   }
 
   openGrid(): void {
@@ -331,7 +330,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   async tabsPattern(tipoMovimento: string, tipoLancamentoName: string, isFirst: boolean) {
-      // this.tabsPattern('EXDEB', 'extratos de débitos', isFirst);
     this.tipoConta = 0;
     this.destroy = true;
     if (!isFirst) {
@@ -390,6 +388,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     } else {
       this._remaining();
       this.resetErrors([`Você conclui todos os ${this.tipoLancamentoName} desta empresa.`]);
+      this.remaining = 0;
     }
   }
 
@@ -400,22 +399,13 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     } else if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE') {
       tipoLancamento = 2;
     }
-
-    // if () {
-    //   this.tipoConta = 4;
-    // }
-
-
     const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: this.pageInfo.pageSize };
-    // const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento };
     const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: this.tipoConta };
     Object.assign(filter, pageCriteria);
 
     this._toast.showSnack('Aguardando resposta');
 
     this._lancamentoService.getLancamentos(filter).subscribe(imports => {
-
-      LoggerUtils.log(imports);
 
       this.started = true;
 
@@ -425,7 +415,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this.resetErrors();
       this._toast.hideSnack();
 
-      if (imports.records.length === 0 && this.tipoConta) {
+      if (imports.records.length === 0 && this.tipoConta === 1) {
         this.tipoConta = 4;
         this.nextPage();
       }

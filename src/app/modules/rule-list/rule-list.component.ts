@@ -34,8 +34,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   constructor(
     private _service: RuleService,
     private _snackBar: ToastService,
-    public dialog: MatDialog,
-    private _router: Router
+    private _router: Router,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
