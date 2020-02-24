@@ -13,11 +13,11 @@
         <th *ngIf="hasDocumento">Documento</th>
         <th *ngIf="hasNomeArquivo">Nome do Arquivo</th>
         <!-- <th *ngIf="hasTipoPlanilha">Tipo da Planilha</th> -->
-        <th *ngIf="hasComplemento1">Complemento 1</th>
-        <th *ngIf="hasComplemento2">Complemento 2</th>
-        <th *ngIf="hasComplemento3">Complemento 3</th>
-        <th *ngIf="hasComplemento4">Complemento 4</th>
-        <th *ngIf="hasComplemento5">Complemento 5</th>
+        <th *ngIf="hasComplemento1">{{ info[0].arquivo.labelComplemento01 }}</th>
+        <th *ngIf="hasComplemento2">{{ info[0].arquivo.labelComplemento02 }}</th>
+        <th *ngIf="hasComplemento3">{{ info[0].arquivo.labelComplemento03 }}</th>
+        <th *ngIf="hasComplemento4">{{ info[0].arquivo.labelComplemento04 }}</th>
+        <th *ngIf="hasComplemento5">{{ info[0].arquivo.labelComplemento05 }}</th>
       </tr>
     </thead>
 
