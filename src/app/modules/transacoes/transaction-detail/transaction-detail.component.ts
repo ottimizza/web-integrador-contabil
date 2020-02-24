@@ -85,6 +85,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   getComplementos() {
+    const s = (text: string) => {
+      return ArrayUtils.split(text, '.', ' ', '-', '_', ',');
+    }
     /*
      * Transforma todos os complementos (5 strings) em um objeto legível para os componentes filhos
      * (para o componente dos chips especificamente)
@@ -100,11 +103,11 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     let text = '';
     if (ok) {
       text = JSON.stringify({
-        c1: lancamento.complemento01,
-        c2: lancamento.complemento02,
-        c3: lancamento.complemento03,
-        c4: lancamento.complemento04,
-        c5: lancamento.complemento05,
+        c1: lancamento.complemento01 ? s(lancamento.complemento01) : undefined,
+        c2: lancamento.complemento02 ? s(lancamento.complemento02) : undefined,
+        c3: lancamento.complemento03 ? s(lancamento.complemento03) : undefined,
+        c4: lancamento.complemento04 ? s(lancamento.complemento04) : undefined,
+        c5: lancamento.complemento05 ? s(lancamento.complemento05) : undefined,
         l1: arquivo.labelComplemento01,
         l2: arquivo.labelComplemento02,
         l3: arquivo.labelComplemento03,
@@ -295,6 +298,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   openHistoric(obs: Observable<Lancamento>): void {
+    this.records[0].contaMovimento = this.account;
     const dialogRef = this.dialog.open(HistoricComponent, {
       maxWidth: '900px',
       width: '90vw',
@@ -406,6 +410,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this._toast.showSnack('Aguardando resposta');
 
     this._lancamentoService.getLancamentos(filter).subscribe(imports => {
+
 
       this.started = true;
 
