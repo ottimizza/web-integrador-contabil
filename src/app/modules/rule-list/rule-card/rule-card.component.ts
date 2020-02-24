@@ -1,7 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { RuleCreateFormat, PostFormatRule, Rule, Condicao } from '@shared/models/Rule';
-import { RuleEditModalComponent } from '../rule-edit-modal/rule-edit-modal.component';
 import { CompleteRule } from '@shared/models/CompleteRule';
 
 @Component({
