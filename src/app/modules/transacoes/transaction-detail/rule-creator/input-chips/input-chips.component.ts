@@ -4,6 +4,19 @@ import { ArrayUtils } from '@shared/utils/array.utils';
 import { DateUtils } from '@shared/utils/date-utils';
 import { LoggerUtils } from '@shared/utils/logger.utills';
 
+interface Complements {
+  c1: string[];
+  c2: string[];
+  c3: string[];
+  c4: string[];
+  c5: string[];
+  l1: string,
+  l2: string,
+  l3: string,
+  l4: string,
+  l5: string;
+}
+
 @Component({
   selector: 'app-chips',
   templateUrl: './input-chips.component.html',
@@ -19,7 +32,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
   props: string[] = [];
   chipList: string[] = [];
   isSelected = false;
-  comps: any;
+  comps: Complements;
 
   // tslint:disable-next-line: variable-name
   constructor(@Inject(DOCUMENT) private _document: Document) {}
@@ -174,31 +187,30 @@ export class InputChipsComponent implements OnInit, OnChanges {
   }
 
   devolveAllComps() {
+    const array = [];
+    const forcada = (arr: string[], title: string) => {
+      if (arr && arr.length) {
+        arr.forEach(com => {
+          array.push({ name: title, prop: com });
+        });
+      }
+    };
     const c = this.comps;
-    [
-      { name: 'Complemento 1', prop: c.c1 ? c.c1 : undefined },
-      { name: 'Complemento 2', prop: c.c2 ? c.c2 : undefined },
-      { name: 'Complemento 3', prop: c.c3 ? c.c3 : undefined },
-      { name: 'Complemento 4', prop: c.c4 ? c.c4 : undefined },
-      { name: 'Complemento 5', prop: c.c5 ? c.c5 : undefined },
-    ]
-      .forEach(comp => {
-        this._devolveAllCompsPattern(comp.name, comp.prop);
-      });
+    forcada(c.c1, 'c1');
+    forcada(c.c2, 'c2');
+    forcada(c.c3, 'c3');
+    forcada(c.c4, 'c4');
+    forcada(c.c5, 'c5');
+
+    LoggerUtils.log(array);
+    array.forEach(comp => {
+      this.selectComp(comp.prop, comp.name);
+    });
   }
 
-  private _devolveAllCompsPattern(name: string, prop: string) {
-    this._devolveAllPattern(name, prop);
-    if (name !== 'Complemento 5') {
-      // Reseta a variável que foi alterada pelo _devolveAllPattern() para que ela esteja imediatamente pronta para a próxima ação
-      // sem precisar passar por tratamentos.
-      this.isSelected = !this.isSelected;
-    }
-  }
-
-  private _devolveAllPattern(title: string, selecteds: string) {
+  private _devolveAllPattern(title: string, selecteds: string, chips: NodeListOf<Element> = this.chips) {
     this.isSelected = !this.isSelected;
-    const chips = this.chips;
+    // const chips = this.chips;
     let countSelected = 0;
     if (!this.isSelected) {
       countSelected++;
