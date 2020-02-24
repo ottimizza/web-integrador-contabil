@@ -194,6 +194,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         this._historicService
           .getHistoric(this.business, this.account)
           .subscribe(data => {
+            LoggerUtils.log(data);
             if (!data.records.length) {
               this.openHistoric(obs);
             } else {
@@ -278,7 +279,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     } else {
       this.impact = 0;
     }
-
   }
 
   openGrid(): void {
@@ -330,7 +330,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   async tabsPattern(tipoMovimento: string, tipoLancamentoName: string, isFirst: boolean) {
-      // this.tabsPattern('EXDEB', 'extratos de débitos', isFirst);
     this.tipoConta = 0;
     this.destroy = true;
     if (!isFirst) {
@@ -389,6 +388,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     } else {
       this._remaining();
       this.resetErrors([`Você conclui todos os ${this.tipoLancamentoName} desta empresa.`]);
+      this.remaining = 0;
     }
   }
 
