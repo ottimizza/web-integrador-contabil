@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { RuleCreateFormat, PostFormatRule, Rule, Condicao } from '@shared/models/Rule';
 import { CompleteRule } from '@shared/models/CompleteRule';
+import { StringCutterUtils } from '@shared/utils/string-cutter.util';
 
 @Component({
   selector: 'app-ruleico',
@@ -42,6 +43,10 @@ export class RuleCardComponent {
       text: ` ${this._getCondition(rule.condicao)} `,
       value: rule.valor
     };
+  }
+
+  get account() {
+    return StringCutterUtils.cut(this.rules.contaMovimento, 20);
   }
 
   cloning() {
