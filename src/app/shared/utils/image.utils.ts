@@ -31,11 +31,11 @@ export class ImageUtils {
 
   static blobToFile(blob, name) {
     const b = blob;
-    //A Blob() is almost a File() - it's just missing the two properties below which we will add
+    // A Blob() is almost a File() - it's just missing the two properties below which we will add
     b.lastModifiedDate = new Date();
     b.name = name;
-    //Cast to a File() type
-    return new File([blob], blob.name, { type: blob.type });;
+    // Cast to a File() type
+    return new File([blob], blob.name, { type: blob.type });
   }
 
   static b64ToFile(b64Data, contentType = '', sliceSize = 512) {

@@ -31,28 +31,28 @@
       <i class="fal fa-clipboard mr-4 ml-3" (click)="devolveAllComps()" [matTooltip]="info().copyAll" matTooltipShowDelay="300" matTooltipHideDelay="500"></i>
 
       <div *ngIf="comps.c1 && comps.c1.length && comps.l1">
-        <span *ngIf="comps.l1" class="text-info bold">{{ comps.l1 }}:</span>
-        <mat-chip *ngFor="let comp of comps.c1" (click)="selectComp(comp, 'c1')" [id]="comp + ' ' + 'c1'" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(comp, comps.l1).comps" matTooltipShowDelay="300" matTooltipHideDelay="500"><span *ngIf="comp">{{ comp }}</span></mat-chip >
+        <span *ngIf="comps.l1" class="text-primary bold">{{ comps.l1 }}:</span>
+        <mat-chip *ngFor="let comp of comps.c1" (click)="selectComp(comp, 'c1')" [id]="comp + ' ' + 'c1'" [ngClass]="'chip' + comps.l1" class="chipDefault" [matTooltip]="info(comp, comps.l1).comps" matTooltipShowDelay="300" matTooltipHideDelay="500"><span *ngIf="comp">{{ comp }}</span></mat-chip >
       </div>
 
       <div *ngIf="comps.c2 && comps.c2.length && comps.l2">
-        <span *ngIf="comps.l2" class="text-info bold">{{ comps.l2 }}:</span>
-        <mat-chip *ngFor="let comp of comps.c2" (click)="selectComp(comp, 'c2')" [id]="comp + ' ' + 'c2'" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(comp, comps.l2).comps" matTooltipShowDelay="300" matTooltipHideDelay="500"><span *ngIf="comp">{{ comp }}</span></mat-chip >
+        <span *ngIf="comps.l2" class="text-primary bold">{{ comps.l2 }}:</span>
+        <mat-chip *ngFor="let comp of comps.c2" (click)="selectComp(comp, 'c2')" [id]="comp + ' ' + 'c2'" [ngClass]="'chip' + comps.l2" class="chipDefault" [matTooltip]="info(comp, comps.l2).comps" matTooltipShowDelay="300" matTooltipHideDelay="500"><span *ngIf="comp">{{ comp }}</span></mat-chip >
       </div>
 
       <div *ngIf="comps.c3 && comps.c3.length && comps.l3">
-        <span *ngIf="comps.l3" class="text-info bold">{{ comps.l3 }}:</span>
-        <mat-chip *ngFor="let comp of comps.c3" (click)="selectComp(comp, 'c3')" [id]="comp + ' ' + 'c3'" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(comp, comps.l3).comps" matTooltipShowDelay="300" matTooltipHideDelay="500"><span *ngIf="comp.length">{{ comp }}</span></mat-chip >
+        <span *ngIf="comps.l3" class="text-primary bold">{{ comps.l3 }}:</span>
+        <mat-chip *ngFor="let comp of comps.c3" (click)="selectComp(comp, 'c3')" [id]="comp + ' ' + 'c3'" [ngClass]="'chip' + comps.l3" class="chipDefault" [matTooltip]="info(comp, comps.l3).comps" matTooltipShowDelay="300" matTooltipHideDelay="500"><span *ngIf="comp.length">{{ comp }}</span></mat-chip >
       </div>
 
       <div *ngIf="comps.c4 && comps.c4.length && comps.l4">
-        <span *ngIf="comps.l4" class="text-info bold">{{ comps.l4 }}:</span>
-        <mat-chip *ngFor="let comp of comps.c4" (click)="selectComp(comp, 'c4')" [id]="comp + ' ' + 'c4'" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(comp, comps.l4).comps" matTooltipShowDelay="300" matTooltipHideDelay="500"><span *ngIf="comp">{{ comp }}</span></mat-chip >
+        <span *ngIf="comps.l4" class="text-primary bold">{{ comps.l4 }}:</span>
+        <mat-chip *ngFor="let comp of comps.c4" (click)="selectComp(comp, 'c4')" [id]="comp + ' ' + 'c4'" [ngClass]="'chip' + comps.l4" class="chipDefault" [matTooltip]="info(comp, comps.l4).comps" matTooltipShowDelay="300" matTooltipHideDelay="500"><span *ngIf="comp">{{ comp }}</span></mat-chip >
       </div>
 
       <div *ngIf="comps.c5 && comps.c5.length && comps.l5">
-        <span *ngIf="comps.l5" class="text-info bold">{{ comps.l5 }}:</span>
-        <mat-chip *ngFor="let comp of comps.c5" (click)="selectComp(comp, 'c5')" [id]="comp + ' ' + 'c5'" [ngClass]="'chip' + name" class="chipDefault" [matTooltip]="info(comp, comps.l5).comps" matTooltipShowDelay="300" matTooltipHideDelay="500"><span *ngIf="comp">{{ comp }}</span></mat-chip >
+        <span *ngIf="comps.l5" class="text-primary bold">{{ comps.l5 }}:</span>
+        <mat-chip *ngFor="let comp of comps.c5" (click)="selectComp(comp, 'c5')" [id]="comp + ' ' + 'c5'" [ngClass]="'chip' + comps.l5" class="chipDefault" [matTooltip]="info(comp, comps.l5).comps" matTooltipShowDelay="300" matTooltipHideDelay="500"><span *ngIf="comp">{{ comp }}</span></mat-chip >
       </div>
 
       </mat-chip-list></ng-template></div>

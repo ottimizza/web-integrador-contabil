@@ -139,12 +139,12 @@ export class InputChipsComponent implements OnInit, OnChanges {
     }
   }
 
-  emit(title: string, selecteds: string[]) {
-    this.selectedInfos.emit({ title, selecteds });
+  emit(title: string, selecteds: string[], clear?: boolean) {
+    this.selectedInfos.emit({ title, selecteds, clear });
   }
 
 
-  selectComp(prop: string, type: string) {
+  selectComp(prop: string, type: string, destroy?: boolean) {
     const chip = this._document.getElementById(prop + ' ' + type);
     let title = '';
     if (type === 'c1') {
@@ -159,16 +159,29 @@ export class InputChipsComponent implements OnInit, OnChanges {
       title = 'Complemento 5';
     }
 
-    if (this._chipIsSelected(chip)) {
+    if (!destroy) {
+
+      if (this._chipIsSelected(chip)) {
+        // Desselecionar
+        chip.classList.remove('selected');
+        chip.classList.add('chipDefault');
+        this.emit(title, undefined);
+      } else {
+        // Selecionar
+        chip.classList.remove('chipDefault');
+        chip.classList.add('selected');
+        this.emit(title, [prop]);
+      }
+
+    } else {
       // Desselecionar
       chip.classList.remove('selected');
       chip.classList.add('chipDefault');
-      this.emit(title, undefined);
-    } else {
-      // Selecionar
-      chip.classList.remove('chipDefault');
-      chip.classList.add('selected');
-      this.emit(title, [prop]);
+      // this.emit('Complemento 1', undefined);
+      // this.emit('Complemento 2', undefined);
+      // this.emit('Complemento 3', undefined);
+      // this.emit('Complemento 4', undefined);
+      // this.emit('Complemento 5', undefined);
     }
 
   }
@@ -187,6 +200,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
   }
 
   devolveAllComps() {
+    this.isSelected = !this.isSelected;
     const array = [];
 
     const forcada = (arr: string[], title: string) => {
@@ -204,9 +218,15 @@ export class InputChipsComponent implements OnInit, OnChanges {
     forcada(c.c4, 'c4');
     forcada(c.c5, 'c5');
 
+
     array.forEach(comp => {
-      this.selectComp(comp.prop, comp.name);
+      this.selectComp(comp.prop, comp.name, this.isSelected);
     });
+
+    if (this.isSelected) {
+      this.emit('Complemento 1', [''], true);
+    }
+
   }
 
   private _devolveAllPattern(title: string, selecteds: string, chips: NodeListOf<Element> = this.chips) {

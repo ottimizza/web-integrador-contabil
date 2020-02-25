@@ -1,4 +1,9 @@
 import { LoggerUtils } from './logger.utills';
+import { StringCutterUtils } from './string-cutter.util';
+import { HashMapUtils } from './hash-map.utils';
+import { DateUtils } from './date-utils';
+import { collectionForUtils } from './collection-for.utils';
+import { ImageUtils } from './image.utils';
 
 export class ArrayUtils {
 

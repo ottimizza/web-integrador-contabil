@@ -264,8 +264,14 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       // this.conditions.tipoLancamento = [this.records[0].tipoLancamento];
       this.conditions.tipoMovimento = [this.tipoMovimento];
     }
+    if (event.clear) {
+      this.conditions = new Rule();
+      LoggerUtils.log(this.conditions.rules);
+    }
 
+    this.impact = 0;
     this.getByRule();
+
   }
 
   getByRule() {
