@@ -24,7 +24,7 @@ export class HistoricFieldComponent {
         '',
         'Fornecedor',
         'Portador',
-        'Data',
+        'Competência',
         'Valor',
         'Documento',
         'Nome do Arquivo',
@@ -41,7 +41,7 @@ export class HistoricFieldComponent {
       const localArray: { property: string, text: string }[] = [
         { property: l.descricao, text: 'Fornecedor' },
         { property: l.portador, text: 'Portador' },
-        { property: l.dataMovimento, text: 'Data' },
+        { property: l.dataMovimento, text: 'Competência' },
         { property: `${l.valorOriginal}`, text: 'Valor' },
         { property: l.documento, text: 'Documento' },
         { property: l.nomeArquivo, text: 'Nome do Arquivo' },
