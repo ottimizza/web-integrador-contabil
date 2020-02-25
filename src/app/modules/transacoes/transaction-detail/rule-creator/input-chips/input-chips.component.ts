@@ -188,6 +188,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
 
   devolveAllComps() {
     const array = [];
+
     const forcada = (arr: string[], title: string) => {
       if (arr && arr.length) {
         arr.forEach(com => {
@@ -195,6 +196,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
         });
       }
     };
+
     const c = this.comps;
     forcada(c.c1, 'c1');
     forcada(c.c2, 'c2');
@@ -202,7 +204,6 @@ export class InputChipsComponent implements OnInit, OnChanges {
     forcada(c.c4, 'c4');
     forcada(c.c5, 'c5');
 
-    LoggerUtils.log(array);
     array.forEach(comp => {
       this.selectComp(comp.prop, comp.name);
     });
