@@ -20,7 +20,12 @@ export class DateUtils {
   public static lastCompetence(competence: string) {
     const dates = competence.split('/').map(d => +d);
     if (dates[0] > 1) {
-      return `${dates[0] - 1}/${dates[1]}`;
+      const month = dates[0] - 1;
+      let monthText = `${month}`;
+      if (month < 10) {
+        monthText = '0' + monthText;
+      }
+      return `${monthText}/${dates[1]}`;
     } else {
       return `12/${dates[1] - 1}`;
     }

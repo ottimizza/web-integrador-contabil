@@ -55,11 +55,19 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this.onTab({ tab: null, index: 0 }, true);
   }
 
-  get tipoLancamento() {
+  get tipo() {
     if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'REC') {
       return 1;
     } else {
       return 2;
+    }
+  }
+
+  get buttonLabel() {
+    if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'EXDEB') {
+      return 'Fornecedor';
+    } else {
+      return 'Cliente';
     }
   }
 
