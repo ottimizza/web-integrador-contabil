@@ -98,7 +98,7 @@
               ></app-chips>
             </div>
 
-            <div class="row m-0 mb-2" *ngIf="getComplementos().ok">
+            <div class="row m-0 mb-2" *ngIf="getComplementos().ok && tipoLancamento == 1">
               <app-chips
                 [reset]="destroy"
                 name="Complementos"

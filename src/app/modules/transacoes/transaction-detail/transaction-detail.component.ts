@@ -55,6 +55,14 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this.onTab({ tab: null, index: 0 }, true);
   }
 
+  get tipoLancamento() {
+    if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'REC') {
+      return 1;
+    } else {
+      return 2;
+    }
+  }
+
   get suggestions() {
     if (this.records.length > 0 && this.records[0].contaSugerida) {
       const account = this.records[0].contaSugerida;
