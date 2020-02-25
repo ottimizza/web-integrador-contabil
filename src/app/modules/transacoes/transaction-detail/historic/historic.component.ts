@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Lancamento } from '@shared/models/Lancamento';
 import { Historic } from '@shared/models/Historic';
+import { DateUtils } from '@shared/utils/date-utils';
 
 @Component({
   templateUrl: './historic.component.html',
@@ -89,7 +90,7 @@ export class HistoricComponent implements OnInit {
     const results = [
       l.descricao,
       l.portador,
-      this.date(),
+      DateUtils.ymdToCompetence(l.dataMovimento),
       l.valorOriginal ? `${l.valorOriginal}` : null,
       l.documento,
       l.nomeArquivo,
@@ -126,7 +127,7 @@ export class HistoricComponent implements OnInit {
       const array = [
         'Fornecedor',
         'Portador',
-        'Data',
+        'Competência',
         'Valor',
         'Documento',
         'Nome do Arquivo',

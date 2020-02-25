@@ -12,4 +12,9 @@ export class DateUtils {
     }
   }
 
+  public static ymdToCompetence(date: string) {
+    const dates = date.split('-');
+    return `${dates[1]}/${dates[0]}`;
+  }
+
 }
