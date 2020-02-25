@@ -72,7 +72,7 @@ export class HistoricComponent implements OnInit {
   get params(): string {
     let params: string;
     if (this.id) {
-      params = `Código: ${this.id}. ${this.historicObj.preview}`
+      params = `Código: ${this.id}. ${this.historicObj.preview}`;
     } else {
       params = this.historicObj.preview;
     }

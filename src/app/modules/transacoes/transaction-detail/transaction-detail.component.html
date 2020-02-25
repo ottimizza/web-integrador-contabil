@@ -49,7 +49,7 @@
             >
               <app-chips
                 [reset]="destroy"
-                name="Fornecedor"
+                [name]="buttonLabel"
                 [property]="records[0].descricao"
                 class="col"
                 *ngIf="records[0].descricao"
@@ -98,7 +98,7 @@
               ></app-chips>
             </div>
 
-            <div class="row m-0 mb-2" *ngIf="getComplementos().ok && tipoLancamento == 1">
+            <div class="row m-0 mb-2" *ngIf="getComplementos().ok && tipo == 1">
               <app-chips
                 [reset]="destroy"
                 name="Complementos"
@@ -170,7 +170,7 @@
             <input
               type="button"
               class="btn btn-primary col mx-2"
-              value="Fornecedor"
+              [value]="buttonLabel"
               (click)="fornecedor()"
               [matTooltip]="info.provider"
               matTooltipShowDelay="300"
