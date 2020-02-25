@@ -1,3 +1,5 @@
+import { LoggerUtils } from './logger.utills';
+
 export class ArrayUtils {
 
   public static sum(array: any[], arr: any[]) {
@@ -61,7 +63,11 @@ export class ArrayUtils {
         returningArray = counting;
       }
     });
-    return returningArray;
+
+    const newArray = returningArray.filter(arr => {
+      return arr !== '';
+    });
+    return newArray;
 
   }
 
@@ -81,4 +87,3 @@ export class ArrayUtils {
   }
 
 }
-

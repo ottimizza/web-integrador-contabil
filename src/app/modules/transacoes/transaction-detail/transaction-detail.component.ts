@@ -86,7 +86,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
   getComplementos() {
     const s = (text: string) => {
-      return ArrayUtils.split(text, '.', ' ', '-', '_', ',');
+      return ArrayUtils.split(text, ' ', '-', '_', ',', '-');
     }
     /*
      * Transforma todos os complementos (5 strings) em um objeto legível para os componentes filhos
@@ -115,7 +115,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         l5: arquivo.labelComplemento05
       });
     }
-
     return {
       ok,
       text
@@ -197,7 +196,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         this._historicService
           .getHistoric(this.business, this.account)
           .subscribe(data => {
-            LoggerUtils.log(data);
             if (!data.records.length) {
               this.openHistoric(obs);
             } else {
@@ -410,7 +408,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this._toast.showSnack('Aguardando resposta');
 
     this._lancamentoService.getLancamentos(filter).subscribe(imports => {
-
 
       this.started = true;
 
