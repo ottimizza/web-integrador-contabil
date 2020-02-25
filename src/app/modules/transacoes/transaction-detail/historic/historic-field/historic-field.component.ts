@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { Lancamento } from '@shared/models/Lancamento';
+import { DateUtils } from '@shared/utils/date-utils';
 
 @Component({
   selector: 'app-historic-field',
@@ -25,6 +26,7 @@ export class HistoricFieldComponent {
         'Fornecedor',
         'Portador',
         'Competência',
+        'Competência Anterior',
         'Valor',
         'Documento',
         'Nome do Arquivo',
@@ -41,7 +43,8 @@ export class HistoricFieldComponent {
       const localArray: { property: string, text: string }[] = [
         { property: l.descricao, text: 'Fornecedor' },
         { property: l.portador, text: 'Portador' },
-        { property: l.dataMovimento, text: 'Competência' },
+        { property: DateUtils.ymdToCompetence(l.dataMovimento), text: 'Competência' },
+        { property: DateUtils.lastCompetence(DateUtils.ymdToCompetence(l.dataMovimento)), text: 'Competência Anterior' },
         { property: `${l.valorOriginal}`, text: 'Valor' },
         { property: l.documento, text: 'Documento' },
         { property: l.nomeArquivo, text: 'Nome do Arquivo' },

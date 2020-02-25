@@ -17,4 +17,14 @@ export class DateUtils {
     return `${dates[1]}/${dates[0]}`;
   }
 
+  public static lastCompetence(competence: string) {
+    const dates = competence.split('/').map(d => +d);
+    if (dates[0] > 1) {
+      return `${dates[0] - 1}/${dates[1]}`;
+    } else {
+      return `12/${dates[1] - 1}`;
+    }
+
+  }
+
 }
