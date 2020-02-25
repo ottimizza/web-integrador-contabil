@@ -112,7 +112,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
     dialogRef.afterClosed().subscribe(results => {
       if (results) {
-        this._openSnack('Regras exportadas com sucesso!', 'success');
+        this._openSnack('Método ainda não implementado.', 'warning');
+        // this._openSnack('Regras exportadas com sucesso!', 'success');
       } else {
         this._openSnack('Exportação cancelada', 'warning');
       }
