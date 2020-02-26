@@ -144,7 +144,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
   }
 
 
-  selectComp(prop: string, type: string, destroy?: boolean) {
+  selectComp(prop: string, type: string, destroy?: boolean, fullComp?: string[]) {
     const chip = this._document.getElementById(prop + ' ' + type);
     let title = '';
     if (type === 'c1') {
@@ -168,9 +168,13 @@ export class InputChipsComponent implements OnInit, OnChanges {
         this.emit(title, undefined);
       } else {
         // Selecionar
+        let newProp = [prop];
+        if (fullComp && fullComp.length) {
+          newProp = fullComp;
+        }
         chip.classList.remove('chipDefault');
         chip.classList.add('selected');
-        this.emit(title, [prop]);
+        this.emit(title, newProp);
       }
 
     } else {
@@ -222,7 +226,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
     const forcada = (arr: string[], title: string) => {
       if (arr && arr.length) {
         arr.forEach(com => {
-          array.push({ name: title, prop: com });
+          array.push({ name: title, prop: com, full: arr });
         });
       }
     };
@@ -236,7 +240,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
 
 
     array.forEach(comp => {
-      this.selectComp(comp.prop, comp.name, this.isSelected);
+      this.selectComp(comp.prop, comp.name, this.isSelected, comp.full);
     });
 
     if (this.isSelected) {
