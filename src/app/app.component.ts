@@ -1,9 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { RxEvent } from '@app/services/rx-event.service';
 import { DOCUMENT } from '@angular/common';
-import { HashMapUtils } from '@shared/utils/hash-map.utils';
-import { LoggerUtils } from '@shared/utils/logger.utills';
-import { LancamentoService } from '@shared/services/lancamento.service';
 
 @Component({
   selector: 'app-root',
