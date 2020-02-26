@@ -282,10 +282,10 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     }
     if (event.clear) {
       this.conditions = new Rule();
+      this.impact = 0;
       LoggerUtils.log(this.conditions.rules);
     }
 
-    this.impact = 0;
     this.getByRule();
 
   }
