@@ -211,15 +211,27 @@ export class InputChipsComponent implements OnInit, OnChanges {
 
   selectComp1() {
     this.cis.one = !this.cis.one;
-    // const chips = this._document.querySelectorAll('.chip' + this.comps.l1);
-    // if (!this.cis.one) {
-    //   this.mark(chips);
-    //   this.emit('Complemento 1', [this.comps.complete1]);
-    // } else {
-    //   this.deMark(chips);
-    //   this.emit('Complemento 1', undefined);
-    // }
     this._selectAllCompPattern(this.comps.l1, this.cis.one, 'Complemento 1', this.comps.complete1);
+  }
+
+  selectComp2() {
+    this.cis.two = !this.cis.two;
+    this._selectAllCompPattern(this.comps.l2, this.cis.two, 'Complemento 2', this.comps.complete2);
+  }
+
+  selectComp3() {
+    this.cis.three = !this.cis.three;
+    this._selectAllCompPattern(this.comps.l3, this.cis.three, 'Complemento 3', this.comps.complete3);
+  }
+
+  selectComp4() {
+    this.cis.four = !this.cis.four;
+    this._selectAllCompPattern(this.comps.l4, this.cis.four, 'Complemento 4', this.comps.complete4);
+  }
+
+  selectComp5() {
+    this.cis.five = !this.cis.five;
+    this._selectAllCompPattern(this.comps.l5, this.cis.five, 'Complemento 5', this.comps.complete5);
   }
 
   private _selectAllCompPattern(label: string, verify: boolean, title: string, value: string) {
