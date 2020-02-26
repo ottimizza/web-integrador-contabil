@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
 
   public updateAvailable = false;
 
-  constructor(@Inject(DOCUMENT) public document: Document, private events: RxEvent, public lembreSeDeMeApagar: LancamentoService) {
+  constructor(@Inject(DOCUMENT) public document: Document, private events: RxEvent) {
   }
 
   public subscribeToSidebarToggleEvents() {
