@@ -18,8 +18,7 @@ export class FilterComponent implements OnInit {
   business: Empresa[] = [];
 
   constructor(
-    private _service: BusinessService,
-    private _toast: ToastService
+    private _service: BusinessService
   ) { }
 
   ngOnInit(): void {
@@ -64,7 +63,7 @@ export class FilterComponent implements OnInit {
   private _getEmpresas(text1: string, text2: string) {
     const obs2 = this._service.getByErpCode(text1);
     const obs1 = this._service.getBusiness(text2.toUpperCase());
-    const subs1 = obs1.pipe(debounceTime(200)).subscribe(data1 => {
+    const subs1 = obs1.subscribe(data1 => {
 
       const subs2 = obs2.subscribe(data2 => {
 

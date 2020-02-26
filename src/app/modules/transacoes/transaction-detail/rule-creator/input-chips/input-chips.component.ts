@@ -199,6 +199,22 @@ export class InputChipsComponent implements OnInit, OnChanges {
     this._devolveAllPattern(this.name, this.property);
   }
 
+  verifyComp(index: number) {
+    const ver1 = (this.comps.c1 && this.comps.c1.length && this.comps.l1);
+    const ver2 = (this.comps.c2 && this.comps.c2.length && this.comps.l2);
+    const ver3 = (this.comps.c3 && this.comps.c3.length && this.comps.l3);
+    const ver4 = (this.comps.c4 && this.comps.c4.length && this.comps.l4);
+    if (index === 1) {
+      return !ver1;
+    } else if (index === 2) {
+      return !(ver1 || ver2);
+    } else if (index === 3) {
+      return !(ver1 || ver2 || ver3);
+    } else if (index === 4) {
+      return !(ver1 || ver2 || ver3 || ver4);
+    }
+  }
+
   devolveAllComps() {
     this.isSelected = !this.isSelected;
     const array = [];
