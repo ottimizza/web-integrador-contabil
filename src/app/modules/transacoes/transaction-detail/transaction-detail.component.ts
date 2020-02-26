@@ -37,7 +37,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   account: string;
   destroy: boolean;
   tabIsClicked = false;
-  started = false;
   remaining = 0;
   tipoConta = 0;
   impact = 0;
@@ -128,7 +127,12 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         l2: arquivo.labelComplemento02,
         l3: arquivo.labelComplemento03,
         l4: arquivo.labelComplemento04,
-        l5: arquivo.labelComplemento05
+        l5: arquivo.labelComplemento05,
+        complete1: lancamento.complemento01,
+        complete2: lancamento.complemento02,
+        complete3: lancamento.complemento03,
+        complete4: lancamento.complemento04,
+        complete5: lancamento.complemento05
       });
     }
     return {
@@ -357,7 +361,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   async tabsPattern(tipoMovimento: string, tipoLancamentoName: string, isFirst: boolean) {
-    this.tipoConta = 0;
     this.destroy = true;
     if (!isFirst) {
       this.tabIsClicked = true;
@@ -366,8 +369,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     this.tipoMovimento = tipoMovimento;
     this.tipoLancamentoName = tipoLancamentoName;
-    this._partialDisable();
     this.resetErrors();
+    this.tipoConta = 0;
+    this._partialDisable();
     this.nextPage();
     this.getByRule();
     await this._delay(300);
@@ -409,6 +413,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this.resetErrors();
 
     if (this.records.length === 0 && (!this.pageInfo || this.pageInfo.hasNext)) {
+      this.tipoConta = 0
       this.nextPage();
     } else if (this.records.length !== 0) {
       this._remaining();
@@ -434,15 +439,14 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     this._lancamentoService.getLancamentos(filter).subscribe(imports => {
 
-      this.started = true;
-
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
       this._remaining();
       this.resetErrors();
       this._toast.hideSnack();
 
-      if (imports.records.length === 0 && this.tipoConta === 0) {
+      if (imports.pageInfo.totalElements === 0 && this.tipoConta === 0 && filter.tipoMovimento === this.tipoMovimento) {
+        LoggerUtils.log(imports);
         this.tipoConta = 4;
         this.nextPage();
       }

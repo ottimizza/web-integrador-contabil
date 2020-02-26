@@ -15,6 +15,11 @@ interface Complements {
   l3: string;
   l4: string;
   l5: string;
+  complete1: string;
+  complete2: string;
+  complete3: string;
+  complete4: string;
+  complete5: string;
 }
 
 @Component({
@@ -32,6 +37,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
   props: string[] = [];
   chipList: string[] = [];
   isSelected = false;
+  cis = { one: false, two: false, three: false, four: false, five: false };
   comps: Complements;
 
   // tslint:disable-next-line: variable-name
@@ -203,51 +209,59 @@ export class InputChipsComponent implements OnInit, OnChanges {
     this._devolveAllPattern(this.name, this.property);
   }
 
-  verifyComp(index: number) {
-    const ver1 = (this.comps.c1 && this.comps.c1.length && this.comps.l1);
-    const ver2 = (this.comps.c2 && this.comps.c2.length && this.comps.l2);
-    const ver3 = (this.comps.c3 && this.comps.c3.length && this.comps.l3);
-    const ver4 = (this.comps.c4 && this.comps.c4.length && this.comps.l4);
-    if (index === 1) {
-      return !ver1;
-    } else if (index === 2) {
-      return !(ver1 || ver2);
-    } else if (index === 3) {
-      return !(ver1 || ver2 || ver3);
-    } else if (index === 4) {
-      return !(ver1 || ver2 || ver3 || ver4);
+  selectComp1() {
+    this.cis.one = !this.cis.one;
+    // const chips = this._document.querySelectorAll('.chip' + this.comps.l1);
+    // if (!this.cis.one) {
+    //   this.mark(chips);
+    //   this.emit('Complemento 1', [this.comps.complete1]);
+    // } else {
+    //   this.deMark(chips);
+    //   this.emit('Complemento 1', undefined);
+    // }
+    this._selectAllCompPattern(this.comps.l1, this.cis.one, 'Complemento 1', this.comps.complete1);
+  }
+
+  private _selectAllCompPattern(label: string, verify: boolean, title: string, value: string) {
+    const chips = this._document.querySelectorAll('.chip' + label);
+    if (!verify) {
+      this.mark(chips);
+      this.emit(title, [value]);
+    } else {
+      this.deMark(chips);
+      this.emit(title, undefined);
     }
   }
 
-  devolveAllComps() {
-    this.isSelected = !this.isSelected;
-    const array = [];
+  // devolveAllComps() {
+  //   this.isSelected = !this.isSelected;
+  //   const array = [];
 
-    const forcada = (arr: string[], title: string) => {
-      if (arr && arr.length) {
-        arr.forEach(com => {
-          array.push({ name: title, prop: com, full: arr });
-        });
-      }
-    };
+  //   const forcada = (arr: string[], title: string) => {
+  //     if (arr && arr.length) {
+  //       arr.forEach(com => {
+  //         array.push({ name: title, prop: com, full: arr });
+  //       });
+  //     }
+  //   };
 
-    const c = this.comps;
-    forcada(c.c1, 'c1');
-    forcada(c.c2, 'c2');
-    forcada(c.c3, 'c3');
-    forcada(c.c4, 'c4');
-    forcada(c.c5, 'c5');
+  //   const c = this.comps;
+  //   forcada(c.c1, 'c1');
+  //   forcada(c.c2, 'c2');
+  //   forcada(c.c3, 'c3');
+  //   forcada(c.c4, 'c4');
+  //   forcada(c.c5, 'c5');
 
 
-    array.forEach(comp => {
-      this.selectComp(comp.prop, comp.name, this.isSelected, comp.full);
-    });
+  //   array.forEach(comp => {
+  //     this.selectComp(comp.prop, comp.name, this.isSelected, comp.full);
+  //   });
 
-    if (this.isSelected) {
-      this.emit('Complemento 1', [''], true);
-    }
+  //   if (this.isSelected) {
+  //     this.emit('Complemento 1', [''], true);
+  //   }
 
-  }
+  // }
 
   private _devolveAllPattern(title: string, selecteds: string, chips: NodeListOf<Element> = this.chips) {
     this.isSelected = !this.isSelected;
@@ -271,6 +285,20 @@ export class InputChipsComponent implements OnInit, OnChanges {
     } else {
       this.emit(title, selecteds ? [selecteds] : undefined);
     }
+  }
+
+  private mark(chips: NodeListOf<Element>) {
+    chips.forEach(chip => {
+      chip.classList.remove('chipDefault');
+      chip.classList.add('selected');
+    });
+  }
+
+  private deMark(chips: NodeListOf<Element>) {
+    chips.forEach(chip => {
+      chip.classList.remove('selected');
+      chip.classList.add('chipDefault');
+    });
   }
 
   private _chipIsSelected(chip: HTMLElement) {
