@@ -198,9 +198,10 @@ export class InputChipsComponent implements OnInit, OnChanges {
 
   info(chip?: string, label?: string) {
     const title = ` "${this.name}".`;
+    const titulo = ` "${chip}".`;
     return {
       copy: 'Clique para selecionar o campo "' + chip + '" de' + title,
-      copyAll: 'Clique duas vezes para selecionar todos os campos de' + title,
+      copyAll: 'Clique duas vezes para selecionar todos os campos de' + titulo,
       comps: `Clique para selecionar "${chip}" de "${label}".`,
     };
   }
