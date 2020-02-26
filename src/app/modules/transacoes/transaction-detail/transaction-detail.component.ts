@@ -246,6 +246,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       case 'Fornecedor':
         this.conditions.descricao = s;
         break;
+      case 'Cliente':
+        this.conditions.descricao = s;
+        break;
       case 'Documento':
         this.conditions.documento = s;
         break;
