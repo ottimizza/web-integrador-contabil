@@ -57,9 +57,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
   get tipo() {
     if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'REC') {
-      return 1;
+      return 'MOVIMENTO';
     } else {
-      return 2;
+      return 'EXTRATO';
     }
   }
 
@@ -439,7 +439,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this.resetErrors();
       this._toast.hideSnack();
 
-      if (imports.records.length === 0 && this.tipoConta === 1) {
+      if (imports.records.length === 0 && this.tipoConta === 0) {
         this.tipoConta = 4;
         this.nextPage();
       }
