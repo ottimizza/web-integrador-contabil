@@ -3,6 +3,7 @@ import { RxEvent } from '@app/services/rx-event.service';
 import { DOCUMENT } from '@angular/common';
 import { HashMapUtils } from '@shared/utils/hash-map.utils';
 import { LoggerUtils } from '@shared/utils/logger.utills';
+import { LancamentoService } from '@shared/services/lancamento.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ export class AppComponent implements OnInit {
 
   public updateAvailable = false;
 
-  constructor(@Inject(DOCUMENT) public document: Document, private events: RxEvent) {
+  constructor(@Inject(DOCUMENT) public document: Document, private events: RxEvent, public lembreSeDeMeApagar: LancamentoService) {
   }
 
   public subscribeToSidebarToggleEvents() {
@@ -25,7 +26,6 @@ export class AppComponent implements OnInit {
   }
 
   public ngOnInit() {
-    const num = 66221543732;
   }
 
 }
