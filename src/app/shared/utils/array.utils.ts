@@ -1,10 +1,3 @@
-import { LoggerUtils } from './logger.utills';
-import { StringCutterUtils } from './string-cutter.util';
-import { HashMapUtils } from './hash-map.utils';
-import { DateUtils } from './date-utils';
-import { collectionForUtils } from './collection-for.utils';
-import { ImageUtils } from './image.utils';
-
 export class ArrayUtils {
 
   public static sum(array: any[], arr: any[]) {
@@ -69,10 +62,7 @@ export class ArrayUtils {
       }
     });
 
-    const newArray = returningArray.filter(arr => {
-      return arr !== '';
-    });
-    return newArray;
+    return returningArray.filter(arr => arr !== '');
 
   }
 

@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, OnInit, Output, Inject, SimpleChanges, 
 import { DOCUMENT } from '@angular/common';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { DateUtils } from '@shared/utils/date-utils';
-import { LoggerUtils } from '@shared/utils/logger.utills';
 import { Complements } from './models/Complements';
 
 @Component({
@@ -32,10 +31,6 @@ export class InputChipsComponent implements OnInit, OnChanges {
     this._change();
   }
 
-  getTitle() {
-    return this.title ? this.title : this.name;
-  }
-
   public ngOnChanges(changes: SimpleChanges) {
     for (const key in changes) {
 
@@ -54,59 +49,80 @@ export class InputChipsComponent implements OnInit, OnChanges {
             }
             break;
         }
+
       }
 
     }
   }
 
   get chips() {
-    let name = this.name;
-    if (name === 'Nome do Arquivo') {
-      name = 'Nome';
-    }
-    return this._document.querySelectorAll(`.chip${name}`);
+    return this._document.querySelectorAll(`.chip${this.name}`);
+  }
+
+  getTitle() {
+    return this.title ? this.title : this.name;
   }
 
   isDefault() {
     // Informa se os chips devem ser clicáveis ou não
     return (this.name !== 'Valor' && this.name !== 'Data');
-    // return (this.name !== 'Valor' && this.name !== 'Data' && this.name !== 'Tipo da Planilha');
   }
 
   private _change() {
-    /*
-     * Caso seja data, a string será cortada por traço e serão adicionadas barras.
-     * Caso seja valor, a string será transformada em um number, arredondada para duas casas decimais e o ponto será substituido por vírgula.
-     * Caso sejam complementos, a string será transformada em um objeto interativo.
-     * Caso seja banco, a string será cortada por espaço e por vírgula.
-     * Nos outros casos, a string será cortada por espaço, por ponto e por vírgula.
-     */
+
     if (this.property) {
+
       switch (this.name) {
         case 'Data':
-          this.props = this._verifyWord(DateUtils.ymdToDmy(this.property).split('/'));
+          this._dateInit();
           break;
         case 'Valor':
-          const value = (+this.property).toFixed(2).replace(/\./g, ',');
-          this.props = [value];
+          this._valueInit();
           break;
         case 'Complementos':
-          this.comps = JSON.parse(this.property);
-          this.comps.c1 = this._verifyWord(this.comps.c1 && this.comps.c1.length ? this.comps.c1 : []);
-          this.comps.c2 = this._verifyWord(this.comps.c2 && this.comps.c2.length ? this.comps.c2 : []);
-          this.comps.c3 = this._verifyWord(this.comps.c3 && this.comps.c3.length ? this.comps.c3 : []);
-          this.comps.c4 = this._verifyWord(this.comps.c4 && this.comps.c4.length ? this.comps.c4 : []);
-          this.comps.c5 = this._verifyWord(this.comps.c5 && this.comps.c5.length ? this.comps.c5 : []);
+          this._complementInit();
           break;
         case 'Banco':
-          const props = ArrayUtils.split(this.property, ' ', ',', '_', '-');
-          this.props = this._verifyWord(props);
+          this._bankInit();
           break;
         default:
-          const array = ArrayUtils.split(this.property, ' ', '.', ',', '_', '-');
-          this.props = this._verifyWord(array);
+          this._defaultInit();
       }
+
     }
+  }
+
+  private _dateInit() {
+    // Caso seja data, a string será cortada por traço e serão adicionadas barras.
+    this.props = this._verifyWord(DateUtils.ymdToDmy(this.property).split('/'));
+  }
+
+  private _valueInit() {
+    // Caso seja valor, a string será transformada em um number, arredondada para duas casas decimais e o ponto será substituido por vírgula.
+    const value = (+this.property).toFixed(2).replace(/\./g, ',');
+    this.props = [value];
+  }
+
+  private _complementInit() {
+    // Caso sejam complementos, a string será transformada em um objeto interativo.
+    this.comps = JSON.parse(this.property);
+    this.comps.c1 = this._verifyWord(this.comps.c1 && this.comps.c1.length ? this.comps.c1 : []);
+    this.comps.c2 = this._verifyWord(this.comps.c2 && this.comps.c2.length ? this.comps.c2 : []);
+    this.comps.c3 = this._verifyWord(this.comps.c3 && this.comps.c3.length ? this.comps.c3 : []);
+    this.comps.c4 = this._verifyWord(this.comps.c4 && this.comps.c4.length ? this.comps.c4 : []);
+    this.comps.c5 = this._verifyWord(this.comps.c5 && this.comps.c5.length ? this.comps.c5 : []);
+  }
+
+  private _bankInit() {
+    // Caso seja banco, a string será cortada por espaço e por vírgula.
+    const props = ArrayUtils.split(this.property, ' ', ',', '_', '-');
+    this.props = this._verifyWord(props);
+  }
+
+  private _defaultInit() {
+    // Nos outros casos, a string será cortada por espaço, por ponto e por vírgula.
+    const array = ArrayUtils.split(this.property, ' ', '.', ',', '_', '-');
+    this.props = this._verifyWord(array);
   }
 
   private _deSelectAll() {
@@ -123,14 +139,12 @@ export class InputChipsComponent implements OnInit, OnChanges {
 
     if (this._chipIsSelected(chip)) {
       // Desselecionar
-      chip.classList.remove('selected');
-      chip.classList.add('chipDefault');
+      this.primitiveDeMark(chip);
       this.chipList.splice(this.chipList.indexOf(prop), 1);
       this.emit(title, this.chipList.length > 0 ? this.chipList : undefined);
     } else {
       // Selecionar
-      chip.classList.remove('chipDefault');
-      chip.classList.add('selected');
+      this.primitiveMark(chip);
       this.chipList.push(prop);
       this.emit(title, this.chipList);
     }
@@ -170,16 +184,13 @@ export class InputChipsComponent implements OnInit, OnChanges {
   }
 
   splice(prop: string, completeSentence: string, allProps: string[], title: string) {
-    // const oldSentence = { title, prop: completeSentence };
     let verify = false;
     let index: number;
     this.complementList.forEach(complement => {
-
       if (complement.prop === completeSentence && complement.title === title) {
         verify = true;
         index = this.complementList.indexOf(complement);
       }
-
     });
     if (verify) {
       this.complementList.splice(index, 1);
@@ -187,11 +198,9 @@ export class InputChipsComponent implements OnInit, OnChanges {
     }
     let newIndex: number;
     this.complementList.forEach(complement => {
-
       if (complement.prop === prop && complement.title === title) {
         newIndex = this.complementList.indexOf(complement);
       }
-
     });
     this.complementList.splice(newIndex, 1);
   }
@@ -204,10 +213,6 @@ export class InputChipsComponent implements OnInit, OnChanges {
       copyAll: 'Clique duas vezes para selecionar todos os campos de' + titulo,
       comps: `Clique para selecionar "${chip}" de "${label}".`,
     };
-  }
-
-  devolveAll() {
-    this._devolveAllPattern(this.name, this.property);
   }
 
   selectComp1() {
@@ -255,27 +260,20 @@ export class InputChipsComponent implements OnInit, OnChanges {
 
   }
 
-  private _devolveAllPattern(title: string, selecteds: string, chips: NodeListOf<Element> = this.chips) {
+  devolveAll() {
     this.isSelected = !this.isSelected;
-    // const chips = this.chips;
     let countSelected = 0;
     if (!this.isSelected) {
       countSelected++;
-      chips.forEach(chip => {
-        chip.classList.remove('chipDefault');
-        chip.classList.add('selected');
-      });
+      this.mark(this.chips);
     } else {
-      chips.forEach(chip => {
-        chip.classList.add('chipDefault');
-        chip.classList.remove('selected');
-      });
+      this.deMark(this.chips);
     }
 
     if (countSelected < 1) {
-      this.emit(title, undefined);
+      this.emit(this.name, undefined);
     } else {
-      this.emit(title, selecteds ? [selecteds] : undefined);
+      this.emit(this.name, this.property ? [this.property] : undefined);
     }
   }
 
