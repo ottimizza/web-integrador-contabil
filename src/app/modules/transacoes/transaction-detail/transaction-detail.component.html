@@ -108,6 +108,17 @@
               ></app-chips>
             </div>
 
+            <div class="row m-0 mb-2" *ngIf="records[0].complemento02 && records[0].arquivo.labelComplemento02 && tipo == 'EXTRATO'">
+              <app-chips
+                [reset]="destroy"
+                name="Complemento_2"
+                [title]="records[0].arquivo.labelComplemento02"
+                [property]="records[0].complemento02"
+                class="col"
+                (selectedInfos)="onDevolve($event)"
+              ></app-chips>
+            </div>
+
             <!-- <div
               class="row m-0 mb-2"
               *ngIf="records[0].nomeArquivo"

@@ -15,6 +15,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
   @Input() name: string;
   @Input() property: string;
   @Input() reset: boolean;
+  @Input() title: string;
   @Output() selectedInfos = new EventEmitter();
 
   props: string[] = [];
@@ -29,6 +30,10 @@ export class InputChipsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this._change();
+  }
+
+  getTitle() {
+    return this.title ? this.title : this.name;
   }
 
   public ngOnChanges(changes: SimpleChanges) {
