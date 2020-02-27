@@ -266,6 +266,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       case 'Complemento 5':
         this.conditions.complemento05 = s;
         break;
+      case 'Complemento_2':
+        this.conditions.complemento02 = s;
+        break;
       case 'Nome do Arquivo':
         this.conditions.nomeArquivo = s;
         break;
