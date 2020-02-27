@@ -287,8 +287,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this.impact = 0;
     }
 
-    LoggerUtils.log(this.conditions.rules);
-
     this.getByRule();
 
   }
@@ -442,7 +440,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this._toast.hideSnack();
 
       if (imports.pageInfo.totalElements === 0 && this.tipoConta === 0 && filter.tipoMovimento === this.tipoMovimento) {
-        LoggerUtils.log(imports);
         this.tipoConta = 4;
         this.nextPage();
       }
