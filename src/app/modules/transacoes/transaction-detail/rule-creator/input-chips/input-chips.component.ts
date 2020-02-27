@@ -254,7 +254,13 @@ export class InputChipsComponent implements OnInit, OnChanges {
       this.emit(title, [completeSentence]);
     } else {
       this.deMark(chips);
-      this.chipList.splice(this.chipList.indexOf(completeSentence), 1);
+      this.complementList.splice(this.chipList.indexOf(completeSentence), 1);
+      const array = this.complementList.filter(comp => comp.title === title);
+      array.forEach(arr => {
+        if (this.complementList.includes(arr)) {
+          this.complementList.splice(this.complementList.indexOf(arr), 1);
+        }
+      });
       this.emit(title, undefined);
     }
 
