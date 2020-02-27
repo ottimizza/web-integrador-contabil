@@ -3,24 +3,7 @@ import { DOCUMENT } from '@angular/common';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { DateUtils } from '@shared/utils/date-utils';
 import { LoggerUtils } from '@shared/utils/logger.utills';
-
-interface Complements {
-  c1: string[];
-  c2: string[];
-  c3: string[];
-  c4: string[];
-  c5: string[];
-  l1: string;
-  l2: string;
-  l3: string;
-  l4: string;
-  l5: string;
-  complete1: string;
-  complete2: string;
-  complete3: string;
-  complete4: string;
-  complete5: string;
-}
+import { Complements } from './models/Complements';
 
 @Component({
   selector: 'app-chips',
@@ -36,6 +19,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
 
   props: string[] = [];
   chipList: string[] = [];
+  complementList: { title: string, prop: string }[] = [];
   isSelected = false;
   cis = { one: false, two: false, three: false, four: false, five: false };
   comps: Complements;
@@ -103,26 +87,28 @@ export class InputChipsComponent implements OnInit, OnChanges {
           break;
         case 'Complementos':
           this.comps = JSON.parse(this.property);
+          this.comps.c1 = this._verifyWord(this.comps.c1 && this.comps.c1.length ? this.comps.c1 : []);
+          this.comps.c2 = this._verifyWord(this.comps.c2 && this.comps.c2.length ? this.comps.c2 : []);
+          this.comps.c3 = this._verifyWord(this.comps.c3 && this.comps.c3.length ? this.comps.c3 : []);
+          this.comps.c4 = this._verifyWord(this.comps.c4 && this.comps.c4.length ? this.comps.c4 : []);
+          this.comps.c5 = this._verifyWord(this.comps.c5 && this.comps.c5.length ? this.comps.c5 : []);
           break;
         case 'Banco':
-          const props = ArrayUtils.split(this.property, ' ', ',', '_');
+          const props = ArrayUtils.split(this.property, ' ', ',', '_', '-');
           this.props = this._verifyWord(props);
           break;
         default:
-          const array = ArrayUtils.split(this.property, ' ', '.', ',', '_');
+          const array = ArrayUtils.split(this.property, ' ', '.', ',', '_', '-');
           this.props = this._verifyWord(array);
       }
     }
   }
 
   private _deSelectAll() {
-    // Desseleciona todos os chips do "input" e emite a informação de que eles estão vazios para o componente pai
-    this.chips.forEach(chip => {
-      chip.classList.remove('selected');
-      chip.classList.add('chipDefault');
-    });
+    const chips = document.querySelectorAll('.selected');
+    this.deMark(chips);
     this.chipList = [];
-    this.emit(this.name, undefined);
+    this.emit('Limpando', undefined, true);
   }
 
 
@@ -149,8 +135,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
     this.selectedInfos.emit({ title, selecteds, clear });
   }
 
-
-  selectComp(prop: string, type: string, destroy?: boolean, fullComp?: string[]) {
+  selectComp(prop: string, type: string, completeSentence: string, allProps: string[]) {
     const chip = this._document.getElementById(prop + ' ' + type);
     let title = '';
     if (type === 'c1') {
@@ -165,35 +150,45 @@ export class InputChipsComponent implements OnInit, OnChanges {
       title = 'Complemento 5';
     }
 
-    if (!destroy) {
+    if (!this._chipIsSelected(chip)) {
+      this.primitiveMark(chip);
+      this.complementList.push({ prop, title });
+    } else {
+      this.primitiveDeMark(chip);
+      this.splice(prop, completeSentence, allProps, title);
+    }
+    const emitter = this.complementList
+      .filter(comp => comp.title === title)
+      .map(comp => comp.prop);
+    const emitterValue = (emitter && emitter.length) ? emitter : undefined;
+    this.emit(title, emitterValue);
+  }
 
-      if (this._chipIsSelected(chip)) {
-        // Desselecionar
-        chip.classList.remove('selected');
-        chip.classList.add('chipDefault');
-        this.emit(title, undefined);
-      } else {
-        // Selecionar
-        let newProp = [prop];
-        if (fullComp && fullComp.length) {
-          newProp = fullComp;
-        }
-        chip.classList.remove('chipDefault');
-        chip.classList.add('selected');
-        this.emit(title, newProp);
+  splice(prop: string, completeSentence: string, allProps: string[], title: string) {
+    // const oldSentence = { title, prop: completeSentence };
+    let verify = false;
+    let index: number;
+    this.complementList.forEach(complement => {
+
+      if (complement.prop === completeSentence && complement.title === title) {
+        verify = true;
+        index = this.complementList.indexOf(complement);
       }
 
-    } else {
-      // Desselecionar
-      chip.classList.remove('selected');
-      chip.classList.add('chipDefault');
-      // this.emit('Complemento 1', undefined);
-      // this.emit('Complemento 2', undefined);
-      // this.emit('Complemento 3', undefined);
-      // this.emit('Complemento 4', undefined);
-      // this.emit('Complemento 5', undefined);
+    });
+    if (verify) {
+      this.complementList.splice(index, 1);
+      allProps.forEach(ap => this.complementList.push({ title, prop: ap }));
     }
+    let newIndex: number;
+    this.complementList.forEach(complement => {
 
+      if (complement.prop === prop && complement.title === title) {
+        newIndex = this.complementList.indexOf(complement);
+      }
+
+    });
+    this.complementList.splice(newIndex, 1);
   }
 
   info(chip?: string, label?: string) {
@@ -235,46 +230,25 @@ export class InputChipsComponent implements OnInit, OnChanges {
     this._selectAllCompPattern(this.comps.l5, this.cis.five, 'Complemento 5', this.comps.complete5);
   }
 
-  private _selectAllCompPattern(label: string, verify: boolean, title: string, value: string) {
+  private _selectAllCompPattern(
+    label: string,
+    isAlreadySelected: boolean,
+    title: string,
+    completeSentence: string,
+  ) {
+
     const chips = this._document.querySelectorAll('.chip' + label);
-    if (!verify) {
+    if (!isAlreadySelected) {
       this.mark(chips);
-      this.emit(title, [value]);
+      this.complementList.push({ title, prop: completeSentence });
+      this.emit(title, [completeSentence]);
     } else {
       this.deMark(chips);
+      this.chipList.splice(this.chipList.indexOf(completeSentence), 1);
       this.emit(title, undefined);
     }
+
   }
-
-  // devolveAllComps() {
-  //   this.isSelected = !this.isSelected;
-  //   const array = [];
-
-  //   const forcada = (arr: string[], title: string) => {
-  //     if (arr && arr.length) {
-  //       arr.forEach(com => {
-  //         array.push({ name: title, prop: com, full: arr });
-  //       });
-  //     }
-  //   };
-
-  //   const c = this.comps;
-  //   forcada(c.c1, 'c1');
-  //   forcada(c.c2, 'c2');
-  //   forcada(c.c3, 'c3');
-  //   forcada(c.c4, 'c4');
-  //   forcada(c.c5, 'c5');
-
-
-  //   array.forEach(comp => {
-  //     this.selectComp(comp.prop, comp.name, this.isSelected, comp.full);
-  //   });
-
-  //   if (this.isSelected) {
-  //     this.emit('Complemento 1', [''], true);
-  //   }
-
-  // }
 
   private _devolveAllPattern(title: string, selecteds: string, chips: NodeListOf<Element> = this.chips) {
     this.isSelected = !this.isSelected;
@@ -302,16 +276,24 @@ export class InputChipsComponent implements OnInit, OnChanges {
 
   private mark(chips: NodeListOf<Element>) {
     chips.forEach(chip => {
-      chip.classList.remove('chipDefault');
-      chip.classList.add('selected');
+      this.primitiveMark(chip);
     });
   }
 
   private deMark(chips: NodeListOf<Element>) {
     chips.forEach(chip => {
-      chip.classList.remove('selected');
-      chip.classList.add('chipDefault');
+      this.primitiveDeMark(chip);
     });
+  }
+
+  primitiveMark(chip: Element | HTMLElement) {
+    chip.classList.remove('chipDefault');
+    chip.classList.add('selected');
+  }
+
+  primitiveDeMark(chip: Element | HTMLElement) {
+    chip.classList.remove('selected');
+    chip.classList.add('chipDefault');
   }
 
   private _chipIsSelected(chip: HTMLElement) {

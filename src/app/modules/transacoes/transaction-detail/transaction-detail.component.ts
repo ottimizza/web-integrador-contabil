@@ -178,14 +178,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   ignorar() {
-    // let observable = this._lancamentoService.ignoreLancamento(this.records[0]);
-    // this.conditions.rules.forEach(rule => {
-    //   if (rule.campo !== 'descricao') {
-    //     const regra = this.ruleCreateFormat;
-    //     regra.contaMovimento = 'IGNORAR';
-    //     observable = this._ruleService.createRule(regra);
-    //   }
-    // });
     const regra = this.ruleCreateFormat;
     regra.contaMovimento = 'IGNORAR';
     const observable = this._ruleService.createRule(regra);
@@ -290,8 +282,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     if (event.clear) {
       this.conditions = new Rule();
       this.impact = 0;
-      LoggerUtils.log(this.conditions.rules);
     }
+
+    LoggerUtils.log(this.conditions.rules);
 
     this.getByRule();
 
