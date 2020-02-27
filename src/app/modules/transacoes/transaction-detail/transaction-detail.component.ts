@@ -413,7 +413,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this._remaining();
     } else {
       this._remaining();
-      this.resetErrors([`Você conclui todos os ${this.tipoLancamentoName} desta empresa.`]);
+      this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa.`]);
       this.remaining = 0;
     }
   }
@@ -442,6 +442,10 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       if (imports.pageInfo.totalElements === 0 && this.tipoConta === 0 && filter.tipoMovimento === this.tipoMovimento) {
         this.tipoConta = 4;
         this.nextPage();
+      }
+
+      if (this.tipoConta === 4 && this.pageInfo.totalElements === 0) {
+        this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa!`]);
       }
 
     });
