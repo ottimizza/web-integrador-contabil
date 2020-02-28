@@ -113,7 +113,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     dialogRef.afterClosed().subscribe(results => {
       if (results) {
         this._openSnack('Método ainda não implementado.', 'warning');
-        // this._openSnack('Regras exportadas com sucesso!', 'success');
+        // // this._openSnack('Regras exportadas com sucesso!', 'success');
       } else {
         this._openSnack('Exportação cancelada', 'warning');
       }
@@ -135,8 +135,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   onClone(event: { rule: RuleCreateFormat, position: number }) {
     this._service.createRule(event.rule).subscribe(info => {
-      // const page = this.page;
-      // this.rows = [];
       const regra: CompleteRule = info.record;
       regra.posicao = event.position;
       this._service.changePosition(regra).subscribe(() => {
@@ -193,10 +191,10 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
       if (JSON.stringify(this.artificialClone) === JSON.stringify(this.rows[this.rows.length - 1])) {
         /*
-        Sempre que uma regra é clonada, o clone é artificialmente inserido no array local para que não seja necessário
-        bombardear o servidor com novos requests.
-        Esta verificação garante que o último item do array local não seja literalmente uma cópia (cópia !== clone) do primeiro item
-        do array do request.
+          Sempre que uma regra é clonada, o clone é artificialmente inserido no array local para que não seja necessário
+          bombardear o servidor com novos requests.
+          Esta verificação garante que o último item do array local não seja literalmente uma cópia (cópia !== clone) do primeiro item
+          do array do request.
         */
         this.rows.splice(this.rows.length - 1, 1);
         this.artificialClone = null;

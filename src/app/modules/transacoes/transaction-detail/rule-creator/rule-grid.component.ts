@@ -7,6 +7,7 @@ import { LancamentoService } from '@shared/services/lancamento.service';
 import { PostFormatRule } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
 import { ToastService } from '@shared/services/toast.service';
+import { PerformanceTest } from '@shared/decorators/PerformanceTest';
 
 @Component({
   templateUrl: './rule-grid.component.html'

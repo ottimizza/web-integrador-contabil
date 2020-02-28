@@ -184,22 +184,22 @@ export class InputChipsComponent implements OnInit, OnChanges {
   }
 
   splice(prop: string, completeSentence: string, allProps: string[], title: string) {
-    let verify = false;
     let index: number;
-    this.complementList.forEach(complement => {
-      if (complement.prop === completeSentence && complement.title === title) {
-        verify = true;
-        index = this.complementList.indexOf(complement);
+    this.complementList.forEach((comp, id) => {
+      if (comp.prop === completeSentence && comp.title === title) {
+        index = id;
       }
     });
-    if (verify) {
+
+    if (index !== undefined) {
       this.complementList.splice(index, 1);
       allProps.forEach(ap => this.complementList.push({ title, prop: ap }));
     }
+
     let newIndex: number;
-    this.complementList.forEach(complement => {
-      if (complement.prop === prop && complement.title === title) {
-        newIndex = this.complementList.indexOf(complement);
+    this.complementList.forEach((comp, id) => {
+      if (comp.prop === prop && comp.title === title) {
+        newIndex = id;
       }
     });
     this.complementList.splice(newIndex, 1);
@@ -341,5 +341,5 @@ export class InputChipsComponent implements OnInit, OnChanges {
 
   }
 
-
 }
+

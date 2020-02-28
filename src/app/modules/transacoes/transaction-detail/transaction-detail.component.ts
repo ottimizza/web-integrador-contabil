@@ -16,7 +16,6 @@ import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { RuleService } from '@shared/services/rule.service';
 import { ToastService } from '@shared/services/toast.service';
-import { LoggerUtils } from '@shared/utils/logger.utills';
 
 @Component({
   selector: 'app-tdetail',
@@ -166,7 +165,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   regra() {
-    // const regra = new RuleCreateFormat(this.conditions.rules, this.business.cnpj, this.records[0].cnpjContabilidade, this.account);
     const regra = this.ruleCreateFormat;
     const observable = this._ruleService.createRule(regra);
     const verifications = [(this.account && this.account.length > 0), this.conditions.verify()];
@@ -267,6 +265,8 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         this.conditions.complemento05 = s;
         break;
       case 'Complemento_2':
+        // É importante manter tanto o Complemento 2 quanto o Complemento_2 pois ele é usado em duas situações
+        // de formas diferentes
         this.conditions.complemento02 = s;
         break;
       case 'Nome do Arquivo':
@@ -279,7 +279,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     if (this.conditions.rules.length) {
       this.conditions.tipoPlanilha = [this.records[0].tipoPlanilha];
-      // this.conditions.tipoLancamento = [this.records[0].tipoLancamento];
       this.conditions.tipoMovimento = [this.tipoMovimento];
     }
     if (event.clear) {
