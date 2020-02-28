@@ -16,6 +16,7 @@ import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.compon
 import { ToastService } from '@shared/services/toast.service';
 import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
 import { User } from '@shared/models/User';
+import { LoggerUtils } from '@shared/utils/logger.utills';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -40,7 +41,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   ngOnInit(): void {
     const user = User.fromLocalStorage();
-    if (!user.email.toUpperCase().includes('OTTIMIZZA') && user.type !== 0) {
+    if (user.type !== 0) {
       this._router.navigate(['/']);
     }
   }
@@ -174,6 +175,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       if (this.rows.length === this.pageInfo.totalElements) {
         this.rows.push(rule);
       }
+      LoggerUtils.log(this.rows.length);
+      LoggerUtils.log(this.pageInfo.totalElements);
       this.rows.splice(previousIndex, 1);
       this._openSnack('Regra movida com sucesso!', 'success');
     });
