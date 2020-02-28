@@ -1,4 +1,6 @@
 import { LoggerUtils } from './logger.utills';
+import { MatSnackBar } from '@angular/material';
+import { Overlay, ScrollStrategyOptions, ScrollDispatcher } from '@angular/cdk/overlay';
 
 export class HashMapUtils {
 
@@ -48,7 +50,7 @@ export class HashMapUtils {
   }
 
   private static get _newKey() {
-    const length = Math.round(Math.random() * 1000);
+    const length = Math.round(Math.random() * 800);
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*';
     let key = '';
     for (let i = 0; i < length; i++) {

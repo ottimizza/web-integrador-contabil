@@ -19,7 +19,6 @@ export class LancamentoService {
   public getLancamentos(searchCriteria: any): Observable<GenericPageableResponse<Lancamento>> {
     const params = this.encode(searchCriteria);
     const url = `${BASE_URL}/api/v1/lancamentos?${params}`;
-    // const url = `${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}` // &tipoConta=0`;
     return this.http.get<GenericPageableResponse<Lancamento>>(url, this._headers);
   }
 
