@@ -64,6 +64,10 @@ export class HistoricComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  get isExtract() {
+    return (this.lancamento.tipoMovimento === 'EXDEB' || this.lancamento.tipoMovimento === 'EXCRE');
+  }
+
   date(): string {
     const dates = this.lancamento.dataMovimento.split('-');
     return `${dates[2]}/${dates[1]}/${dates[0]}`;
@@ -94,7 +98,6 @@ export class HistoricComponent implements OnInit {
       DateUtils.lastCompetence(DateUtils.ymdToCompetence(l.dataMovimento)),
       l.valorOriginal ? `${l.valorOriginal}` : null,
       l.documento,
-      l.nomeArquivo,
       l.tipoPlanilha,
       l.complemento01,
       l.complemento02,
@@ -102,6 +105,8 @@ export class HistoricComponent implements OnInit {
       l.complemento04,
       l.complemento05
     ];
+
+
     return this.ifChainPattern(results, combo);
   }
 
@@ -113,7 +118,6 @@ export class HistoricComponent implements OnInit {
       'competenciaAnterior',
       'valorOriginal',
       'documento',
-      'nomeArquivo',
       'tipoPlanilha',
       'complemento01',
       'complemento02',
@@ -133,7 +137,6 @@ export class HistoricComponent implements OnInit {
         'Competência Anterior',
         'Valor',
         'Documento',
-        'Nome do Arquivo',
         'Tipo da Planilha',
         'Complemento 01',
         'Complemento 02',
@@ -141,6 +144,7 @@ export class HistoricComponent implements OnInit {
         'Complemento 04',
         'Complemento 05',
       ];
+
       let text = '';
       array.forEach(prop => {
         if (prop === property) {
