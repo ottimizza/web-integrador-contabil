@@ -16,6 +16,7 @@ import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { RuleService } from '@shared/services/rule.service';
 import { ToastService } from '@shared/services/toast.service';
+import { LoggerUtils } from '@shared/utils/logger.utills';
 
 @Component({
   selector: 'app-tdetail',

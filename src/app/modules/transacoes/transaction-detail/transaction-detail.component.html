@@ -108,7 +108,7 @@
               ></app-chips>
             </div>
 
-            <div class="row m-0 mb-2" *ngIf="records[0].complemento02 && records[0].arquivo.labelComplemento02 && tipo == 'EXTRATO'">
+            <div class="row m-0 mb-2" *ngIf="records[0].complemento02 && records[0].arquivo.labelComplemento02 && records[0].complemento02.length > 1 && tipo == 'EXTRATO'">
               <app-chips
                 [reset]="destroy"
                 name="Complemento_2"
