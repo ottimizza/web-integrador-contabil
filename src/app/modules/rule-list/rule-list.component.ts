@@ -171,7 +171,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     const rule = this.rows[previousIndex];
     this._service.moveToBottom(rule.id).subscribe(() => {
 
-      if (this.rows.length === this.pageInfo.totalElements) {
+      if (this.rows.length === this.pageInfo.totalElements || this.rows.length < this.pageInfo.pageSize) {
         this.rows.push(rule);
       }
       this.rows.splice(previousIndex, 1);
