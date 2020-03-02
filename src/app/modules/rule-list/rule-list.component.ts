@@ -40,7 +40,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   ngOnInit(): void {
     const user = User.fromLocalStorage();
-    if (!user.email.toUpperCase().includes('OTTIMIZZA') && user.type !== 0) {
+    if (user.type !== 0) {
       this._router.navigate(['/']);
     }
   }

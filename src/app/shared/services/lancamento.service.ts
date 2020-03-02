@@ -52,7 +52,6 @@ export class LancamentoService {
     return { headers };
   }
 
-
   encode(params: any): string {
     return Object.keys(params).map((key) => {
       return [key, params[key]].map(encodeURIComponent).join('=');

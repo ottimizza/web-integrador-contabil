@@ -31,7 +31,7 @@ export class SidebarLayoutComponent implements OnInit {
   ngOnInit() {
     this.items = [{ icon: 'fad fa-typewriter', label: 'Última Digitação', url: '/lancamentos' }];
     const user = User.fromLocalStorage();
-    if (user.email.toUpperCase().includes('OTTIMIZZA') || user.type === 0) {
+    if (user.type === 0) {
       this.items.push({ icon: 'fad fa-list-ol', label: 'Regras', url: '/regras' });
     }
   }

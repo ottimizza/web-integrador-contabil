@@ -35,4 +35,4 @@ import { HistoricComponent } from './historic/historic.component';
     ],
     exports: [TransactionDetailComponent]
 })
-export class TransactionDetailModule {}
+export class TransactionDetailModule { }
