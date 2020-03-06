@@ -14,12 +14,12 @@ export class UpdateSerive {
   }
 
   public checkForUpdates(): void {
-    console.log('checking for updates');
+    console.log('Checking for updates');
     this.updates.available.subscribe((event) => this.promptUser());
   }
 
   private promptUser(): void {
-    console.log('updating to new version');
+    console.log('Updating to new version');
     this.updates.activateUpdate().then(() => this.events.next('sw::update', {}));
   }
 

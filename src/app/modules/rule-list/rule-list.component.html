@@ -13,7 +13,6 @@
 
   <div class="pr-2 pl-2" *ngIf="business">
     <div class="card ml-4 mr-4">
-      <!-- <app-tab (clicked)="onClick($event)" [complete]="false"></app-tab> -->
       <mat-tab-group (selectedTabChange)="onTab($event)" mat-align-tabs="center">
         <mat-tab label="Pagamentos"></mat-tab>
         <mat-tab label="Recebimentos"></mat-tab>
@@ -26,13 +25,12 @@
 
   <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" *ngIf="rows.length && tabIsSelected">
 
-    <div *ngFor="let rule of rows; let i = index" cdkDrag>
+    <!-- <div *ngFor="let rule of rows; let i = index" cdkDrag>
       <div class="mb10">
         <app-ruleico (clone)="onClone($event)" [rules]="rule" [index]="i" (downAll)="downAll($event)" (upAll)="upAll($event)" (delete)="onDelete($event)" (update)="onUpdate($event)"></app-ruleico>
       </div>
-    </div>
+    </div> -->
 
   </div>
 
-  <!-- <button mat-button class="btn btn-dark mb-3 mt-4" *ngIf="hasNext && isSelected" (click)="nextPage()">Carregar mais</button> -->
 </div>
