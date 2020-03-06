@@ -1,20 +1,20 @@
-import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MatDialog } from '@angular/material/dialog';
 import { MatTabChangeEvent } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
+import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
+import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
-import { RuleCreateFormat } from '@shared/models/Rule';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
-import { Empresa } from '@shared/models/Empresa';
+import { ToastService } from '@shared/services/toast.service';
 import { RuleService } from '@shared/services/rule.service';
 import { CompleteRule } from '@shared/models/CompleteRule';
-import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
-import { ToastService } from '@shared/services/toast.service';
-import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
+import { RuleCreateFormat } from '@shared/models/Rule';
+import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
 
 @Component({
@@ -54,11 +54,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   }
 
   get hasNext() {
-    if (!this.pageInfo || this.pageInfo.hasNext) {
-      return true;
-    } else {
-      return false;
-    }
+    return (!this.pageInfo || this.pageInfo.hasNext);
   }
 
 
@@ -216,6 +212,5 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   private _openSnack(text: string, color: 'danger' | 'primary' | 'success' | 'warning' = 'success') {
     this._snackBar.show(text, color);
   }
-
 
 }
