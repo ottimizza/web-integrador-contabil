@@ -49,6 +49,9 @@ export class RuleGridComponent implements OnInit, GenericPagination {
           this.pageInfo = imports.pageInfo;
           this.page++;
           this._toast.hideSnack();
+        },
+        err => {
+          this._toast.show('Falha ao carregar lançamentos.', 'danger');
         });
     }
   }

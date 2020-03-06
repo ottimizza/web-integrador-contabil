@@ -8,14 +8,14 @@ export class UpdateSerive {
 
   constructor(public updates: SwUpdate, public events: RxEvent) {
     if (updates.isEnabled) {
-      interval(60 * 60 * 1000) // 1 Hora
+      interval(60 * 60 * 1000)
         .subscribe(() => updates.checkForUpdate());
     }
   }
 
   public checkForUpdates(): void {
     console.log('Checking for updates');
-    this.updates.available.subscribe((event) => this.promptUser());
+    this.updates.available.subscribe(() => this.promptUser());
   }
 
   private promptUser(): void {
