@@ -25,11 +25,11 @@
 
   <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" *ngIf="rows.length && tabIsSelected">
 
-    <!-- <div *ngFor="let rule of rows; let i = index" cdkDrag>
+    <div *ngFor="let rule of rows; let i = index" cdkDrag>
       <div class="mb10">
         <app-ruleico (clone)="onClone($event)" [rules]="rule" [index]="i" (downAll)="downAll($event)" (upAll)="upAll($event)" (delete)="onDelete($event)" (update)="onUpdate($event)"></app-ruleico>
       </div>
-    </div> -->
+    </div>
 
   </div>
 
