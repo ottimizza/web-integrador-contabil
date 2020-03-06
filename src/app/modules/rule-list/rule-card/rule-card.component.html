@@ -1,7 +1,6 @@
 <div class="cont row m-0 w-100" *ngIf="rules && rules.regras && rules.regras.length">
 
 
-
   <div class="col-2 p-0">
       <button class="red" (click)="close()" [matTooltip]="info.trash" matTooltipShowDelay="300" matTooltipHideDelay="500">
         <i class="far fa-trash-alt"></i>
@@ -16,7 +15,7 @@
 
 
   <div class="col-7 p-0 pt-3 pb-3">
-    <div *ngFor="let rule of rules.regras">
+    <div *ngFor="let rule of rules.regras" class="text-center">
       <strong>{{ getText(rule).field }}</strong>
       <span>{{ getText(rule).text }}</span>
       <strong>{{ getText(rule).value }}</strong>
@@ -24,8 +23,8 @@
   </div>
 
 
-  <div class="col-2 p-3">
-    <strong>{{ rules.contaMovimento }}</strong>
+  <div class="col-2 pt-3 text-center">
+    <strong class="account" [matTooltip]="rules.contaMovimento" matTooltipShowDelay="300" matTooltipHideDelay="500">{{ account }}</strong>
   </div>
 
 

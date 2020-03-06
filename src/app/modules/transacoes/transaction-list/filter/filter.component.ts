@@ -1,10 +1,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { BusinessService } from '@shared/services/business.service';
 import { Empresa } from '@shared/models/Empresa';
-import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { ArrayUtils } from '@shared/utils/array.utils';
-import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { ToastService } from '@shared/services/toast.service';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tfilter',
@@ -31,10 +30,16 @@ export class FilterComponent implements OnInit {
     return 'Escreva o nome da empresa selecionada ou escolha dentre as sugeridas';
   }
 
-  confirm(event: any) {
+  async confirm(event: any) {
     const erp = event.target.value.split(' - ')[0];
     const business = this.business.filter(item => item.codigoERP === erp);
+    this._toast.show(`Empresa ${business[0].razaoSocial} selecionada.`, 'primary');
+    await this._delay(500);
     this.devolve(business[0]);
+  }
+
+  private _delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   change() {

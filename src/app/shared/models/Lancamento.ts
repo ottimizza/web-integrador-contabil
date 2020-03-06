@@ -29,6 +29,8 @@ export class Lancamento {
   public idRoteiro: string;
   public nomeArquivo: string;
   public ativo: boolean;
+  public competencia: string;
+  public competenciaAnterior: string;
 
 }
 

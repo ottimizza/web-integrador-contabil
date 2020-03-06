@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Lancamento } from '@shared/models/Lancamento';
 import { Historic } from '@shared/models/Historic';
+import { DateUtils } from '@shared/utils/date-utils';
 
 @Component({
   templateUrl: './historic.component.html',
@@ -63,6 +64,10 @@ export class HistoricComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  get isExtract() {
+    return (this.lancamento.tipoMovimento === 'EXDEB' || this.lancamento.tipoMovimento === 'EXCRE');
+  }
+
   date(): string {
     const dates = this.lancamento.dataMovimento.split('-');
     return `${dates[2]}/${dates[1]}/${dates[0]}`;
@@ -71,7 +76,7 @@ export class HistoricComponent implements OnInit {
   get params(): string {
     let params: string;
     if (this.id) {
-      params = `Código: ${this.id}. ${this.historicObj.preview}`
+      params = `Código: ${this.id}. ${this.historicObj.preview}`;
     } else {
       params = this.historicObj.preview;
     }
@@ -89,10 +94,10 @@ export class HistoricComponent implements OnInit {
     const results = [
       l.descricao,
       l.portador,
-      this.date(),
+      DateUtils.ymdToCompetence(l.dataMovimento),
+      DateUtils.lastCompetence(DateUtils.ymdToCompetence(l.dataMovimento)),
       l.valorOriginal ? `${l.valorOriginal}` : null,
       l.documento,
-      l.nomeArquivo,
       l.tipoPlanilha,
       l.complemento01,
       l.complemento02,
@@ -100,6 +105,8 @@ export class HistoricComponent implements OnInit {
       l.complemento04,
       l.complemento05
     ];
+
+
     return this.ifChainPattern(results, combo);
   }
 
@@ -107,10 +114,10 @@ export class HistoricComponent implements OnInit {
     const results = [
       'descricao',
       'portador',
-      'dataMovimento',
+      'competencia',
+      'competenciaAnterior',
       'valorOriginal',
       'documento',
-      'nomeArquivo',
       'tipoPlanilha',
       'complemento01',
       'complemento02',
@@ -126,10 +133,10 @@ export class HistoricComponent implements OnInit {
       const array = [
         'Fornecedor',
         'Portador',
-        'Data',
+        'Competência',
+        'Competência Anterior',
         'Valor',
         'Documento',
-        'Nome do Arquivo',
         'Tipo da Planilha',
         'Complemento 01',
         'Complemento 02',
@@ -137,6 +144,7 @@ export class HistoricComponent implements OnInit {
         'Complemento 04',
         'Complemento 05',
       ];
+
       let text = '';
       array.forEach(prop => {
         if (prop === property) {

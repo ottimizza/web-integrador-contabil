@@ -1,21 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatTabChangeEvent } from '@angular/material';
 import { MatDialog } from '@angular/material/dialog';
 
+import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
+import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
-import { RuleCreateFormat } from '@shared/models/Rule';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
-import { Empresa } from '@shared/models/Empresa';
+import { ToastService } from '@shared/services/toast.service';
 import { RuleService } from '@shared/services/rule.service';
 import { CompleteRule } from '@shared/models/CompleteRule';
-import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
-import { ToastService } from '@shared/services/toast.service';
-import { MatTabChangeEvent } from '@angular/material';
-import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
+import { RuleCreateFormat } from '@shared/models/Rule';
+import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
-import { Router } from '@angular/router';
+import { LoggerUtils } from '@shared/utils/logger.utills';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -25,23 +26,22 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   rows: CompleteRule[] = [];
   business: Empresa;
-  hasBusiness = false;
   pageInfo: PageInfo;
   page = 0;
-  isSelected = false;
+  tabIsSelected = false;
   tipoLancamento = 1;
-  artificial: CompleteRule;
+  artificialClone: CompleteRule;
 
   constructor(
     private _service: RuleService,
     private _snackBar: ToastService,
-    public dialog: MatDialog,
-    private _router: Router
+    private _router: Router,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
     const user = User.fromLocalStorage();
-    if (!user.email.toUpperCase().includes('OTTIMIZZA') && user.type !== 0) {
+    if (user.type !== 0) {
       this._router.navigate(['/']);
     }
   }
@@ -55,11 +55,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   }
 
   get hasNext() {
-    if (!this.pageInfo || this.pageInfo.hasNext) {
-      return true;
-    } else {
-      return false;
-    }
+    return (!this.pageInfo || this.pageInfo.hasNext);
   }
 
 
@@ -113,7 +109,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
     dialogRef.afterClosed().subscribe(results => {
       if (results) {
-        this._openSnack('Regras exportadas com sucesso!', 'success');
+        this._openSnack('Método ainda não implementado.', 'warning');
+        // // this._openSnack('Regras exportadas com sucesso!', 'success');
       } else {
         this._openSnack('Exportação cancelada', 'warning');
       }
@@ -122,28 +119,25 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   onTab(event: MatTabChangeEvent) {
     this.rows = [];
-    this.isSelected = true;
+    this.tabIsSelected = true;
     this.tipoLancamento = event.index + 1;
     this.page = 0;
     this.nextPage();
   }
 
   onFilter(event: string) {
-    this.hasBusiness = true;
     this.business = JSON.parse(event);
-    this._reset();
+    this.onTab({ tab: null, index: this.tipoLancamento - 1 });
   }
 
   onClone(event: { rule: RuleCreateFormat, position: number }) {
     this._service.createRule(event.rule).subscribe(info => {
-      // const page = this.page;
-      // this.rows = [];
       const regra: CompleteRule = info.record;
       regra.posicao = event.position;
       this._service.changePosition(regra).subscribe(() => {
         this.rows.push(regra);
         this.rows.sort((a, b) => a.posicao - b.posicao);
-        this.artificial = regra;
+        this.artificialClone = regra;
         this._openSnack('Regra clonada com sucesso!', 'success');
       });
     });
@@ -173,23 +167,15 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   downAll(previousIndex: number) {
     const rule = this.rows[previousIndex];
     this._service.moveToBottom(rule.id).subscribe(() => {
-      // this.rows = [];
-      // for (let i = 0; i < this.page; i++) {
-      //   this.page = i;
-      //   this.nextPage();
-      // }
-      // alert(this.rows.length);
-      // alert(this.pageInfo.totalElements);
-      if (this.rows.length === this.pageInfo.totalElements) {
+
+      if (this.rows.length === this.pageInfo.totalElements || this.rows.length < this.pageInfo.pageSize) {
         this.rows.push(rule);
       }
+      LoggerUtils.log(this.rows.length);
+      LoggerUtils.log(this.pageInfo.totalElements);
       this.rows.splice(previousIndex, 1);
       this._openSnack('Regra movida com sucesso!', 'success');
     });
-  }
-
-  delete(id: number) {
-    this.rows.splice(id, 1);
   }
 
   nextPage() {
@@ -202,15 +188,15 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
     this._service.get(filter).subscribe(imports => {
 
-      if (JSON.stringify(this.artificial) === JSON.stringify(this.rows[this.rows.length - 1])) {
+      if (JSON.stringify(this.artificialClone) === JSON.stringify(this.rows[this.rows.length - 1])) {
         /*
-        Sempre que uma regra é clonada, o clone é artificialmente inserido no array local para que não seja necessário
-        bombardear o servidor com novos requests.
-        Esta verificação garante que o último item do array local não seja literalmente uma cópia (cópia !== clone) do primeiro item
-        do array do request.
+          Sempre que uma regra é clonada, o clone é artificialmente inserido no array local para que não seja necessário
+          bombardear o servidor com novos requests.
+          Esta verificação garante que o último item do array local não seja literalmente uma cópia (cópia !== clone) do primeiro item
+          do array do request.
         */
         this.rows.splice(this.rows.length - 1, 1);
-        this.artificial = null;
+        this.artificialClone = null;
       }
 
       imports.records.forEach(rec => this.rows.push(rec));
@@ -221,18 +207,13 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   }
 
   onScroll(event: boolean) {
-    console.log(event);
     if (event && this.pageInfo.hasNext) {
       this.nextPage();
     }
   }
 
-  private _openSnack(text: string, color: 'danger' | 'primary' | 'success' | 'warning') {
+  private _openSnack(text: string, color: 'danger' | 'primary' | 'success' | 'warning' = 'success') {
     this._snackBar.show(text, color);
-  }
-
-  private _reset() {
-    this.onTab({ tab: null, index: this.tipoLancamento - 1 });
   }
 
 }

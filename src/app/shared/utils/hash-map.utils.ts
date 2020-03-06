@@ -1,3 +1,7 @@
+import { LoggerUtils } from './logger.utills';
+import { MatSnackBar } from '@angular/material';
+import { Overlay, ScrollStrategyOptions, ScrollDispatcher } from '@angular/cdk/overlay';
+
 export class HashMapUtils {
 
   // tslint:disable-next-line: variable-name
@@ -8,7 +12,7 @@ export class HashMapUtils {
       if (this._verifyKey(key)) {
         this._values.push([key, JSON.stringify(item)]);
       } else {
-        throw new Error('This HashMapUtils key is already in use');
+        LoggerUtils.throw(new Error('This HashMapUtils key is already in use'));
       }
     } else {
       const newKey = this._newKey;
@@ -46,7 +50,7 @@ export class HashMapUtils {
   }
 
   private static get _newKey() {
-    const length = Math.round(Math.random() * 1000);
+    const length = Math.round(Math.random() * 800);
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*';
     let key = '';
     for (let i = 0; i < length; i++) {

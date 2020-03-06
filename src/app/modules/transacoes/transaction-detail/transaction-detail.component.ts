@@ -16,6 +16,7 @@ import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { RuleService } from '@shared/services/rule.service';
 import { ToastService } from '@shared/services/toast.service';
+import { LoggerUtils } from '@shared/utils/logger.utills';
 
 @Component({
   selector: 'app-tdetail',
@@ -35,9 +36,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   errorText: string;
   account: string;
   destroy: boolean;
-  newTab: boolean;
   tabIsClicked = false;
-  started = false;
   remaining = 0;
   tipoConta = 0;
   impact = 0;
@@ -53,6 +52,22 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
   ngOnInit(): void {
     this.onTab({ tab: null, index: 0 }, true);
+  }
+
+  get tipo() {
+    if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'REC') {
+      return 'MOVIMENTO';
+    } else {
+      return 'EXTRATO';
+    }
+  }
+
+  get buttonLabel() {
+    if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'EXDEB') {
+      return 'Fornecedor';
+    } else {
+      return 'Cliente';
+    }
   }
 
   get suggestions() {
@@ -85,6 +100,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   getComplementos() {
+    const s = (text: string) => {
+      return ArrayUtils.split(text, ' ', '-', '_', ',', '-');
+    }
     /*
      * Transforma todos os complementos (5 strings) em um objeto legível para os componentes filhos
      * (para o componente dos chips especificamente)
@@ -100,19 +118,23 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     let text = '';
     if (ok) {
       text = JSON.stringify({
-        c1: lancamento.complemento01,
-        c2: lancamento.complemento02,
-        c3: lancamento.complemento03,
-        c4: lancamento.complemento04,
-        c5: lancamento.complemento05,
+        c1: lancamento.complemento01 ? s(lancamento.complemento01) : undefined,
+        c2: lancamento.complemento02 ? s(lancamento.complemento02) : undefined,
+        c3: lancamento.complemento03 ? s(lancamento.complemento03) : undefined,
+        c4: lancamento.complemento04 ? s(lancamento.complemento04) : undefined,
+        c5: lancamento.complemento05 ? s(lancamento.complemento05) : undefined,
         l1: arquivo.labelComplemento01,
         l2: arquivo.labelComplemento02,
         l3: arquivo.labelComplemento03,
         l4: arquivo.labelComplemento04,
-        l5: arquivo.labelComplemento05
+        l5: arquivo.labelComplemento05,
+        complete1: lancamento.complemento01,
+        complete2: lancamento.complemento02,
+        complete3: lancamento.complemento03,
+        complete4: lancamento.complemento04,
+        complete5: lancamento.complemento05
       });
     }
-
     return {
       ok,
       text
@@ -144,7 +166,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   regra() {
-    // const regra = new RuleCreateFormat(this.conditions.rules, this.business.cnpj, this.records[0].cnpjContabilidade, this.account);
     const regra = this.ruleCreateFormat;
     const observable = this._ruleService.createRule(regra);
     const verifications = [(this.account && this.account.length > 0), this.conditions.verify()];
@@ -156,14 +177,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   ignorar() {
-    // let observable = this._lancamentoService.ignoreLancamento(this.records[0]);
-    // this.conditions.rules.forEach(rule => {
-    //   if (rule.campo !== 'descricao') {
-    //     const regra = this.ruleCreateFormat;
-    //     regra.contaMovimento = 'IGNORAR';
-    //     observable = this._ruleService.createRule(regra);
-    //   }
-    // });
     const regra = this.ruleCreateFormat;
     regra.contaMovimento = 'IGNORAR';
     const observable = this._ruleService.createRule(regra);
@@ -212,14 +225,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     }
   }
 
-  get nomeArquivo() {
-    if (this.records.length) {
-      return this.records[0].nomeArquivo ? this.records[0].nomeArquivo : this.records[0].arquivo.nome;
-    } else {
-      return '';
-    }
-  }
-
   private _subsAndDisable(obs: Observable<any>) {
     obs.subscribe(() => {
       this.disable();
@@ -234,6 +239,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     switch (event.title) {
       case 'Fornecedor':
+        this.conditions.descricao = s;
+        break;
+      case 'Cliente':
         this.conditions.descricao = s;
         break;
       case 'Documento':
@@ -257,6 +265,11 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       case 'Complemento 5':
         this.conditions.complemento05 = s;
         break;
+      case 'Complemento_2':
+        // É importante manter tanto o Complemento 2 quanto o Complemento_2 pois ele é usado em duas situações
+        // de formas diferentes
+        this.conditions.complemento02 = s;
+        break;
       case 'Nome do Arquivo':
         this.conditions.nomeArquivo = s;
         break;
@@ -267,11 +280,15 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     if (this.conditions.rules.length) {
       this.conditions.tipoPlanilha = [this.records[0].tipoPlanilha];
-      // this.conditions.tipoLancamento = [this.records[0].tipoLancamento];
       this.conditions.tipoMovimento = [this.tipoMovimento];
+    }
+    if (event.clear) {
+      this.conditions = new Rule();
+      this.impact = 0;
     }
 
     this.getByRule();
+
   }
 
   getByRule() {
@@ -286,7 +303,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     } else {
       this.impact = 0;
     }
-
   }
 
   openGrid(): void {
@@ -303,6 +319,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   openHistoric(obs: Observable<Lancamento>): void {
+    this.records[0].contaMovimento = this.account;
     const dialogRef = this.dialog.open(HistoricComponent, {
       maxWidth: '900px',
       width: '90vw',
@@ -325,7 +342,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   onTab(event: MatTabChangeEvent, isFirst: boolean) {
-    this.newTab = true;
     const id = event.index;
     if (id === 0) {
       this.tabsPattern('PAG', 'pagamentos', isFirst);
@@ -339,7 +355,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   async tabsPattern(tipoMovimento: string, tipoLancamentoName: string, isFirst: boolean) {
-    this.tipoConta = 0;
     this.destroy = true;
     if (!isFirst) {
       this.tabIsClicked = true;
@@ -348,8 +363,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     this.tipoMovimento = tipoMovimento;
     this.tipoLancamentoName = tipoLancamentoName;
-    this._partialDisable();
     this.resetErrors();
+    this.tipoConta = 0;
+    this._partialDisable();
     this.nextPage();
     this.getByRule();
     await this._delay(300);
@@ -372,7 +388,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this.account = null;
   }
 
-
   private _remaining() {
     if (this.pageInfo) {
       this.remaining = this.pageInfo.totalElements;
@@ -392,12 +407,14 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this.resetErrors();
 
     if (this.records.length === 0 && (!this.pageInfo || this.pageInfo.hasNext)) {
+      this.tipoConta = 0
       this.nextPage();
     } else if (this.records.length !== 0) {
       this._remaining();
     } else {
       this._remaining();
-      this.resetErrors([`Você conclui todos os ${this.tipoLancamentoName} desta empresa.`]);
+      this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa.`]);
+      this.remaining = 0;
     }
   }
 
@@ -408,14 +425,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     } else if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE') {
       tipoLancamento = 2;
     }
-
-    if (!this.pageInfo.hasNext && this.tipoConta === 0 && this.started && !this.newTab) {
-      this.tipoConta = 4;
-    }
-    this.newTab = false;
-
     const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: this.pageInfo.pageSize };
-    // const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento };
     const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: this.tipoConta };
     Object.assign(filter, pageCriteria);
 
@@ -423,21 +433,22 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     this._lancamentoService.getLancamentos(filter).subscribe(imports => {
 
-      if (!this.started) {
-        this.started = true;
-      }
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
       this._remaining();
       this.resetErrors();
       this._toast.hideSnack();
 
-      if (!imports.records.length && this.tipoConta === 0) {
+      if (imports.pageInfo.totalElements === 0 && this.tipoConta === 0 && filter.tipoMovimento === this.tipoMovimento) {
+        this.tipoConta = 4;
         this.nextPage();
+      }
+
+      if (this.tipoConta === 4 && this.pageInfo.totalElements === 0) {
+        this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa!`]);
       }
 
     });
   }
-
 
 }

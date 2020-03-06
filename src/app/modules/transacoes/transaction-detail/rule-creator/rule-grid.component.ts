@@ -6,8 +6,8 @@ import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { LancamentoService } from '@shared/services/lancamento.service';
 import { PostFormatRule } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
-import { of } from 'rxjs';
 import { ToastService } from '@shared/services/toast.service';
+import { PerformanceTest } from '@shared/decorators/PerformanceTest';
 
 @Component({
   templateUrl: './rule-grid.component.html'
@@ -35,6 +35,9 @@ export class RuleGridComponent implements OnInit, GenericPagination {
     this.nextPage();
   }
 
+  get displayedCols() {
+    return ['descricao', 'portador', 'dataMovimento'];
+  }
 
   nextPage(): void {
     if (this.hasNext()) {
@@ -48,10 +51,6 @@ export class RuleGridComponent implements OnInit, GenericPagination {
           this._toast.hideSnack();
         });
     }
-  }
-
-  getNomeArquivo(record: Lancamento) {
-      return record.nomeArquivo ? record.nomeArquivo : record.arquivo.nome;
   }
 
   hasNext() {
@@ -94,17 +93,7 @@ export class RuleGridComponent implements OnInit, GenericPagination {
   }
 
   hasNomeArquivo(nomeArquivo: string): boolean {
-    return !!nomeArquivo.length;
-  }
-
-  get hasAnyNomeArquivo() {
-    let verify = false;
-    this.info.forEach(lanc => {
-      if (this.getNomeArquivo(lanc)) {
-        verify = true;
-      }
-    });
-    return verify;
+    return this._hasPattern('nomeArquivo');
   }
 
   get hasTipoPlanilha(): boolean {

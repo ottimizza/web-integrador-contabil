@@ -11,7 +11,6 @@ import { RuleListComponent } from './rule-list.component';
 import { CardModule } from '@shared/components/card/card.module';
 import { RuleCardModule } from './rule-card/rule-card.module';
 import { InfoModule } from '@shared/components/info/info.module';
-import { TabModule } from '@shared/components/tab/tab.module';
 import { RuleEditModalModule } from './rule-edit-modal/rule-edit-modal.module';
 import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 import { RuleFilterModule } from './rule-filter/rule-filter.module';
@@ -33,7 +32,6 @@ import { ScrollTrackerModule } from '@shared/directives/scroll-tracker.module';
     MatDialogModule,
     InfoModule,
     FilterModule,
-    TabModule,
     MatSnackBarModule,
     RuleEditModalModule,
     RuleFilterModule,

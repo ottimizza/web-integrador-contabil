@@ -9,7 +9,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   imports: [
     CommonModule,
     FormsModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   exports: [FilterComponent]
 })

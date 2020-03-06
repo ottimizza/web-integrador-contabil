@@ -61,7 +61,8 @@ export class ArrayUtils {
         returningArray = counting;
       }
     });
-    return returningArray;
+
+    return returningArray.filter(arr => arr !== '');
 
   }
 
@@ -81,4 +82,3 @@ export class ArrayUtils {
   }
 
 }
-

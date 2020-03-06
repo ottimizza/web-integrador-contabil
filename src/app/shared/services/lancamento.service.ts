@@ -19,7 +19,6 @@ export class LancamentoService {
   public getLancamentos(searchCriteria: any): Observable<GenericPageableResponse<Lancamento>> {
     const params = this.encode(searchCriteria);
     const url = `${BASE_URL}/api/v1/lancamentos?${params}`;
-    // const url = `${BASE_URL}/api/v1/lancamentos?cnpjEmpresa=${b.cnpj}&pageIndex=${page}` // &tipoConta=0`;
     return this.http.get<GenericPageableResponse<Lancamento>>(url, this._headers);
   }
 
@@ -29,9 +28,10 @@ export class LancamentoService {
   }
 
   public getByRule(rules: PostFormatRule[], e: Empresa): Observable<GenericPageableResponse<Lancamento>> {
-    const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}`;
+    const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}&pageSize=1`;
     return this.http.post<GenericPageableResponse<Lancamento>>(url, rules, this._headers);
   }
+
   public getByRulePaginated(rules: PostFormatRule[], e: Empresa, page: number) {
     const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}&pageIndex=${page}&tipoConta=0`;
     return this.http.post<GenericPageableResponse<Lancamento>>(url, rules, this._headers);
@@ -51,7 +51,6 @@ export class LancamentoService {
     const headers = this.authService.getAuthorizationHeaders();
     return { headers };
   }
-
 
   encode(params: any): string {
     return Object.keys(params).map((key) => {

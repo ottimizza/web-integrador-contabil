@@ -1,19 +1,18 @@
-<div class="main-wrapper pt-3 text-center scrollField" scrollTracker (scrollEnd)="onScroll($event)">
+<div class="main-wrapper pt-3 text-center scrollField" appScrollTracker (scrollEnd)="onScroll($event)">
 
-  <div class="pl-4 pr-4" *ngIf="!hasBusiness">
+  <div class="pl-4 pr-4" *ngIf="!business">
     <app-info [description]="info.text1"></app-info>
   </div>
 
   <app-tfilter (empresa)="onFilter($event)"></app-tfilter>
 
-  <div *ngIf="hasBusiness" class="pl-4 pr-4">
+  <div *ngIf="business" class="pl-4 pr-4">
     <app-info [description]="info.text2"></app-info>
     <br>
   </div>
 
-  <div class="pr-2 pl-2" *ngIf="hasBusiness">
+  <div class="pr-2 pl-2" *ngIf="business">
     <div class="card ml-4 mr-4">
-      <!-- <app-tab (clicked)="onClick($event)" [complete]="false"></app-tab> -->
       <mat-tab-group (selectedTabChange)="onTab($event)" mat-align-tabs="center">
         <mat-tab label="Pagamentos"></mat-tab>
         <mat-tab label="Recebimentos"></mat-tab>
@@ -22,9 +21,9 @@
     <br>
   </div>
 
-  <div *ngIf="hasBusiness && rows.length" (click)="openConfirmation()" class="crm clickIcon" [matTooltip]="info.crm" matTooltipShowDelay="300" matTooltipHideDelay="500"><i class="fad fa-object-ungroup"></i></div>
+  <div *ngIf="business && rows.length" (click)="openConfirmation()" class="crm clickIcon" [matTooltip]="info.crm" matTooltipShowDelay="300" matTooltipHideDelay="500"><i class="fad fa-object-ungroup"></i></div>
 
-  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" *ngIf="rows.length && isSelected">
+  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" *ngIf="rows.length && tabIsSelected">
 
     <div *ngFor="let rule of rows; let i = index" cdkDrag>
       <div class="mb10">
@@ -34,5 +33,4 @@
 
   </div>
 
-  <!-- <button mat-button class="btn btn-dark mb-3 mt-4" *ngIf="hasNext && isSelected" (click)="nextPage()">Carregar mais</button> -->
 </div>

@@ -1,5 +1,10 @@
-<div *ngIf="updateAvailable" class="alert alert-warning m-0" role="alert">
-  Nova versão está disponível! <a href="#">Refresh</a>
+<div *ngIf="updateAvailable" class="d-flex align-items-center alert bg-warning border-0 m-0" role="alert">
+  <div class="text-white">
+    <span>Uma nova versão já está disponível!</span>
+    <button class="btn btn-warning text-white" (click)="refresh()">
+      <i class="fad fa-sync"></i>&nbsp;&nbsp;Atualizar
+    </button>
+  </div>
 </div>
 <div class="page-container overflow-hidden h-100">
   <router-outlet></router-outlet>

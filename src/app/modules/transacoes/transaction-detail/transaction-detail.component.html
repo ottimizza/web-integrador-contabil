@@ -49,7 +49,7 @@
             >
               <app-chips
                 [reset]="destroy"
-                name="Fornecedor"
+                [name]="buttonLabel"
                 [property]="records[0].descricao"
                 class="col"
                 *ngIf="records[0].descricao"
@@ -98,7 +98,7 @@
               ></app-chips>
             </div>
 
-            <div class="row m-0 mb-2" *ngIf="getComplementos().ok">
+            <div class="row m-0 mb-2" *ngIf="getComplementos().ok && tipo == 'MOVIMENTO'">
               <app-chips
                 [reset]="destroy"
                 name="Complementos"
@@ -108,16 +108,28 @@
               ></app-chips>
             </div>
 
+            <div class="row m-0 mb-2" *ngIf="records[0].complemento02 && records[0].arquivo.labelComplemento02 && records[0].complemento02.length > 1 && tipo == 'EXTRATO'">
+              <app-chips
+                [reset]="destroy"
+                name="Complemento_2"
+                [title]="records[0].arquivo.labelComplemento02"
+                [property]="records[0].complemento02"
+                class="col"
+                (selectedInfos)="onDevolve($event)"
+              ></app-chips>
+            </div>
+
             <!-- <div
               class="row m-0 mb-2"
-              *ngIf="nomeArquivo"
+              *ngIf="records[0].nomeArquivo"
             >
               <app-chips
                 [reset]="destroy"
-                name="Nome do Arquivo"
-                [property]="nomeArquivo"
+                name="Nome"
+                title="Nome do Arquivo"
+                [property]="records[0].nomeArquivo"
                 class="col"
-                *ngIf="nomeArquivo"
+                *ngIf="records[0].nomeArquivo"
                 (selectedInfos)="onDevolve($event)"
               ></app-chips>
             </div> -->
@@ -170,7 +182,7 @@
             <input
               type="button"
               class="btn btn-primary col mx-2"
-              value="Fornecedor"
+              [value]="buttonLabel"
               (click)="fornecedor()"
               [matTooltip]="info.provider"
               matTooltipShowDelay="300"

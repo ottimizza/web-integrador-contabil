@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>Lançamentos afetados</h1>
-<div mat-dialog-content scrollTracker (scrollEnd)="onScroll($event)">
+<div mat-dialog-content appScrollTracker (scrollEnd)="onScroll($event)">
   <p>Estes serão os lançamentos afetados</p>
 
   <table class="table table-bordered">
@@ -11,13 +11,13 @@
         <th *ngIf="hasData">Data do Movimento</th>
         <th *ngIf="hasValor">Valor</th>
         <th *ngIf="hasDocumento">Documento</th>
-        <th *ngIf="hasAnyNomeArquivo">Nome do Arquivo</th>
+        <th *ngIf="hasNomeArquivo">Nome do Arquivo</th>
         <!-- <th *ngIf="hasTipoPlanilha">Tipo da Planilha</th> -->
-        <th *ngIf="hasComplemento1">Complemento 1</th>
-        <th *ngIf="hasComplemento2">Complemento 2</th>
-        <th *ngIf="hasComplemento3">Complemento 3</th>
-        <th *ngIf="hasComplemento4">Complemento 4</th>
-        <th *ngIf="hasComplemento5">Complemento 5</th>
+        <th *ngIf="hasComplemento1">{{ info[0].arquivo.labelComplemento01 }}</th>
+        <th *ngIf="hasComplemento2">{{ info[0].arquivo.labelComplemento02 }}</th>
+        <th *ngIf="hasComplemento3">{{ info[0].arquivo.labelComplemento03 }}</th>
+        <th *ngIf="hasComplemento4">{{ info[0].arquivo.labelComplemento04 }}</th>
+        <th *ngIf="hasComplemento5">{{ info[0].arquivo.labelComplemento05 }}</th>
       </tr>
     </thead>
 
@@ -28,7 +28,7 @@
         <td *ngIf="hasData">{{ dateFormat(i.dataMovimento) }}</td>
         <td *ngIf="hasValor">R$ {{ i.valorOriginal }}</td>
         <td *ngIf="hasDocumento">{{ i.documento }}</td>
-        <td *ngIf="hasNomeArquivo(getNomeArquivo(i))">{{ getNomeArquivo(i) }}</td>
+        <td *ngIf="hasNomeArquivo">{{ i.nomeArquivo }}</td>
         <!-- <td *ngIf="hasTipoPlanilha">{{ i.tipoPlanilha }}</td> -->
         <td *ngIf="hasComplemento1">{{ i.complemento01 }}</td>
         <td *ngIf="hasComplemento2">{{ i.complemento02 }}</td>
@@ -39,7 +39,6 @@
     </tbody>
 
   </table>
-
 
   <!-- <button class="btn btn-dark mb-4" mat-button *ngIf="hasNext()" (click)="nextPage()">Carregar mais</button> -->
 
