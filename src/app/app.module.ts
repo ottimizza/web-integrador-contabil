@@ -1,8 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -12,7 +10,6 @@ import { ContentLayoutComponent } from './layout/content-layout/content-layout.c
 import { SidebarLayoutComponent } from './layout/sidebar-layout/sidebar-layout.component';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NavbarLayoutComponent } from './layout/navbar-layout/navbar-layout.component';
 import { AvatarModule } from '@shared/components/avatar/avatar.module';
 import { BrandModule } from '@shared/components/brand/brand.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,10 +17,14 @@ import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.modul
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpErrorInterceptor, ErrorInterceptorProvider } from '@app/interceptor/http.interceptor';
-import { MatDialogModule } from '@angular/material/dialog';
 import { NavbarLayoutModule } from './layout/navbar-layout/navbar-layout.module';
 import { RuleListModule } from '@modules/rule-list/rule-list.module';
 import { TransactionModule } from '@modules/transacoes/transaction.module';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireMessagingModule } from '@angular/fire/messaging';
+import { AngularFireModule } from '@angular/fire';
+import { MessagingService } from '@app/services/messaging.service';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,14 @@ import { TransactionModule } from '@modules/transacoes/transaction.module';
     AvatarModule,
     BrandModule,
     BreadcrumbModule,
+
+    // Firebase Notifications
+    AngularFireDatabaseModule,
+    AngularFireAuthModule,
+    AngularFireMessagingModule,
+    AngularFireModule.initializeApp(environment.firebase),
+
+
 
     // Entry Components
     TransactionModule,

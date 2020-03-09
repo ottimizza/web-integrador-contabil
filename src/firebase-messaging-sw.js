@@ -1,15 +1,13 @@
-// Give the service worker access to Firebase Messaging.
-// Note that you can only use Firebase Messaging here, other Firebase libraries
-// are not available in the service worker.
-importScripts('https://www.gstatic.com/firebasejs/5.5.0/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/5.5.0/firebase-messaging.js');
-
-// Initialize the Firebase app in the service worker by passing in the
-// messagingSenderId.
+importScripts('https://www.gstatic.com/firebasejs/7.10.0/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/7.10.0/firebase-messaging.js');
 firebase.initializeApp({
-	messagingSenderId: '<SenderID>'
+  apiKey: 'AIzaSyBT6UPIBsSCwF9dMgjn-0GoB9ZCgKkoWCs',
+  authDomain: 'integrador-contabil.firebaseapp.com',
+  databaseURL: 'https://integrador-contabil.firebaseio.com',
+  projectId: 'integrador-contabil',
+  storageBucket: 'integrador-contabil.appspot.com',
+  messagingSenderId: '35863190336',
+  appId: '1:35863190336:web:cceec78e5fcae962b538a5',
+  measurementId: 'G-CTNNN4LV0T'
 });
-
-// Retrieve an instance of Firebase Messaging so that it can handle background
-// messages.
 const messaging = firebase.messaging();
