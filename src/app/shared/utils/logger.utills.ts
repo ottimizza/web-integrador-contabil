@@ -10,9 +10,9 @@ export class LoggerUtils {
     });
   }
 
-  public static error(message: any) {
+  public static error(...error: any[]) {
     this._execute(() => {
-      console.error(message);
+      console.error(...error);
     });
   }
 
