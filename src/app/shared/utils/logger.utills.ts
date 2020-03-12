@@ -4,9 +4,9 @@ export class LoggerUtils {
 
   private static _environment: any;
 
-  public static log(message: any) {
+  public static log(...messages: any[]) {
     this._execute(() => {
-      console.log(message);
+      console.log(...messages);
     });
   }
 
