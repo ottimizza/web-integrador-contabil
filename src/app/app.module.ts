@@ -20,8 +20,6 @@ import { HttpErrorInterceptor, ErrorInterceptorProvider } from '@app/interceptor
 import { NavbarLayoutModule } from './layout/navbar-layout/navbar-layout.module';
 import { RuleListModule } from '@modules/rule-list/rule-list.module';
 import { TransactionModule } from '@modules/transacoes/transaction.module';
-import { AngularFireDatabaseModule } from '@angular/fire/database';
-import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { AngularFireModule } from '@angular/fire';
 import { MessagingService } from '@app/services/messaging.service';
@@ -58,8 +56,6 @@ import { MessagingService } from '@app/services/messaging.service';
     BreadcrumbModule,
 
     // Firebase Notifications
-    AngularFireDatabaseModule,
-    AngularFireAuthModule,
     AngularFireMessagingModule,
     AngularFireModule.initializeApp(environment.firebase),
 

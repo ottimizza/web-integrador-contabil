@@ -2,7 +2,7 @@
   "name": "Integrador Contábil",
   "short_name": "OIC 3.0",
   "theme_color": "#1976d2",
-  "gcm_sender_id": "<SenderID>",
+  "gcm_sender_id": "35863190336",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "/",
