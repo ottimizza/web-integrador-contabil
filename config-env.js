@@ -22,7 +22,7 @@ function createEnvironementFile() {
     messagingSenderId: '${getEnvironmentVariable('FIREBASE_MESSAGING_SENDER_ID')}',
     appId: '${getEnvironmentVariable('FIREBASE_API_ID')}',
     measurementId: '${getEnvironmentVariable('FIREBASE_MEASUREMENT_ID')}'
-  }'
+  }
 };`;
 //   return `export const environment = {
 //   production: true,
