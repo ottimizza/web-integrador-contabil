@@ -13,7 +13,7 @@ function createEnvironementFile() {
   storageBaseUrl: '${getEnvironmentVariable('STORAGE_BASE_URL')}',
   storageApplicationId: '${getEnvironmentVariable('STORAGE_APPLICATION_ID', 'accounts-avatar')}',
   storageAccountingId: '${getEnvironmentVariable('STORAGE_ACCOUNTING_ID', 'ottimizza')}',
-  firebase: ${JSON.parse(getEnvironmentVariable('FIREBASE'))}
+  firebase: ${JSON.parse(`${getEnvironmentVariable('FIREBASE')}`)}
 };`;
 //   return `export const environment = {
 //   production: true,
