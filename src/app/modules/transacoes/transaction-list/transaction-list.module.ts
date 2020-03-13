@@ -5,6 +5,7 @@ import { TransactionDetailModule } from '../transaction-detail/transaction-detai
 import { CommonModule } from '@angular/common';
 import { FilterModule } from './filter/filter.module';
 import { InfoModule } from '@shared/components/info/info.module';
+import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.module';
 
 @NgModule({
     declarations: [TransactionListComponent],
@@ -12,7 +13,8 @@ import { InfoModule } from '@shared/components/info/info.module';
         TransactionDetailModule,
         FilterModule,
         CommonModule,
-        InfoModule
+        InfoModule,
+        BreadcrumbModule
     ]
 })
 export class TransactionListModule { }

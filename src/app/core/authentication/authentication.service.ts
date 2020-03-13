@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 import { StorageService } from '@app/services/storage.service';
 
 import { environment } from '@env';
+import { LoggerUtils } from '@shared/utils/logger.utills';
 
 @Injectable({
   providedIn: 'root'
