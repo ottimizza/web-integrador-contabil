@@ -1,9 +1,12 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { User } from '@shared/models/User';
 import { AuthenticationService } from '@app/authentication/authentication.service';
 import { StorageService } from '@app/services/storage.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { MessagingService } from '@app/services/messaging.service';
+import { LoggerUtils } from '@shared/utils/logger.utills';
 // import { OverlayContainer } from '@angular/cdk/overlay';
 
 // import { ThemeService } from '@app/service/theme.service';
@@ -22,55 +25,39 @@ export class NavbarLayoutComponent implements OnInit {
 
   constructor(
     @Inject(DOCUMENT) public document: Document,
+    public dialog: MatDialog,
+    public router: Router,
     public storageService: StorageService,
     public authorizationService: AuthenticationService,
-    public router: Router
-  ) { }
+    public messagingService: MessagingService
+  ) {}
 
   public toggleSidebar() {
     const body = this.document.getElementsByTagName('body')[0];
-    const sidebar: HTMLElement = this.document.getElementsByClassName('left-sidebar')[0] as HTMLElement;
+    const sidebar: HTMLElement = this.document.getElementsByClassName(
+      'left-sidebar'
+    )[0] as HTMLElement;
 
     body.classList.toggle('show-sidebar');
     sidebar.focus();
   }
 
+  public shouldShowAccountingDetailsPage() {
+    return [User.Type.ADMINISTRATOR, User.Type.ACCOUNTANT].includes(this.currentUser.type);
+  }
+
   public logout() {
     this.router.navigate(['auth', 'logout']);
-    // // alert(1);
     // this.authorizationService.revokeToken().subscribe((r1: any) => {
-    //   // alert(2);
     //   this.authorizationService.clearStorage();
-    //   // alert(3);
-    //   this.authorizationService.logout().subscribe((r2: any) => {
-    //     // alert(4);
+    //   return this.authorizationService.logout().subscribe((r2: any) => {
     //     this.authorizationService.authorize();
-    //     // alert(5);
     //   });
     // });
   }
 
-  public altToggleSidebar() {
-    const sidebar = this.document.querySelector('.left-sidebar');
-    const mains = this.document.getElementsByClassName('main-wrapper');
-    // const location = this.document.querySelector('.page-wrapper');
-
-    if (sidebar.classList.contains('alt-collapsed')) {
-      sidebar.classList.remove('alt-collapsed');
-      sidebar.classList.add('un-alt-collapsed');
-      // location.classList.remove('alt-main-wrapper');
-      // tslint:disable: prefer-for-of
-      for (let i = 0; i < mains.length; i++) {
-        mains[i].classList.remove('alt-main-wrapper');
-      }
-    } else {
-      sidebar.classList.remove('un-alt-collapsed');
-      sidebar.classList.add('alt-collapsed');
-      // location.classList.add('alt-main-wrapper');
-      for (let i = 0; i < mains.length; i++) {
-        mains[i].classList.add('alt-main-wrapper');
-      }
-    }
+  allowNotifications() {
+    this.messagingService.requestPermission();
   }
 
   ngOnInit() {
@@ -78,13 +65,13 @@ export class NavbarLayoutComponent implements OnInit {
       this.currentUser = User.fromLocalStorage();
       if (this.currentUser.organization) {
         const avatar = this.currentUser.organization.avatar;
-        this.logo = (avatar) ? avatar : this.DEFAULT_LOGO;
+        this.logo = avatar ? avatar : this.DEFAULT_LOGO;
       }
     });
     this.currentUser = User.fromLocalStorage();
     if (this.currentUser.organization) {
       const avatar = this.currentUser.organization.avatar;
-      this.logo = (avatar) ? avatar : this.DEFAULT_LOGO;
+      this.logo = avatar ? avatar : this.DEFAULT_LOGO;
     }
   }
 }

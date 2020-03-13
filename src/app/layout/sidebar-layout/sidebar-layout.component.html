@@ -1,14 +1,23 @@
-<div class="sidebar-overlay" (click)="hide($event)">
-</div>
+<div class="sidebar-overlay" (click)="hide($event)"></div>
 <aside class="left-sidebar">
   <div class="scroll-sidebar">
     <nav class="sidebar-nav">
-    <ul id="sidebarnav">
+      <ul id="sidebarnav">
         <li *ngFor="let item of items">
-          <a class="waves-effect waves-dark pl-0" [routerLink]="item.url" aria-expanded="false">
-            <i class="fa-fw ml-1 mr-4" [class]="item.icon"></i><span class="hide-menu">{{item.label}}</span>
+          <a
+            class="waves-effect waves-dark"
+            [routerLink]="item.url"
+            aria-expanded="false"
+          >
+            <i class="fa-fw" [class]="item.icon"></i>
+            <span class="hide-menu">{{ item.label }}</span>
           </a>
         </li>
+        <!-- <li class="signin-as-sidebar" (click)="openSiginAsModal()" *ngIf="currentUser.type === 0">
+          <a class="waves-effect waves-dark" aria-expanded="false">
+            <i class="fa-fw" class="fad fa-pencil"></i><span class="hide-menu">Entrar como</span>
+          </a>
+        </li> -->
       </ul>
     </nav>
   </div>
