@@ -1,26 +1,40 @@
 <nav aria-label="breadcrumb" class="breadcrumb">
   <div class="content-wrapper m-0 w-100">
     <div class="container">
-      <ol class="breadcrumb m-0 p-0">
+      <ol class="breadcrumb m-0 p-0 d-none d-md-flex">
         <li *ngFor="let breadcrumb of breadcrumbs" class="breadcrumb-item">
-          <a [routerLink]="[breadcrumb.url, breadcrumb.params]" class="">
-            <span class="d-sm-inline-block d-md-none">
-              <i v-bind:class="item.icon"></i>
-            </span>
+          <a [routerLink]="[breadcrumb.url, breadcrumb.params]">
             <span class="d-md-inline-block">
-              {{breadcrumb.label}}
+              {{ breadcrumb.label }}
             </span>
           </a>
         </li>
         <li *ngIf="append" class="breadcrumb-item">
-          <a [routerLink]="[append.url, append.params]" class="">
-            <span class="d-sm-inline-block d-md-none">
-              <i v-bind:class="item.icon"></i>
-            </span>
+          <a [routerLink]="append.params ? [append.url, append.params] : [append.url]" class="">
             <span class="d-md-inline-block">
-              {{append.label}}
+              {{ append.label }}
             </span>
           </a>
+        </li>
+      </ol>
+
+      <ol class="breadcrumb m-0 p-0 d-flex d-md-none">
+        <li class="breadcrumb-item">
+          <a
+            *ngIf="breadcrumbs.length > 1; else inicio"
+            [routerLink]="route"
+          >
+            <span>
+              Voltar
+            </span>
+          </a>
+          <ng-template #inicio>
+            <a>
+              <span>
+                {{ breadcrumbs[0].label }}
+              </span>
+            </a>
+          </ng-template>
         </li>
       </ol>
     </div>

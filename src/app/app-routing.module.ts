@@ -17,6 +17,9 @@ const routes: Routes = [
   },
   {
     path: 'lancamentos/',
+    data: {
+      breadcrumb: 'Última Digitação'
+    },
     component: ContentLayoutComponent,
     canActivate: [AuthGuard], // Should be replaced with actual auth guard
     children: [
@@ -36,6 +39,9 @@ const routes: Routes = [
   },
   {
     path: 'regras',
+    data: {
+      breadcrumb: 'Regras'
+    },
     component: ContentLayoutComponent,
     canActivate: [AuthGuard], // Should be replaced with actual auth guard
     children: [

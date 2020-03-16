@@ -4,19 +4,18 @@ import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTabChangeEvent } from '@angular/material';
 
-import { ArrayUtils } from '@shared/utils/array.utils';
-import { Empresa } from '@shared/models/Empresa';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
-import { HistoricComponent } from './historic/historic.component';
-import { HistoricService } from '@shared/services/historic.service';
-import { Lancamento } from '@shared/models/Lancamento';
 import { LancamentoService } from '@shared/services/lancamento.service';
-import { PageInfo } from '@shared/models/GenericPageableResponse';
-import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
-import { RuleService } from '@shared/services/rule.service';
+import { HistoricService } from '@shared/services/historic.service';
+import { HistoricComponent } from './historic/historic.component';
+import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { ToastService } from '@shared/services/toast.service';
-import { LoggerUtils } from '@shared/utils/logger.utills';
+import { Rule, RuleCreateFormat } from '@shared/models/Rule';
+import { RuleService } from '@shared/services/rule.service';
+import { ArrayUtils } from '@shared/utils/array.utils';
+import { Lancamento } from '@shared/models/Lancamento';
+import { Empresa } from '@shared/models/Empresa';
 
 @Component({
   selector: 'app-tdetail',
@@ -428,7 +427,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: this.pageInfo.pageSize };
     const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: this.tipoConta };
     Object.assign(filter, pageCriteria);
-
     this._toast.showSnack('Aguardando resposta');
 
     this._lancamentoService.getLancamentos(filter).subscribe(imports => {
@@ -448,6 +446,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa!`]);
       }
 
+    },
+    err => {
+      this._toast.show('Falha ao carregar lançamentos', 'danger');
     });
   }
 

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params, NavigationEnd, PRIMARY_OUTLET } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
-interface BreadCrumb {
+export interface BreadCrumb {
   label: string;
   params?: Params;
   url: string;
@@ -13,16 +13,18 @@ interface BreadCrumb {
   templateUrl: './breadcrumb.component.html'
 })
 export class BreadcrumbComponent implements OnInit {
-
   public breadcrumbs: BreadCrumb[] = [];
 
   @Input()
   public append: BreadCrumb;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
-  }
+  constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
 
-  private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: BreadCrumb[] = []): BreadCrumb[] {
+  private getBreadcrumbs(
+    route: ActivatedRoute,
+    url: string = '',
+    breadcrumbs: BreadCrumb[] = []
+  ): BreadCrumb[] {
     const ROUTE_DATA_BREADCRUMB = 'breadcrumb';
     const ROUTE_DATA_PATH = 'path';
     const children: ActivatedRoute[] = route.children;
@@ -58,6 +60,16 @@ export class BreadcrumbComponent implements OnInit {
     return breadcrumbs;
   }
 
+  get route(): string {
+    // console.log(this.breadcrumbs);
+    // return this.breadcrumbs[this.breadcrumbs.length - 1].url;
+    if (this.append) {
+      return this.breadcrumbs[this.breadcrumbs.length - 1].url;
+    } else {
+      return this.breadcrumbs[this.breadcrumbs.length - 2].url;
+    }
+  }
+
   private isParam(params: Params, segment: string) {
     for (const key of Object.keys(params)) {
       const value = params[key];
@@ -72,10 +84,8 @@ export class BreadcrumbComponent implements OnInit {
     const ROUTE_DATA_BREADCRUMB = 'breadcrumb';
     const root: ActivatedRoute = this.activatedRoute.root;
     this.breadcrumbs = this.getBreadcrumbs(root);
-    this.router.events.pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(event => {
-        this.breadcrumbs = this.getBreadcrumbs(this.activatedRoute.root);
-      });
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(event => {
+      this.breadcrumbs = this.getBreadcrumbs(this.activatedRoute.root);
+    });
   }
-
 }

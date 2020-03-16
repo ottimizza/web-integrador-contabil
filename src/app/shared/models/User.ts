@@ -42,6 +42,7 @@ export class User {
         user.firstName = storedUser.firstName;
         user.lastName = storedUser.lastName;
         user.phone = storedUser.phone;
+        user.organization = storedUser.organization;
         return user;
       }
     }

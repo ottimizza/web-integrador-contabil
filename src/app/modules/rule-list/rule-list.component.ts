@@ -71,6 +71,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
           this._openSnack('Falha ao excluir regra.', 'danger');
         }
 
+      },
+      err => {
+        this._openSnack('Falha ao excluir regra', 'danger');
       });
   }
 
@@ -96,6 +99,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
                 this._openSnack('Regra alterada com sucesso!', 'success');
               }
             });
+          },
+          err => {
+            this._openSnack('Falha ao alterar regra!', 'danger');
           });
       }
     });
@@ -140,6 +146,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
         this.artificialClone = regra;
         this._openSnack('Regra clonada com sucesso!', 'success');
       });
+    },
+    err => {
+      this._openSnack('Falha ao clonar regra!', 'success');
     });
   }
 
@@ -152,6 +161,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       this._service.changePosition(rule).subscribe(info => {
         moveItemInArray(this.rows, event.previousIndex, event.currentIndex);
         this._openSnack('Regra movida com sucesso!', 'success');
+      },
+      err => {
+        this._openSnack('Falha ao mover regra!', 'danger');
       });
     }
   }
@@ -175,6 +187,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       LoggerUtils.log(this.pageInfo.totalElements);
       this.rows.splice(previousIndex, 1);
       this._openSnack('Regra movida com sucesso!', 'success');
+    },
+    err => {
+      this._openSnack('Falha ao mover regra', 'danger');
     });
   }
 
@@ -202,6 +217,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       imports.records.forEach(rec => this.rows.push(rec));
       this.pageInfo = imports.pageInfo;
       this._snackBar.hideSnack();
+    },
+    err => {
+      this._openSnack('Falha ao carregar regras', 'danger');
     });
     this.page++;
   }

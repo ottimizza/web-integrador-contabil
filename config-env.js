@@ -12,7 +12,17 @@ function createEnvironementFile() {
   oauthClientId: '${getEnvironmentVariable('OAUTH2_CLIENT_ID')}',
   storageBaseUrl: '${getEnvironmentVariable('STORAGE_BASE_URL')}',
   storageApplicationId: '${getEnvironmentVariable('STORAGE_APPLICATION_ID', 'accounts-avatar')}',
-  storageAccountingId: '${getEnvironmentVariable('STORAGE_ACCOUNTING_ID', 'ottimizza')}'
+  storageAccountingId: '${getEnvironmentVariable('STORAGE_ACCOUNTING_ID', 'ottimizza')}',
+  firebase: {
+    apiKey: '${getEnvironmentVariable('FIREBASE_API_KEY')}',
+    authDomain: '${getEnvironmentVariable('FIREBASE_AUTH_DOMAIN')}',
+    databaseUrl: '${getEnvironmentVariable('FIREBASE_DATA_URL')}',
+    projectId: '${getEnvironmentVariable('FIREBASE_PROJECT_ID')}',
+    storageBucket: '${getEnvironmentVariable('FIREBASE_STORAGE_BUCKET')}',
+    messagingSenderId: '${getEnvironmentVariable('FIREBASE_MESSAGING_SENDER_ID')}',
+    appId: '${getEnvironmentVariable('FIREBASE_API_ID')}',
+    measurementId: '${getEnvironmentVariable('FIREBASE_MEASUREMENT_ID')}'
+  }
 };`;
 //   return `export const environment = {
 //   production: true,

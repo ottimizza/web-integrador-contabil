@@ -1,10 +1,15 @@
-<div class="main-wrapper pt-2 grayContainer">
-  <div class="info mt-2" *ngIf="!business">
-    <app-info [description]="info.first"></app-info>
+  <app-breadcrumb></app-breadcrumb>
+  <div class="pt-1">
+    <div class="pl-4 pr-4" *ngIf="!business">
+      <app-info [description]="info.first"></app-info>
+    </div>
+    <app-tfilter (empresa)="onDevolve($event)"></app-tfilter>
+    <div class="pl-4 pr-4 mb-4" *ngIf="business && !tabIsSelected">
+      <app-info [description]="info.second"></app-info>
+    </div>
+    <app-tdetail
+      *ngIf="business"
+      [business]="business"
+      (tabSelect)="onSelect($event)"
+    ></app-tdetail>
   </div>
-  <app-tfilter (empresa)="onDevolve($event)"></app-tfilter>
-  <div class="info mt-2 mb-4" *ngIf="business && !tabIsSelected">
-    <app-info [description]="info.second"></app-info>
-  </div>
-  <app-tdetail *ngIf="business" [business]="business" (tabSelect)="onSelect($event)"></app-tdetail>
-</div>
