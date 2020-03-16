@@ -187,6 +187,10 @@ $full-sidebar-width: 240px;
       .left-sidebar {
         left: 0px;
       }
+      .main-wrapper {
+        width: 100vw;
+        margin-left: 0;
+      }
     }
   }
 }
@@ -508,5 +512,25 @@ $full-sidebar-width: 240px;
         cursor: pointer;
       }
     }
+  }
+}
+
+#content-wrapper {
+  width: calc(100vw - 70px);
+  margin-left: 70px;
+}
+
+@media (max-width: 768px) {
+  #content-wrapper {
+    width: 100vw;
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .show-sidebar #content-wrapper {
+    width: calc(100vw - 240px);
+    margin-left: 240px;
+    // background-color: rebeccapurple;
   }
 }

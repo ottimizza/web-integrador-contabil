@@ -41,11 +41,9 @@ export class NavbarLayoutComponent implements OnInit {
 
     const width = window.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth;
 
-    if (width >= 768) {
-      this.document.querySelectorAll('.main-wrapper').forEach(el => {
-        el.classList.toggle('compact-width');
-      });
-    }
+    // if (width >= 768) {
+    // this.document.querySelectorAll('.main-wrapper').forEach(el => el.classList.toggle('compact-width'));
+    // }
 
     sidebar.focus();
   }
