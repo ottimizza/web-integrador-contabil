@@ -40,11 +40,6 @@ export class NavbarLayoutComponent implements OnInit {
     body.classList.toggle('show-sidebar');
 
     const width = window.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth;
-
-    // if (width >= 768) {
-    // this.document.querySelectorAll('.main-wrapper').forEach(el => el.classList.toggle('compact-width'));
-    // }
-
     sidebar.focus();
   }
 
@@ -54,12 +49,6 @@ export class NavbarLayoutComponent implements OnInit {
 
   public logout() {
     this.router.navigate(['auth', 'logout']);
-    // this.authorizationService.revokeToken().subscribe((r1: any) => {
-    //   this.authorizationService.clearStorage();
-    //   return this.authorizationService.logout().subscribe((r2: any) => {
-    //     this.authorizationService.authorize();
-    //   });
-    // });
   }
 
   allowNotifications() {

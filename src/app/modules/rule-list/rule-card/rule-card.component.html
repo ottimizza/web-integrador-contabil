@@ -1,7 +1,6 @@
 <div class="cont row m-0 w-100" *ngIf="rules && rules.regras && rules.regras.length">
 
-
-  <div class="col-2 p-0">
+  <div class="col-2 p-0 desktop">
       <button class="red" (click)="close()" [matTooltip]="info.trash" matTooltipShowDelay="300" matTooltipHideDelay="500">
         <i class="far fa-trash-alt"></i>
       </button>
@@ -13,8 +12,17 @@
       </button>
   </div>
 
+  <div class="col-md-2 col-lg-2 col-xl-2 p-0 mobile">
+      <ng-content></ng-content>
+      <!-- <button class="black" cdkDragHandle>
+        <i class="far fa-arrows"></i>
+      </button> -->
+      <button class="blue">
+        <i class="far fa-cog"></i>
+      </button>
+  </div>
 
-  <div class="col-7 p-0 pt-3 pb-3">
+  <div class="col-lg-7 col-xl-7 col-sm-10 col-xs-10 col-md-10 p-0 pt-3 pb-3">
     <div *ngFor="let rule of rules.regras" class="text-center">
       <strong>{{ getText(rule).field }}</strong>
       <span>{{ getText(rule).text }}</span>
@@ -22,17 +30,13 @@
     </div>
   </div>
 
-
-  <div class="col-2 pt-3 text-center">
+  <div class="col-xl-2 col-lg-2 pt-3 text-center">
     <strong class="account" [matTooltip]="rules.contaMovimento" matTooltipShowDelay="300" matTooltipHideDelay="500">{{ account }}</strong>
   </div>
 
-
-  <div class="col-1 p-0">
+  <div class="col-xl-1 col-lg-1 p-0">
     <div class="h-50 w-100"><i class="far fa-chevron-up clickIcon" (click)="up()" [matTooltip]="info.upAll" matTooltipShowDelay="300" matTooltipHideDelay="500"></i></div>
     <div class="h-50 w-100"><i class="far fa-chevron-down clickIcon" (click)="down()" [matTooltip]="info.upDown" matTooltipShowDelay="300" matTooltipHideDelay="500"></i></div>
   </div>
-
-
 
 </div>

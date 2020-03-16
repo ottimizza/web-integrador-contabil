@@ -49,6 +49,14 @@ export class RuleCardComponent {
     return StringCutterUtils.cut(this.rules.contaMovimento, 20);
   }
 
+  getFullRule() {
+    let rule = '';
+    this.rules.regras.forEach(rl => {
+      rule += `${Rule.getFieldName(rl.campo)} ${this._getCondition(rl.condicao)} ${rl.valor}. `;
+    });
+    return StringCutterUtils.cut(rule, 100);
+  }
+
   cloning() {
     const regras: PostFormatRule[] = [];
     this.rules.regras.forEach(r => {

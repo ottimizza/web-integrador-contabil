@@ -87,3 +87,12 @@ i {
   overflow: auto;
   max-height: calc(100vh - 70px);
 }
+
+.black {
+  margin: 0;
+  width: 100%;
+  border: none;
+  height: 50%;
+  color: white;
+  background-color: rgb(0, 0, 0);
+}

@@ -28,7 +28,11 @@
 
     <div *ngFor="let rule of rows; let i = index" cdkDrag>
       <div class="mb10">
-        <app-ruleico (clone)="onClone($event)" [rules]="rule" [index]="i" (downAll)="downAll($event)" (upAll)="upAll($event)" (delete)="onDelete($event)" (update)="onUpdate($event)"></app-ruleico>
+        <app-ruleico (clone)="onClone($event)" [rules]="rule" [index]="i" (downAll)="downAll($event)" (upAll)="upAll($event)" (delete)="onDelete($event)" (update)="onUpdate($event)">
+          <button class="black" cdkDragHandle>
+            <i class="far fa-arrows icon-top"></i>
+          </button>
+        </app-ruleico>
       </div>
     </div>
 
