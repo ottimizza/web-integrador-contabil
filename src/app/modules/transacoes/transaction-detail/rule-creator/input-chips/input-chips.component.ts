@@ -169,9 +169,6 @@ export class InputChipsComponent implements OnInit, OnChanges {
       title = 'Complemento 5';
     }
 
-    LoggerUtils.log(typeof chip);
-    LoggerUtils.log(chip);
-
     if (!this._chipIsSelected(chip)) {
       this.primitiveMark(chip);
       this.complementList.push({ prop, title });
