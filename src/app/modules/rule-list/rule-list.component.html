@@ -22,14 +22,14 @@
     <br>
   </div>
 
-  <div *ngIf="business && rows.length" (click)="openConfirmation()" class="crm clickIcon" [matTooltip]="info.crm" matTooltipShowDelay="300" matTooltipHideDelay="500"><i class="fad fa-object-ungroup"></i></div>
+  <div *ngIf="business && rows.length" (click)="openConfirmation()" class="crm clickIcon cursor-click" [matTooltip]="info.crm" matTooltipShowDelay="300" matTooltipHideDelay="500"><i class="fad fa-object-ungroup"></i></div>
 
   <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" *ngIf="rows.length && tabIsSelected">
 
     <div *ngFor="let rule of rows; let i = index" cdkDrag>
       <div class="mb10">
         <app-ruleico (clone)="onClone($event)" [rules]="rule" [index]="i" (downAll)="downAll($event)" (upAll)="upAll($event)" (delete)="onDelete($event)" (update)="onUpdate($event)">
-          <button class="black" cdkDragHandle>
+          <button class="black" cdkDragHandle *ngIf="smallSize()">
             <i class="far fa-arrows icon-top"></i>
           </button>
         </app-ruleico>

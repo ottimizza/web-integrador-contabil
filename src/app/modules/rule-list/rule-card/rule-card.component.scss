@@ -1,5 +1,5 @@
 .mobile {
-  display: none;
+  min-height: 50px;
   & button {
     width: 100%;
     height: 50%;
@@ -8,15 +8,6 @@
 
 .desktop button {
   width: 33%;
-}
-
-@media (max-width: 968px) {
-  .desktop {
-    display: none;
-  }
-  .mobile {
-    display: inline;
-  }
 }
 
 .cont {

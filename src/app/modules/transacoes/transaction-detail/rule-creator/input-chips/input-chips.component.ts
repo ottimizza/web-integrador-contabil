@@ -3,7 +3,6 @@ import { DOCUMENT } from '@angular/common';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { DateUtils } from '@shared/utils/date-utils';
 import { Complements } from './models/Complements';
-import { LoggerUtils } from '@shared/utils/logger.utills';
 
 @Component({
   selector: 'app-chips',
@@ -46,7 +45,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
             break;
           case 'reset':
             if (this.reset) {
-            this._deSelectAll();
+              this._deSelectAll();
             }
             break;
         }
@@ -336,9 +335,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
       'às'
     ];
 
-    return words.filter(word => {
-     return !list.includes(word.toLowerCase());
-    });
+    return words.filter(word => !list.includes(word.toLowerCase()));
 
   }
 

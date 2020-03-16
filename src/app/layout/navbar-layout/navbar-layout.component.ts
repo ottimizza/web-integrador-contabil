@@ -39,7 +39,7 @@ export class NavbarLayoutComponent implements OnInit {
     )[0] as HTMLElement;
     body.classList.toggle('show-sidebar');
 
-    const width = window.innerWidth || this.document.documentElement.clientWidth || this.document.body.clientWidth;
+
     sidebar.focus();
   }
 

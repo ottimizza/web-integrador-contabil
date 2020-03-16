@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -16,6 +16,7 @@ import { CompleteRule } from '@shared/models/CompleteRule';
 import { RuleCreateFormat } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -32,6 +33,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   artificialClone: CompleteRule;
 
   constructor(
+    @Inject(DOCUMENT) public doc: Document,
     private _service: RuleService,
     private _snackBar: ToastService,
     private _router: Router,
@@ -225,6 +227,11 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     if (event && this.pageInfo.hasNext) {
       this.nextPage();
     }
+  }
+
+  smallSize() {
+    const width = window.innerWidth ?? this.doc.documentElement.clientWidth ?? this.doc.body.clientWidth;
+    return width < 968;
   }
 
   private _openSnack(text: string, color: 'danger' | 'primary' | 'success' | 'warning' = 'success') {

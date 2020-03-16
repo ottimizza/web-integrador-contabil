@@ -11,7 +11,7 @@ export class ButtonComponent implements OnInit {
   @Input() color: string;
   @Input() value: string;
   @Input() fontColor: string;
-  @Input() preset: string;
+  @Input() preset: 'danger' | 'secondary' | 'low-purple';
 
   ngOnInit(): void {
     if (this.preset === 'danger') {

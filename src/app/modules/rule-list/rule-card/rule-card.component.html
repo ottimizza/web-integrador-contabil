@@ -1,6 +1,6 @@
 <div class="cont row m-0 w-100" *ngIf="rules && rules.regras && rules.regras.length">
 
-  <div class="col-2 p-0 desktop">
+  <div class="col-md-2 col-lg-2 col-xl-2 p-0 desktop" *ngIf="mustBeShown()">
       <button class="red" (click)="close()" [matTooltip]="info.trash" matTooltipShowDelay="300" matTooltipHideDelay="500">
         <i class="far fa-trash-alt"></i>
       </button>
@@ -12,12 +12,12 @@
       </button>
   </div>
 
-  <div class="col-md-2 col-lg-2 col-xl-2 p-0 mobile">
+  <div class="col-md-2 col-lg-2 col-xl-2 p-0 mobile" *ngIf="!mustBeShown()">
       <ng-content></ng-content>
       <!-- <button class="black" cdkDragHandle>
         <i class="far fa-arrows"></i>
       </button> -->
-      <button class="blue">
+      <button class="blue" (click)="haveToBeShown = true">
         <i class="far fa-cog"></i>
       </button>
   </div>
