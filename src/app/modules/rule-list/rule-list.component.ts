@@ -17,6 +17,7 @@ import { RuleCreateFormat } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
 import { DOCUMENT } from '@angular/common';
+import { ActionButton } from '@shared/components/button/button.component';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -31,6 +32,12 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   tabIsSelected = false;
   tipoLancamento = 1;
   artificialClone: CompleteRule;
+
+  buttons: ActionButton[] = [{
+    icon: 'far fa-object-ungroup',
+    id: 'crm',
+    label: 'Exportar para o CRM'
+  }];
 
   constructor(
     @Inject(DOCUMENT) public doc: Document,
@@ -59,6 +66,11 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     return (!this.pageInfo || this.pageInfo.hasNext);
   }
 
+  onAction(event: string) {
+    if (event === 'crm') {
+      this.openConfirmation();
+    }
+  }
 
   onDelete(event: number) {
     const rule = this.rows[event];
@@ -117,7 +129,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     dialogRef.afterClosed().subscribe(results => {
       if (results) {
         this._openSnack('Método ainda não implementado.', 'warning');
-        // // this._openSnack('Regras exportadas com sucesso!', 'success');
       } else {
         this._openSnack('Exportação cancelada', 'warning');
       }
