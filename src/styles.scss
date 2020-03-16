@@ -191,6 +191,9 @@ $full-sidebar-width: 240px;
   }
 }
 @media (min-width: 768px) {
+  .compact-width {
+    width: calc(100vw - 240px);
+  }
   .show-sidebar .main-wrapper {
     margin-left: 240px;
     animation: ease 750ms;
@@ -220,10 +223,10 @@ $full-sidebar-width: 240px;
     }
   }
 }
+
 @media (min-width: 1170px) {
-  .main-wrapper {
+  .compact-width {
     width: calc(100vw - 240px);
-    // margin-left: $full-sidebar-width;
   }
   .mini-sidebar {
     .left-sidebar {
