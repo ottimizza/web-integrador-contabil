@@ -17,6 +17,7 @@ import { RuleCreateFormat } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
 import { DOCUMENT } from '@angular/common';
+import { LoggerUtils } from '@shared/utils/logger.utills';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -184,6 +185,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       if (this.rows.length === this.pageInfo.totalElements || this.rows.length < this.pageInfo.pageSize) {
         this.rows.push(rule);
       }
+      LoggerUtils.log(this.rows.length);
+      LoggerUtils.log(this.pageInfo.totalElements);
       this.rows.splice(previousIndex, 1);
       this._openSnack('Regra movida com sucesso!', 'success');
     },
