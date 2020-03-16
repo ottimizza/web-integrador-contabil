@@ -196,7 +196,7 @@ $full-sidebar-width: 240px;
     animation: ease 750ms;
   }
   .main-wrapper {
-    width: calc(100vw - $compact-sidebar-width);
+    width: calc(100vw - 70px);
     margin-left: $compact-sidebar-width;
   }
   .mini-sidebar {
