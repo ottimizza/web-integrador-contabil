@@ -1,15 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { User } from '@shared/models/User';
-import { AuthenticationService } from '@app/authentication/authentication.service';
-import { StorageService } from '@app/services/storage.service';
-import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { MessagingService } from '@app/services/messaging.service';
-import { LoggerUtils } from '@shared/utils/logger.utills';
-// import { OverlayContainer } from '@angular/cdk/overlay';
 
-// import { ThemeService } from '@app/service/theme.service';
+import { MatDialog } from '@angular/material/dialog';
+
+import { AuthenticationService } from '@app/authentication/authentication.service';
+import { MessagingService } from '@app/services/messaging.service';
+import { StorageService } from '@app/services/storage.service';
+import { User } from '@shared/models/User';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar-layout',
@@ -30,15 +28,12 @@ export class NavbarLayoutComponent implements OnInit {
     public storageService: StorageService,
     public authorizationService: AuthenticationService,
     public messagingService: MessagingService
-  ) {}
+  ) { }
 
   public toggleSidebar() {
     const body = this.document.getElementsByTagName('body')[0];
-    const sidebar: HTMLElement = this.document.getElementsByClassName(
-      'left-sidebar'
-    )[0] as HTMLElement;
+    const sidebar: HTMLElement = this.document.getElementsByClassName('left-sidebar')[0] as HTMLElement;
     body.classList.toggle('show-sidebar');
-
 
     sidebar.focus();
   }

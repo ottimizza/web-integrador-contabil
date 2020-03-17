@@ -1,5 +1,3 @@
-import { LoggerUtils } from '@shared/utils/logger.utills';
-
 export interface PostFormatRule {
 
     campo: string;

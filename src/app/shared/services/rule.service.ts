@@ -57,6 +57,11 @@ export class RuleService {
     return this._http.put(url, rule, this._headers);
   }
 
+  exportToCrm(cnpjEmpresa: string, tipoLancamento: number) {
+    const url = `${BASE_URL}/api/sf/importar?cnpjEmpresa=${cnpjEmpresa}&tipoLancamento=${tipoLancamento}`;
+    return this._http.post(url, {}, this._headers);
+  }
+
   private get _headers() {
     const headers = this._auth.getAuthorizationHeaders();
     return { headers };
