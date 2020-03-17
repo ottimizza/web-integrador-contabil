@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -16,7 +16,8 @@ import { CompleteRule } from '@shared/models/CompleteRule';
 import { RuleCreateFormat } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
-import { LoggerUtils } from '@shared/utils/logger.utills';
+import { DOCUMENT } from '@angular/common';
+import { ActionButton } from '@shared/components/button/button.component';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -32,7 +33,14 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   tipoLancamento = 1;
   artificialClone: CompleteRule;
 
+  buttons: ActionButton[] = [{
+    icon: 'far fa-object-ungroup',
+    id: 'crm',
+    label: 'Exportar para o CRM'
+  }];
+
   constructor(
+    @Inject(DOCUMENT) public doc: Document,
     private _service: RuleService,
     private _snackBar: ToastService,
     private _router: Router,
@@ -58,6 +66,11 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     return (!this.pageInfo || this.pageInfo.hasNext);
   }
 
+  onAction(event: string) {
+    if (event === 'crm') {
+      this.openConfirmation();
+    }
+  }
 
   onDelete(event: number) {
     const rule = this.rows[event];
@@ -116,7 +129,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     dialogRef.afterClosed().subscribe(results => {
       if (results) {
         this._openSnack('Método ainda não implementado.', 'warning');
-        // // this._openSnack('Regras exportadas com sucesso!', 'success');
       } else {
         this._openSnack('Exportação cancelada', 'warning');
       }
@@ -183,8 +195,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       if (this.rows.length === this.pageInfo.totalElements || this.rows.length < this.pageInfo.pageSize) {
         this.rows.push(rule);
       }
-      LoggerUtils.log(this.rows.length);
-      LoggerUtils.log(this.pageInfo.totalElements);
       this.rows.splice(previousIndex, 1);
       this._openSnack('Regra movida com sucesso!', 'success');
     },
@@ -228,6 +238,11 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     if (event && this.pageInfo.hasNext) {
       this.nextPage();
     }
+  }
+
+  smallSize() {
+    const width = window.innerWidth ?? this.doc.documentElement.clientWidth ?? this.doc.body.clientWidth;
+    return width < 968;
   }
 
   private _openSnack(text: string, color: 'danger' | 'primary' | 'success' | 'warning' = 'success') {

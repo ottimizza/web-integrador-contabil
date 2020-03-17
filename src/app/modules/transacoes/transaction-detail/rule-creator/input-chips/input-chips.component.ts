@@ -3,7 +3,6 @@ import { DOCUMENT } from '@angular/common';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { DateUtils } from '@shared/utils/date-utils';
 import { Complements } from './models/Complements';
-import { LoggerUtils } from '@shared/utils/logger.utills';
 
 @Component({
   selector: 'app-chips',
@@ -46,7 +45,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
             break;
           case 'reset':
             if (this.reset) {
-            this._deSelectAll();
+              this._deSelectAll();
             }
             break;
         }
@@ -170,9 +169,6 @@ export class InputChipsComponent implements OnInit, OnChanges {
       title = 'Complemento 5';
     }
 
-    LoggerUtils.log(typeof chip);
-    LoggerUtils.log(chip);
-
     if (!this._chipIsSelected(chip)) {
       this.primitiveMark(chip);
       this.complementList.push({ prop, title });
@@ -210,11 +206,10 @@ export class InputChipsComponent implements OnInit, OnChanges {
   }
 
   info(chip?: string, label?: string) {
-    const title = ` "${this.name}".`;
-    const titulo = ` "${chip}".`;
+    const title = ` "${this.title ? this.title : this.name}".`;
     return {
       copy: 'Clique para selecionar o campo "' + chip + '" de' + title,
-      copyAll: 'Clique duas vezes para selecionar todos os campos de' + titulo,
+      copyAll: 'Clique duas vezes para selecionar todos os campos de' + title,
       comps: `Clique para selecionar "${chip}" de "${label}".`,
     };
   }
@@ -339,9 +334,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
       'às'
     ];
 
-    return words.filter(word => {
-     return !list.includes(word.toLowerCase());
-    });
+    return words.filter(word => !list.includes(word.toLowerCase()));
 
   }
 

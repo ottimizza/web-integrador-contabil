@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Inject } from '@angular/core';
 import { RuleCreateFormat, PostFormatRule, Rule, Condicao } from '@shared/models/Rule';
 import { CompleteRule } from '@shared/models/CompleteRule';
 import { StringCutterUtils } from '@shared/utils/string-cutter.util';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-ruleico',
@@ -17,6 +18,10 @@ export class RuleCardComponent {
   @Output() delete: EventEmitter<number> = new EventEmitter();
   @Output() update: EventEmitter<string> = new EventEmitter();
   @Output() clone: EventEmitter<{ rule: RuleCreateFormat, position: number }> = new EventEmitter();
+
+  haveToBeShown = false;
+
+  constructor(@Inject(DOCUMENT) public doc: Document) { }
 
   get info() {
     return {
@@ -49,6 +54,19 @@ export class RuleCardComponent {
     return StringCutterUtils.cut(this.rules.contaMovimento, 20);
   }
 
+  mustBeShown() {
+    const width = window.innerWidth ?? this.doc.documentElement.clientWidth ?? this.doc.body.clientWidth;
+    return width >= 968 || this.haveToBeShown;
+  }
+
+  getFullRule() {
+    let rule = '';
+    this.rules.regras.forEach(rl => {
+      rule += `${Rule.getFieldName(rl.campo)} ${this._getCondition(rl.condicao)} ${rl.valor}. `;
+    });
+    return StringCutterUtils.cut(rule, 100);
+  }
+
   cloning() {
     const regras: PostFormatRule[] = [];
     this.rules.regras.forEach(r => {
@@ -65,11 +83,13 @@ export class RuleCardComponent {
       ),
       position: this.rules.posicao
     });
+    this.haveToBeShown = false;
   }
 
   close() {
     this.rules = null;
     this.delete.emit(this.index);
+    this.haveToBeShown = true;
   }
 
   openModal(newCamp?: boolean) {
@@ -79,6 +99,7 @@ export class RuleCardComponent {
       rules.regras.push({ campo: null, condicao: null, grupoRegra: null, id: null, valor: null });
     }
     this.update.emit(JSON.stringify(rules));
+    this.haveToBeShown = false;
   }
 
   private _getCondition(condition: Condicao) {
