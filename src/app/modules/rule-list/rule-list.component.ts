@@ -8,16 +8,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
 import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
+import { ActionButton } from '@shared/components/button/button.component';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { ToastService } from '@shared/services/toast.service';
 import { RuleService } from '@shared/services/rule.service';
 import { CompleteRule } from '@shared/models/CompleteRule';
+import { LoggerUtils } from '@shared/utils/logger.utills';
 import { RuleCreateFormat } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
 import { DOCUMENT } from '@angular/common';
-import { ActionButton } from '@shared/components/button/button.component';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -33,11 +34,13 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   tipoLancamento = 1;
   artificialClone: CompleteRule;
 
-  buttons: ActionButton[] = [{
-    icon: 'far fa-object-ungroup',
-    id: 'crm',
-    label: 'Exportar para o CRM'
-  }];
+  buttons: ActionButton[] = [
+    {
+      icon: 'far fa-object-ungroup',
+      id: 'crm',
+      label: 'Exportar'
+    }
+  ];
 
   constructor(
     @Inject(DOCUMENT) public doc: Document,
@@ -64,12 +67,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   get hasNext() {
     return (!this.pageInfo || this.pageInfo.hasNext);
-  }
-
-  onAction(event: string) {
-    if (event === 'crm') {
-      this.openConfirmation();
-    }
   }
 
   onDelete(event: number) {
@@ -128,7 +125,17 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
     dialogRef.afterClosed().subscribe(results => {
       if (results) {
-        this._openSnack('Método ainda não implementado.', 'warning');
+        this._snackBar.showSnack('Exportando, isto pode levar algum tempo...');
+        this._service
+          .exportToCrm(this.business.cnpj, this.tipoLancamento)
+          .subscribe(result => {
+            console.log(result);
+            this._snackBar.show('Regras exportadas com sucesso!', 'success');
+          },
+          err => {
+            this._openSnack('Falha ao exportar regras para o CRM', 'danger');
+            LoggerUtils.error(err);
+        });
       } else {
         this._openSnack('Exportação cancelada', 'warning');
       }
@@ -227,6 +234,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       imports.records.forEach(rec => this.rows.push(rec));
       this.pageInfo = imports.pageInfo;
       this._snackBar.hideSnack();
+
     },
     err => {
       this._openSnack('Falha ao carregar regras', 'danger');

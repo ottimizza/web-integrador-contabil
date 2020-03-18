@@ -106,7 +106,6 @@ export class HistoricComponent implements OnInit {
       l.complemento05
     ];
 
-
     return this.ifChainPattern(results, combo);
   }
 

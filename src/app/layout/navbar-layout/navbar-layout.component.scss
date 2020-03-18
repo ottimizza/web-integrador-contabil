@@ -1,0 +1,17 @@
+@media (max-width: 767px) {
+  .btn-sidebar-toggle-sm { display: block; }
+  .btn-sidebar-toggle-md { display: none; }
+  // .btn-sidebar-toggle-lg { display: none; }
+}
+
+@media (min-width: 768px) {
+  .btn-sidebar-toggle-sm { display: none; }
+  .btn-sidebar-toggle-md { display: block; }
+  // .btn-sidebar-toggle-lg { display: none; }
+}
+
+// @media (min-width: 1170px) {
+//   .btn-sidebar-toggle-sm { display: none; }
+//   .btn-sidebar-toggle-md { display: none; }
+//   .btn-sidebar-toggle-lg { display: block; }
+// }

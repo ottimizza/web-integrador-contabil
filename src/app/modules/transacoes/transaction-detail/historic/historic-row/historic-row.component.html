@@ -3,9 +3,11 @@
   <div [ngClass]="'col-' + col">
     <div class="hrow-select">
       <span>{{ span }}:</span>
+      <br>
       <input type="text" (keyup)="devolve($event)" class="hrow-field">
     </div>
   </div>
+
   <div class="col">
     <div class="hrow-select">
       <ng-content></ng-content>
