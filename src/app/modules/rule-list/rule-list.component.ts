@@ -125,10 +125,11 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
     dialogRef.afterClosed().subscribe(results => {
       if (results) {
-        this._snackBar.showSnack('Exportando...');
+        this._snackBar.showSnack('Exportando, isto pode levar algum tempo...');
         this._service
           .exportToCrm(this.business.cnpj, this.tipoLancamento)
           .subscribe(result => {
+            console.log(result);
             this._snackBar.show('Regras exportadas com sucesso!', 'success');
           },
           err => {
