@@ -14,7 +14,7 @@ export class ToastService {
   private warning = ['alert', 'bg-warning', 'text-white', 'f-size'];
   private danger = ['alert', 'bg-danger', 'text-white', 'f-size'];
 
-  constructor(public snackbar: MatSnackBar) {}
+  constructor(public snackbar: MatSnackBar) { }
 
   public show(
     message: string,
