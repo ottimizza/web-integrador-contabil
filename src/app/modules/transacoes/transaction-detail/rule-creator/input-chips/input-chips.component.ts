@@ -339,4 +339,3 @@ export class InputChipsComponent implements OnInit, OnChanges {
   }
 
 }
-
