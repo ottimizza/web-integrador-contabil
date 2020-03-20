@@ -127,7 +127,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       if (results) {
         this._snackBar.showSnack('Exportando, isto pode levar algum tempo...');
         this._service
-          .exportToCrm(this.business.cnpj, this.tipoLancamento)
+          .export(this.business.cnpj, this.tipoLancamento)
           .subscribe(result => {
             console.log(result);
             this._snackBar.show('Regras exportadas com sucesso!', 'success');
