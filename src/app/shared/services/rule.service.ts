@@ -21,6 +21,16 @@ export class RuleService {
     return this._http.post(`${BASE_URL}/api/v1/regras`, rule, this._headers);
   }
 
+  getAllIds(cnpjEmpresa: string, tipoLancamento: number) {
+    const url = `${BASE_URL}/api/sf/id?cnpjEmpresa=${cnpjEmpresa}&tipoLancamento=${tipoLancamento}`;
+    return this._http.get<number[]>(url, this._headers);
+  }
+
+  exportById(id: number) {
+    const url = `${BASE_URL}/api/sf/patch/${id}`;
+    return this._http.patch(url, {}, this._headers);
+  }
+
   get(searchCriteria: any): Observable<GenericPageableResponse<CompleteRule>> {
     const params = this.encode(searchCriteria);
     const url = `${BASE_URL}/api/v1/regras?${params}`;

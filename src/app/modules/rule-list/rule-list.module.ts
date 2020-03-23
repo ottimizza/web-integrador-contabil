@@ -5,7 +5,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTabsModule, MatButtonModule } from '@angular/material';
+import { MatTabsModule, MatButtonModule, MatProgressBarModule } from '@angular/material';
 
 import { RuleListComponent } from './rule-list.component';
 import { CardModule } from '@shared/components/card/card.module';
@@ -40,7 +40,8 @@ import { ActionButtonsModule } from '@shared/components/button/button.module';
     MatButtonModule,
     ScrollTrackerModule,
     BreadcrumbModule,
-    ActionButtonsModule
+    ActionButtonsModule,
+    MatProgressBarModule
   ],
   entryComponents: [
     RuleEditModalComponent,

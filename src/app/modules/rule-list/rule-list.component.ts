@@ -33,6 +33,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   tabIsSelected = false;
   tipoLancamento = 1;
   artificialClone: CompleteRule;
+  exportedRules = 0;
+  totalRules = 0;
+  isExporting: boolean;
 
   buttons: ActionButton[] = [
     {
@@ -125,16 +128,34 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
     dialogRef.afterClosed().subscribe(results => {
       if (results) {
+        this.exportedRules = 0;
         this._snackBar.showSnack('Exportando, isto pode levar algum tempo...');
-        this._service
-          .export(this.business.cnpj, this.tipoLancamento)
-          .subscribe(result => {
-            console.log(result);
-            this._snackBar.show('Regras exportadas com sucesso!', 'success');
-          },
-          err => {
-            this._openSnack('Falha ao exportar regras para o CRM', 'danger');
-            LoggerUtils.error(err);
+        this.isExporting = true;
+        this._service.getAllIds(this.business.cnpj, this.tipoLancamento).subscribe(ids => {
+          this.totalRules = ids.length
+
+          ids.forEach(id => {
+            this._service.exportById(id).subscribe(rule => {
+              this.exportedRules++;
+
+              if (this.exportedRules === ids.length) {
+                this._openSnack('Regras exportadas com sucesso!');
+                this.isExporting = false;
+              }
+
+            },
+            err => {
+              this._openSnack('Falha ao exportar regras');
+              LoggerUtils.error(err);
+              this.isExporting = false;
+            });
+          });
+
+        },
+        err => {
+          this._openSnack('Falha ao obter regras para a exportação', 'danger');
+          LoggerUtils.error(err);
+          this.isExporting = false;
         });
       } else {
         this._openSnack('Exportação cancelada', 'warning');
@@ -221,12 +242,12 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     this._service.get(filter).subscribe(imports => {
 
       if (JSON.stringify(this.artificialClone) === JSON.stringify(this.rows[this.rows.length - 1])) {
-        /*
-          Sempre que uma regra é clonada, o clone é artificialmente inserido no array local para que não seja necessário
-          bombardear o servidor com novos requests.
-          Esta verificação garante que o último item do array local não seja literalmente uma cópia (cópia !== clone) do primeiro item
-          do array do request.
-        */
+      /*
+        Sempre que uma regra é clonada, o clone é artificialmente inserido no array local para que não seja necessário
+        bombardear o servidor com novos requests.
+        Esta verificação garante que o último item do array local não seja literalmente uma cópia (cópia !== clone) do primeiro item
+        do array do request.
+      */
         this.rows.splice(this.rows.length - 1, 1);
         this.artificialClone = null;
       }
