@@ -1,5 +1,6 @@
 <div class="scrollField" appScrollTracker (scrollEnd)="onScroll($event)">
   <app-breadcrumb></app-breadcrumb>
+  <mat-progress-bar mode="determinate" [value]="exportedRules / totalRules * 100" *ngIf="isExporting" [color]="'#000'"></mat-progress-bar>
   <app-actions *ngIf="business && rows.length" [buttons]="buttons" (clicked)="openConfirmation()"></app-actions>
   <div class="mb-3"></div>
 
