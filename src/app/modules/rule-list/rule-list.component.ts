@@ -132,7 +132,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
         this._snackBar.showSnack('Exportando, isto pode levar algum tempo...');
         this.isExporting = true;
         this._service.getAllIds(this.business.cnpj, this.tipoLancamento).subscribe(ids => {
-          this.totalRules = ids.length
+          this.totalRules = ids.length;
 
           ids.forEach(id => {
             this._service.exportById(id).subscribe(rule => {
@@ -145,7 +145,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
             },
             err => {
-              this._openSnack('Falha ao exportar regras');
+              this._openSnack('Falha ao exportar regras', 'danger');
               LoggerUtils.error(err);
               this.isExporting = false;
             });
@@ -188,7 +188,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       });
     },
     err => {
-      this._openSnack('Falha ao clonar regra!', 'success');
+      this._openSnack('Falha ao clonar regra!', 'danger');
     });
   }
 
