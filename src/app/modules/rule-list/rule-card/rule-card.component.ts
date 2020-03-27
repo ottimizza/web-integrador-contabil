@@ -1,7 +1,8 @@
 import { Component, Input, Output, EventEmitter, Inject } from '@angular/core';
+
 import { RuleCreateFormat, PostFormatRule, Rule, Condicao } from '@shared/models/Rule';
-import { CompleteRule } from '@shared/models/CompleteRule';
 import { StringCutterUtils } from '@shared/utils/string-cutter.util';
+import { CompleteRule } from '@shared/models/CompleteRule';
 import { DOCUMENT } from '@angular/common';
 
 @Component({

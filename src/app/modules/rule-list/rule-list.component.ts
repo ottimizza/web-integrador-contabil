@@ -185,6 +185,10 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
         this.rows.sort((a, b) => a.posicao - b.posicao);
         this.artificialClone = regra;
         this._openSnack('Regra clonada com sucesso!', 'success');
+      },
+      err => {
+        this._openSnack('Falha ao localizar regra', 'danger');
+        LoggerUtils.log(err);
       });
     },
     err => {
