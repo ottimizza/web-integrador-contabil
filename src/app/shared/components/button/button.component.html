@@ -1,12 +1,13 @@
-<div [ngClass]="sizing">
-  <div class="row w-100 m-0" [style]="background">
-    <div class="col-2 text-center">
-      <i [ngClass]="'far fa-' + icon"></i>
-    </div>
-    <div class="col-10">
-      <strong [style]="fontColor">
-        {{ value }}
-      </strong>
-    </div>
+<div class="content-wrapper full-width-nav-tabs py-2 mb-3">
+  <div class="container">
+    <ul class="nav nav-pills flex-row-reverse">
+      <li class="nav-item notification-sidebar-toggle" [ngClass]="{'mx-auto': buttons.length > 1}" *ngFor="let btn of buttons">
+        <button *ngIf="btn.verification != false" class="btn nav-link py-1 px-2 active" [class]="btn.color ? btn.color : 'btn-primary'"
+          (click)="select(btn.id)">
+          <i aria-hidden="true" [class]="btn.icon"></i>
+          <span class="ml-2"> {{ btn.label.toUpperCase() }} </span>
+        </button>
+      </li>
+    </ul>
   </div>
 </div>

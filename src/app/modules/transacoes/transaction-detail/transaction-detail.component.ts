@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { MatDialog } from '@angular/material/dialog';
 import { MatTabChangeEvent } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { LancamentoService } from '@shared/services/lancamento.service';

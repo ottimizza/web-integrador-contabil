@@ -24,17 +24,7 @@ export class AuthCallbackComponent implements OnInit {
         that.authenticationService.exchange(this.callbackCode).subscribe((response: any) => {
           if (response.access_token) {
             AuthSession.fromOAuthResponse(response).store().then(async () => {
-              // const storeUserInfo = that.authenticationService.storeUserInfo();
-              // const storeTokenInfo = that.authenticationService.storeTokenInfo();
-
-              // return Promise.all([
-              //   storeUserInfo,
-              //   storeTokenInfo
-              // ]).then((values) => {
               that.router.navigate(['lancamentos']);
-              // }).catch((e) => {
-              //   console.log(e);
-              // });
             });
           }
         });

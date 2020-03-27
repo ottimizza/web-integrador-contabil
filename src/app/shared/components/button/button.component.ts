@@ -1,41 +1,32 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+
+export class ActionButton {
+  id: string;
+  icon: string;
+  label: string;
+  verification?: boolean;
+  color?:
+    | 'btn-primary'
+    | 'btn-secondary'
+    | 'btn-success'
+    | 'btn-danger'
+    | 'btn-warning'
+    | 'btn-info'
+    | 'btn-light'
+    | 'btn-link'
+    | 'btn-dark'
+    | 'btn-link';
+}
 
 @Component({
-  selector: 'app-button',
+  selector: 'app-actions',
   templateUrl: './button.component.html'
 })
-export class ButtonComponent implements OnInit {
+export class ActionButtonsComponent {
+  @Input() buttons: ActionButton[];
+  @Output() clicked: EventEmitter<string> = new EventEmitter();
 
-  @Input() sizing: string;
-  @Input() icon: string;
-  @Input() color: string;
-  @Input() value: string;
-  @Input() fontColor: string;
-  @Input() preset: string;
-
-  ngOnInit(): void {
-    if (this.preset === 'danger') {
-      this._preset('rgb(255, 0, 0)', 'white');
-    } else if (this.preset === 'secondary') {
-      this._preset('rgb(83, 83, 83)', 'white');
-    } else if (this.preset === 'low-purple') {
-      this._preset('rgb(84, 0, 255)', 'white');
-    }
+  select(id: string) {
+    this.clicked.emit(id);
   }
-
-  get background() {
-    const color = this.color ? this.color : 'blue';
-    return `background-color: ${color};`;
-  }
-
-  get font() {
-    const fontColor = this.fontColor ? this.fontColor : 'white';
-    return `color: ${fontColor};`;
-  }
-
-  private _preset(color: string, fontColor: string) {
-    this.color = color;
-    this.fontColor = fontColor;
-  }
-
 }

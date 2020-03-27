@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -8,15 +8,17 @@ import { MatDialog } from '@angular/material/dialog';
 import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
 import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
+import { ActionButton } from '@shared/components/button/button.component';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { ToastService } from '@shared/services/toast.service';
 import { RuleService } from '@shared/services/rule.service';
 import { CompleteRule } from '@shared/models/CompleteRule';
+import { LoggerUtils } from '@shared/utils/logger.utills';
 import { RuleCreateFormat } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
-import { LoggerUtils } from '@shared/utils/logger.utills';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -31,8 +33,20 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   tabIsSelected = false;
   tipoLancamento = 1;
   artificialClone: CompleteRule;
+  exportedRules = 0;
+  totalRules = 0;
+  isExporting: boolean;
+
+  buttons: ActionButton[] = [
+    {
+      icon: 'far fa-object-ungroup',
+      id: 'crm',
+      label: 'Exportar'
+    }
+  ];
 
   constructor(
+    @Inject(DOCUMENT) public doc: Document,
     private _service: RuleService,
     private _snackBar: ToastService,
     private _router: Router,
@@ -57,7 +71,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   get hasNext() {
     return (!this.pageInfo || this.pageInfo.hasNext);
   }
-
 
   onDelete(event: number) {
     const rule = this.rows[event];
@@ -115,8 +128,35 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
     dialogRef.afterClosed().subscribe(results => {
       if (results) {
-        this._openSnack('Método ainda não implementado.', 'warning');
-        // // this._openSnack('Regras exportadas com sucesso!', 'success');
+        this.exportedRules = 0;
+        this._snackBar.showSnack('Exportando, isto pode levar algum tempo...');
+        this.isExporting = true;
+        this._service.getAllIds(this.business.cnpj, this.tipoLancamento).subscribe(ids => {
+          this.totalRules = ids.length;
+
+          ids.forEach(id => {
+            this._service.exportById(id).subscribe(rule => {
+              this.exportedRules++;
+
+              if (this.exportedRules === ids.length) {
+                this._openSnack('Regras exportadas com sucesso!');
+                this.isExporting = false;
+              }
+
+            },
+            err => {
+              this._openSnack('Falha ao exportar regras', 'danger');
+              LoggerUtils.error(err);
+              this.isExporting = false;
+            });
+          });
+
+        },
+        err => {
+          this._openSnack('Falha ao obter regras para a exportação', 'danger');
+          LoggerUtils.error(err);
+          this.isExporting = false;
+        });
       } else {
         this._openSnack('Exportação cancelada', 'warning');
       }
@@ -145,10 +185,14 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
         this.rows.sort((a, b) => a.posicao - b.posicao);
         this.artificialClone = regra;
         this._openSnack('Regra clonada com sucesso!', 'success');
+      },
+      err => {
+        this._openSnack('Falha ao localizar regra', 'danger');
+        LoggerUtils.log(err);
       });
     },
     err => {
-      this._openSnack('Falha ao clonar regra!', 'success');
+      this._openSnack('Falha ao clonar regra!', 'danger');
     });
   }
 
@@ -183,8 +227,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       if (this.rows.length === this.pageInfo.totalElements || this.rows.length < this.pageInfo.pageSize) {
         this.rows.push(rule);
       }
-      LoggerUtils.log(this.rows.length);
-      LoggerUtils.log(this.pageInfo.totalElements);
       this.rows.splice(previousIndex, 1);
       this._openSnack('Regra movida com sucesso!', 'success');
     },
@@ -204,12 +246,12 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     this._service.get(filter).subscribe(imports => {
 
       if (JSON.stringify(this.artificialClone) === JSON.stringify(this.rows[this.rows.length - 1])) {
-        /*
-          Sempre que uma regra é clonada, o clone é artificialmente inserido no array local para que não seja necessário
-          bombardear o servidor com novos requests.
-          Esta verificação garante que o último item do array local não seja literalmente uma cópia (cópia !== clone) do primeiro item
-          do array do request.
-        */
+      /*
+        Sempre que uma regra é clonada, o clone é artificialmente inserido no array local para que não seja necessário
+        bombardear o servidor com novos requests.
+        Esta verificação garante que o último item do array local não seja literalmente uma cópia (cópia !== clone) do primeiro item
+        do array do request.
+      */
         this.rows.splice(this.rows.length - 1, 1);
         this.artificialClone = null;
       }
@@ -217,6 +259,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       imports.records.forEach(rec => this.rows.push(rec));
       this.pageInfo = imports.pageInfo;
       this._snackBar.hideSnack();
+
     },
     err => {
       this._openSnack('Falha ao carregar regras', 'danger');
@@ -228,6 +271,11 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     if (event && this.pageInfo.hasNext) {
       this.nextPage();
     }
+  }
+
+  smallSize() {
+    const width = window.innerWidth ?? this.doc.documentElement.clientWidth ?? this.doc.body.clientWidth;
+    return width < 968;
   }
 
   private _openSnack(text: string, color: 'danger' | 'primary' | 'success' | 'warning' = 'success') {

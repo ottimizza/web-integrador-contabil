@@ -52,9 +52,9 @@ describe('Utils: Array', () => {
     });
 
     it('Deve realizar splits consecutivos quando houver mais de um divisor', () => {
-      const cpf = '111.222.333-44';
-      const split = ArrayUtils.split(cpf, '.', '-');
-      expect(ArrayUtils.compare(split, ['111', '222', '333', '44'])).toBeTruthy();
+      const cpf = '68.621.197/0001-10';
+      const split = ArrayUtils.split(cpf, '.', '/', '-');
+      expect(ArrayUtils.compare(split, ['68', '621', '197', '0001', '10'])).toBeTruthy();
     });
 
   });

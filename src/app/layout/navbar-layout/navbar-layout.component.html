@@ -1,23 +1,52 @@
-<header class="position-absolute bg-white w-100 shadow-sm" style="z-index: 1000; height: 70px;">
-  <div class="row h-100 m-0">
-    <div class="h-100 d-flex my-auto mr-auto mr-lg-0" style="width: 70px; font-size: x-large;">
-      <a class="d-block m-auto cursor-pointer" (click)="toggleSidebar()">
+<header class="topbar is_stuck" style="position: absolute; top: 0px; width: 100%;">
+  <nav class="navbar top-navbar navbar-toggleable-sm navbar-light">
+    <div class="navbar-header d-flex align-items-center">
+
+      <!-- Botão Toggle Sidebar: COMPACT - DEFAULT -->
+      <a class="btn-sidebar-toggle-sm text-muted" (click)="toggleSidebar()"
+         style="min-width: 70px;">
         <i class="fa fa-bars fa-md"></i>
       </a>
-    </div>
 
-    <div class="fit-content my-auto mx-md-0">
-      <img class="rounded bg-transparent" style="width: 170px;" [src]="logo" />
-    </div>
-
-    <div class="h-100 align-content-center d-flex my-auto ml-auto p-2" style="width: 70px;">
-      <a [matMenuTriggerFor]="menu" class="cursor-pointer">
-        <img
-          class="img-thumbnail rounded-circle"
-          [src]="currentUser?.avatar || './assets/images/Portrait_Placeholder.png'"
-          onError="this.src='./assets/images/Portrait_Placeholder.png';"
-        />
+      <!-- Botão Toggle Sidebar: COMPACT - DEFAULT -->
+      <a class="btn-sidebar-toggle-md text-muted" (click)="toggleSidebar()"
+         style="min-width: 70px;">
+        <i class="fa fa-bars fa-md"></i>
       </a>
+
+      <!-- Botão Toggle Sidebar Type: COMPACT - DEFAULT -->
+      <!-- <a class="btn-sidebar-toggle-lg text-muted" (click)="toggleSidebarStyle()"
+         style="min-width: 70px;">
+        <i class="fa fa-bars fa-md"></i>
+      </a> -->
+
+      <app-brand [src]="logo || DEFAULT_LOGO" classes="px-2" class="text-center">
+      </app-brand>
+    </div>
+    <div class="navbar-collapse">
+      <ul class="navbar-nav mr-auto mt-md-0">
+        <li class="nav-item px-3">
+          <a class="d-none nav-link sidebar-toggler hidden-md-up text-muted waves-effect waves-dark" (click)="toggleSidebar()">
+            <i class="fa fa-bars fa-md"></i>
+          </a>
+        </li>
+      </ul>
+
+
+      <!-- <div class="row align-items-center mr-3 signin-as-navbar signin-as-navbar">
+        <span class="accounting-name">
+          {{ currentUser.organization.name }}
+        </span>
+        <i class="fa fa-pencil mr-4 ml-3 cursor-pointer" (click)="openSiginAsModal()" *ngIf="currentUser.type === 0"></i>
+      </div> -->
+
+      <ul class="navbar-nav my-lg-0">
+        <li class="nav-item dropdown">
+          <a [matMenuTriggerFor]="menu" class="cursor-pointer">
+            <img class="img-thumbnail rounded-circle"
+              [src]="currentUser.avatar || './assets/images/Portrait_Placeholder.png'" width="45" height="45"
+              onError="this.src='./assets/images/Portrait_Placeholder.png';">
+          </a>
       <mat-menu #menu="matMenu">
         <a
           [href]="'https://accounts.ottimizza.com.br/dashboard/users/' + currentUser.id"
@@ -40,6 +69,8 @@
           <i class="fas fa-sign-out-alt" aria-hidden="true"></i>&nbsp;&nbsp;<span>Sair</span>
         </a>
       </mat-menu>
+        </li>
+      </ul>
     </div>
-  </div>
+  </nav>
 </header>

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { AuthenticationService } from '@app/authentication/authentication.service';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
 import { CompleteRule } from '@shared/models/CompleteRule';
+import { GenericResponse } from '@shared/models/GenericResponse';
 
 const BASE_URL = environment.storageBaseUrl;
 
@@ -18,6 +19,16 @@ export class RuleService {
 
   createRule(rule: RuleCreateFormat): Observable<any> {
     return this._http.post(`${BASE_URL}/api/v1/regras`, rule, this._headers);
+  }
+
+  getAllIds(cnpjEmpresa: string, tipoLancamento: number) {
+    const url = `${BASE_URL}/api/sf/id?cnpjEmpresa=${cnpjEmpresa}&tipoLancamento=${tipoLancamento}`;
+    return this._http.get<number[]>(url, this._headers);
+  }
+
+  exportById(id: number) {
+    const url = `${BASE_URL}/api/sf/patch/${id}`;
+    return this._http.patch(url, {}, this._headers);
   }
 
   get(searchCriteria: any): Observable<GenericPageableResponse<CompleteRule>> {
@@ -41,7 +52,7 @@ export class RuleService {
     return this._http.put(url, {}, this._headers);
   }
 
-  // ! DEPRECATED
+  // ! WORKING, BUT DEPRECATED
   // move(rule: CompleteRule) {
   //   const url = `${BASE_URL}/api/v1/regras/${rule.id}/alterar_posicao?cnpjEmpresa=${rule.cnpjEmpresa}&tipoLancamento=${rule.tipoLancamento}`;
   //   return this._http.put(url, { posicao: rule.posicao }, this._headers);
@@ -55,6 +66,11 @@ export class RuleService {
   update(id: number, rule: { regras: PostFormatRule[], contaMovimento: string }) {
     const url = `${BASE_URL}/api/v1/regras/${id}`;
     return this._http.put(url, rule, this._headers);
+  }
+
+  export(cnpjEmpresa: string, tipoLancamento: number): Observable<GenericResponse<undefined>> {
+    const url = `${BASE_URL}/api/sf/importar?cnpjEmpresa=${cnpjEmpresa}&tipoLancamento=${tipoLancamento}`;
+    return this._http.post<GenericResponse<undefined>>(url, {}, this._headers);
   }
 
   private get _headers() {

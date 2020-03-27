@@ -1,37 +1,58 @@
-<app-breadcrumb></app-breadcrumb>
-<div class="pt-1 text-center scrollField" appScrollTracker (scrollEnd)="onScroll($event)">
+<div class="scrollField" appScrollTracker (scrollEnd)="onScroll($event)">
+  <app-breadcrumb></app-breadcrumb>
+  <mat-progress-bar mode="determinate" [value]="exportedRules / totalRules * 100" *ngIf="isExporting" [color]="'#000'"></mat-progress-bar>
+  <app-actions *ngIf="business && rows.length" [buttons]="buttons" (clicked)="openConfirmation()"></app-actions>
+  <div class="mb-3"></div>
 
-  <div class="pl-4 pr-4" *ngIf="!business">
-    <app-info [description]="info.text1"></app-info>
-  </div>
-
-  <app-tfilter (empresa)="onFilter($event)"></app-tfilter>
-
-  <div *ngIf="business" class="pl-4 pr-4">
-    <app-info [description]="info.text2"></app-info>
-    <br>
-  </div>
-
-  <div class="pr-2 pl-2" *ngIf="business">
-    <div class="card ml-4 mr-4">
-      <mat-tab-group (selectedTabChange)="onTab($event)" mat-align-tabs="center">
-        <mat-tab label="Pagamentos"></mat-tab>
-        <mat-tab label="Recebimentos"></mat-tab>
-      </mat-tab-group>
+  <div
+    class="pt-1 text-center">
+    <div class="pl-4 pr-4" *ngIf="!business">
+      <app-info [description]="info.text1"></app-info>
     </div>
-    <br>
-  </div>
 
-  <div *ngIf="business && rows.length" (click)="openConfirmation()" class="crm clickIcon" [matTooltip]="info.crm" matTooltipShowDelay="300" matTooltipHideDelay="500"><i class="fad fa-object-ungroup"></i></div>
+    <app-tfilter (empresa)="onFilter($event)"></app-tfilter>
 
-  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" *ngIf="rows.length && tabIsSelected">
+    <div *ngIf="business" class="pl-4 pr-4">
+      <app-info [description]="info.text2"></app-info>
+      <br />
+    </div>
 
-    <div *ngFor="let rule of rows; let i = index" cdkDrag>
-      <div class="mb10">
-        <app-ruleico (clone)="onClone($event)" [rules]="rule" [index]="i" (downAll)="downAll($event)" (upAll)="upAll($event)" (delete)="onDelete($event)" (update)="onUpdate($event)"></app-ruleico>
+    <div class="pr-2 pl-2" *ngIf="business">
+      <div class="card ml-4 mr-4">
+        <mat-tab-group
+          (selectedTabChange)="onTab($event)"
+          mat-align-tabs="center"
+        >
+          <mat-tab label="Pagamentos"></mat-tab>
+          <mat-tab label="Recebimentos"></mat-tab>
+        </mat-tab-group>
+      </div>
+      <br />
+    </div>
+
+    <div
+      cdkDropList
+      class="example-list"
+      (cdkDropListDropped)="drop($event)"
+      *ngIf="rows.length && tabIsSelected"
+    >
+      <div *ngFor="let rule of rows; let i = index" cdkDrag>
+        <div class="mb10">
+          <app-ruleico
+            (clone)="onClone($event)"
+            [rules]="rule"
+            [index]="i"
+            (downAll)="downAll($event)"
+            (upAll)="upAll($event)"
+            (delete)="onDelete($event)"
+            (update)="onUpdate($event)"
+          >
+            <button class="black" cdkDragHandle *ngIf="smallSize()">
+              <i class="far fa-arrows icon-top"></i>
+            </button>
+          </app-ruleico>
+        </div>
       </div>
     </div>
-
   </div>
-
 </div>
