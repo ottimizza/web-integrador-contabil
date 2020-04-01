@@ -13,6 +13,7 @@ function createEnvironementFile() {
   storageBaseUrl: '${getEnvironmentVariable('STORAGE_BASE_URL')}',
   storageApplicationId: '${getEnvironmentVariable('STORAGE_APPLICATION_ID', 'accounts-avatar')}',
   storageAccountingId: '${getEnvironmentVariable('STORAGE_ACCOUNTING_ID', 'ottimizza')}',
+  portalBaseUrl: ''${getEnvironmentVariable('PORTAL_BASE_URL')},
   firebase: {
     apiKey: '${getEnvironmentVariable('FIREBASE_API_KEY')}',
     authDomain: '${getEnvironmentVariable('FIREBASE_AUTH_DOMAIN')}',
