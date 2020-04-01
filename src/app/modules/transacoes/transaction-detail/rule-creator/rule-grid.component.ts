@@ -1,13 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
+
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Lancamento } from '@shared/models/Lancamento';
+
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
-import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { LancamentoService } from '@shared/services/lancamento.service';
+import { PageInfo } from '@shared/models/GenericPageableResponse';
+import { ToastService } from '@shared/services/toast.service';
+import { Lancamento } from '@shared/models/Lancamento';
 import { PostFormatRule } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
-import { ToastService } from '@shared/services/toast.service';
-import { PerformanceTest } from '@shared/decorators/PerformanceTest';
 
 @Component({
   templateUrl: './rule-grid.component.html'
