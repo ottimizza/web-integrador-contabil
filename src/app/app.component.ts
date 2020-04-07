@@ -4,6 +4,7 @@ import { DOCUMENT } from '@angular/common';
 import { UpdateSerive } from '@app/services/update.service';
 import { MessagingService } from '@app/services/messaging.service';
 import { LoggerUtils } from '@shared/utils/logger.utills';
+import { User } from '@shared/models/User';
 
 @Component({
   selector: 'app-root',

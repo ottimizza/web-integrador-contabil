@@ -239,12 +239,7 @@ export class InputChipsComponent implements OnInit, OnChanges {
     this._selectAllCompPattern(this.comps.l5, this.cis.five, 'Complemento 5', this.comps.complete5);
   }
 
-  private _selectAllCompPattern(
-    label: string,
-    isAlreadySelected: boolean,
-    title: string,
-    completeSentence: string,
-  ) {
+  private _selectAllCompPattern(label: string, isAlreadySelected: boolean, title: string, completeSentence: string) {
 
     const chips = this._document.querySelectorAll('.chip' + label);
     if (!isAlreadySelected) {
