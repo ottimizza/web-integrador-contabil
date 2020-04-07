@@ -6,6 +6,7 @@ import { StorageService } from '@app/services/storage.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MessagingService } from '@app/services/messaging.service';
+import { environment } from '@env';
 // import { OverlayContainer } from '@angular/cdk/overlay';
 
 // import { ThemeService } from '@app/service/theme.service';
@@ -17,6 +18,7 @@ import { MessagingService } from '@app/services/messaging.service';
 })
 export class NavbarLayoutComponent implements OnInit {
   public DEFAULT_LOGO = 'https://ottimizza.com.br/wp-content/themes/ottimizza/images/logo.png';
+  APP_URL = `${environment.portalBaseUrl}`;
 
   currentUser: User;
 
