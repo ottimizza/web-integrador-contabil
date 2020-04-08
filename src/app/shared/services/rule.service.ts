@@ -68,10 +68,11 @@ export class RuleService {
     return this._http.put(url, rule, this._headers);
   }
 
-  export(cnpjEmpresa: string, tipoLancamento: number): Observable<GenericResponse<undefined>> {
-    const url = `${BASE_URL}/api/sf/importar?cnpjEmpresa=${cnpjEmpresa}&tipoLancamento=${tipoLancamento}`;
-    return this._http.post<GenericResponse<undefined>>(url, {}, this._headers);
-  }
+  // ! WORKING, BUT DEPRECATED
+  // export(cnpjEmpresa: string, tipoLancamento: number): Observable<GenericResponse<undefined>> {
+  //   const url = `${BASE_URL}/api/sf/importar?cnpjEmpresa=${cnpjEmpresa}&tipoLancamento=${tipoLancamento}`;
+  //   return this._http.post<GenericResponse<undefined>>(url, {}, this._headers);
+  // }
 
   private get _headers() {
     const headers = this._auth.getAuthorizationHeaders();

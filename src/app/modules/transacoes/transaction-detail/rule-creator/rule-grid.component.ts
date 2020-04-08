@@ -96,7 +96,7 @@ export class RuleGridComponent implements OnInit, GenericPagination {
     return this._hasPattern('documento');
   }
 
-  hasNomeArquivo(nomeArquivo: string): boolean {
+  get hasNomeArquivo(): boolean {
     return this._hasPattern('nomeArquivo');
   }
 
