@@ -15,5 +15,5 @@ export function PerformanceTest() {
 
     return descriptor;
 
-  }
+  };
 }

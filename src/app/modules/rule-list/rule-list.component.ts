@@ -36,6 +36,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   exportedRules = 0;
   totalRules = 0;
   isExporting: boolean;
+  isFetching: boolean;
 
   buttons: ActionButton[] = [
     {
@@ -254,7 +255,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     Object.assign(filter, pageCriteria, sorting);
 
     this._snackBar.showSnack('Aguardando resposta');
+    this.isFetching = true;
     this._service.get(filter).subscribe(imports => {
+      this.isFetching = false;
       if (JSON.stringify(this.artificialClone) === JSON.stringify(this.rows[this.rows.length - 1])) {
         /*
         Sempre que uma regra é clonada, o clone é artificialmente inserido no array local para que não seja necessário
@@ -277,7 +280,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   }
 
   onScroll(event: boolean) {
-    if (event && this.pageInfo.hasNext) {
+    if (event && this.pageInfo.hasNext && !this.isFetching) {
       this.nextPage();
     }
   }
