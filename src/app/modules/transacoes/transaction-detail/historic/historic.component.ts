@@ -131,8 +131,8 @@ export class HistoricComponent implements OnInit {
   private ifChainPattern(results: string[], property: string): string {
       const array = [
         'Fornecedor',
-        'Portador',
-        'Competência',
+        'Banco',
+        'Competência Atual',
         'Competência Anterior',
         'Valor',
         'Documento',
