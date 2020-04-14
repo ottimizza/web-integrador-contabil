@@ -36,9 +36,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   account: string;
   destroy: boolean;
   tabIsClicked = false;
-  remaining = 0;
   tipoConta = 0;
   impact = 0;
+  percentage = 0;
 
   constructor(
     // tslint:disable
@@ -387,15 +387,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this.account = null;
   }
 
-  private _remaining() {
-    if (this.pageInfo) {
-      this.remaining = this.pageInfo.totalElements;
-    }
-
-    if (this.remaining < 0) {
-      this.remaining = 0;
-    }
-  }
 
   private _delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -408,12 +399,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     if (this.records.length === 0 && (!this.pageInfo || this.pageInfo.hasNext)) {
       this.tipoConta = 0
       this.nextPage();
-    } else if (this.records.length !== 0) {
-      this._remaining();
     } else {
-      this._remaining();
       this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa.`]);
-      this.remaining = 0;
+      this.percentage = 100;
     }
   }
 
@@ -433,7 +421,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
-      this._remaining();
       this.resetErrors();
       this._toast.hideSnack();
 
@@ -450,6 +437,17 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     err => {
       this._toast.show('Falha ao carregar lançamentos', 'danger');
     });
+
+    this._lancamentoService.getPercentage(this.business.cnpj, this.tipoMovimento).subscribe((percentage: any) => {
+      if (percentage.totalLancamentos) {
+        this.percentage = +(100 - (percentage.numeroLancamentosRestantes / percentage.totalLancamentos) * 100).toFixed(0);
+      } else {
+        this.percentage = 100;
+      }
+    },
+    err => {
+      this._toast.show('Falha ao atualizar total de lançamentos. Isto não influenciará no funcionamento do sistema', 'warning');
+    })
   }
 
 }
