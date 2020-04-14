@@ -24,8 +24,8 @@ export class HistoricFieldComponent {
       this.array = [
         '',
         'Fornecedor',
-        'Portador',
-        'Competência',
+        'Banco',
+        'Competência Atual',
         'Competência Anterior',
         'Valor',
         'Documento',
@@ -39,8 +39,8 @@ export class HistoricFieldComponent {
         this.array = [
           '',
           'Fornecedor',
-          'Portador',
-          'Competência',
+          'Banco',
+          'Competência Atual',
           'Competência Anterior',
           'Valor',
           'Documento',
@@ -53,8 +53,8 @@ export class HistoricFieldComponent {
 
       let localArray: { property: string, text: string }[] = [
         { property: l.descricao, text: 'Fornecedor' },
-        { property: l.portador, text: 'Portador' },
-        { property: DateUtils.ymdToCompetence(l.dataMovimento), text: 'Competência' },
+        { property: l.portador, text: 'Banco' },
+        { property: DateUtils.ymdToCompetence(l.dataMovimento), text: 'Competência Atual' },
         { property: DateUtils.lastCompetence(DateUtils.ymdToCompetence(l.dataMovimento)), text: 'Competência Anterior' },
         { property: `${l.valorOriginal}`, text: 'Valor' },
         { property: l.documento, text: 'Documento' },
@@ -68,8 +68,8 @@ export class HistoricFieldComponent {
       if (this.isExtract) {
         localArray = [
           { property: l.descricao, text: 'Fornecedor' },
-          { property: l.portador, text: 'Portador' },
-          { property: DateUtils.ymdToCompetence(l.dataMovimento), text: 'Competência' },
+          { property: l.portador, text: 'Banco' },
+          { property: DateUtils.ymdToCompetence(l.dataMovimento), text: 'Competência Atual' },
           { property: DateUtils.lastCompetence(DateUtils.ymdToCompetence(l.dataMovimento)), text: 'Competência Anterior' },
           { property: `${l.valorOriginal}`, text: 'Valor' },
           { property: l.documento, text: 'Documento' },
