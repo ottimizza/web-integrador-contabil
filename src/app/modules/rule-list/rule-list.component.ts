@@ -36,7 +36,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   exportedRules = 0;
   totalRules = 0;
   isExporting: boolean;
-  isFetching: boolean;
+  isFetching = false;
 
   buttons: ActionButton[] = [
     {
