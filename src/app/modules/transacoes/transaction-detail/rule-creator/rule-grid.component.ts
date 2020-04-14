@@ -20,6 +20,7 @@ export class RuleGridComponent implements OnInit, GenericPagination {
   page = 0;
   rules: PostFormatRule[];
   business: Empresa;
+  isFetching = false;
 
 
   constructor(
@@ -42,10 +43,12 @@ export class RuleGridComponent implements OnInit, GenericPagination {
 
   nextPage(): void {
     if (this.hasNext()) {
+      this.isFetching = true;
       this._toast.showSnack('Aguardando resposta');
       this._service
         .getByRulePaginated(this.rules, this.business, this.page)
         .subscribe(imports => {
+          this.isFetching = false;
           imports.records.forEach(lanc => this.info.push(lanc));
           this.pageInfo = imports.pageInfo;
           this.page++;
@@ -62,7 +65,7 @@ export class RuleGridComponent implements OnInit, GenericPagination {
   }
 
   onScroll(event: boolean) {
-    if (event && this.pageInfo.hasNext) {
+    if (event && this.pageInfo.hasNext && !this.isFetching) {
       this.nextPage();
     }
   }
