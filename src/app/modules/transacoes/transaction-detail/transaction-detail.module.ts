@@ -28,7 +28,8 @@ import { HistoricComponent } from './historic/historic.component';
         InfoModule,
         HistoricModule,
         MatTabsModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatProgressBarModule
     ],
     entryComponents: [
       RuleGridComponent,

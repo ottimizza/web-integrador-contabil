@@ -39,6 +39,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   tipoConta = 0;
   impact = 0;
   percentage = 0;
+  total = 0;
 
   constructor(
     // tslint:disable
@@ -444,6 +445,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       } else {
         this.percentage = 100;
       }
+      this.total = percentage.totalLancamentos;
     },
     err => {
       this._toast.show('Falha ao atualizar total de lançamentos. Isto não influenciará no funcionamento do sistema', 'warning');
