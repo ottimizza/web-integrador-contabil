@@ -4,7 +4,7 @@
 
 <form autocomplete="off">
   <div class="card">
-    <mat-progress-bar [value]="percentage" class="progress-bar"  [matTooltip]="percentage + '% de ' + total" matTooltipShowDelay="300" matTooltipHideDelay="500"></mat-progress-bar>
+    <mat-progress-bar [value]="percentage" class="progress-bar"  [matTooltip]="percentage + '%'" matTooltipShowDelay="300" matTooltipHideDelay="500"></mat-progress-bar>
     <mat-tab-group mat-align-tabs="center" (selectedTabChange)="onTab($event, false)">
       <mat-tab label="Pagamentos"></mat-tab>
       <mat-tab label="Extrato Débitos"></mat-tab>
