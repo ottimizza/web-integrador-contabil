@@ -18,9 +18,9 @@
     </mat-tab-group>
 
     <div class="p-4">
-      <div class="row m-0 mb-4 d-inline-block">
-        <div class="col" *ngIf="impact > 0">
-          <span class="defaultSpan">Impacto: </span>
+      <div class="row m-0 w-100 mb-4">
+        <div class="col" *ngIf="impact > 0; else noImpact">
+          <span class="defaultSpan mt-3">Impacto: </span>
           <span
             (click)="openGrid()"
             class="text-danger"
@@ -32,10 +32,17 @@
           <span class="font-weight-normal" (click)="openGrid()"> lançamentos.</span>
           <i class="ml-2 fad fa-question-circle" [matTooltip]="info.affectedsOrientation" matTooltipShowDelay="300" matTooltipHideDelay="500"></i>
         </div>
-        <div class="col">
-          <div>
-            <span class="defaultSpan">Lançamentos restantes: </span>
-            <span class="defaultSpan">{{ remaining }}</span>
+        <ng-template #noImpact>
+          <div class="col"></div>
+        </ng-template>
+        <div class="col text-right">
+          <div class="float-right">
+            <div class="text-center">
+              <mat-progress-spinner mode="determinate" [value]="percentage" color="primary" [diameter]="40" class="example-margin" [matTooltip]="percentage + '%'" matTooltipShowDelay="300" matTooltipHideDelay="500"></mat-progress-spinner>
+              <div class="mt-2">
+                <span class="cursor-auto">{{ percentage }}%</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -144,7 +151,7 @@
 
       <div
         class="row m-0"
-        *ngIf="impact > 0 || remaining > 0"
+        *ngIf="impact > 0 || percentage < 100"
       >
         <div class="form-group col-md-5 col-lg-5 col-xl-5 mt-1">
           <strong

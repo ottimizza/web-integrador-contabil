@@ -22,6 +22,11 @@ export class LancamentoService {
     return this.http.get<GenericPageableResponse<Lancamento>>(url, this._headers);
   }
 
+  public getPercentage(cnpjEmpresa: string, tipoMovimento: string) {
+    const url = `${BASE_URL}/api/v1/lancamentos/porcentagem?cnpjEmpresa=${cnpjEmpresa}&tipoMovimento=${tipoMovimento}`;
+    return this.http.get(url, this._headers);
+  }
+
   public skip(id: number): Observable<Lancamento> {
     const url = `${BASE_URL}/api/v1/lancamentos/${id}`;
     return this.http.patch<Lancamento>(url, { tipoConta: 4 }, this._headers);

@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTabsModule } from '@angular/material';
+import { MatTabsModule, MatProgressSpinnerModule } from '@angular/material';
 
 import { TransactionDetailComponent } from './transaction-detail.component';
 import { RuleGridModule } from './rule-creator/rule-grid.module';
@@ -28,6 +28,7 @@ import { HistoricComponent } from './historic/historic.component';
         InfoModule,
         HistoricModule,
         MatTabsModule,
+        MatProgressSpinnerModule
     ],
     entryComponents: [
       RuleGridComponent,
