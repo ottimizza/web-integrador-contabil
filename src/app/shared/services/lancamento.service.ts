@@ -38,7 +38,7 @@ export class LancamentoService {
   }
 
   public getByRulePaginated(rules: PostFormatRule[], e: Empresa, page: number) {
-    const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}&pageIndex=${page}&tipoConta=0`;
+    const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}&pageIndex=${page}&tipoConta=0&ativo=true`;
     return this.http.post<GenericPageableResponse<Lancamento>>(url, rules, this._headers);
   }
 
