@@ -4,12 +4,7 @@
 
 <form autocomplete="off">
   <div class="card">
-    <!-- <div class="row w-100 m-0">
-      <button [ngClass]="tabsButtonClass[0]" (click)="pag()">Pagamentos</button>
-      <button [ngClass]="tabsButtonClass[1]" (click)="exdeb()">Extrato Débitos</button>
-      <button [ngClass]="tabsButtonClass[2]" (click)="rec()">Recebimentos</button>
-      <button [ngClass]="tabsButtonClass[3]" (click)="excre()">Extrato Créditos</button>
-    </div> -->
+    <mat-progress-bar [value]="percentage" class="progress-bar"  [matTooltip]="percentage + '%'" matTooltipShowDelay="300" matTooltipHideDelay="500"></mat-progress-bar>
     <mat-tab-group mat-align-tabs="center" (selectedTabChange)="onTab($event, false)">
       <mat-tab label="Pagamentos"></mat-tab>
       <mat-tab label="Extrato Débitos"></mat-tab>
@@ -17,10 +12,16 @@
       <mat-tab label="Extrato Créditos"></mat-tab>
     </mat-tab-group>
 
+
     <div class="p-4">
-      <div class="row m-0 mb-4 d-inline-block">
+      <div class="row m-0 w-100">
+        <div class="col">
+          <span class="defaultSpan">Total de lançamentos: {{ total }}</span>
+        </div>
+      </div>
+      <div class="row m-0 w-100 mb-4">
         <div class="col" *ngIf="impact > 0">
-          <span class="defaultSpan">Impacto: </span>
+          <span class="defaultSpan mt-3">Impacto: </span>
           <span
             (click)="openGrid()"
             class="text-danger"
@@ -32,12 +33,7 @@
           <span class="font-weight-normal" (click)="openGrid()"> lançamentos.</span>
           <i class="ml-2 fad fa-question-circle" [matTooltip]="info.affectedsOrientation" matTooltipShowDelay="300" matTooltipHideDelay="500"></i>
         </div>
-        <div class="col">
-          <div>
-            <span class="defaultSpan">Lançamentos restantes: </span>
-            <span class="defaultSpan">{{ remaining }}</span>
-          </div>
-        </div>
+
       </div>
       <app-card *ngIf="records[0]">
         <app-card>
@@ -144,7 +140,7 @@
 
       <div
         class="row m-0"
-        *ngIf="impact > 0 || remaining > 0"
+        *ngIf="impact > 0 || percentage < 100"
       >
         <div class="form-group col-md-5 col-lg-5 col-xl-5 mt-1">
           <strong
@@ -212,6 +208,5 @@
       </div>
     </div>
     <!-- </form> -->
-    <!-- </div> -->
   </div>
 </form>

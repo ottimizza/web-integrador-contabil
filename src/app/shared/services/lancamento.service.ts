@@ -22,6 +22,11 @@ export class LancamentoService {
     return this.http.get<GenericPageableResponse<Lancamento>>(url, this._headers);
   }
 
+  public getPercentage(cnpjEmpresa: string, tipoMovimento: string) {
+    const url = `${BASE_URL}/api/v1/lancamentos/porcentagem?cnpjEmpresa=${cnpjEmpresa}&tipoMovimento=${tipoMovimento}`;
+    return this.http.get(url, this._headers);
+  }
+
   public skip(id: number): Observable<Lancamento> {
     const url = `${BASE_URL}/api/v1/lancamentos/${id}`;
     return this.http.patch<Lancamento>(url, { tipoConta: 4 }, this._headers);
@@ -33,7 +38,7 @@ export class LancamentoService {
   }
 
   public getByRulePaginated(rules: PostFormatRule[], e: Empresa, page: number) {
-    const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}&pageIndex=${page}&tipoConta=0`;
+    const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}&pageIndex=${page}&tipoConta=0&ativo=true`;
     return this.http.post<GenericPageableResponse<Lancamento>>(url, rules, this._headers);
   }
 
