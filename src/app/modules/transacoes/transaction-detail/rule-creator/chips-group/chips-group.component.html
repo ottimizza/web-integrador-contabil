@@ -1,0 +1,19 @@
+<span class="ml-2">{{ config.title }}:</span>
+<div class="fake-input" *ngFor="let chipList of chipLists">
+  <mat-chip-list *ngIf="chipList">
+
+    <strong *ngIf="chipList.label">{{ chipList.label }}:</strong>
+
+    <span>{{ chipList.pattern.starting }}</span>
+
+    <div *ngFor="let chip of chipList.chipValue; let i = index">
+      <mat-chip *ngIf="chipList.pattern.treatment(chip)">{{ chipList.pattern.treatment(chip) }}</mat-chip>
+      <span *ngIf="chipList.pattern.intersect && chipList.chipValue[i + 1] && chipList.pattern.treatment(chipList.chipValue[i + 1]) && chipList.pattern.treatment(chip)">
+        {{ chipList.pattern.intersect(chip, chipList.chipValue[i + 1]) }}
+      </span>
+    </div>
+
+    <span>{{ chipList.pattern.ending }}</span>
+
+  </mat-chip-list>
+</div>
