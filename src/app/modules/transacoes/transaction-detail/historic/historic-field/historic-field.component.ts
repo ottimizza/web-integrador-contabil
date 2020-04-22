@@ -27,7 +27,6 @@ export class HistoricFieldComponent {
         'Banco',
         'Competência Atual',
         'Competência Anterior',
-        'Valor',
         'Documento',
         'Complemento 01',
         'Complemento 02',
@@ -42,7 +41,6 @@ export class HistoricFieldComponent {
           'Banco',
           'Competência Atual',
           'Competência Anterior',
-          'Valor',
           'Documento',
           'Complemento 02',
         ];
@@ -56,7 +54,6 @@ export class HistoricFieldComponent {
         { property: l.portador, text: 'Banco' },
         { property: DateUtils.ymdToCompetence(l.dataMovimento), text: 'Competência Atual' },
         { property: DateUtils.lastCompetence(DateUtils.ymdToCompetence(l.dataMovimento)), text: 'Competência Anterior' },
-        { property: `${l.valorOriginal}`, text: 'Valor' },
         { property: l.documento, text: 'Documento' },
         { property: l.complemento01, text: 'Complemento 01' },
         { property: l.complemento02, text: 'Complemento 02' },
@@ -71,7 +68,6 @@ export class HistoricFieldComponent {
           { property: l.portador, text: 'Banco' },
           { property: DateUtils.ymdToCompetence(l.dataMovimento), text: 'Competência Atual' },
           { property: DateUtils.lastCompetence(DateUtils.ymdToCompetence(l.dataMovimento)), text: 'Competência Anterior' },
-          { property: `${l.valorOriginal}`, text: 'Valor' },
           { property: l.documento, text: 'Documento' },
           { property: l.complemento02, text: 'Complemento 02' },
        ];

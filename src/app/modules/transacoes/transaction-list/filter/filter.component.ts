@@ -33,7 +33,9 @@ export class FilterComponent implements OnInit {
   async confirm(event: any) {
     const erp = event.target.value.split(' - ')[0];
     const business = this.business.filter(item => item.codigoERP === erp);
-    this._toast.show(`Empresa ${business[0].razaoSocial} selecionada.`, 'primary');
+    if (business[0]?.razaoSocial) {
+      this._toast.show(`Empresa ${business[0].razaoSocial} selecionada.`, 'primary');
+    }
     await this._delay(500);
     this.devolve(business[0]);
   }
@@ -79,7 +81,9 @@ export class FilterComponent implements OnInit {
         this.business = records;
         if (records.length) {
           records.forEach(rec => {
-            this.suggestions.push(`${rec.codigoERP} - ${rec.razaoSocial}`);
+            if (rec.codigoERP && rec.razaoSocial) {
+              this.suggestions.push(`${rec.codigoERP} - ${rec.razaoSocial}`);
+            }
           });
         }
         subs2.unsubscribe();
