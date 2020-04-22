@@ -7,7 +7,13 @@
     <span>{{ chipList.pattern.starting }}</span>
 
     <div *ngFor="let chip of chipList.chipValue; let i = index">
-      <mat-chip *ngIf="chipList.pattern.treatment(chip)">{{ chipList.pattern.treatment(chip) }}</mat-chip>
+      <app-rule-chip
+        [treatment]="chipList.pattern.treatment()"
+        [chip]="chip"
+        [label]="chipList.label"
+        [position]="i"
+        (select)="onDevolve($event)"
+      ></app-rule-chip>
       <span *ngIf="chipList.pattern.intersect && chipList.chipValue[i + 1] && chipList.pattern.treatment(chipList.chipValue[i + 1]) && chipList.pattern.treatment(chip)">
         {{ chipList.pattern.intersect(chip, chipList.chipValue[i + 1]) }}
       </span>

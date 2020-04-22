@@ -33,6 +33,10 @@ export class RuleChipGroupComponent implements OnInit {
     };
   }
 
+  onDevolve(event: { label: string, isSelected: boolean, position: number }) {
+
+  }
+
   private _parse() {
     this.chipLists = this.config.values.map(config => {
       let chipValue = ArrayUtils.split(config.value, ...config.pattern.separators);

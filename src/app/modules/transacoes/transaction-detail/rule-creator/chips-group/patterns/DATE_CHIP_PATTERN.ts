@@ -16,4 +16,3 @@ export const DATE_CHIP_PATTERN: IChipGroupPattern = {
     ];
   }
 };
-
