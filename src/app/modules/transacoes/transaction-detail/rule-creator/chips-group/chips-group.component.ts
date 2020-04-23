@@ -61,6 +61,9 @@ export class RuleChipGroupComponent implements OnInit {
   }
 
   private _map() {
+
+    // ! CONSERTAR O MÉTODO onDevolve() PARA QUE ELE DIFERENCIE OS VALORES ATIVOS E INATIVOS LEVANDO EM CONTA OS isSelect DO EVENT!
+
     const array: { title: string, selecteds: string[] }[] = this.selecteds.map(sel => {
       const chipList = this.chipLists.filter(cl => cl.key === sel.id)[0];
       const selecteds = sel.positions.map(pos => chipList.chipValue[pos]);
@@ -68,7 +71,17 @@ export class RuleChipGroupComponent implements OnInit {
         title: sel.id,
         selecteds
       };
-    });
+    })
+      .map(item => {
+        const chipList = this.chipLists.filter(cl => cl.key === item.title)[0];
+        if (item.selecteds.length === chipList.chipValue.length) {
+          return {
+            title: item.title,
+            selecteds: [chipList.fullValue]
+          };
+        }
+        return item;
+      });
 
   }
 
