@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { IChipGroupPattern, IChipGroupParcialPattern } from './patterns/IChipGroupPattern';
 import { ArrayUtils } from '@shared/utils/array.utils';
 
@@ -25,6 +25,7 @@ class ChipList {
 export class RuleChipGroupComponent implements OnInit {
 
   @Input() config: RuleConfig;
+  @Output() clicked = new EventEmitter();
 
   chipLists: ChipList[] = [];
   selecteds: { id: string, positions: number[] }[] = [];
@@ -44,6 +45,7 @@ export class RuleChipGroupComponent implements OnInit {
   }
 
   onDevolve(event: { label: string, isSelected: boolean, position: number }) {
+    // TODO: ALTERAR O MÉTODO PARA QUE ELE DIFERENCIE OS VALORES ATIVOS E INATIVOS LEVANDO EM CONTA O isSelect DO EVENT!
     const id = this.config.values.filter(val => val.label === event.label)[0].key;
 
     const index = this.selecteds.map(sel => sel.id).indexOf(id);
@@ -58,13 +60,12 @@ export class RuleChipGroupComponent implements OnInit {
       }
       this.selecteds[index].positions = positions;
     }
+
+    this.clicked.emit(this._map());
   }
 
   private _map() {
-
-    // ! CONSERTAR O MÉTODO onDevolve() PARA QUE ELE DIFERENCIE OS VALORES ATIVOS E INATIVOS LEVANDO EM CONTA OS isSelect DO EVENT!
-
-    const array: { title: string, selecteds: string[] }[] = this.selecteds.map(sel => {
+    return this.selecteds.map(sel => {
       const chipList = this.chipLists.filter(cl => cl.key === sel.id)[0];
       const selecteds = sel.positions.map(pos => chipList.chipValue[pos]);
       return {
@@ -82,7 +83,6 @@ export class RuleChipGroupComponent implements OnInit {
         }
         return item;
       });
-
   }
 
   private _parse() {
