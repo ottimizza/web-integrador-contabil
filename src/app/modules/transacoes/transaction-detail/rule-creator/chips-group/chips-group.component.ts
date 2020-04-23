@@ -8,6 +8,15 @@ export class RuleConfig {
   values: { key: string, value: string, pattern: IChipGroupPattern, label: string }[];
 }
 
+class ChipList {
+  key: string;
+  selectable: boolean;
+  fullValue: string;
+  chipValue: string[];
+  pattern: IChipGroupParcialPattern;
+  label: string;
+}
+
 @Component({
   selector: 'app-chips-group',
   templateUrl: './chips-group.component.html',
@@ -17,7 +26,7 @@ export class RuleChipGroupComponent implements OnInit {
 
   @Input() config: RuleConfig;
 
-  chipLists: { key: string, selectable: boolean, fullValue: string, chipValue: string[], pattern: IChipGroupParcialPattern, label: string }[] = [];
+  chipLists: ChipList[] = [];
   selecteds: { id: string, positions: number[] }[] = [];
 
   ngOnInit(): void {
