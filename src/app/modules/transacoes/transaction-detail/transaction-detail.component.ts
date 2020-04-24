@@ -251,8 +251,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this.conditions.tipoMovimento = [];
     }
 
-    console.log(this.conditions);
-
     this.getByRule();
   }
 
@@ -301,7 +299,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
           .createHistoric(result)
           .subscribe((historic: any) => {
             this.disable();
-            this._historicService.export(historic.record.id, historic.record).subscribe(alohomora => console.log(alohomora))
+            this._historicService.export(historic.record.id, historic.record).subscribe()
           });
       }
     });

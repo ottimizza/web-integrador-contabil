@@ -46,13 +46,13 @@
             <app-chips-group
               *ngIf="records[0].descricao"
               [config]="descricao"
-              (clicked)="novoOnDevolve($event)"
+              (clicked)="onDevolve($event)"
               class="col"
             ></app-chips-group>
               <app-chips-group
                 *ngIf="records[0].portador"
                 [config]="portador"
-                (clicked)="novoOnDevolve($event)"
+                (clicked)="onDevolve($event)"
                 class="col"
               ></app-chips-group>
             </div>
@@ -67,19 +67,19 @@
               <app-chips-group
                 *ngIf="records[0].dataMovimento"
                 [config]="dataMovimento"
-                (clicked)="novoOnDevolve($event)"
+                (clicked)="onDevolve($event)"
                 class="col"
               ></app-chips-group>
               <app-chips-group
                 *ngIf="records[0].valorOriginal"
                 [config]="valorOriginal"
-                (clicked)="novoOnDevolve($event)"
+                (clicked)="onDevolve($event)"
                 class="col"
               ></app-chips-group>
               <app-chips-group
                 *ngIf="records[0].documento"
                 [config]="documento"
-                (clicked)="novoOnDevolve($event)"
+                (clicked)="onDevolve($event)"
                 class="col"
               ></app-chips-group>
             </div>
@@ -88,7 +88,7 @@
               <app-chips-group
                 *ngIf="hasComplements"
                 [config]="complementos"
-                (clicked)="novoOnDevolve($event)"
+                (clicked)="onDevolve($event)"
                 class="col"
               ></app-chips-group>
             </div>
@@ -96,7 +96,7 @@
             <div class="row m-0 mb-2" *ngIf="records[0].complemento02 && records[0].arquivo.labelComplemento02 && records[0].complemento02.length > 1 && tipo == 'EXTRATO'">
               <app-chips-group
                 [config]="complemento02"
-                (clicked)="novoOnDevolve($event)"
+                (clicked)="onDevolve($event)"
                 class="col"
               ></app-chips-group>
             </div>
