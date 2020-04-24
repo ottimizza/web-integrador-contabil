@@ -204,7 +204,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     });
   }
 
-  novoOnDevolve(events: { title: string, selecteds: string[] }[]) {
+  onDevolve(events: { title: string, selecteds: string[] }[]) {
 
     this.conditions.tipoPlanilha = [this.records[0].tipoPlanilha];
     this.conditions.tipoMovimento = [this.records[0].tipoMovimento];
@@ -254,66 +254,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     console.log(this.conditions);
 
     this.getByRule();
-  }
-
-  onDevolve(event: any) {
-    // const s = event.selecteds;
-
-    // this.conditions.tipoPlanilha = undefined;
-    // this.conditions.tipoMovimento = undefined;
-
-    // switch (event.title) {
-    //   case 'Fornecedor':
-    //     this.conditions.descricao = s;
-    //     break;
-    //   case 'Cliente':
-    //     this.conditions.descricao = s;
-    //     break;
-    //   case 'Documento':
-    //     this.conditions.documento = s;
-    //     break;
-    //   case 'Banco':
-    //     this.conditions.portador = s;
-    //     break;
-    //   case 'Complemento 1':
-    //     this.conditions.complemento01 = s;
-    //     break;
-    //   case 'Complemento 2':
-    //     this.conditions.complemento02 = s;
-    //     break;
-    //   case 'Complemento 3':
-    //     this.conditions.complemento03 = s;
-    //     break;
-    //   case 'Complemento 4':
-    //     this.conditions.complemento04 = s;
-    //     break;
-    //   case 'Complemento 5':
-    //     this.conditions.complemento05 = s;
-    //     break;
-    //   case 'Complemento_2':
-    //     // É importante manter tanto o Complemento 2 quanto o Complemento_2 pois ele é usado em duas situações
-    //     // de formas diferentes
-    //     this.conditions.complemento02 = s;
-    //     break;
-    //   case 'Nome do Arquivo':
-    //     this.conditions.nomeArquivo = s;
-    //     break;
-    //   case 'Tipo da Planilha':
-    //     this.conditions.tipoPlanilha = s;
-    //     break;
-    // }
-
-    // if (this.conditions.rules.length) {
-    //   this.conditions.tipoPlanilha = [this.records[0].tipoPlanilha];
-    //   this.conditions.tipoMovimento = [this.tipoMovimento];
-    // }
-    // if (event.clear) {
-    //   this.conditions = new Rule();
-    //   this.impact = 0;
-    // }
-
-    // this.getByRule();
-
   }
 
   getByRule() {
