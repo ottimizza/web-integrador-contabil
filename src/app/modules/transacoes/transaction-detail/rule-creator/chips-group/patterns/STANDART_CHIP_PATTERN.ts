@@ -1,7 +1,7 @@
 import { IChipGroupPattern } from './IChipGroupPattern';
 
 export const STANDART_CHIP_PATTERN: IChipGroupPattern = {
-  separators: [' ', '.', ',', '_', '-'],
+  separators: [' ', '.', ',', '_', '-', '(', ')'],
   starting: '',
   ending: '',
   treatment: (chip: string) => {
@@ -27,7 +27,9 @@ export const STANDART_CHIP_PATTERN: IChipGroupPattern = {
       'em',
       'que',
       'ao',
-      'às'
+      'às',
+      '(',
+      ')'
     ].includes(chip);
     if (isNotAWord) {
       return null;

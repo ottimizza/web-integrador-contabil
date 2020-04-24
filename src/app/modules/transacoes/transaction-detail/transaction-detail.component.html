@@ -43,22 +43,18 @@
               class="row m-0 mb-2"
               *ngIf="records[0].descricao || records[0].portador"
             >
-              <app-chips
-                [reset]="destroy"
-                [name]="buttonLabel"
-                [property]="records[0].descricao"
-                class="col"
-                *ngIf="records[0].descricao"
-                (selectedInfos)="onDevolve($event)"
-              ></app-chips>
-              <app-chips
-                [reset]="destroy"
-                name="Banco"
-                [property]="records[0].portador"
-                class="col"
+            <app-chips-group
+              *ngIf="records[0].descricao"
+              [config]="descricao"
+              (clicked)="novoOnDevolve($event)"
+              class="col"
+            ></app-chips-group>
+              <app-chips-group
                 *ngIf="records[0].portador"
-                (selectedInfos)="onDevolve($event)"
-              ></app-chips>
+                [config]="portador"
+                (clicked)="novoOnDevolve($event)"
+                class="col"
+              ></app-chips-group>
             </div>
 
             <div
@@ -68,67 +64,43 @@
                 records[0].valorOriginal ||
                 records[0].documento"
             >
-              <app-chips
-                [reset]="destroy"
-                name="Data"
-                [property]="records[0].dataMovimento"
-                class="col"
+              <app-chips-group
                 *ngIf="records[0].dataMovimento"
-                (selectedInfos)="onDevolve($event)"
-              ></app-chips>
-              <app-chips
-                [reset]="destroy"
-                name="Valor"
-                [property]="records[0].valorOriginal"
+                [config]="dataMovimento"
+                (clicked)="novoOnDevolve($event)"
                 class="col"
+              ></app-chips-group>
+              <app-chips-group
                 *ngIf="records[0].valorOriginal"
-                (selectedInfos)="onDevolve($event)"
-              ></app-chips>
-              <app-chips
-                [reset]="destroy"
-                name="Documento"
-                [property]="records[0].documento"
+                [config]="valorOriginal"
+                (clicked)="novoOnDevolve($event)"
                 class="col"
+              ></app-chips-group>
+              <app-chips-group
                 *ngIf="records[0].documento"
-                (selectedInfos)="onDevolve($event)"
-              ></app-chips>
+                [config]="documento"
+                (clicked)="novoOnDevolve($event)"
+                class="col"
+              ></app-chips-group>
             </div>
 
-            <div class="row m-0 mb-2" *ngIf="getComplementos().ok && tipo == 'MOVIMENTO'">
-              <app-chips
-                [reset]="destroy"
-                name="Complementos"
-                [property]="getComplementos().text"
+            <div class="row m-0 mb-2" *ngIf="hasComplements && tipo == 'MOVIMENTO'">
+              <app-chips-group
+                *ngIf="hasComplements"
+                [config]="complementos"
+                (clicked)="novoOnDevolve($event)"
                 class="col"
-                (selectedInfos)="onDevolve($event)"
-              ></app-chips>
+              ></app-chips-group>
             </div>
 
             <div class="row m-0 mb-2" *ngIf="records[0].complemento02 && records[0].arquivo.labelComplemento02 && records[0].complemento02.length > 1 && tipo == 'EXTRATO'">
-              <app-chips
-                [reset]="destroy"
-                name="Complemento_2"
-                [title]="records[0].arquivo.labelComplemento02"
-                [property]="records[0].complemento02"
+              <app-chips-group
+                [config]="complemento02"
+                (clicked)="novoOnDevolve($event)"
                 class="col"
-                (selectedInfos)="onDevolve($event)"
-              ></app-chips>
+              ></app-chips-group>
             </div>
 
-            <!-- <div
-              class="row m-0 mb-2"
-              *ngIf="records[0].nomeArquivo"
-            >
-              <app-chips
-                [reset]="destroy"
-                name="Nome"
-                title="Nome do Arquivo"
-                [property]="records[0].nomeArquivo"
-                class="col"
-                *ngIf="records[0].nomeArquivo"
-                (selectedInfos)="onDevolve($event)"
-              ></app-chips>
-            </div> -->
           </app-card>
         </app-card>
       </app-card>

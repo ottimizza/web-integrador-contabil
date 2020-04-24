@@ -6,6 +6,6 @@ export const VALUE_CHIP_PATTERN: IChipGroupPattern = {
   ending: '',
   treatment: (chip: string) => {
     chip = (+chip).toFixed(2);
-    return chip.replace(/\./, ',');
+    return chip.replace(/\./g, ',');
   }
 };

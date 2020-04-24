@@ -19,6 +19,7 @@ import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter } from
 export class RuleChipComponent implements OnChanges {
 
   @Input() treatment: (chip: string) => string;
+  @Input() selectable: boolean;
   @Input() chip: string;
   @Input() label: string;
   @Input() forceSelect: boolean;

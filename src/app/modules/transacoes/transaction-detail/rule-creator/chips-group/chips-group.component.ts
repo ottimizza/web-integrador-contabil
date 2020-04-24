@@ -45,7 +45,6 @@ export class RuleChipGroupComponent implements OnInit {
   }
 
   onDevolve(event: { label: string, isSelected: boolean, position: number }) {
-    // TODO: ALTERAR O MÉTODO PARA QUE ELE DIFERENCIE OS VALORES ATIVOS E INATIVOS LEVANDO EM CONTA O isSelect DO EVENT!
     const id = this.config.values.filter(val => val.label === event.label)[0].key;
 
     const index = this.selecteds.map(sel => sel.id).indexOf(id);
@@ -63,6 +62,8 @@ export class RuleChipGroupComponent implements OnInit {
 
     this.clicked.emit(this._map());
   }
+
+  forceSelect(id: string) {}
 
   private _map() {
     return this.selecteds.map(sel => {
@@ -87,8 +88,11 @@ export class RuleChipGroupComponent implements OnInit {
 
   private _parse() {
     this.chipLists = this.config.values.map(config => {
-      let chipValue = ArrayUtils.split(config.value, ...config.pattern.separators);
+      let chipValue = [config.value];
 
+      if (config.pattern.separators.length) {
+        chipValue = ArrayUtils.split(chipValue[0], ...config.pattern.separators);
+      }
       if (config.pattern.treatment) {
         chipValue = chipValue.filter(chip => config.pattern.treatment(chip) !== null);
       }
@@ -99,7 +103,7 @@ export class RuleChipGroupComponent implements OnInit {
       return {
         pattern: this.parcialPattern(config.pattern),
         selectable: this.config.selectable,
-        fullValue: this.config.title,
+        fullValue: config.value,
         label: config.label,
         key: config.key,
         chipValue

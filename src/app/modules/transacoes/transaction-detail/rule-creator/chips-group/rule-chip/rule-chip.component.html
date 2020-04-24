@@ -1,1 +1,2 @@
-<mat-chip *ngIf="treatment(chip)" class="simple-chip" [ngClass]="{'chip-selected': isSelected }">{{ treatment(chip) }}</mat-chip>
+<mat-chip *ngIf="treatment && treatment(chip) && selectable" class="simple-chip" [ngClass]="{'chip-selected': isSelected }" (click)="selectThis()">{{ treatment(chip) }}</mat-chip>
+<mat-chip *ngIf="treatment && treatment(chip) && !selectable" class="simple-chip">{{ treatment(chip) }}</mat-chip>
