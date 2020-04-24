@@ -1,11 +1,11 @@
 <span class="ml-2">{{ config.title }}:</span>
 <div class="fake-input">
-  <div *ngFor="let chipList of chipLists">
+  <div *ngFor="let chipList of chipLists; let pos = index">
     <mat-chip-list *ngIf="chipList.fullValue">
 
-      <i *ngIf="chipList.selectable" class="fal fa-clipboard mr-2 ml-3" (click)="forceSelect(chipList.key)"></i>
-
       <strong *ngIf="chipLists.length > 1 && chipList.label">{{ chipList.label }}:</strong>
+
+      <i *ngIf="chipList.selectable" class="fal fa-clipboard mr-2 ml-3" (click)="forceSelect(pos)"></i>
 
       <span class="m-2">{{ chipList.pattern.starting }}</span>
 
@@ -16,6 +16,7 @@
             [label]="chipList.label"
             [position]="i"
             [selectable]="chipList.selectable"
+            [forceSelect]="getSelect(pos)"
             (select)="onDevolve($event)"
           ></app-rule-chip>
         <span *ngIf="chipList.pattern.intersect && chipList.chipValue[i + 1] && chipList.pattern.treatment(chipList.chipValue[i + 1]) && chipList.pattern.treatment(chip)">

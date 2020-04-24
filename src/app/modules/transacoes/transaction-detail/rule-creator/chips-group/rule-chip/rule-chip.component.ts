@@ -32,8 +32,7 @@ export class RuleChipComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     for (const key in changes) {
       if (changes.hasOwnProperty(key) && key === 'forceSelect') {
-        this.isSelected = !this.forceSelect;
-        this.selectThis();
+        this.isSelected = this.forceSelect;
       }
     }
   }

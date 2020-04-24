@@ -29,9 +29,11 @@ export class RuleChipGroupComponent implements OnInit {
 
   chipLists: ChipList[] = [];
   selecteds: { id: string, positions: number[] }[] = [];
+  impositive: boolean[];
 
   ngOnInit(): void {
     this._parse();
+    this.impositive = this.chipLists.map(() => false);
   }
 
   parcialPattern(pattern: IChipGroupPattern): IChipGroupParcialPattern {
@@ -42,6 +44,10 @@ export class RuleChipGroupComponent implements OnInit {
       starting: pattern.starting,
       ending: pattern.ending
     };
+  }
+
+  getSelect(position: number) {
+    return this.impositive[position];
   }
 
   onDevolve(event: { label: string, isSelected: boolean, position: number }) {
@@ -63,7 +69,40 @@ export class RuleChipGroupComponent implements OnInit {
     this.clicked.emit(this._map());
   }
 
-  forceSelect(id: string) {}
+  forceSelect(id: number) {
+    this.impositive[id] = !this.impositive[id];
+    const positions = this.impositive[id] ? this.chipLists[id].chipValue.map((chip, position) => position) : [];
+    const key = this.chipLists[id].key;
+    const index = this.selecteds.map(sel => sel.id).indexOf(key);
+    if (index < 0) {
+      this.selecteds.push({
+        id: key,
+        positions
+      });
+    } else {
+      this.selecteds[index].positions = positions;
+    }
+
+    const map = this._map();
+    this.clicked.emit(map);
+
+    // const map = this._map();
+    // const title = this.chipLists[id].label;
+
+    // const titles = map.map(sel => sel.title);
+    // const index = titles.indexOf(title);
+
+
+    // if (index < 0) {
+    //   map.push({
+    //     title: this.chipLists[id].key,
+    //     selecteds
+    //   });
+    // } else {
+    //   map[index].selecteds = selecteds;
+    // }
+    // this.clicked.emit(map);
+  }
 
   private _map() {
     return this.selecteds.map(sel => {
