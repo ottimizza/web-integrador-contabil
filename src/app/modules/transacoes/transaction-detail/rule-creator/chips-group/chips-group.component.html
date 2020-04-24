@@ -1,0 +1,31 @@
+<span class="ml-2">{{ config.title }}:</span>
+<div class="fake-input">
+  <div *ngFor="let chipList of chipLists; let pos = index">
+    <mat-chip-list *ngIf="chipList.fullValue">
+
+      <strong *ngIf="chipLists.length > 1 && chipList.label">{{ chipList.label }}:</strong>
+
+      <i *ngIf="chipList.selectable" class="fal fa-clipboard mr-2 ml-3 cursor-pointer" (click)="forceSelect(pos)" [matTooltip]="'Selecionar todos os campos de ' + chipList.label" matTooltipShowDelay="300" matTooltipHideDelay="500"></i>
+
+      <span class="m-2">{{ chipList.pattern.starting }}</span>
+
+      <div *ngFor="let chip of chipList.chipValue; let i = index">
+          <app-rule-chip
+            [treatment]="chipList.pattern.treatment"
+            [chip]="chip"
+            [label]="chipList.label"
+            [position]="i"
+            [selectable]="chipList.selectable"
+            [forceSelect]="getSelect(pos)"
+            (select)="onDevolve($event)"
+          ></app-rule-chip>
+        <span *ngIf="chipList.pattern.intersect && chipList.chipValue[i + 1] && chipList.pattern.treatment(chipList.chipValue[i + 1]) && chipList.pattern.treatment(chip)">
+          {{ chipList.pattern.intersect(chip, chipList.chipValue[i + 1]) }}
+        </span>
+      </div>
+
+      <span>{{ chipList.pattern.ending }}</span>
+
+    </mat-chip-list>
+  </div>
+</div>

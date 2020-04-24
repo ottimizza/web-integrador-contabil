@@ -14,6 +14,7 @@ import { CardModule } from '@shared/components/card/card.module';
 import { InfoModule } from '@shared/components/info/info.module';
 import { HistoricModule } from './historic/historic.module';
 import { HistoricComponent } from './historic/historic.component';
+import { RuleChipGroupModule } from './rule-creator/chips-group/chips-group.module';
 
 @NgModule({
     declarations: [TransactionDetailComponent],
@@ -29,7 +30,8 @@ import { HistoricComponent } from './historic/historic.component';
         HistoricModule,
         MatTabsModule,
         MatProgressSpinnerModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        RuleChipGroupModule
     ],
     entryComponents: [
       RuleGridComponent,
