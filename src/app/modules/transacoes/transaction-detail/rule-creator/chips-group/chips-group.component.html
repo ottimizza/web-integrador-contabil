@@ -5,7 +5,7 @@
 
       <strong *ngIf="chipLists.length > 1 && chipList.label">{{ chipList.label }}:</strong>
 
-      <i *ngIf="chipList.selectable" class="fal fa-clipboard mr-2 ml-3" (click)="forceSelect(pos)"></i>
+      <i *ngIf="chipList.selectable" class="fal fa-clipboard mr-2 ml-3 cursor-pointer" (click)="forceSelect(pos)" [matTooltip]="'Selecionar todos os campos de ' + chipList.label" matTooltipShowDelay="300" matTooltipHideDelay="500"></i>
 
       <span class="m-2">{{ chipList.pattern.starting }}</span>
 

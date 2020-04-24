@@ -1,2 +1,2 @@
-<mat-chip *ngIf="treatment && treatment(chip) && selectable" class="simple-chip" [ngClass]="{'chip-selected': isSelected }" (click)="selectThis()">{{ treatment(chip) }}</mat-chip>
-<mat-chip *ngIf="treatment && treatment(chip) && !selectable" class="simple-chip">{{ treatment(chip) }}</mat-chip>
+<mat-chip *ngIf="treatment && treatment(chip) && selectable" class="simple-chip" [ngClass]="{'chip-selected': isSelected }" (click)="selectThis()" [matTooltip]="'Clique para selecionar ' + treatment(chip) + ' de ' + label" matTooltipShowDelay="300" matTooltipHideDelay="500">{{ treatment(chip) }}</mat-chip>
+<mat-chip *ngIf="treatment && treatment(chip) && !selectable" class="simple-chip" matTooltip="Este campo não é selecionável." matTooltipShowDelay="300" matTooltipHideDelay="500">{{ treatment(chip) }}</mat-chip>

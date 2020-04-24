@@ -85,23 +85,6 @@ export class RuleChipGroupComponent implements OnInit {
 
     const map = this._map();
     this.clicked.emit(map);
-
-    // const map = this._map();
-    // const title = this.chipLists[id].label;
-
-    // const titles = map.map(sel => sel.title);
-    // const index = titles.indexOf(title);
-
-
-    // if (index < 0) {
-    //   map.push({
-    //     title: this.chipLists[id].key,
-    //     selecteds
-    //   });
-    // } else {
-    //   map[index].selecteds = selecteds;
-    // }
-    // this.clicked.emit(map);
   }
 
   private _map() {
