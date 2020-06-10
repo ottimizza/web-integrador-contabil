@@ -68,7 +68,7 @@ export class RuleService {
     return this._http.put(url, rule, this._headers);
   }
 
-  // ! WORKING, BUT DEPRECATED
+  // ! DISCONTINUED, MAY NOT WORK
   // export(cnpjEmpresa: string, tipoLancamento: number): Observable<GenericResponse<undefined>> {
   //   const url = `${BASE_URL}/api/sf/importar?cnpjEmpresa=${cnpjEmpresa}&tipoLancamento=${tipoLancamento}`;
   //   return this._http.post<GenericResponse<undefined>>(url, {}, this._headers);

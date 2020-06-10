@@ -16,6 +16,11 @@ import { RuleService } from '@shared/services/rule.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { Lancamento } from '@shared/models/Lancamento';
 import { Empresa } from '@shared/models/Empresa';
+import { RuleConfig } from './rule-creator/chips-group/chips-group.component';
+import { STANDART_CHIP_PATTERN } from './rule-creator/chips-group/patterns/STANDART_CHIP_PATTERN';
+import { BANK_CHIP_PATTERN } from './rule-creator/chips-group/patterns/BANK_CHIP_PATTERN';
+import { DATE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DATE_CHIP_PATTERN';
+import { VALUE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/VALUE_CHIP_PATTERN';
 
 @Component({
   selector: 'app-tdetail',
@@ -99,46 +104,14 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     };
   }
 
-  getComplementos() {
-    const s = (text: string) => {
-      return ArrayUtils.split(text, ' ', '-', '_', ',', '-');
-    }
-    /*
-     * Transforma todos os complementos (5 strings) em um objeto legível para os componentes filhos
-     * (para o componente dos chips especificamente)
-     */
-
-    const lancamento = this.records[0];
-    const arquivo = lancamento.arquivo;
-    const ok = !!((lancamento.complemento01 && arquivo.labelComplemento01) ||
-                  (lancamento.complemento02 && arquivo.labelComplemento02) ||
-                  (lancamento.complemento03 && arquivo.labelComplemento03) ||
-                  (lancamento.complemento04 && arquivo.labelComplemento04) ||
-                  (lancamento.complemento05 && arquivo.labelComplemento05));
-    let text = '';
-    if (ok) {
-      text = JSON.stringify({
-        c1: lancamento.complemento01 ? s(lancamento.complemento01) : undefined,
-        c2: lancamento.complemento02 ? s(lancamento.complemento02) : undefined,
-        c3: lancamento.complemento03 ? s(lancamento.complemento03) : undefined,
-        c4: lancamento.complemento04 ? s(lancamento.complemento04) : undefined,
-        c5: lancamento.complemento05 ? s(lancamento.complemento05) : undefined,
-        l1: arquivo.labelComplemento01,
-        l2: arquivo.labelComplemento02,
-        l3: arquivo.labelComplemento03,
-        l4: arquivo.labelComplemento04,
-        l5: arquivo.labelComplemento05,
-        complete1: lancamento.complemento01,
-        complete2: lancamento.complemento02,
-        complete3: lancamento.complemento03,
-        complete4: lancamento.complemento04,
-        complete5: lancamento.complemento05
-      });
-    }
-    return {
-      ok,
-      text
-    };
+  get hasComplements() {
+    const l = this.records[0];
+    const a = l.arquivo;
+    return !!((l.complemento01 && a.labelComplemento01) ||
+            (l.complemento02 && a.labelComplemento02) ||
+            (l.complemento03 && a.labelComplemento03) ||
+            (l.complemento04 && a.labelComplemento04) ||
+            (l.complemento05 && a.labelComplemento05));
   }
 
   resetErrors(errors?: string[]) {
@@ -205,7 +178,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     if (verify) {
       if (rule) {
         this._historicService
-          .getHistoric(this.business, this.account)
+          .getHistoric(this.business, this.account, this.records[0].tipoLancamento)
           .subscribe(data => {
             if (!data.records.length) {
               this.openHistoric(obs);
@@ -231,64 +204,54 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     });
   }
 
-  onDevolve(event: any) {
-    const s = event.selecteds;
+  onDevolve(events: { title: string, selecteds: string[] }[]) {
 
-    this.conditions.tipoPlanilha = undefined;
-    this.conditions.tipoMovimento = undefined;
+    this.conditions.tipoPlanilha = [this.records[0].tipoPlanilha];
+    this.conditions.tipoMovimento = [this.records[0].tipoMovimento];
 
-    switch (event.title) {
-      case 'Fornecedor':
-        this.conditions.descricao = s;
-        break;
-      case 'Cliente':
-        this.conditions.descricao = s;
-        break;
-      case 'Documento':
-        this.conditions.documento = s;
-        break;
-      case 'Banco':
-        this.conditions.portador = s;
-        break;
-      case 'Complemento 1':
-        this.conditions.complemento01 = s;
-        break;
-      case 'Complemento 2':
-        this.conditions.complemento02 = s;
-        break;
-      case 'Complemento 3':
-        this.conditions.complemento03 = s;
-        break;
-      case 'Complemento 4':
-        this.conditions.complemento04 = s;
-        break;
-      case 'Complemento 5':
-        this.conditions.complemento05 = s;
-        break;
-      case 'Complemento_2':
-        // É importante manter tanto o Complemento 2 quanto o Complemento_2 pois ele é usado em duas situações
-        // de formas diferentes
-        this.conditions.complemento02 = s;
-        break;
-      case 'Nome do Arquivo':
-        this.conditions.nomeArquivo = s;
-        break;
-      case 'Tipo da Planilha':
-        this.conditions.tipoPlanilha = s;
-        break;
-    }
+    events.forEach(event => {
 
-    if (this.conditions.rules.length) {
-      this.conditions.tipoPlanilha = [this.records[0].tipoPlanilha];
-      this.conditions.tipoMovimento = [this.tipoMovimento];
-    }
-    if (event.clear) {
-      this.conditions = new Rule();
-      this.impact = 0;
+    const s: string[] = event.selecteds.length ? event.selecteds : undefined;
+      switch (event.title) {
+        case 'descricao':
+          this.conditions.descricao = s;
+          break;
+        case 'documento':
+          this.conditions.documento = s;
+          break;
+        case 'portador':
+          this.conditions.portador = s;
+          break;
+        case 'complemento01':
+          this.conditions.complemento01 = s;
+          break;
+        case 'complemento02':
+          this.conditions.complemento02 = s;
+          break;
+        case 'complemento03':
+          this.conditions.complemento03 = s;
+          break;
+        case 'complemento04':
+          this.conditions.complemento04 = s;
+          break;
+        case 'complemento05':
+          this.conditions.complemento05 = s;
+          break;
+        case 'nomeArquivo':
+          this.conditions.nomeArquivo = s;
+          break;
+        case 'tipoPlanilha':
+          this.conditions.tipoPlanilha = s;
+          break;
+      }
+    });
+
+    if (this.conditions.rules.length === 2 && this.conditions.tipoPlanilha.length && this.conditions.tipoMovimento.length) {
+      this.conditions.tipoPlanilha = [];
+      this.conditions.tipoMovimento = [];
     }
 
     this.getByRule();
-
   }
 
   getByRule() {
@@ -334,8 +297,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       if (result) {
         this._historicService
           .createHistoric(result)
-          .subscribe(() => {
+          .subscribe((historic: any) => {
             this.disable();
+            this._historicService.export(historic.record.id, historic.record).subscribe()
           });
       }
     });
@@ -450,6 +414,135 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     err => {
       this._toast.show('Falha ao atualizar total de lançamentos. Isto não influenciará no funcionamento do sistema', 'warning');
     })
+  }
+
+  get descricao(): RuleConfig {
+    return {
+      selectable: true,
+      title: this.buttonLabel,
+      values: [
+        {
+          key: 'descricao',
+          label: this.buttonLabel,
+          pattern: STANDART_CHIP_PATTERN,
+          value: this.records[0].descricao
+        }
+      ]
+    };
+  }
+
+  get portador(): RuleConfig {
+    return {
+      selectable: true,
+      title: 'Banco',
+      values: [
+        {
+          key: 'portador',
+          label: 'Banco',
+          pattern: BANK_CHIP_PATTERN,
+          value: this.records[0].portador
+        }
+      ]
+    };
+  }
+
+  get dataMovimento(): RuleConfig {
+    return {
+      selectable: false,
+      title: 'Data',
+      values: [
+        {
+          key: 'dataMovimento',
+          label: 'Data',
+          pattern: DATE_CHIP_PATTERN,
+          value: this.records[0].dataMovimento
+        }
+      ]
+    };
+  }
+
+  get valorOriginal(): RuleConfig {
+    return {
+      selectable: false,
+      title: 'Valor',
+      values: [
+        {
+          key: 'valorOriginal',
+          label: 'Valor',
+          pattern: VALUE_CHIP_PATTERN,
+          value: `${this.records[0].valorOriginal}`
+        }
+      ]
+    };
+  }
+
+  get documento(): RuleConfig {
+    return {
+      selectable: true,
+      title: 'Documento',
+      values: [
+        {
+          key: 'documento',
+          label: 'Documento',
+          pattern: STANDART_CHIP_PATTERN,
+          value: this.records[0].documento
+        }
+      ]
+    };
+  }
+
+  get complementos(): RuleConfig {
+    return {
+      selectable: true,
+      title: 'Complementos',
+      values: [
+        {
+          key: 'complemento01',
+          label: this.records[0].arquivo.labelComplemento01,
+          pattern: STANDART_CHIP_PATTERN,
+          value: this.records[0].complemento01
+        },
+        {
+          key: 'complemento02',
+          label: this.records[0].arquivo.labelComplemento02,
+          pattern: STANDART_CHIP_PATTERN,
+          value: this.records[0].complemento02
+        },
+        {
+          key: 'complemento03',
+          label: this.records[0].arquivo.labelComplemento03,
+          pattern: STANDART_CHIP_PATTERN,
+          value: this.records[0].complemento03
+        },
+        {
+          key: 'complemento04',
+          label: this.records[0].arquivo.labelComplemento04,
+          pattern: STANDART_CHIP_PATTERN,
+          value: this.records[0].complemento04
+        },
+        {
+          key: 'complemento05',
+          label: this.records[0].arquivo.labelComplemento05,
+          pattern: STANDART_CHIP_PATTERN,
+          value: this.records[0].complemento05
+        }
+      ]
+    };
+  }
+
+  get complemento02(): RuleConfig {
+    return {
+      selectable: true,
+      title: this.records[0].arquivo.labelComplemento02,
+      values: [
+        {
+          key: 'complemento02',
+          label: this.records[0].arquivo.labelComplemento02,
+          pattern: STANDART_CHIP_PATTERN,
+          value: this.records[0].complemento02
+        }
+      ]
+    };
   }
 
 }

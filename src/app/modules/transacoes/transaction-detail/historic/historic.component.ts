@@ -86,7 +86,7 @@ export class HistoricComponent implements OnInit {
   private _update(): void {
     this.historicObj.id = this.id;
     const l = this.lancamento;
-    this.data.regra = this.historicObj.historic(l.contaMovimento, l.cnpjEmpresa, l.cnpjContabilidade);
+    this.data.regra = this.historicObj.historic(l.contaMovimento, l.cnpjEmpresa, l.cnpjContabilidade, l.tipoLancamento, l.idRoteiro);
   }
 
   private getValues(combo: string): string {
@@ -96,7 +96,6 @@ export class HistoricComponent implements OnInit {
       l.portador,
       DateUtils.ymdToCompetence(l.dataMovimento),
       DateUtils.lastCompetence(DateUtils.ymdToCompetence(l.dataMovimento)),
-      l.valorOriginal ? `${l.valorOriginal}` : null,
       l.documento,
       l.tipoPlanilha,
       l.complemento01,
@@ -115,9 +114,7 @@ export class HistoricComponent implements OnInit {
       'portador',
       'competencia',
       'competenciaAnterior',
-      'valorOriginal',
       'documento',
-      'tipoPlanilha',
       'complemento01',
       'complemento02',
       'complemento03',
@@ -134,9 +131,7 @@ export class HistoricComponent implements OnInit {
         'Banco',
         'Competência Atual',
         'Competência Anterior',
-        'Valor',
         'Documento',
-        'Tipo da Planilha',
         'Complemento 01',
         'Complemento 02',
         'Complemento 03',

@@ -7,11 +7,20 @@ export class HistoricField {
 }
 
 
-export interface FormattedHistoric {
-  historico: string;
-  contaMovimento: string;
-  cnpjEmpresa: string;
-  cnpjContabilidade: string;
+export class FormattedHistoric {
+
+  constructor(
+    public historico: string,
+    public contaMovimento: string,
+    public tipoLancamento: number,
+    public idRoteiro: string,
+    public cnpjEmpresa: string,
+    public cnpjContabilidade: string
+  ) {}
+
+  toHistoric() {
+
+  }
 }
 
 
@@ -40,13 +49,15 @@ export class Historic {
     return this._iterate(array);
   }
 
-  public historic(contaMovimento: string, cnpjEmpresa: string, cnpjContabilidade: string): FormattedHistoric {
-    return {
-      historico: this._toParams(),
+  public historic(contaMovimento: string, cnpjEmpresa: string, cnpjContabilidade: string, tipoLancamento: number, idRoteiro: string): FormattedHistoric {
+    return new FormattedHistoric(
+      this._toParams(),
       contaMovimento,
+      tipoLancamento,
+      idRoteiro,
       cnpjEmpresa,
       cnpjContabilidade
-    };
+    );
   }
 
   private _toParams() {
@@ -55,11 +66,11 @@ export class Historic {
       { text: this.field2.field, param: true },
       { text: this.field3.field, param: true }
     ]);
-    let text = this._iterate(array);
+    const text = this._iterate(array);
     if (this.id) {
-      text = `CodigoHistorico:${this.id} ${text}`;
+      return `CodigoHistorico:${this.id}$ ${text}`;
     }
-    return text;
+    return `$ ${text}`;
 
   }
 
