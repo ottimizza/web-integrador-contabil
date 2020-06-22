@@ -81,4 +81,14 @@ export class ArrayUtils {
 
   }
 
+    static concatDifferentiatingProperty(array1: any[], array2: any[], property: string) {
+    /*
+     * Concatena dois arrays ignorando elementos que tenham determinada propriedade repetida
+     */
+
+    const props = array1.map(arrItem => arrItem[property]);
+    array2 = array2.filter(arrItem => !props.includes(arrItem[property]));
+    return array1.concat(array2);
+  }
+
 }
