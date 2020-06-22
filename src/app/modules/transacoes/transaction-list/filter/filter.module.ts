@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FilterComponent } from './filter.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatAutocompleteModule } from '@angular/material';
 
 @NgModule({
   declarations: [FilterComponent],
@@ -10,6 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     CommonModule,
     FormsModule,
     MatTooltipModule,
+    MatAutocompleteModule
   ],
   exports: [FilterComponent]
 })
