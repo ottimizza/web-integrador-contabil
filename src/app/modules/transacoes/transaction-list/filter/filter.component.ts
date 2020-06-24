@@ -3,7 +3,9 @@ import { BusinessService } from '@shared/services/business.service';
 import { Empresa } from '@shared/models/Empresa';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { ToastService } from '@shared/services/toast.service';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
 
 @Component({
   selector: 'app-tfilter',
@@ -14,7 +16,6 @@ export class FilterComponent implements OnInit {
 
   @Output() empresa = new EventEmitter();
   word = '';
-  suggestions: string[] = [];
   business: Empresa[] = [];
 
   constructor(
@@ -30,14 +31,10 @@ export class FilterComponent implements OnInit {
     return 'Escreva o nome da empresa selecionada ou escolha dentre as sugeridas';
   }
 
-  async confirm(event: any) {
-    const erp = event.target.value.split(' - ')[0];
-    const business = this.business.filter(item => item.codigoERP === erp);
-    if (business[0]?.razaoSocial) {
-      this._toast.show(`Empresa ${business[0].razaoSocial} selecionada.`, 'primary');
-    }
+  async confirm(company: Empresa) {
+    this._toast.show(`Empresa ${company.razaoSocial} selecionada.`, 'primary');
     await this._delay(500);
-    this.devolve(business[0]);
+    this.devolve(company);
   }
 
   private _delay(ms: number) {
@@ -51,46 +48,20 @@ export class FilterComponent implements OnInit {
     } else {
       this._getEmpresas(split[0], split[0]);
     }
-
-    // const search = this.word.split(' - ')[1] ? this.word.split(' - ')[1].toUpperCase() : '';
-    // const word = this.word.toUpperCase();
-    // const subs = this._service
-    //   .getBusiness(search)
-    //   .subscribe(data => {
-    //     this.suggestions = [];
-    //     data.records.forEach(record => {
-    //       const code = `${record.codigoERP} - ${record.razaoSocial}`;
-    //       if (word === code) {
-    //         this.devolve(record);
-    //       }
-    //       this.suggestions.push(code);
-    //     });
-    //     subs.unsubscribe();
-    //   });
   }
 
   private _getEmpresas(text1: string, text2: string) {
-    const obs2 = this._service.getByErpCode(text1);
-    const obs1 = this._service.getBusiness(text2.toUpperCase());
-    const subs1 = obs1.subscribe(data1 => {
+    const obs1$ = this._service.getBusiness(text2.toUpperCase());
+    const obs2$ = this._service.getByErpCode(text1);
 
-      const subs2 = obs2.subscribe(data2 => {
+    const observable$ = combineLatest([obs1$, obs2$])
+      .pipe(map(([companiesByName, companiesByErp]: GenericPageableResponse<Empresa>[]) => {
+        return ArrayUtils.concatDifferentiatingProperty(companiesByName.records, companiesByErp.records, 'id') as Empresa[];
+      }));
 
-        const records: Empresa[] = ArrayUtils.sum(data1.records, data2.records);
-        this.suggestions = [];
-        this.business = records;
-        if (records.length) {
-          records.forEach(rec => {
-            if (rec.codigoERP && rec.razaoSocial) {
-              this.suggestions.push(`${rec.codigoERP} - ${rec.razaoSocial}`);
-            }
-          });
-        }
-        subs2.unsubscribe();
-      });
-
-      subs1.unsubscribe();
-
+    const subscription = observable$.subscribe(data => {
+      this.business = data;
+      subscription.unsubscribe();
     });
   }
 

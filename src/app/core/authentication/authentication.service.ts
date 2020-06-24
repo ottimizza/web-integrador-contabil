@@ -8,6 +8,7 @@ import { StorageService } from '@app/services/storage.service';
 
 import { environment } from '@env';
 import { LoggerUtils } from '@shared/utils/logger.utills';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,11 @@ export class AuthenticationService {
 
   public redirectURI = `${window.location.origin}/auth/callback`;
 
-  constructor(@Inject(DOCUMENT) private document: Document, private http: HttpClient, public storageService: StorageService) { }
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private http: HttpClient,
+    public storageService: StorageService,
+    private router: Router) { }
 
   public store(authSession: AuthSession): Promise<{}> {
     return new Promise<boolean>((resolve, reject) => {
@@ -73,6 +78,11 @@ export class AuthenticationService {
           })
         ).subscribe((response: any) => {
           this.storageService.store(AuthenticationService.STORAGE_KEY_TOKENINFO, JSON.stringify(response));
+        }, err => {
+          if (err.status === 403) {
+            alert('Seu usuário não possue acesso a esta aplicação. Se você acha que isso está errado, fale com seu administrador.');
+            this.router.navigate(['auth', 'logout']);
+          }
         });
     }).then(() => { });
   }

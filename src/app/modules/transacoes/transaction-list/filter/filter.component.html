@@ -1,6 +1,9 @@
 <div class="filterBox mb-4 mt-4">
-  <input type="text" (keyup)="change()" (change)="confirm($event)" list="businesssuggestions" autocomplete="off" [(ngModel)]="word" placeholder="Filtro" [matTooltip]="info" matTooltipShowDelay="300" matTooltipHideDelay="500">
-  <datalist id="businesssuggestions">
+  <input type="text" [matAutocomplete]="auto" (input)="change()" autocomplete="off" [(ngModel)]="word" placeholder="Filtro" [matTooltip]="info" matTooltipShowDelay="300" matTooltipHideDelay="500">
+  <!-- <datalist id="businesssuggestions">
     <option *ngFor="let suggestion of suggestions" [value]="suggestion"></option>
-  </datalist>
+  </datalist> -->
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let company of business" [value]="company.codigoERP + ' - ' + company.razaoSocial" (onSelectionChange)="confirm(company)">{{ company.codigoERP + ' - ' + company.razaoSocial }}</mat-option>
+  </mat-autocomplete>
 </div>
