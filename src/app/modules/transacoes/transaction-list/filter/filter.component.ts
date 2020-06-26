@@ -44,13 +44,13 @@ export class FilterComponent implements OnInit {
   change() {
     const split = this.word.split(' - ');
     if (split.length > 1) {
-      this._getEmpresas(split[0], split[1]);
+      this._getCompanies(split[0], split[1]);
     } else {
-      this._getEmpresas(split[0], split[0]);
+      this._getCompanies(split[0], split[0]);
     }
   }
 
-  private _getEmpresas(text1: string, text2: string) {
+  private _getCompanies(text1: string, text2: string) {
     const obs1$ = this._service.getBusiness(text2.toUpperCase());
     const obs2$ = this._service.getByErpCode(text1);
 

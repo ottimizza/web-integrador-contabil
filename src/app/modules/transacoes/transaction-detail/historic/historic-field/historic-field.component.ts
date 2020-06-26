@@ -14,8 +14,8 @@ export class HistoricFieldComponent {
   @Output() selectOne = new EventEmitter();
   array: string[];
 
-  devolve(event: any): void {
-    this.selectOne.emit(event.target.value);
+  devolve(event: string): void {
+    this.selectOne.emit(event);
   }
 
   get values(): string[] {

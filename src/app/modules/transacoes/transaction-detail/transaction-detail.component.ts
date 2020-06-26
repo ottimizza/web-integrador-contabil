@@ -17,10 +17,10 @@ import { ArrayUtils } from '@shared/utils/array.utils';
 import { Lancamento } from '@shared/models/Lancamento';
 import { Empresa } from '@shared/models/Empresa';
 import { RuleConfig } from './rule-creator/chips-group/chips-group.component';
-import { STANDART_CHIP_PATTERN } from './rule-creator/chips-group/patterns/STANDART_CHIP_PATTERN';
 import { BANK_CHIP_PATTERN } from './rule-creator/chips-group/patterns/BANK_CHIP_PATTERN';
 import { DATE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DATE_CHIP_PATTERN';
 import { VALUE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/VALUE_CHIP_PATTERN';
+import { DEFAULT_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DEFAULT_CHIP_PATTERN';
 
 @Component({
   selector: 'app-tdetail',
@@ -424,7 +424,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         {
           key: 'descricao',
           label: this.buttonLabel,
-          pattern: STANDART_CHIP_PATTERN,
+          pattern: DEFAULT_CHIP_PATTERN,
           value: this.records[0].descricao
         }
       ]
@@ -484,7 +484,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         {
           key: 'documento',
           label: 'Documento',
-          pattern: STANDART_CHIP_PATTERN,
+          pattern: DEFAULT_CHIP_PATTERN,
           value: this.records[0].documento
         }
       ]
@@ -499,31 +499,31 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         {
           key: 'complemento01',
           label: this.records[0].arquivo.labelComplemento01,
-          pattern: STANDART_CHIP_PATTERN,
+          pattern: DEFAULT_CHIP_PATTERN,
           value: this.records[0].complemento01
         },
         {
           key: 'complemento02',
           label: this.records[0].arquivo.labelComplemento02,
-          pattern: STANDART_CHIP_PATTERN,
+          pattern: DEFAULT_CHIP_PATTERN,
           value: this.records[0].complemento02
         },
         {
           key: 'complemento03',
           label: this.records[0].arquivo.labelComplemento03,
-          pattern: STANDART_CHIP_PATTERN,
+          pattern: DEFAULT_CHIP_PATTERN,
           value: this.records[0].complemento03
         },
         {
           key: 'complemento04',
           label: this.records[0].arquivo.labelComplemento04,
-          pattern: STANDART_CHIP_PATTERN,
+          pattern: DEFAULT_CHIP_PATTERN,
           value: this.records[0].complemento04
         },
         {
           key: 'complemento05',
           label: this.records[0].arquivo.labelComplemento05,
-          pattern: STANDART_CHIP_PATTERN,
+          pattern: DEFAULT_CHIP_PATTERN,
           value: this.records[0].complemento05
         }
       ]
@@ -538,7 +538,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         {
           key: 'complemento02',
           label: this.records[0].arquivo.labelComplemento02,
-          pattern: STANDART_CHIP_PATTERN,
+          pattern: DEFAULT_CHIP_PATTERN,
           value: this.records[0].complemento02
         }
       ]
