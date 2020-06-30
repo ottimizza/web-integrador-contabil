@@ -7,6 +7,7 @@ import { AuthenticationService } from '@app/authentication/authentication.servic
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
 import { CompleteRule } from '@shared/models/CompleteRule';
 import { GenericResponse } from '@shared/models/GenericResponse';
+import { HttpHandlerService } from '@app/services/http-handler.service';
 
 const BASE_URL = environment.storageBaseUrl;
 
@@ -15,41 +16,40 @@ const BASE_URL = environment.storageBaseUrl;
 })
 export class RuleService {
 
-  constructor(private _http: HttpClient, private _auth: AuthenticationService) { }
+  constructor(private _http: HttpHandlerService) { }
 
   createRule(rule: RuleCreateFormat): Observable<any> {
-    return this._http.post(`${BASE_URL}/api/v1/regras`, rule, this._headers);
+    return this._http.post(`${BASE_URL}/api/v1/regras`, rule, 'Falha ao criar regra!');
   }
 
   getAllIds(cnpjEmpresa: string, tipoLancamento: number) {
     const url = `${BASE_URL}/api/v1/salesforce/id?cnpjEmpresa=${cnpjEmpresa}&tipoLancamento=${tipoLancamento}`;
-    return this._http.get<number[]>(url, this._headers);
+    return this._http.get<number[]>(url, 'Falha ao obter lista completa de regras!');
   }
 
   exportById(id: number) {
     const url = `${BASE_URL}/api/v1/salesforce/patch/${id}`;
-    return this._http.patch(url, {}, this._headers);
+    return this._http.patch(url, {}, 'Falha ao exportar regra!');
   }
 
   get(searchCriteria: any): Observable<GenericPageableResponse<CompleteRule>> {
-    const params = this.encode(searchCriteria);
-    const url = `${BASE_URL}/api/v1/regras?${params}`;
-    return this._http.get<GenericPageableResponse<any>>(url, this._headers);
+    const url = `${BASE_URL}/api/v1/regras`;
+    return this._http.get<GenericPageableResponse<any>>([url, searchCriteria], 'Falha ao obter regras!');
   }
 
   changePosition(rule: CompleteRule) {
     const url = `${BASE_URL}/api/v1/regras/${rule.id}/posicao`;
-    return this._http.put(url, { posicao: rule.posicao }, this._headers);
+    return this._http.put(url, { posicao: rule.posicao }, 'Falha ao alterar posição da regra!');
   }
 
   moveToTop(id: number) {
     const url = `${BASE_URL}/api/v1/regras/${id}/posicao/inicio`;
-    return this._http.put(url, {}, this._headers);
+    return this._http.put(url, {}, 'Falha ao mover regra para o início!');
   }
 
   moveToBottom(id: number) {
     const url = `${BASE_URL}/api/v1/regras/${id}/posicao/final`;
-    return this._http.put(url, {}, this._headers);
+    return this._http.put(url, {}, 'Falha ao mover regra para o final!');
   }
 
   // ! WORKING, BUT DEPRECATED
@@ -60,12 +60,12 @@ export class RuleService {
 
   delete(id: number) {
     const url = `${BASE_URL}/api/v1/regras/${id}`;
-    return this._http.delete(url, this._headers);
+    return this._http.delete(url, 'Falha ao excluir regra!');
   }
 
   update(id: number, rule: { regras: PostFormatRule[], contaMovimento: string }) {
     const url = `${BASE_URL}/api/v1/regras/${id}`;
-    return this._http.put(url, rule, this._headers);
+    return this._http.put(url, rule, 'Falha ao atualizar regra!');
   }
 
   // ! DISCONTINUED, MAY NOT WORK
@@ -73,16 +73,5 @@ export class RuleService {
   //   const url = `${BASE_URL}/api/sf/importar?cnpjEmpresa=${cnpjEmpresa}&tipoLancamento=${tipoLancamento}`;
   //   return this._http.post<GenericResponse<undefined>>(url, {}, this._headers);
   // }
-
-  private get _headers() {
-    const headers = this._auth.getAuthorizationHeaders();
-    return { headers };
-  }
-
-  private encode(params: any): string {
-    return Object.keys(params).map((key) => {
-      return [key, params[key]].map(encodeURIComponent).join('=');
-    }).join('&');
-  }
 
 }

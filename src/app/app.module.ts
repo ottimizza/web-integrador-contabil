@@ -16,13 +16,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.module';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpErrorInterceptor, ErrorInterceptorProvider } from '@app/interceptor/http.interceptor';
 import { NavbarLayoutModule } from './layout/navbar-layout/navbar-layout.module';
 import { RuleListModule } from '@modules/rule-list/rule-list.module';
 import { TransactionModule } from '@modules/transacoes/transaction.module';
 import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { AngularFireModule } from '@angular/fire';
 import { MessagingService } from '@app/services/messaging.service';
+import { GlobalHttpInterceptorProvider } from '@app/interceptor/http/http-interceptor.provider';
 
 @NgModule({
   declarations: [
@@ -68,7 +68,7 @@ import { MessagingService } from '@app/services/messaging.service';
     RuleListModule
   ],
   providers: [
-    ErrorInterceptorProvider
+    GlobalHttpInterceptorProvider
   ],
   bootstrap: [AppComponent]
 })

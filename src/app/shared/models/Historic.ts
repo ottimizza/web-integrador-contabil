@@ -18,9 +18,6 @@ export class FormattedHistoric {
     public cnpjContabilidade: string
   ) {}
 
-  toHistoric() {
-
-  }
 }
 
 
