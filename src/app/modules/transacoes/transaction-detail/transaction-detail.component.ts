@@ -398,9 +398,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa!`]);
       }
 
-    },
-    err => {
-      this._toast.show('Falha ao carregar lançamentos', 'danger');
     });
 
     this._lancamentoService.getPercentage(this.business.cnpj, this.tipoMovimento).subscribe((percentage: any) => {
@@ -410,9 +407,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         this.percentage = 100;
       }
       this.total = percentage.totalLancamentos;
-    },
-    err => {
-      this._toast.show('Falha ao atualizar total de lançamentos. Isto não influenciará no funcionamento do sistema', 'warning');
     })
   }
 

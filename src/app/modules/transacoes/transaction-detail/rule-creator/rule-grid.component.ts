@@ -9,6 +9,7 @@ import { ToastService } from '@shared/services/toast.service';
 import { Lancamento } from '@shared/models/Lancamento';
 import { PostFormatRule } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   templateUrl: './rule-grid.component.html'
@@ -47,15 +48,12 @@ export class RuleGridComponent implements OnInit, GenericPagination {
       this._toast.showSnack('Aguardando resposta');
       this._service
         .getByRulePaginated(this.rules, this.business, this.page)
+        .pipe(finalize(() => this.isFetching = false))
         .subscribe(imports => {
-          this.isFetching = false;
           imports.records.forEach(lanc => this.info.push(lanc));
           this.pageInfo = imports.pageInfo;
           this.page++;
           this._toast.hideSnack();
-        },
-        err => {
-          this._toast.show('Falha ao carregar lançamentos.', 'danger');
         });
     }
   }

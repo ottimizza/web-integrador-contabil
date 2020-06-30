@@ -19,6 +19,7 @@ import { RuleCreateFormat } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
 import { DOCUMENT } from '@angular/common';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -83,11 +84,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
         } else {
           this._openSnack('Falha ao excluir regra.', 'danger');
         }
-      },
-      err => {
-        this._openSnack('Falha ao excluir regra', 'danger');
-      }
-    );
+      });
   }
 
   onUpdate(event: string) {
@@ -113,11 +110,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
                   this._openSnack('Regra alterada com sucesso!', 'success');
                 }
               });
-            },
-            err => {
-              this._openSnack('Falha ao alterar regra!', 'danger');
-            }
-          );
+            });
       }
     });
   }
@@ -138,30 +131,20 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
           .subscribe(ids => {
               this.totalRules = ids.length;
               ids.forEach(id => {
-                this._service.exportById(id).subscribe(rule => {
+                this._service.exportById(id)
+                  .subscribe(rule => {
                     this.exportedRules++;
                     if (this.exportedRules === ids.length) {
                       this._openSnack('Regras exportadas com sucesso!');
                       this.isExporting = false;
                     }
-                  },
-                  err => {
-                    this._openSnack('Falha ao exportar regras', 'danger');
-                    LoggerUtils.error(err);
+                  }, err => {
                     this.isExporting = false;
-                  }
-                );
+                  });
               });
-            },
-            err => {
-              this._openSnack(
-                'Falha ao obter regras para a exportação',
-                'danger'
-              );
-              LoggerUtils.error(err);
+            }, err => {
               this.isExporting = false;
-            }
-          );
+            });
       } else {
         this._openSnack('Exportação cancelada', 'warning');
       }
@@ -192,17 +175,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
             this.rows.sort((a, b) => a.posicao - b.posicao);
             this.artificialClone = regra;
             this._openSnack('Regra clonada com sucesso!', 'success');
-          },
-          err => {
-            this._openSnack('Falha ao localizar regra', 'danger');
-            LoggerUtils.log(err);
-          }
-        );
-      },
-      err => {
-        this._openSnack('Falha ao clonar regra!', 'danger');
-      }
-    );
+          });
+      });
   }
 
   drop(event: CdkDragDrop<RuleCreateFormat[]>) {
@@ -214,11 +188,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
         info => {
           moveItemInArray(this.rows, event.previousIndex, event.currentIndex);
           this._openSnack('Regra movida com sucesso!', 'success');
-        },
-        err => {
-          this._openSnack('Falha ao mover regra!', 'danger');
-        }
-      );
+        });
     }
   }
 
@@ -238,11 +208,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
         }
         this.rows.splice(previousIndex, 1);
         this._openSnack('Regra movida com sucesso!', 'success');
-      },
-      err => {
-        this._openSnack('Falha ao mover regra', 'danger');
-      }
-    );
+      });
   }
 
   nextPage() {
@@ -256,8 +222,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
     this._snackBar.showSnack('Aguardando resposta');
     this.isFetching = true;
-    this._service.get(filter).subscribe(imports => {
-      this.isFetching = false;
+    this._service.get(filter)
+      .pipe(finalize(() => this.isFetching = false))
+      .subscribe(imports => {
       if (JSON.stringify(this.artificialClone) === JSON.stringify(this.rows[this.rows.length - 1])) {
         /*
         Sempre que uma regra é clonada, o clone é artificialmente inserido no array local para que não seja necessário
@@ -272,9 +239,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       imports.records.forEach(rec => this.rows.push(rec));
       this.pageInfo = imports.pageInfo;
       this._snackBar.hideSnack();
-    },
-    err => {
-      this._openSnack('Falha ao carregar regras', 'danger');
     });
     this.page++;
   }
