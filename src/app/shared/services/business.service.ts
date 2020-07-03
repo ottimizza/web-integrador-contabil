@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@env';
-import { AuthenticationService } from '@app/authentication/authentication.service';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
 import { Empresa } from '@shared/models/Empresa';

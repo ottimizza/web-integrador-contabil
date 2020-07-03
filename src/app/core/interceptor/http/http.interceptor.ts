@@ -4,17 +4,15 @@ import {
   HttpRequest,
   HttpErrorResponse,
   HttpHandler,
-  HttpEvent,
-  HttpResponse,
-  HTTP_INTERCEPTORS
+  HttpEvent
 } from '@angular/common/http';
 
-import { Observable, EMPTY, throwError, of, Subject, BehaviorSubject } from 'rxjs';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, switchMap, filter, take } from 'rxjs/operators';
-// import { MocksService, refreshtoken_resource } from '@app/http/mocks.service';
 import { AuthenticationService, REFRESH_URL, CALLBACK_URL } from '@app/authentication/authentication.service';
 import { AuthSession } from '@shared/models/AuthSession';
 import { SKIP_INTERCEPTOR } from '../skip-interceptor';
+import { Router } from '@angular/router';
 
 export const HttpStatus = {
   BAD_REQUEST: 400,
@@ -27,11 +25,9 @@ export class GlobalHttpInterceptor implements HttpInterceptor {
 
   private refreshTokenEmProgresso = false;
 
-  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
-    null
-  );
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-  constructor(private authenticationService: AuthenticationService) {
+  constructor(private authenticationService: AuthenticationService, private router: Router) {
   }
 
 
@@ -47,11 +43,18 @@ export class GlobalHttpInterceptor implements HttpInterceptor {
 
         if (error.error instanceof Error) {
         } else {
+
+          if (error.status === HttpStatus.BAD_REQUEST) {
+            if (this.requestMatchesCallbackURL(request)) {
+              this.router.navigate(['/landpage']);
+              return throwError(error);
+            }
+          }
+
           if (error.status === HttpStatus.UNAUTHORIZED) {
 
             if (this.requestMatchesCallbackURL(request)) {
-              // TODO: Enviar para tela pré-login
-              this.logout();
+              this.router.navigate(['/landpage']);
               return throwError(error);
             }
 

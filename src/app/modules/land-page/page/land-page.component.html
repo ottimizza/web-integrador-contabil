@@ -1,0 +1,35 @@
+<div class="row m-0 w-100" id="land-page">
+  <div class="col-12 col-sm-5 col-lg-4 col-xl-3 login-background">
+    <div class="centralize-in-middle w-100">
+      <div class="text-center">
+        <div id="logo">
+          <img
+            class="w-100 p-3"
+            [src]="
+              currentUser?.organization?.avatar ||
+              'https://ottimizza.com.br/wp-content/themes/ottimizza/images/logo.png'
+            "
+            alt="logo"
+          />
+        </div>
+
+        <button
+          class="btn btn-outline-primary col-6 my-5"
+          (click)="authenticate()"
+        >
+          Entrar
+        </button>
+      </div>
+    </div>
+    <div id="footer" class="h-100 p-2">
+      <span>
+        Dúvidas no acesso? Clique <a class="text-bold" [href]="supportUrl" target="_blank">aqui</a>
+      </span>
+    </div>
+  </div>
+
+  <div
+    class="d-none d-sm-block col-sm-7 col-lg-8 col-xl-9"
+    [style]="'background-color: ' + defaultColor + ';'"
+  ></div>
+</div>
