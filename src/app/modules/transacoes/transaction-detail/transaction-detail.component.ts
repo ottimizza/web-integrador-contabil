@@ -4,6 +4,11 @@ import { Observable } from 'rxjs';
 import { MatTabChangeEvent } from '@angular/material';
 import { MatDialog } from '@angular/material/dialog';
 
+import { DEFAULT_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DEFAULT_CHIP_PATTERN';
+import { VALUE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/VALUE_CHIP_PATTERN';
+import { DATE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DATE_CHIP_PATTERN';
+import { BANK_CHIP_PATTERN } from './rule-creator/chips-group/patterns/BANK_CHIP_PATTERN';
+import { RuleConfig } from './rule-creator/chips-group/chips-group.component';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { LancamentoService } from '@shared/services/lancamento.service';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
@@ -16,11 +21,6 @@ import { RuleService } from '@shared/services/rule.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { Lancamento } from '@shared/models/Lancamento';
 import { Empresa } from '@shared/models/Empresa';
-import { RuleConfig } from './rule-creator/chips-group/chips-group.component';
-import { BANK_CHIP_PATTERN } from './rule-creator/chips-group/patterns/BANK_CHIP_PATTERN';
-import { DATE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DATE_CHIP_PATTERN';
-import { VALUE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/VALUE_CHIP_PATTERN';
-import { DEFAULT_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DEFAULT_CHIP_PATTERN';
 
 @Component({
   selector: 'app-tdetail',
@@ -210,40 +210,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this.conditions.tipoMovimento = [this.records[0].tipoMovimento];
 
     events.forEach(event => {
-
-    const s: string[] = event.selecteds.length ? event.selecteds : undefined;
-      switch (event.title) {
-        case 'descricao':
-          this.conditions.descricao = s;
-          break;
-        case 'documento':
-          this.conditions.documento = s;
-          break;
-        case 'portador':
-          this.conditions.portador = s;
-          break;
-        case 'complemento01':
-          this.conditions.complemento01 = s;
-          break;
-        case 'complemento02':
-          this.conditions.complemento02 = s;
-          break;
-        case 'complemento03':
-          this.conditions.complemento03 = s;
-          break;
-        case 'complemento04':
-          this.conditions.complemento04 = s;
-          break;
-        case 'complemento05':
-          this.conditions.complemento05 = s;
-          break;
-        case 'nomeArquivo':
-          this.conditions.nomeArquivo = s;
-          break;
-        case 'tipoPlanilha':
-          this.conditions.tipoPlanilha = s;
-          break;
-      }
+      this.conditions[event.title] = event.selecteds.length ? event.selecteds : undefined;
     });
 
     if (this.conditions.rules.length === 2 && this.conditions.tipoPlanilha.length && this.conditions.tipoMovimento.length) {

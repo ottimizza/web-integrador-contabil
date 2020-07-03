@@ -91,7 +91,7 @@ export class AuthenticationService {
         }, err => {
           if (err.status === 403) {
             alert('Seu usuário não possue acesso a esta aplicação. Se você acha que isso está errado, fale com seu administrador.');
-            this.router.navigate(['auth', 'logout']);
+            this.authorize()
           }
         });
     }).then(() => { });

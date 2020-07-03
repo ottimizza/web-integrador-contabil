@@ -14,6 +14,7 @@ function createEnvironementFile() {
   storageApplicationId: '${getEnvironmentVariable('STORAGE_APPLICATION_ID', 'accounts-avatar')}',
   storageAccountingId: '${getEnvironmentVariable('STORAGE_ACCOUNTING_ID', 'ottimizza')}',
   portalBaseUrl: '${getEnvironmentVariable('PORTAL_BASE_URL')}',
+  supportUrl: '${getEnvironmentVariable('SUPPORT_URL', 'https://suporte.ottimizza.com.br')}',
   firebase: {
     apiKey: '${getEnvironmentVariable('FIREBASE_API_KEY')}',
     authDomain: '${getEnvironmentVariable('FIREBASE_AUTH_DOMAIN')}',
