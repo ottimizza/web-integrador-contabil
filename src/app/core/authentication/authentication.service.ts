@@ -88,15 +88,29 @@ export class AuthenticationService {
           })
         ).subscribe((response: any) => {
           this.storageService.store(AuthenticationService.STORAGE_KEY_TOKENINFO, JSON.stringify(response));
-        }, err => {
-          if (err.status === 403) {
-            alert('Seu usuário não possue acesso a esta aplicação. Se você acha que isso está errado, fale com seu administrador.');
-            this.authorize()
-          }
         });
     }).then(() => { });
   }
 
+  public async verifyProduct() {
+    const headers = this.getAuthorizationHeaders();
+    headers.append(SKIP_INTERCEPTOR, '');
+    const url = `${environment.oauthBaseUrl}/api/v1/check_products/${environment.oauthClientId}`;
+    return new Promise((resolve, reject) => {
+      this.http
+        .get(url, { headers })
+        .pipe(finalize(() => resolve()))
+        .subscribe(null, err => {
+          console.log(err);
+          if (err.status === 403) {
+            alert(
+              'Seu usuário não tem acesso a este produto! Se você acha que isto é um erro, entre em contato com seua administrador.'
+            );
+            this.authorize();
+          }
+        });
+    });
+  }
 
   public clearStorage() {
     localStorage.removeItem(AuthenticationService.STORAGE_KEY_USERINFO);
