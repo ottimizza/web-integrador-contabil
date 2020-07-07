@@ -101,7 +101,7 @@ export class AuthenticationService {
         .get(url, { headers })
         .pipe(finalize(() => resolve()))
         .subscribe(null, err => {
-          console.log(err);
+          console.error(err);
           if (err.status === 403) {
             alert(
               'Seu usuário não tem acesso a este produto! Se você acha que isto é um erro, entre em contato com seua administrador.'
@@ -128,7 +128,7 @@ export class AuthenticationService {
   }
 
   public exchange(code: string) {
-    const url = `${environment.oauthBaseUrl}/auth/callback?code=${code}&redirect_uri=${this.redirectURI}`;
+    const url = `${environment.storageBaseUrl}/auth/callback?code=${code}&redirect_uri=${this.redirectURI}`;
     return this.http.post(url, {}, {});
   }
 
