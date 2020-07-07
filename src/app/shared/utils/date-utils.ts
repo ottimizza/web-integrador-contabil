@@ -32,4 +32,20 @@ export class DateUtils {
 
   }
 
+  public static removeTimeZone(date: Date) {
+    const hoursDiff = date.getHours() - date.getTimezoneOffset() / 60;
+    const minutesDiff = (date.getHours() - date.getTimezoneOffset()) % 60;
+    date.setHours(hoursDiff);
+    date.setMinutes(minutesDiff);
+    return date;
+  }
+
+  public static stringify(date: Date, strategy: 'json' | 'native' = 'json') {
+    if (strategy === 'json') {
+      return JSON.stringify(this.removeTimeZone(date));
+    } else if (strategy === 'native') {
+      return date.toDateString();
+    }
+  }
+
 }

@@ -1,6 +1,6 @@
 import { IChipGroupPattern } from './IChipGroupPattern';
 
-export const STANDART_CHIP_PATTERN: IChipGroupPattern = {
+export const DEFAULT_CHIP_PATTERN: IChipGroupPattern = {
   separators: [' ', '.', ',', '_', '-', '(', ')'],
   starting: '',
   ending: '',

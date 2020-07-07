@@ -9,6 +9,10 @@ import { StorageService } from '@app/services/storage.service';
 import { environment } from '@env';
 import { LoggerUtils } from '@shared/utils/logger.utills';
 import { Router } from '@angular/router';
+import { SKIP_INTERCEPTOR } from '@app/interceptor/skip-interceptor';
+
+export const REFRESH_URL = '/auth/refresh';
+export const CALLBACK_URL = '/auth/callback';
 
 @Injectable({
   providedIn: 'root'
@@ -54,8 +58,11 @@ export class AuthenticationService {
     });
   }
 
-  public async storeUserInfo(): Promise<void> {
+  public async storeUserInfo(skipInterceptor = false): Promise<void> {
     const headers = this.getAuthorizationHeaders();
+    if (skipInterceptor) {
+      headers.append(SKIP_INTERCEPTOR, '');
+    }
     return new Promise<void>((resolve, reject) => {
       return this.http.get(`${environment.oauthBaseUrl}/oauth/userinfo`, { headers })
         .pipe(
@@ -68,8 +75,11 @@ export class AuthenticationService {
     }).then(() => { });
   }
 
-  public async storeTokenInfo(): Promise<void> {
+  public async storeTokenInfo(skipInterceptor = false): Promise<void> {
     const headers = this.getAuthorizationHeaders();
+    if (skipInterceptor) {
+      headers.append(SKIP_INTERCEPTOR, '');
+    }
     return new Promise<void>((resolve, reject) => {
       return this.http.get(`${environment.oauthBaseUrl}/oauth/tokeninfo`, { headers })
         .pipe(
@@ -78,15 +88,29 @@ export class AuthenticationService {
           })
         ).subscribe((response: any) => {
           this.storageService.store(AuthenticationService.STORAGE_KEY_TOKENINFO, JSON.stringify(response));
-        }, err => {
-          if (err.status === 403) {
-            alert('Seu usuário não possue acesso a esta aplicação. Se você acha que isso está errado, fale com seu administrador.');
-            this.router.navigate(['auth', 'logout']);
-          }
         });
     }).then(() => { });
   }
 
+  public async verifyProduct() {
+    const headers = this.getAuthorizationHeaders();
+    headers.append(SKIP_INTERCEPTOR, '');
+    const url = `${environment.oauthBaseUrl}/api/v1/check_products/${environment.oauthClientId}`;
+    return new Promise((resolve, reject) => {
+      this.http
+        .get(url, { headers })
+        .pipe(finalize(() => resolve()))
+        .subscribe(null, err => {
+          console.error(err);
+          if (err.status === 403) {
+            alert(
+              'Seu usuário não tem acesso a este produto! Se você acha que isto é um erro, entre em contato com seua administrador.'
+            );
+            this.authorize();
+          }
+        });
+    });
+  }
 
   public clearStorage() {
     localStorage.removeItem(AuthenticationService.STORAGE_KEY_USERINFO);
@@ -104,7 +128,7 @@ export class AuthenticationService {
   }
 
   public exchange(code: string) {
-    const url = `${environment.oauthBaseUrl}/auth/callback?code=${code}&redirect_uri=${this.redirectURI}`;
+    const url = `${environment.storageBaseUrl}/auth/callback?code=${code}&redirect_uri=${this.redirectURI}`;
     return this.http.post(url, {}, {});
   }
 

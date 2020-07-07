@@ -8,12 +8,21 @@ import { AuthGuard } from '@app/guard/auth.guard';
 import { NoAuthGuard } from '@app/guard/no-auth.guard';
 import { TransactionListComponent } from '@modules/transacoes/transaction-list/transaction-list.component';
 import { RuleListComponent } from '@modules/rule-list/rule-list.component';
+import { LandPageComponent } from '@modules/land-page/page/land-page.component';
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'lancamentos/',
     pathMatch: 'full'
+  },
+  {
+    path: 'landpage',
+    data: {
+      breadcrumb: null
+    },
+    component: LandPageComponent,
+    canActivate: [NoAuthGuard]
   },
   {
     path: 'lancamentos/',

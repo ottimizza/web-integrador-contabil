@@ -6,6 +6,7 @@ export const environment = {
   storageApplicationId: 'account-avatar',
   storageAccountingId: 'ottimizza',
   portalBaseUrl: 'https://development-accounts.ottimizza.com.br',
+  supportUrl: 'https://suporte.ottimizza.com.br',
   firebase: {
     apiKey: 'AIzaSyBT6UPIBsSCwF9dMgjn-0GoB9ZCgKkoWCs',
     authDomain: 'integrador-contabil.firebaseapp.com',

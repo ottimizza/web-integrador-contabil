@@ -10,7 +10,8 @@ export interface BreadCrumb {
 
 @Component({
   selector: 'app-breadcrumb',
-  templateUrl: './breadcrumb.component.html'
+  templateUrl: './breadcrumb.component.html',
+  styleUrls: ['./breadcrumb.scss']
 })
 export class BreadcrumbComponent implements OnInit {
   public breadcrumbs: BreadCrumb[] = [];

@@ -534,3 +534,14 @@ $full-sidebar-width: 240px;
     // background-color: rebeccapurple;
   }
 }
+
+.breadcrumb {
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding: .75rem 1rem;
+  margin-bottom: 0;
+  list-style: none;
+  background-color: #e9ecef;
+  border-radius: .25rem;
+}

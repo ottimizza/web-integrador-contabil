@@ -1,5 +1,11 @@
-<span *ngIf="name">{{ name }}</span>
-<br>
-<select (change)="devolve($event)" class="hrow-field">
+<!-- <span *ngIf="name">{{ name }}</span> -->
+<!-- <br> -->
+<!-- <select (change)="devolve($event)" class="hrow-field">
   <option *ngFor="let v of values" [value]="v">{{ v }}</option>
-</select>
+</select> -->
+<mat-form-field>
+  <mat-label *ngIf="name">{{ name }}</mat-label>
+  <mat-select (valueChange)="devolve($event)">
+    <mat-option *ngFor="let v of values" [value]="v">{{ v }}</mat-option>
+  </mat-select>
+</mat-form-field>
