@@ -10,7 +10,7 @@ function createEnvironementFile() {
   production: true,
   oauthBaseUrl: '${getEnvironmentVariable('OAUTH2_BASE_URL')}',
   oauthClientId: '${getEnvironmentVariable('OAUTH2_CLIENT_ID')}',
-  storageBaseUrl: '${getEnvironmentVariable('SERVICE_URL')}',
+  serviceUrl: '${getEnvironmentVariable('SERVICE_URL')}',
   storageApplicationId: '${getEnvironmentVariable('STORAGE_APPLICATION_ID', 'accounts-avatar')}',
   storageAccountingId: '${getEnvironmentVariable('STORAGE_ACCOUNTING_ID', 'ottimizza')}',
   portalBaseUrl: '${getEnvironmentVariable('PORTAL_BASE_URL')}',
@@ -31,7 +31,7 @@ function createEnvironementFile() {
 //   oauthBaseUrl: '${getEnvironmentVariable('oauthBaseUrl')}',
 //   oauthClientId: '${getEnvironmentVariable('oauthClientId')}',
 //   serviceUrl: '${getEnvironmentVariable('serviceUrl')}',
-//   storageBaseUrl: '${getEnvironmentVariable('oauthClientId')}',
+//   serviceUrl: '${getEnvironmentVariable('oauthClientId')}',
 //   storageApplicationId: '${getEnvironmentVariable('STORAGE_APPLICATION_ID', 'accounts-avatar')}',
 //   storageAccountingId: '${getEnvironmentVariable('STORAGE_ACCOUNTING_ID', 'ottimizza')}'
 // };`;

@@ -5,7 +5,7 @@ import { GenericPageableResponse } from '@shared/models/GenericPageableResponse'
 import { Empresa } from '@shared/models/Empresa';
 import { HttpHandlerService } from '@app/services/http-handler.service';
 
-const BASE_URL = environment.storageBaseUrl;
+const BASE_URL = environment.serviceUrl;
 
 @Injectable({
   providedIn: 'root'

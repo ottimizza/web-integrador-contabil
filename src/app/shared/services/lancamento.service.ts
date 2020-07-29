@@ -10,7 +10,7 @@ import { Empresa } from '@shared/models/Empresa';
 import { PostFormatRule } from '@shared/models/Rule';
 import { HttpHandlerService } from '@app/services/http-handler.service';
 
-const BASE_URL = environment.storageBaseUrl;
+const BASE_URL = environment.serviceUrl;
 
 @Injectable({ providedIn: 'root' })
 export class LancamentoService {
