@@ -130,18 +130,18 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
           .getAllIds(this.business.cnpj, this.tipoLancamento)
           .subscribe(ids => {
               this.totalRules = ids.length;
-              ids.forEach(id => {
-                this._service.exportById(id)
-                  .subscribe(rule => {
-                    this.exportedRules++;
-                    if (this.exportedRules === ids.length) {
-                      this._openSnack('Regras exportadas com sucesso!');
-                      this.isExporting = false;
-                    }
-                  }, err => {
+              const exporting = (id: number) => {
+                this._service.exportById(id).subscribe(() => {
+                  this.exportedRules++;
+                  if (this.exportedRules === ids.length) {
                     this.isExporting = false;
-                  });
-              });
+                  } else {
+                    exporting(ids[ids.indexOf(id) + 1]);
+                  }
+                }, err => {
+                  this.isExporting = false;
+                });
+              };
             }, err => {
               this.isExporting = false;
             });
