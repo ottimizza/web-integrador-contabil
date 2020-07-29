@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Lancamento } from '@shared/models/Lancamento';
 import { Historic } from '@shared/models/Historic';
 import { DateUtils } from '@shared/utils/date-utils';
+import { HistoricService } from '@shared/services/historic.service';
 
 @Component({
   templateUrl: './historic.component.html',
@@ -10,14 +11,14 @@ import { DateUtils } from '@shared/utils/date-utils';
 })
 export class HistoricComponent implements OnInit {
 
-  id: string;
   fields: any[];
   lancamento: Lancamento;
   historicObj: Historic;
 
   constructor(
     public dialogRef: MatDialogRef<HistoricComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public service: HistoricService
   ) { }
 
   ngOnInit(): void {
@@ -43,7 +44,6 @@ export class HistoricComponent implements OnInit {
       this.historicObj.field3.value = this.getValues(event);
       this.historicObj.field3.field = this.dePara(event);
     }
-    this._update();
   }
 
   onKeyup(event: any, i: number): void {
@@ -56,8 +56,6 @@ export class HistoricComponent implements OnInit {
     } else if (i === 3) {
       this.historicObj.com4 = event;
     }
-    this._update();
-
   }
 
   onNoClick() {
@@ -75,18 +73,12 @@ export class HistoricComponent implements OnInit {
 
   get params(): string {
     let params: string;
-    if (this.id) {
-      params = `Código: ${this.id}. ${this.historicObj.preview}`;
+    if (this.historicObj.id) {
+      params = `Código: ${this.historicObj.id}. ${this.historicObj.preview}`;
     } else {
       params = this.historicObj.preview;
     }
     return params;
-  }
-
-  private _update(): void {
-    this.historicObj.id = this.id;
-    const l = this.lancamento;
-    this.data.regra = this.historicObj.historic(l.contaMovimento, l.cnpjEmpresa, l.cnpjContabilidade, l.tipoLancamento, l.idRoteiro);
   }
 
   private getValues(combo: string): string {
@@ -146,6 +138,19 @@ export class HistoricComponent implements OnInit {
         }
       });
       return text;
+  }
+
+  submit() {
+    if (!this.params) {
+      this.dialogRef.close();
+      return;
+    }
+    const l = this.lancamento;
+    const historic = this.historicObj.historic(l.contaMovimento, l.cnpjEmpresa, l.cnpjContabilidade, l.tipoLancamento, l.idRoteiro);
+    this.service.createHistoric(historic).subscribe((results: any) => {
+      this.service.export(results.record.id, results.record).subscribe();
+      this.dialogRef.close(true);
+    });
   }
 
 }

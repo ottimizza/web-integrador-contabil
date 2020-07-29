@@ -57,7 +57,7 @@ export class FilterComponent implements OnInit {
     const observable$ = combineLatest([obs1$, obs2$])
       .pipe(map(([companiesByName, companiesByErp]: GenericPageableResponse<Empresa>[]) => {
         return ArrayUtils.concatDifferentiatingProperty(companiesByName.records, companiesByErp.records, 'id') as Empresa[];
-      }));
+      }), debounceTime(300));
 
     const subscription = observable$.subscribe(data => {
       this.business = data;

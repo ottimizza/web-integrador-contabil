@@ -262,13 +262,16 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     dialogRef.afterClosed().subscribe(result => {
       this._subsAndDisable(obs);
       if (result) {
-        this._historicService
-          .createHistoric(result)
-          .subscribe((historic: any) => {
-            this.disable();
-            this._historicService.export(historic.record.id, historic.record).subscribe()
-          });
+        this.disable();
       }
+      // if (result) {
+      //   this._historicService
+      //     .createHistoric(result)
+      //     .subscribe((historic: any) => {
+      //       this.disable();
+      //       this._historicService.export(historic.record.id, historic.record).subscribe()
+      //     });
+      // }
     });
   }
 

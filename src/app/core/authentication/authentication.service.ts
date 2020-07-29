@@ -59,10 +59,7 @@ export class AuthenticationService {
   }
 
   public async storeUserInfo(skipInterceptor = false): Promise<void> {
-    const headers = this.getAuthorizationHeaders();
-    if (skipInterceptor) {
-      headers.append(SKIP_INTERCEPTOR, '');
-    }
+    const headers = this.getAuthorizationHeadersWithSkipInterceptor(skipInterceptor);
     return new Promise<void>((resolve, reject) => {
       return this.http.get(`${environment.oauthBaseUrl}/oauth/userinfo`, { headers })
         .pipe(
@@ -76,10 +73,7 @@ export class AuthenticationService {
   }
 
   public async storeTokenInfo(skipInterceptor = false): Promise<void> {
-    const headers = this.getAuthorizationHeaders();
-    if (skipInterceptor) {
-      headers.append(SKIP_INTERCEPTOR, '');
-    }
+    const headers = this.getAuthorizationHeadersWithSkipInterceptor(skipInterceptor);
     return new Promise<void>((resolve, reject) => {
       return this.http.get(`${environment.oauthBaseUrl}/oauth/tokeninfo`, { headers })
         .pipe(
@@ -93,8 +87,7 @@ export class AuthenticationService {
   }
 
   public async verifyProduct() {
-    const headers = this.getAuthorizationHeaders();
-    headers.append(SKIP_INTERCEPTOR, '');
+    const headers = this.getAuthorizationHeadersWithSkipInterceptor(true);
     const url = `${environment.oauthBaseUrl}/api/v1/check_products/${environment.oauthClientId}`;
     return new Promise((resolve, reject) => {
       this.http
@@ -128,13 +121,13 @@ export class AuthenticationService {
   }
 
   public exchange(code: string) {
-    const url = `${environment.storageBaseUrl}/auth/callback?code=${code}&redirect_uri=${this.redirectURI}`;
+    const url = `${environment.serviceUrl}/auth/callback?code=${code}&redirect_uri=${this.redirectURI}`;
     return this.http.post(url, {}, {});
   }
 
   public refresh(refreshToken: string) {
     const clientId = `${environment.oauthClientId}`;
-    const url = `${environment.oauthBaseUrl}/auth/refresh?refresh_token=${refreshToken}&client_id=${clientId}`;
+    const url = `${environment.serviceUrl}/auth/refresh?refresh_token=${refreshToken}&client_id=${clientId}`;
     return this.http.post(url, {}, {});
   }
 
@@ -151,6 +144,14 @@ export class AuthenticationService {
 
   public getAuthorizationHeaders(): HttpHeaders {
     return new HttpHeaders().set('Authorization', `Bearer ${this.getAccessToken().trim()}`);
+  }
+
+  public getAuthorizationHeadersWithSkipInterceptor(skipInterceptor: boolean): HttpHeaders {
+    const headers = this.getAuthorizationHeaders();
+    if (skipInterceptor) {
+      headers.append(SKIP_INTERCEPTOR, '');
+    }
+    return headers;
   }
 
   public getNoBearerAuthorizationHeaders(): HttpHeaders {
