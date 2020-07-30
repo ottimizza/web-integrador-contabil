@@ -19,7 +19,7 @@
 
     <br>
 
-    <div class="row w-100 m-0 mb-4 text-center" id="ruleFieldModal" *ngFor="let rule of ruleDefault.regras; let id = index">
+    <div class="row w-100 m-0 mb-4 text-center" id="ruleFieldModal" *ngFor="let rule of ruleDefault.regras; let id = index" [ngClass]="{ 'd-none': rule.campo === 'tipoMovimento' }">
       <div class="col-1" *ngIf="ruleDefault.regras.length > 1">
         <div class="p-3 pt-0" (click)="remove(id)" [matTooltip]="info.remove" matTooltipShowDelay="300" matTooltipHideDelay="500">
           <i class="far fa-times text-danger fa-2x cursor-pointer"></i>
