@@ -135,6 +135,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
                   this.exportedRules++;
                   if (this.exportedRules === ids.length) {
                     this.isExporting = false;
+                    this._snackBar.hideSnack();
                   } else {
                     exporting(ids[ids.indexOf(id) + 1]);
                   }
