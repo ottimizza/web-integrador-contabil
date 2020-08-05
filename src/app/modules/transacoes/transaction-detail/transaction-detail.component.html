@@ -1,4 +1,4 @@
-<div class="mt-2 mb-4 pr-4 pl-4" *ngIf="tabIsClicked">
+<div class="mt-2 mb-4" *ngIf="tabIsClicked">
   <app-info [description]="info.info"></app-info>
 </div>
 
@@ -13,7 +13,7 @@
     </mat-tab-group>
 
 
-    <div class="p-4">
+    <div class="p-5 pt-0">
       <div class="row m-0 w-100">
         <div class="col">
           <span class="defaultSpan">Total de lançamentos: {{ total }}</span>
@@ -35,22 +35,24 @@
         </div>
 
       </div>
-      <app-card *ngIf="records[0]">
+      <app-card *ngIf="records && (records[0] || isFetching)">
         <app-card>
           <app-card main="true" [destroy]="destroy">
 
+            <div class="row" *ngIf="isFetching"><br><br><br><br><br><br><br><br></div>
+
             <div
               class="row m-0 mb-2"
-              *ngIf="records[0].descricao || records[0].portador"
+              *ngIf="records[0]?.descricao || records[0]?.portador"
             >
             <app-chips-group
-              *ngIf="records[0].descricao"
+              *ngIf="records[0]?.descricao"
               [config]="descricao"
               (clicked)="onDevolve($event)"
               class="col"
             ></app-chips-group>
               <app-chips-group
-                *ngIf="records[0].portador"
+                *ngIf="records[0]?.portador"
                 [config]="portador"
                 (clicked)="onDevolve($event)"
                 class="col"
@@ -60,24 +62,24 @@
             <div
               class="row m-0 mb-2"
               *ngIf="
-                records[0].dataMovimento ||
-                records[0].valorOriginal ||
-                records[0].documento"
+                records[0]?.dataMovimento ||
+                records[0]?.valorOriginal ||
+                records[0]?.documento"
             >
               <app-chips-group
-                *ngIf="records[0].dataMovimento"
+                *ngIf="records[0]?.dataMovimento"
                 [config]="dataMovimento"
                 (clicked)="onDevolve($event)"
                 class="col"
               ></app-chips-group>
               <app-chips-group
-                *ngIf="records[0].valorOriginal"
+                *ngIf="records[0]?.valorOriginal"
                 [config]="valorOriginal"
                 (clicked)="onDevolve($event)"
                 class="col"
               ></app-chips-group>
               <app-chips-group
-                *ngIf="records[0].documento"
+                *ngIf="records[0]?.documento"
                 [config]="documento"
                 (clicked)="onDevolve($event)"
                 class="col"
@@ -93,7 +95,7 @@
               ></app-chips-group>
             </div>
 
-            <div class="row m-0 mb-2" *ngIf="records[0].complemento02 && records[0].arquivo.labelComplemento02 && records[0].complemento02.length > 1 && tipo == 'EXTRATO'">
+            <div class="row m-0 mb-2" *ngIf="records[0]?.complemento02 && records[0]?.arquivo.labelComplemento02 && records[0]?.complemento02.length > 1 && tipo == 'EXTRATO'">
               <app-chips-group
                 [config]="complemento02"
                 (clicked)="onDevolve($event)"
@@ -105,14 +107,14 @@
         </app-card>
       </app-card>
 
-      <div class="row mt-4 ml-4 text-danger">
+      <div class="row mt-4 ml-3 text-danger">
         <p *ngIf="errorText">{{ errorText }}</p>
         <p *ngIf="errorText2">{{ errorText2 }}</p>
       </div>
 
       <div
         class="row m-0"
-        *ngIf="impact > 0 || percentage < 100"
+        *ngIf="records && records.length"
       >
         <div class="form-group col-md-5 col-lg-5 col-xl-5 mt-1">
           <strong

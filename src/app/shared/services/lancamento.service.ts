@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { environment } from '@env';
 
-import { AuthenticationService } from '@app/authentication/authentication.service';
 import { Lancamento } from '@shared/models/Lancamento';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
 import { Empresa } from '@shared/models/Empresa';
 import { PostFormatRule } from '@shared/models/Rule';
 import { HttpHandlerService } from '@app/services/http-handler.service';
+import { Deprecated } from '@shared/decorators/deprecated.decorator';
 
-const BASE_URL = environment.serviceUrl;
+const BASE_URL = `${environment.serviceUrl}/api/v1/lancamentos`;
 
 @Injectable({ providedIn: 'root' })
 export class LancamentoService {
@@ -18,38 +17,53 @@ export class LancamentoService {
   constructor(private http: HttpHandlerService) { }
 
   public getLancamentos(searchCriteria: any): Observable<GenericPageableResponse<Lancamento>> {
-    const url = `${BASE_URL}/api/v1/lancamentos`;
-    return this.http.get<GenericPageableResponse<Lancamento>>([url, searchCriteria], 'Falha ao obter lançamentos!');
+    return this.http.get<GenericPageableResponse<Lancamento>>([BASE_URL, searchCriteria], 'Falha ao obter lançamentos!');
   }
 
-  public getPercentage(cnpjEmpresa: string, tipoMovimento: string) {
-    const url = `${BASE_URL}/api/v1/lancamentos/porcentagem?cnpjEmpresa=${cnpjEmpresa}&tipoMovimento=${tipoMovimento}`;
-    return this.http.get(url, 'Falha ao obter porcentagem de lançamentos concluídos!');
+  public calcPercentage(searchCriteria: any) {
+    const url = `${BASE_URL}/porcentagem`;
+    return this.http.get([url, searchCriteria], 'Falha ao obter porcentagem de lançamentos concluídos!');
   }
 
   public skip(id: number): Observable<Lancamento> {
-    const url = `${BASE_URL}/api/v1/lancamentos/${id}`;
-    return this.http.patch<Lancamento>(url, { tipoConta: 4 }, 'Falha ao pular lançamento!');
+    return this.patch(id, { tipoConta: 4 });
   }
 
-  public getByRule(rules: PostFormatRule[], e: Empresa): Observable<GenericPageableResponse<Lancamento>> {
-    const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}&pageSize=1&ativo=true`;
-    return this.http.post<GenericPageableResponse<Lancamento>>(url, rules, 'Falha ao obter lista de lançamentos afetados!');
+  public patch(id: number, body: any) {
+    const url = `${BASE_URL}/${id}`;
+    return this.http.patch<Lancamento>(url, body, 'Falha ao vincular lançamento!');
   }
 
-  public getByRulePaginated(rules: PostFormatRule[], e: Empresa, page: number) {
-    const url = `${BASE_URL}/api/v1/lancamentos/regras?cnpjEmpresa=${e.cnpj}&pageIndex=${page}&tipoConta=0&ativo=true`;
-    return this.http.post<GenericPageableResponse<Lancamento>>(url, rules, 'Falha ao obter pacote de lançamentos afetados');
+  public fetchByRule(rules: PostFormatRule[], searchCriteria: any): Observable<GenericPageableResponse<Lancamento>> {
+    const url = `${BASE_URL}/regras`;
+    return this.http.post<GenericPageableResponse<Lancamento>>([url, searchCriteria], rules, 'Falha ao obter lançamentos afetados!');
   }
 
   public ignoreLancamento(lancamento: Lancamento): Observable<Lancamento> {
-    const url = `${BASE_URL}/api/v1/lancamentos/${lancamento.id}/ignorar`;
+    const url = `${BASE_URL}/${lancamento.id}/ignorar`;
     return this.http.post<Lancamento>(url, {}, 'Falha ao ignorar lançamento!');
   }
 
   public saveAsDePara(lancamento: Lancamento, account: string): Observable<Lancamento> {
-    const url = `${BASE_URL}/api/v1/lancamentos/${lancamento.id}/depara?contaMovimento=${account}`;
+    const url = `${BASE_URL}/${lancamento.id}/depara?contaMovimento=${account}`;
     return this.http.post<Lancamento>(url, {}, 'Falha ao vincular lançamento a uma conta de fornecedor!');
+  }
+
+  @Deprecated('Prefer to use fetchByRule directly')
+  public getByRulePaginated(rules: PostFormatRule[], e: Empresa, page: number, pageSize: number) {
+    const searchCriteria = { cnpjEmpresa: e.cnpj, pageIndex: page, pageSize, tipoConta: 0, ativo: true };
+    return this.fetchByRule(rules, searchCriteria);
+  }
+
+  @Deprecated('Prefer to use fetchByRule directly')
+  public getByRule(rules: PostFormatRule[], e: Empresa) {
+    const searchCriteria = { cnpjEmpresa: e.cnpj, pageSize: 1, ativo: true };
+    return this.fetchByRule(rules, searchCriteria);
+  }
+
+  @Deprecated('Prefer to use calcPercentage directly')
+  public getPercentage(cnpjEmpresa: string, tipoMovimento: string) {
+    return this.calcPercentage({ cnpjEmpresa, tipoMovimento });
   }
 
 }

@@ -1,49 +1,98 @@
-<h1 mat-dialog-title>Lançamentos afetados</h1>
-<div mat-dialog-content appScrollTracker (scrollEnd)="onScroll($event)">
-  <p>Estes serão os lançamentos afetados</p>
+<h1 mat-dialog-title>
+  <i class="fad fa-bullseye-arrow text-info"></i>
+  &nbsp;&nbsp; Lançamentos Afetados
+</h1>
+<p class="d-inline-block">Estes serão os lançamentos afetados</p>
+<div mat-dialog-content class="border-top border-bottom p-3 text-center">
 
-  <table class="table table-bordered">
+  <table mat-table matSort [dataSource]="info" class="table-hover mat-elevation-z0 w-100" *ngIf="info?.length">
 
-    <thead>
-      <tr>
-        <th *ngIf="hasFonecedor">Fornecedor</th>
-        <th *ngIf="hasBanco">Banco</th>
-        <th *ngIf="hasData">Data do Movimento</th>
-        <th *ngIf="hasValor">Valor</th>
-        <th *ngIf="hasDocumento">Documento</th>
-        <th *ngIf="hasNomeArquivo">Nome do Arquivo</th>
-        <!-- <th *ngIf="hasTipoPlanilha">Tipo da Planilha</th> -->
-        <th *ngIf="hasComplemento1">{{ info[0].arquivo.labelComplemento01 }}</th>
-        <th *ngIf="hasComplemento2">{{ info[0].arquivo.labelComplemento02 }}</th>
-        <th *ngIf="hasComplemento3">{{ info[0].arquivo.labelComplemento03 }}</th>
-        <th *ngIf="hasComplemento4">{{ info[0].arquivo.labelComplemento04 }}</th>
-        <th *ngIf="hasComplemento5">{{ info[0].arquivo.labelComplemento05 }}</th>
-      </tr>
-    </thead>
 
-    <tbody>
-      <tr *ngFor="let i of info">
-        <td *ngIf="hasFonecedor">{{ i.descricao }}</td>
-        <td *ngIf="hasBanco">{{ i.portador }}</td>
-        <td *ngIf="hasData">{{ dateFormat(i.dataMovimento) }}</td>
-        <td *ngIf="hasValor">R$ {{ i.valorOriginal }}</td>
-        <td *ngIf="hasDocumento">{{ i.documento }}</td>
-        <td *ngIf="hasNomeArquivo">{{ i.nomeArquivo }}</td>
-        <!-- <td *ngIf="hasTipoPlanilha">{{ i.tipoPlanilha }}</td> -->
-        <td *ngIf="hasComplemento1">{{ i.complemento01 }}</td>
-        <td *ngIf="hasComplemento2">{{ i.complemento02 }}</td>
-        <td *ngIf="hasComplemento3">{{ i.complemento03 }}</td>
-        <td *ngIf="hasComplemento4">{{ i.complemento04 }}</td>
-        <td *ngIf="hasComplemento5">{{ i.complemento05 }}</td>
-      </tr>
-    </tbody>
+    <ng-container matColumnDef="descricao">
+      <th mat-header-cell *matHeaderCellDef> Fornecedor / Cliente </th>
+      <td mat-cell *matCellDef="let element" class="text-truncate text-left">
+        {{ element.descricao }}
+      </td>
+    </ng-container>
 
+    <ng-container matColumnDef="portador">
+      <th mat-header-cell *matHeaderCellDef> Banco </th>
+      <td mat-cell *matCellDef="let element" class="text-truncate text-left">
+        {{ element.portador }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dataMovimento">
+      <th mat-header-cell *matHeaderCellDef> Data do Movimento </th>
+      <td mat-cell *matCellDef="let element" class="text-truncate text-left">
+        {{ element.dataMovimento | date: 'dd/MM/yyyy' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="valorOriginal">
+      <th mat-header-cell *matHeaderCellDef> Valor </th>
+      <td mat-cell *matCellDef="let element" class="text-truncate text-left">
+        {{ getValue(element.valorOriginal) }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="documento">
+      <th mat-header-cell *matHeaderCellDef> Documento </th>
+      <td mat-cell *matCellDef="let element" class="text-truncate text-left">
+        {{ element.documento }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nomeArquivo">
+      <th mat-header-cell *matHeaderCellDef> Nome do Arquivo </th>
+      <td mat-cell *matCellDef="let element" class="text-truncate text-left">
+        {{ element.nomeArquivo }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="complemento01">
+      <th mat-header-cell *matHeaderCellDef> {{ info[0].arquivo.labelComplemento01 }} </th>
+      <td mat-cell *matCellDef="let element" class="text-truncate text-left">
+        {{ element.complemento01 }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="complemento02">
+      <th mat-header-cell *matHeaderCellDef> {{ info[0].arquivo.labelComplemento02 }} </th>
+      <td mat-cell *matCellDef="let element" class="text-truncate text-left">
+        {{ element.complemento02 }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="complemento03">
+      <th mat-header-cell *matHeaderCellDef> {{ info[0].arquivo.labelComplemento03 }} </th>
+      <td mat-cell *matCellDef="let element" class="text-truncate text-left">
+        {{ element.complemento03 }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="complemento04">
+      <th mat-header-cell *matHeaderCellDef> {{ info[0].arquivo.labelComplemento04 }} </th>
+      <td mat-cell *matCellDef="let element" class="text-truncate text-left">
+        {{ element.complemento04 }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="complemento05">
+      <th mat-header-cell *matHeaderCellDef> {{ info[0].arquivo.labelComplemento05 }} </th>
+      <td mat-cell *matCellDef="let element" class="text-truncate text-left">
+        {{ element.complemento05 }}
+      </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+    <tr mat-row class="w-100" *matRowDef="let row; columns: displayedColumns();">
+    </tr>
   </table>
-
-  <!-- <button class="btn btn-dark mb-4" mat-button *ngIf="hasNext()" (click)="nextPage()">Carregar mais</button> -->
+  <mat-paginator [length]="pageInfo.totalElements" [pageSize]="pageInfo.pageSize" [pageSizeOptions]="[5, 10, 20]" (page)="onScroll($event)" *ngIf="info?.length">
+  </mat-paginator>
 
 </div>
-<div mat-dialog-actions>
-  <button (click)="onNoClick()" tabindex="-1" class="btn btn-outline-info mr-3">Ok</button>
-  <button (click)="onNoClick()" tabindex="-1" class="btn btn-outline-danger mr-4">Cancelar</button>
+<div mat-dialog-actions class="text-center">
+    <div class="container-fluid px-0 py-3 justify-content-between">
+      <button class="btn btn-light text-danger mx-2" mat-dialog-close>Fechar</button>
+    </div>
 </div>

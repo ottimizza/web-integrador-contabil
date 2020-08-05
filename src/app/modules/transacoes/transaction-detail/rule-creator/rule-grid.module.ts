@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatButtonModule, MatTableModule } from '@angular/material';
+import { MatButtonModule, MatTableModule, MatPaginatorModule } from '@angular/material';
 import { ScrollTrackerModule } from '@shared/directives/scroll-tracker.module';
 
 @NgModule({
@@ -22,7 +22,8 @@ import { ScrollTrackerModule } from '@shared/directives/scroll-tracker.module';
     MatTooltipModule,
     MatButtonModule,
     ScrollTrackerModule,
-    MatTableModule
+    MatTableModule,
+    MatPaginatorModule
   ],
   exports: [
     RuleGridComponent

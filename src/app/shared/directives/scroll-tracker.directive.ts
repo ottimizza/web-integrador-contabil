@@ -13,7 +13,7 @@ export class ScrollTrackerDirective {
     const target = event.target;
     const limit = target.scrollHeight - target.clientHeight;
 
-    if (event.target.scrollTop > limit - 100) {
+    if (event.target.scrollTop === limit) {
       this.scrollEnd.emit(true);
     }
 

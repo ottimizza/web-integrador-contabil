@@ -51,8 +51,8 @@ export class FilterComponent implements OnInit {
   }
 
   private _getCompanies(text1: string, text2: string) {
-    const obs1$ = this._service.getBusiness(text2.toUpperCase());
-    const obs2$ = this._service.getByErpCode(text1);
+    const obs1$ = this._service.fetch({ razaoSocial: text2.toUpperCase(), tipo: 2 });
+    const obs2$ = this._service.fetch({ codigoErp: text1, tipo: 2 });
 
     const observable$ = combineLatest([obs1$, obs2$])
       .pipe(map(([companiesByName, companiesByErp]: GenericPageableResponse<Empresa>[]) => {

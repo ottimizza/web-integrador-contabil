@@ -1,0 +1,15 @@
+section.endless-scroll {
+  overflow: auto;
+  height: calc(100vh - 70px);
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+
+  .buttons-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 8;
+  }
+
+}

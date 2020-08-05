@@ -1,9 +1,11 @@
-<div mat-dialog-title>
-  <h2 class="ml-4">Histórico do Lançamento</h2>
-  <app-hrow span="Código do Histórico" col="4" (write)="historicObj.id = $event"></app-hrow>
-  <span class="text-danger ml-4" id="warn-historic">* Caso sua contabilidade não utilize Código do Histórico, desconsidere esse campo</span>
-</div>
-<div mat-dialog-content>
+<h1 mat-dialog-title>
+  <i class="fad fa-history text-info"></i>
+  &nbsp;&nbsp; Histórico do Lançamento
+</h1>
+<app-hrow span="Código do Histórico" col="4" (write)="historicObj.id = $event"></app-hrow>
+<small class="text-danger">Caso sua contabilidade não utilize Código do Histórico, desconsidere esse campo</small>
+<br><br>
+<div mat-dialog-content class="border-top border-bottom p-3 text-center">
 
 
   <form>
@@ -19,9 +21,9 @@
   </div>
 
 </div>
-<div mat-dialog-actions>
-  <div class="row w-100 m-0">
-    <button (click)="submit()" class="btn btn-outline-info m-4 mr-2 col">Confirmar</button>
-    <button (click)="onNoClick()" class="btn btn-outline-danger m-4 ml-2 col">Ignorar</button>
-  </div>
+<div mat-dialog-actions class="text-center">
+    <div class="container-fluid px-0 py-3 justify-content-between">
+      <button class="btn btn-light text-danger mx-2" mat-dialog-close>Ignorar</button>
+      <button (click)="submit()" class="btn btn-primary text-light mx-2">Confirmar</button>
+    </div>
 </div>

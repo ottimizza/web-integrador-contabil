@@ -1,0 +1,16 @@
+<section class="endless-scroll" appScrollTracker (scrollEnd)="scrollHasEndedMethod($event)">
+  <app-breadcrumb [append]="breadcrumbAppend"></app-breadcrumb>
+  <div class="buttons-sticky m-0 p-0" *ngIf="buttons">
+    <app-actions [buttons]="buttons" (clicked)="buttonClickedMethod($event)"></app-actions>
+  </div>
+
+  <div class="container">
+    <div class="row pt-4 pb-2">
+      <div class="col-12">
+
+        <ng-content></ng-content>
+
+      </div>
+    </div>
+  </div>
+</section>

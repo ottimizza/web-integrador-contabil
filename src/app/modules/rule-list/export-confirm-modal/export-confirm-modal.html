@@ -1,8 +1,13 @@
-<h1 mat-dialog-title>Confirmar</h1>
-<div mat-dialog-content>
+<h1 mat-dialog-title>
+  <i class="fad fa-check-double text-info"></i>
+  &nbsp;&nbsp; Confirmar Exportação
+</h1>
+<div mat-dialog-content class="border-top border-bottom p-3 text-center">
   <p>Você tem certeza que deseja exportar as regras da empresa {{ data.razaoSocial }} para o CRM?</p>
 </div>
-<div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="true">Sim, exportar</button>
-  <button mat-button [mat-dialog-close]="false">Não, cancelar</button>
+<div mat-dialog-actions class="text-center">
+  <div class="container-fluid px-0 py-3 justify-content-between">
+    <button class="btn btn-light text-danger mx-2" [mat-dialog-close]="false">Cancelar</button>
+    <button class="btn btn-primary text-light mx-2" [mat-dialog-close]="true">Sim, exportar</button>
+  </div>
 </div>
