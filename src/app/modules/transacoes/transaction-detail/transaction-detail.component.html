@@ -177,6 +177,16 @@
               matTooltipShowDelay="300"
               matTooltipHideDelay="500"
             />
+            <input
+              *ngIf="currentUser.type === 0"
+              type="button"
+              class="btn btn-outline-danger col mx-2"
+              value="Excluir"
+              (click)="delete()"
+              matTooltip="Remover todos os lançamentos do arquivo atual"
+              matTooltipShowDelay="300"
+              matTooltipHideDelay="500"
+            />
           </div>
         </div>
       </div>

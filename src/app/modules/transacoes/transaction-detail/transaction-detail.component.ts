@@ -22,6 +22,8 @@ import { ArrayUtils } from '@shared/utils/array.utils';
 import { Lancamento } from '@shared/models/Lancamento';
 import { Empresa } from '@shared/models/Empresa';
 import { finalize } from 'rxjs/operators';
+import { User } from '@shared/models/User';
+import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
 
 @Component({
   selector: 'app-tdetail',
@@ -49,6 +51,8 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
   isFetching = false;
 
+  currentUser: User;
+
   constructor(
     // tslint:disable
     private _lancamentoService: LancamentoService,
@@ -59,6 +63,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   ) { }
 
   ngOnInit(): void {
+    this.currentUser = User.fromLocalStorage();
     this.onTab({ tab: null, index: 0 }, true);
   }
 
@@ -333,6 +338,18 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa.`]);
       this.percentage = 100;
     }
+  }
+
+  delete() {
+    const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent, {
+      width: '596px',
+      data: this.records[0].arquivo
+    });
+    dialogRef.afterClosed().subscribe(e => {
+      if (e === 'deleted') {
+        this.nextPage();
+      }
+    });
   }
 
   nextPage() {

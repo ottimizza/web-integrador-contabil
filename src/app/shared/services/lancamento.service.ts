@@ -20,6 +20,11 @@ export class LancamentoService {
     return this.http.get<GenericPageableResponse<Lancamento>>([BASE_URL, searchCriteria], 'Falha ao obter lançamentos!');
   }
 
+  public inactivate(fileId: number) {
+    const url = `${BASE_URL}/inativar/${fileId}`;
+    return this.http.put(url, {}, 'Falha ao excluir lançamento!');
+  }
+
   public calcPercentage(searchCriteria: any) {
     const url = `${BASE_URL}/porcentagem`;
     return this.http.get([url, searchCriteria], 'Falha ao obter porcentagem de lançamentos concluídos!');
