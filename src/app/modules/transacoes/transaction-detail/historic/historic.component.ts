@@ -89,7 +89,7 @@ export class HistoricComponent implements OnInit {
       DateUtils.ymdToCompetence(l.dataMovimento),
       DateUtils.lastCompetence(DateUtils.ymdToCompetence(l.dataMovimento)),
       l.documento,
-      l.tipoPlanilha,
+      // l.tipoPlanilha,
       l.complemento01,
       l.complemento02,
       l.complemento03,

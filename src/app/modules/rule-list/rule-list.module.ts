@@ -19,6 +19,7 @@ import { FilterModule } from '@modules/transacoes/transaction-list/filter/filter
 import { ScrollTrackerModule } from '@shared/directives/scroll-tracker.module';
 import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.module';
 import { ActionButtonsModule } from '@shared/components/button/button.module';
+import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-layout.module';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { ActionButtonsModule } from '@shared/components/button/button.module';
     ScrollTrackerModule,
     BreadcrumbModule,
     ActionButtonsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    NormalizedLayoutModule
   ],
   entryComponents: [
     RuleEditModalComponent,

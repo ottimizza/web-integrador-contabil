@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RuleCreateFormat, PostFormatRule, Condicao } from '@shared/models/Rule';
 import { CompleteRule } from '@shared/models/CompleteRule';
+import { User } from '@shared/models/User';
 
 @Component({
   templateUrl: './rule-edit-modal.component.html',
@@ -11,15 +12,15 @@ export class RuleEditModalComponent implements OnInit {
 
   ruleDefault: CompleteRule;
   errorText: string;
+  currentUser: User;
 
   constructor(
     public dialogRef: MatDialogRef<RuleEditModalComponent>,
-    // tslint:disable-next-line: max-line-length
     @Inject(MAT_DIALOG_DATA) public data: { rule: CompleteRule }
   ) { }
 
   ngOnInit(): void {
-    // ! O array local PRECISA ser feito desta forma ou de alguma outra que crie um NOVO array
+    this.currentUser = User.fromLocalStorage();
     const rule = this.data.rule;
     const localArray = rule.regras.filter(() => true);
     this.ruleDefault = new CompleteRule(

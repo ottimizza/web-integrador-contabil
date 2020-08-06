@@ -21,6 +21,9 @@ import { RuleService } from '@shared/services/rule.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { Lancamento } from '@shared/models/Lancamento';
 import { Empresa } from '@shared/models/Empresa';
+import { finalize } from 'rxjs/operators';
+import { User } from '@shared/models/User';
+import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
 
 @Component({
   selector: 'app-tdetail',
@@ -46,6 +49,10 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   percentage = 0;
   total = 0;
 
+  isFetching = false;
+
+  currentUser: User;
+
   constructor(
     // tslint:disable
     private _lancamentoService: LancamentoService,
@@ -56,6 +63,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   ) { }
 
   ngOnInit(): void {
+    this.currentUser = User.fromLocalStorage();
     this.onTab({ tab: null, index: 0 }, true);
   }
 
@@ -105,7 +113,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   get hasComplements() {
-    const l = this.records[0];
+    const l: any = this.records[0] || {};
     const a = l.arquivo;
     return !!((l.complemento01 && a.labelComplemento01) ||
             (l.complemento02 && a.labelComplemento02) ||
@@ -264,14 +272,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       if (result) {
         this.disable();
       }
-      // if (result) {
-      //   this._historicService
-      //     .createHistoric(result)
-      //     .subscribe((historic: any) => {
-      //       this.disable();
-      //       this._historicService.export(historic.record.id, historic.record).subscribe()
-      //     });
-      // }
     });
   }
 
@@ -340,7 +340,20 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     }
   }
 
+  delete() {
+    const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent, {
+      width: '596px',
+      data: this.records[0].arquivo
+    });
+    dialogRef.afterClosed().subscribe(e => {
+      if (e === 'deleted') {
+        this.nextPage();
+      }
+    });
+  }
+
   nextPage() {
+    this.isFetching = true;
     let tipoLancamento: number;
     if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'EXDEB') {
       tipoLancamento = 1;
@@ -352,7 +365,9 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     Object.assign(filter, pageCriteria);
     this._toast.showSnack('Aguardando resposta');
 
-    this._lancamentoService.getLancamentos(filter).subscribe(imports => {
+    this._lancamentoService.getLancamentos(filter)
+      .pipe(finalize(() => this.isFetching = false))
+      .subscribe(imports => {
 
       this.records = imports.records;
       this.pageInfo = imports.pageInfo;
@@ -370,7 +385,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
 
     });
 
-    this._lancamentoService.getPercentage(this.business.cnpj, this.tipoMovimento).subscribe((percentage: any) => {
+    this._lancamentoService.calcPercentage({ cnpjEmpresa: this.business.cnpj, tipoMovimento: this.tipoMovimento}).subscribe((percentage: any) => {
       if (percentage.totalLancamentos) {
         this.percentage = +(100 - (percentage.numeroLancamentosRestantes / percentage.totalLancamentos) * 100).toFixed(0);
       } else {

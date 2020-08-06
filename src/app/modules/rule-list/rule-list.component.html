@@ -1,24 +1,22 @@
-<div class="scrollField" appScrollTracker (scrollEnd)="onScroll($event)">
-  <app-breadcrumb></app-breadcrumb>
-  <mat-progress-bar mode="determinate" [value]="exportedRules / totalRules * 100" *ngIf="isExporting" [color]="'#000'"></mat-progress-bar>
-  <app-actions *ngIf="business && rows.length" [buttons]="buttons" (clicked)="openConfirmation()"></app-actions>
-  <div class="mb-3"></div>
+<app-layout [buttons]="buttons()" (buttonClicked)="openConfirmation()" (scrollHasEnded)="onScroll($event)">
+  <!-- <app-actions *ngIf="business && rows.length" [buttons]="buttons" (clicked)="openConfirmation()"></app-actions> -->
 
   <div
-    class="pt-1 text-center">
-    <div class="pl-4 pr-4" *ngIf="!business">
+    class="text-center">
+    <div *ngIf="!business">
       <app-info [description]="info.text1"></app-info>
     </div>
 
     <app-tfilter (empresa)="onFilter($event)"></app-tfilter>
 
-    <div *ngIf="business" class="pl-4 pr-4">
+    <div *ngIf="business">
       <app-info [description]="info.text2"></app-info>
       <br />
     </div>
 
-    <div class="pr-2 pl-2" *ngIf="business">
-      <div class="card ml-4 mr-4">
+    <div *ngIf="business">
+      <div class="card">
+        <mat-progress-bar mode="determinate" [value]="exportedRules / totalRules * 100" *ngIf="isExporting" [color]="'#000'" class="progress-bar"></mat-progress-bar>
         <mat-tab-group
           (selectedTabChange)="onTab($event)"
           mat-align-tabs="center"
@@ -55,4 +53,5 @@
       </div>
     </div>
   </div>
-</div>
+
+</app-layout>

@@ -15,9 +15,10 @@ import { InfoModule } from '@shared/components/info/info.module';
 import { HistoricModule } from './historic/historic.module';
 import { HistoricComponent } from './historic/historic.component';
 import { RuleChipGroupModule } from './rule-creator/chips-group/chips-group.module';
+import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
 
 @NgModule({
-    declarations: [TransactionDetailComponent],
+    declarations: [TransactionDetailComponent, ConfirmDeleteDialogComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -35,7 +36,8 @@ import { RuleChipGroupModule } from './rule-creator/chips-group/chips-group.modu
     ],
     entryComponents: [
       RuleGridComponent,
-      HistoricComponent
+      HistoricComponent,
+      ConfirmDeleteDialogComponent
     ],
     exports: [TransactionDetailComponent]
 })

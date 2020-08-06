@@ -1,8 +1,8 @@
-<h1 mat-dialog-title>Editar regra</h1>
-
-
-
-<div mat-dialog-content>
+<h1 mat-dialog-title>
+  <i class="fad fa-edit text-info"></i>
+  &nbsp;&nbsp; Editar Regra
+</h1>
+<div mat-dialog-content class="border-top border-bottom p-3 text-center">
 
 
     <div class="row w-100 m-0 mt-4 text-center">
@@ -19,12 +19,7 @@
 
     <br>
 
-    <div class="row w-100 m-0 mb-4 text-center" id="ruleFieldModal" *ngFor="let rule of ruleDefault.regras; let id = index">
-      <div class="col-1" *ngIf="ruleDefault.regras.length > 1">
-        <div class="p-3 pt-0" (click)="remove(id)" [matTooltip]="info.remove" matTooltipShowDelay="300" matTooltipHideDelay="500">
-          <i class="far fa-times text-danger fa-2x cursor-pointer"></i>
-        </div>
-      </div>
+    <div class="row w-100 m-0 mb-4 text-center" id="ruleFieldModal" *ngFor="let rule of ruleDefault.regras; let id = index" [ngClass]="{ 'd-none': rule.campo === 'tipoMovimento' || (rule.campo === 'tipoPlanilha' && currentUser.type !== 0) }">
       <div class="col">
         <select (change)="fieldChange($event, id)">
           <option value="" selected disabled hidden>Selecione um campo</option>
@@ -68,11 +63,16 @@
       <div class="col">
         <input matInput placeholder="Informe um valor" [value]="rule.valor" (keyup)="valueChange($event, id)">
       </div>
+      <div class="col-1 p-0" *ngIf="ruleDefault.regras.length > 1">
+        <div (click)="remove(id)" [matTooltip]="info.remove" matTooltipShowDelay="300" matTooltipHideDelay="500">
+          <i class="fad fa-times-circle text-danger cursor-pointer" style="font-size: 120%;"></i>
+        </div>
+      </div>
     </div>
 
-    <div class="row w-100 m-4 text-center">
+    <div class="row w-100 m-0 text-center">
       <div class="center cursor-pointer" (click)="add()" [matTooltip]="info.add" matTooltipShowDelay="300" matTooltipHideDelay="500">
-        <i class="far fa-plus-circle fa-2x"></i>
+        <i class="fad fa-plus-circle fa-2x"></i>
       </div>
     </div>
 
@@ -88,21 +88,12 @@
 
 
 </div>
-
-
-
-<div mat-dialog-actions>
-  <div class="row w-100 m-0 mb-4">
+<div mat-dialog-actions class="text-center">
+  <div class="row w-100 m-0 mb-4" *ngIf="errorText">
     <strong class="text-danger">{{ errorText }}</strong>
   </div>
-  <div class="row w-100 m-0">
-    <button class="col purple" cdkFocusInitial (click)="save()">
-      <i class="far fa-save mr-3"></i>
-      Salvar
-    </button>
-    <button (click)="onNoClick()" class="col secondary">
-      <i class="far fa-window-close mr-3"></i>
-      Cancelar
-    </button>
+  <div class="container-fluid px-0 py-3 justify-content-between">
+    <button class="btn btn-light text-danger mx-2" mat-dialog-close>Fechar</button>
+    <button class="btn btn-primary text-light mx-2" (click)="save()">Confirmar</button>
   </div>
 </div>
