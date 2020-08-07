@@ -365,6 +365,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     Object.assign(filter, pageCriteria);
     this._toast.showSnack('Aguardando resposta');
 
+    this.records = null;
     this._lancamentoService.getLancamentos(filter)
       .pipe(finalize(() => this.isFetching = false))
       .subscribe(imports => {
@@ -395,7 +396,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     })
   }
 
-  get descricao(): RuleConfig {
+  descricao(): RuleConfig {
     return {
       selectable: true,
       title: this.buttonLabel,
@@ -410,7 +411,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     };
   }
 
-  get portador(): RuleConfig {
+  portador(): RuleConfig {
     return {
       selectable: true,
       title: 'Banco',
@@ -425,7 +426,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     };
   }
 
-  get dataMovimento(): RuleConfig {
+  dataMovimento(): RuleConfig {
     return {
       selectable: false,
       title: 'Data',
@@ -440,7 +441,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     };
   }
 
-  get valorOriginal(): RuleConfig {
+  valorOriginal(): RuleConfig {
     return {
       selectable: false,
       title: 'Valor',
@@ -455,7 +456,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     };
   }
 
-  get documento(): RuleConfig {
+  documento(): RuleConfig {
     return {
       selectable: true,
       title: 'Documento',
@@ -470,7 +471,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     };
   }
 
-  get complementos(): RuleConfig {
+  complementos(): RuleConfig {
     return {
       selectable: true,
       title: 'Complementos',
@@ -509,7 +510,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     };
   }
 
-  get complemento02(): RuleConfig {
+  complemento02(): RuleConfig {
     return {
       selectable: true,
       title: this.records[0].arquivo.labelComplemento02,
