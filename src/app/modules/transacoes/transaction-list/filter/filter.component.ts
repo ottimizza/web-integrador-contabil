@@ -17,7 +17,7 @@ export class FilterComponent implements OnInit {
 
   searchTerms = new Subject<string>();
 
-  @ViewChild('company') companyInput: ElementRef;
+  @ViewChild('company') companyInput: ElementRef<HTMLInputElement>;
 
   constructor(
     private _service: BusinessService,
