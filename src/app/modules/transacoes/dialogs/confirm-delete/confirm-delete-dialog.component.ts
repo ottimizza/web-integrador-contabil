@@ -24,7 +24,7 @@ export class ConfirmDeleteDialogComponent {
       .pipe(finalize(() => this.isDeleting = false))
       .subscribe(() => {
         this.dialogRef.close('deleted');
-      })
+      });
   }
 
 }
