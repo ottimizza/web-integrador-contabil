@@ -6,5 +6,6 @@ export class Empresa {
   public codigoERP: string;
   public organizationId: number;
   public accountingId: number;
+  public nomeCompleto: string;
 
 }
