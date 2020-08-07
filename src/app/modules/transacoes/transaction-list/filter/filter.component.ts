@@ -26,9 +26,12 @@ export class FilterComponent implements OnInit {
 
   @HostListener('input', ['$event.target.value'])
   onInput(value: string) {
-    value = value.toUpperCase();
-    this.companyInput.nativeElement.value = value;
-    this.searchTerms.next(value);
+    value = value || '';
+    if (typeof value === 'string') {
+      value = value.toUpperCase();
+      this.companyInput.nativeElement.value = value;
+      this.searchTerms.next(value);
+    }
   }
 
   ngOnInit(): void {
@@ -43,6 +46,7 @@ export class FilterComponent implements OnInit {
   }
 
   async confirm(company: Empresa) {
+    company.razaoSocial = company.razaoSocial || '';
     this.companyInput.nativeElement.value = `${this.getErp(company.codigoERP)}${company.razaoSocial.toUpperCase()}`;
     this._toast.show(`Empresa ${company.razaoSocial} selecionada.`, 'primary');
     await new Promise(resolve => setTimeout(resolve, 300));
