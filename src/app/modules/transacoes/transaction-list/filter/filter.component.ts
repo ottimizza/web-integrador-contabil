@@ -27,9 +27,11 @@ export class FilterComponent implements OnInit {
   @HostListener('input', ['$event.target.value'])
   onInput(value: string) {
     value = value || '';
-    value = value.toUpperCase();
-    this.companyInput.nativeElement.value = value;
-    this.searchTerms.next(value);
+    if (typeof value === 'string') {
+      value = value.toUpperCase();
+      this.companyInput.nativeElement.value = value;
+      this.searchTerms.next(value);
+    }
   }
 
   ngOnInit(): void {
