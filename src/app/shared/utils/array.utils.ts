@@ -81,7 +81,7 @@ export class ArrayUtils {
 
   }
 
-    static concatDifferentiatingProperty(array1: any[], array2: any[], property: string) {
+  static concatDifferentiatingProperty(array1: any[], array2: any[], property: string) {
     /*
      * Concatena dois arrays ignorando elementos que tenham determinada propriedade repetida
      */
@@ -89,6 +89,12 @@ export class ArrayUtils {
     const props = array1.map(arrItem => arrItem[property]);
     array2 = array2.filter(arrItem => !props.includes(arrItem[property]));
     return array1.concat(array2);
+  }
+
+  public static async asyncForEach(array: any[], callbackFn: (item?: any, index?: number, array?: any[]) => Promise<void>) {
+    for (let i = 0; i < array.length; i++) {
+      await callbackFn(array[i], i, array);
+    }
   }
 
 }
