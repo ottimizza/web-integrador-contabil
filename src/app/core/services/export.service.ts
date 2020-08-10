@@ -16,17 +16,13 @@ export class ExportService {
     cnpjEmpresa: string,
     cnpjContabilidade: string,
     tipoLancamento: number,
-    callbackFn: (percentage: number) => void) {
+    callbackFn: (exported: number, total: number) => void) {
 
     const rules = await this.rules.getAllIds(cnpjEmpresa, cnpjContabilidade, tipoLancamento).toPromise();
 
     for (let i = 0; i < rules.length; i++) {
       await this.salesforce.exportRule(rules[i]).toPromise();
-      const percentage = Math.round((i + 1 / rules.length) * 100);
-      console.log('Quantidade de regras:', rules.length);
-      console.log('Índice atual:', i);
-      console.log('Porcentage:', percentage);
-      callbackFn(percentage);
+      callbackFn(i + 1, rules.length);
     }
 
     return true;
@@ -36,14 +32,13 @@ export class ExportService {
     cnpjEmpresa: string,
     cnpjContabilidade: string,
     tipoLancamento: number,
-    callbackFn: (percentage: number) => void) {
+    callbackFn: (exported: number, total: number) => void) {
 
     const historics = await this.historic.getAll({ cnpjEmpresa, cnpjContabilidade, tipoLancamento }).toPromise().then(rs => rs.records);
 
     for (let i = 0; i < historics.length; i++) {
       await this.salesforce.exportHistoric(historics[i].id, historics[i]).toPromise();
-      const percentage = Math.round((i + 1 / historics.length) * 100);
-      callbackFn(percentage);
+      callbackFn(i + 1, historics.length);
     }
 
     return true;

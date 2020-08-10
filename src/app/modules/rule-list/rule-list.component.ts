@@ -157,7 +157,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       this.business.cnpj,
       this.currentUser.organization.cnpj,
       this.tipoLancamento,
-      percentage => this.percentage = percentage
+      (done, total) => this.percentage = Math.round(done / total * 100)
     );
     this.percentage = 0;
 
@@ -166,7 +166,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       this.business.cnpj,
       this.currentUser.organization.cnpj,
       this.tipoLancamento,
-      percentage => this.percentage = percentage
+      (done, total) => this.percentage = Math.round(done / total * 100)
     );
     this.toast.hideSnack();
 
