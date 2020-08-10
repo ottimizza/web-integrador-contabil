@@ -9,7 +9,7 @@ import { CompleteRule } from '@shared/models/CompleteRule';
 import { GenericResponse } from '@shared/models/GenericResponse';
 import { HttpHandlerService } from '@app/services/http-handler.service';
 
-const BASE_URL = environment.serviceUrl;
+const BASE_URL = `${environment.serviceUrl}`;
 
 @Injectable({
   providedIn: 'root'
@@ -52,12 +52,6 @@ export class RuleService {
     return this._http.put(url, {}, 'Falha ao mover regra para o final!');
   }
 
-  // ! WORKING, BUT DEPRECATED
-  // move(rule: CompleteRule) {
-  //   const url = `${BASE_URL}/api/v1/regras/${rule.id}/alterar_posicao?cnpjEmpresa=${rule.cnpjEmpresa}&tipoLancamento=${rule.tipoLancamento}`;
-  //   return this._http.put(url, { posicao: rule.posicao }, this._headers);
-  // }
-
   delete(id: number) {
     const url = `${BASE_URL}/api/v1/regras/${id}`;
     return this._http.delete(url, 'Falha ao excluir regra!');
@@ -67,11 +61,5 @@ export class RuleService {
     const url = `${BASE_URL}/api/v1/regras/${id}`;
     return this._http.put(url, rule, 'Falha ao atualizar regra!');
   }
-
-  // ! DISCONTINUED, MAY NOT WORK
-  // export(cnpjEmpresa: string, tipoLancamento: number): Observable<GenericResponse<undefined>> {
-  //   const url = `${BASE_URL}/api/sf/importar?cnpjEmpresa=${cnpjEmpresa}&tipoLancamento=${tipoLancamento}`;
-  //   return this._http.post<GenericResponse<undefined>>(url, {}, this._headers);
-  // }
 
 }

@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FilterModule } from './filter/filter.module';
 import { InfoModule } from '@shared/components/info/info.module';
 import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.module';
+import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-layout.module';
 
 @NgModule({
     declarations: [TransactionListComponent],
@@ -14,7 +15,7 @@ import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.modul
         FilterModule,
         CommonModule,
         InfoModule,
-        BreadcrumbModule
+        NormalizedLayoutModule
     ]
 })
 export class TransactionListModule { }

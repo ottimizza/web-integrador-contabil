@@ -10,6 +10,7 @@ import { Lancamento } from '@shared/models/Lancamento';
 import { PostFormatRule } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
 import { finalize } from 'rxjs/operators';
+import { MatPaginator } from '@angular/material';
 
 @Component({
   templateUrl: './rule-grid.component.html'
@@ -38,19 +39,15 @@ export class RuleGridComponent implements OnInit, GenericPagination {
     this.nextPage();
   }
 
-  get displayedCols() {
-    return ['descricao', 'portador', 'dataMovimento'];
-  }
-
-  nextPage(): void {
+  nextPage(pageSize = 5): void {
     if (this.hasNext()) {
       this.isFetching = true;
       this._toast.showSnack('Aguardando resposta');
       this._service
-        .getByRulePaginated(this.rules, this.business, this.page)
+        .getByRulePaginated(this.rules, this.business, this.page, pageSize)
         .pipe(finalize(() => this.isFetching = false))
         .subscribe(imports => {
-          imports.records.forEach(lanc => this.info.push(lanc));
+          this.info = imports.records
           this.pageInfo = imports.pageInfo;
           this.page++;
           this._toast.hideSnack();
@@ -62,19 +59,39 @@ export class RuleGridComponent implements OnInit, GenericPagination {
     return !this.pageInfo || this.pageInfo.hasNext;
   }
 
-  onScroll(event: boolean) {
-    if (event && this.pageInfo.hasNext && !this.isFetching) {
-      this.nextPage();
-    }
+  onScroll(event: MatPaginator) {
+    this.page = event.pageIndex;
+    this.nextPage(event.pageSize);
   }
 
-  dateFormat(date: string) {
-    const dates = date.split('-');
-    return `${dates[2]}/${dates[1]}/${dates[0]}`;
+  getValue(value: number) {
+    const props = value.toString().split('.');
+    props[1] = props[1] || '00';
+    return `R$ ${props[0]},${props[1]}`;
   }
 
-  onNoClick(): void {
-    this.dialogRef.close();
+  displayedColumns() {
+    const array = [];
+
+    [
+      { if: this.hasFonecedor, do: 'descricao' },
+      { if: this.hasBanco, do: 'portador' },
+      { if: this.hasData, do: 'dataMovimento' },
+      { if: this.hasValor, do: 'valorOriginal' },
+      { if: this.hasDocumento, do: 'documento' },
+      { if: this.hasNomeArquivo, do: 'nomeArquivo' },
+      { if: this.hasComplemento1, do: 'complemento01' },
+      { if: this.hasComplemento2, do: 'complemento02' },
+      { if: this.hasComplemento3, do: 'complemento03' },
+      { if: this.hasComplemento4, do: 'complemento04' },
+      { if: this.hasComplemento5, do: 'complemento05' }
+    ].forEach(rec => {
+      if (rec.if) {
+        array.push(rec.do);
+      }
+    });
+
+    return array;
   }
 
   get hasFonecedor(): boolean {
