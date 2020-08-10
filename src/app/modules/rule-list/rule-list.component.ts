@@ -20,6 +20,7 @@ import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
 import { DOCUMENT } from '@angular/common';
 import { finalize, catchError } from 'rxjs/operators';
+import { ExportService } from '@app/services/export.service';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -34,18 +35,18 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   tabIsSelected = false;
   tipoLancamento = 1;
   artificialClone: CompleteRule;
-  exportedRules = 0;
-  totalRules = 0;
   isExporting: boolean;
   isFetching = false;
   currentUser: User;
+
+  percentage: number;
 
   constructor(
     @Inject(DOCUMENT) public doc: Document,
     private service: RuleService,
     private toast: ToastService,
-    private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public exportService: ExportService
   ) {}
 
   ngOnInit(): void {
@@ -81,9 +82,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       (info: any) => {
         if (info.message === 'Grupo de Regra removido com sucesso!') {
           this.rows.splice(event, 1);
-          this._openSnack('Regra excluída com sucesso', 'success');
+          this.toast.show('Regra excluída com sucesso', 'success');
         } else {
-          this._openSnack('Falha ao excluir regra.', 'danger');
+          this.toast.show('Falha ao excluir regra.', 'danger');
         }
       });
   }
@@ -108,7 +109,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
               this.rows.forEach(regra => {
                 if (regra.id === info.record.id) {
                   this.rows[this.rows.indexOf(regra)] = info.record;
-                  this._openSnack('Regra alterada com sucesso!', 'success');
+                  this.toast.show('Regra alterada com sucesso!', 'success');
                 }
               });
             });
@@ -129,28 +130,35 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       if (results) {
         this.export();
       } else {
-        this._openSnack('Exportação cancelada', 'warning');
+        this.toast.show('Exportação cancelada', 'warning');
       }
     });
   }
 
   async export() {
-    this.exportedRules = 0;
+
     this.isExporting = true;
 
-    this.toast.showSnack('Exportando, isto pode levar algum tempo...');
+    this.toast.showSnack('Exportando regras, isto pode levar algum tempo...');
+    await this.exportService.exportAllRules(
+      this.business.cnpj,
+      this.currentUser.organization.cnpj,
+      this.tipoLancamento,
+      (done, total) => this.percentage = Math.round(done / total * 100)
+    );
+    this.percentage = 0;
 
-    const ids = await this.getIds() as number[];
-    ids.forEach(async id => {
-
-      if (id !== null) {
-        await this.exportRule(id);
-      }
-      this.exportedRules++;
-
-    });
-
+    this.toast.showSnack('Exportando históricos, isto pode levar algum tempo...');
+    await this.exportService.exportAllHistorics(
+      this.business.cnpj,
+      this.currentUser.organization.cnpj,
+      this.tipoLancamento,
+      (done, total) => this.percentage = Math.round(done / total * 100)
+    );
+    this.percentage = 0;
     this.toast.hideSnack();
+
+    this.isExporting = false;
   }
 
   exportRule(id: number) {
@@ -158,14 +166,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       .pipe(catchError(() => {
         this.isExporting = false;
         return null;
-      })).toPromise();
-  }
-
-  getIds() {
-    return this.service.getAllIds(this.business.cnpj, this.tipoLancamento)
-      .pipe(catchError(() => {
-        this.isExporting = false;
-        return [null];
       })).toPromise();
   }
 
@@ -182,19 +182,16 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     this.onTab({ tab: null, index: this.tipoLancamento - 1 });
   }
 
-  onClone(event: { rule: RuleCreateFormat; position: number }) {
-    this.service.createRule(event.rule).subscribe(
-      info => {
-        const regra: CompleteRule = info.record;
-        regra.posicao = event.position;
-        this.service.changePosition(regra).subscribe(
-          () => {
-            this.rows.push(regra);
-            this.rows.sort((a, b) => a.posicao - b.posicao);
-            this.artificialClone = regra;
-            this._openSnack('Regra clonada com sucesso!', 'success');
-          });
-      });
+  async onClone(event: { rule: RuleCreateFormat; position: number }) {
+    const rs = await this.service.createRule(event.rule).toPromise();
+    const rule: CompleteRule = rs.record;
+    rule.posicao = event.position;
+
+    await this.service.changePosition(rule).toPromise();
+    this.rows.push(rule);
+    this.rows.sort((a, b) => a.posicao - b.posicao);
+    this.artificialClone = rule;
+    this.toast.show('Regra clonada com sucesso!', 'success');
   }
 
   drop(event: CdkDragDrop<RuleCreateFormat[]>) {
@@ -205,7 +202,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       this.service.changePosition(rule).subscribe(
         info => {
           moveItemInArray(this.rows, event.previousIndex, event.currentIndex);
-          this._openSnack('Regra movida com sucesso!', 'success');
+          this.toast.show('Regra movida com sucesso!', 'success');
         });
     }
   }
@@ -214,7 +211,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     const rule = this.rows[previousIndex];
     this.service.moveToTop(rule.id).subscribe(() => {
       moveItemInArray(this.rows, previousIndex, 0);
-      this._openSnack('Regra movida com sucesso!', 'success');
+      this.toast.show('Regra movida com sucesso!', 'success');
     });
   }
 
@@ -225,7 +222,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
           this.rows.push(rule);
         }
         this.rows.splice(previousIndex, 1);
-        this._openSnack('Regra movida com sucesso!', 'success');
+        this.toast.show('Regra movida com sucesso!', 'success');
       });
   }
 
@@ -280,7 +277,4 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     return width < 968;
   }
 
-  private _openSnack( text: string, color: 'danger' | 'primary' | 'success' | 'warning' = 'success') {
-    this.toast.show(text, color);
-  }
 }

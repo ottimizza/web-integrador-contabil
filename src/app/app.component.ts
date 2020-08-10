@@ -42,7 +42,6 @@ export class AppComponent implements OnInit {
   public ngOnInit() {
     this.messagingService.receiveMessage();
     this.messagingService.currentMessage.subscribe(msg => LoggerUtils.log(msg));
-
   }
 
 }
