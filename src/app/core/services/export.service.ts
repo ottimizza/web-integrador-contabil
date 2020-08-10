@@ -40,7 +40,7 @@ export class ExportService {
 
     for (let i = 0; i < historics.length; i++) {
       await this.salesforce.exportHistoric(historics[i].id, historics[i]).toPromise();
-      const percentage = (i + 1 / historics.length) * 100;
+      const percentage = Math.round((i + 1 / historics.length) * 100);
       callbackFn(percentage);
     }
 
