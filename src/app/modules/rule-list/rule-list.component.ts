@@ -20,6 +20,7 @@ import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
 import { DOCUMENT } from '@angular/common';
 import { finalize, catchError } from 'rxjs/operators';
+import { ExportService } from '@app/services/export.service';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -34,18 +35,18 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   tabIsSelected = false;
   tipoLancamento = 1;
   artificialClone: CompleteRule;
-  exportedRules = 0;
-  totalRules = 0;
   isExporting: boolean;
   isFetching = false;
   currentUser: User;
+
+  percentage: number;
 
   constructor(
     @Inject(DOCUMENT) public doc: Document,
     private service: RuleService,
     private toast: ToastService,
-    private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public exportService: ExportService
   ) {}
 
   ngOnInit(): void {
@@ -135,22 +136,41 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   }
 
   async export() {
-    this.exportedRules = 0;
+    // this.isExporting = true;
+
+    // this.toast.showSnack('Exportando, isto pode levar algum tempo...');
+
+    // const ids = await this.getIds() as number[];
+    // ids.forEach(async id => {
+
+    //   if (id !== null) {
+    //     await this.exportRule(id);
+    //   }
+
+    // });
+
+    // this.toast.hideSnack();
     this.isExporting = true;
 
-    this.toast.showSnack('Exportando, isto pode levar algum tempo...');
+    this.toast.showSnack('Exportando regras, isto pode levar algum tempo...');
+    await this.exportService.exportAllRules(
+      this.business.cnpj,
+      this.currentUser.organization.cnpj,
+      this.tipoLancamento,
+      percentage => this.percentage = percentage
+    );
+    this.percentage = 0;
 
-    const ids = await this.getIds() as number[];
-    ids.forEach(async id => {
-
-      if (id !== null) {
-        await this.exportRule(id);
-      }
-      this.exportedRules++;
-
-    });
-
+    this.toast.showSnack('Exportando históricos, isto pode levar algum tempo...');
+    await this.exportService.exportAllHistorics(
+      this.business.cnpj,
+      this.currentUser.organization.cnpj,
+      this.tipoLancamento,
+      percentage => this.percentage = percentage
+    );
     this.toast.hideSnack();
+
+    this.isExporting = false;
   }
 
   exportRule(id: number) {
@@ -158,14 +178,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       .pipe(catchError(() => {
         this.isExporting = false;
         return null;
-      })).toPromise();
-  }
-
-  getIds() {
-    return this.service.getAllIds(this.business.cnpj, this.tipoLancamento)
-      .pipe(catchError(() => {
-        this.isExporting = false;
-        return [null];
       })).toPromise();
   }
 

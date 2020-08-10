@@ -9,6 +9,8 @@ export class HistoricField {
 
 export class FormattedHistoric {
 
+  public id: number;
+
   constructor(
     public historico: string,
     public contaMovimento: string,

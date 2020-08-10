@@ -17,19 +17,24 @@ export class HistoricService {
 
   constructor(private _http: HttpHandlerService) { }
 
-  getHistoric(empresa: Empresa, conta: string, tipoLancamento: number): any {
+  public getHistoric(empresa: Empresa, conta: string, tipoLancamento: number): any {
     const url = `${BASE_URL}/api/v1/historicos?cnpjEmpresa=${empresa.cnpj}&contaMovimento=${conta}&tipoLancamento=${tipoLancamento}`;
     return this._http.get<GenericPageableResponse<any>>(url, 'Falha ao verificar a existência de histórico!');
   }
 
-  createHistoric(historic: FormattedHistoric): Observable<any> {
+  public createHistoric(historic: FormattedHistoric): Observable<any> {
     const url = `${BASE_URL}/api/v1/historicos`;
     return this._http.post(url, historic, 'Falha ao criar histórico!');
   }
 
-  export(id: number, historico: FormattedHistoric) {
+  public export(id: number, historico: FormattedHistoric) {
     const url = `${BASE_URL}/api/v1/salesforce/historico/${id}`;
     return this._http.patch(url, historico, 'Falha ao exportar histórico!');
+  }
+
+  public getAll(searchCriteria: any) {
+    const url = `${BASE_URL}/api/v1/historicos/sf`;
+    return this._http.get<FormattedHistoric[]>([url, searchCriteria], 'Falha ao obter lista de históricos!');
   }
 
 }

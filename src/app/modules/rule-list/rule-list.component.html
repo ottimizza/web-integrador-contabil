@@ -16,7 +16,7 @@
 
     <div *ngIf="business">
       <div class="card">
-        <mat-progress-bar mode="determinate" [value]="exportedRules / totalRules * 100" *ngIf="isExporting" [color]="'#000'" class="progress-bar"></mat-progress-bar>
+        <mat-progress-bar mode="determinate" [value]="percentage" *ngIf="isExporting" [color]="'#000'" class="progress-bar"></mat-progress-bar>
         <mat-tab-group
           (selectedTabChange)="onTab($event)"
           mat-align-tabs="center"
