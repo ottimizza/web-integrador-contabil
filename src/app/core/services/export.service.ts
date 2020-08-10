@@ -23,7 +23,9 @@ export class ExportService {
     for (let i = 0; i < rules.length; i++) {
       await this.salesforce.exportRule(rules[i]).toPromise();
       const percentage = Math.round((i + 1 / rules.length) * 100);
-      console.log(percentage);
+      console.log('Quantidade de regras:', rules.length);
+      console.log('Índice atual:', i);
+      console.log('Porcentage:', percentage);
       callbackFn(percentage);
     }
 
