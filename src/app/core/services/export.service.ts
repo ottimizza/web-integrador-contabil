@@ -36,7 +36,7 @@ export class ExportService {
     tipoLancamento: number,
     callbackFn: (percentage: number) => void) {
 
-    const historics = await this.historic.getAll({ cnpjEmpresa, cnpjContabilidade, tipoLancamento }).toPromise();
+    const historics = await this.historic.getAll({ cnpjEmpresa, cnpjContabilidade, tipoLancamento }).toPromise().then(rs => rs.records);
 
     for (let i = 0; i < historics.length; i++) {
       await this.salesforce.exportHistoric(historics[i].id, historics[i]).toPromise();
