@@ -545,3 +545,16 @@ $full-sidebar-width: 240px;
   background-color: #e9ecef;
   border-radius: .25rem;
 }
+
+@keyframes animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate-constant {
+  animation: animate 1.3s linear infinite;
+}
