@@ -19,7 +19,7 @@ export class PageInfo {
   }
 
   static defaultPageInfo() {
-    return new PageInfo({ pageIndex: 0, pageSize: 1 });
+    return new PageInfo({ pageIndex: 0, pageSize: 1, hasNext: true });
   }
 
 }

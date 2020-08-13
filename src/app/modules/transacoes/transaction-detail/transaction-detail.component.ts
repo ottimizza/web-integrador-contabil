@@ -21,7 +21,7 @@ import { RuleService } from '@shared/services/rule.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { Lancamento } from '@shared/models/Lancamento';
 import { Empresa } from '@shared/models/Empresa';
-import { finalize } from 'rxjs/operators';
+import { finalize, catchError } from 'rxjs/operators';
 import { User } from '@shared/models/User';
 import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
 
@@ -174,9 +174,16 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   skip() {
-    const observable = this._lancamentoService.skip(this.records[0].id);
+    let observable = this._lancamentoService.skip(this.records[0].id);
     const error = '';
-    this._savePattern(observable, [true], [error]);
+    if (this.records[0].tipoConta === 4) {
+      this.pageInfo.pageIndex++;
+      observable = observable.pipe(catchError(err => {
+        this.pageInfo.pageIndex = 0;
+        throw err;
+      }));
+    }
+    this._savePattern(observable, [true], [error], undefined);
   }
 
   private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[], rule?: boolean) {
@@ -295,6 +302,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this.tabSelect.emit('true');
     }
 
+    this.pageInfo = PageInfo.defaultPageInfo();
     this.tipoMovimento = tipoMovimento;
     this.tipoLancamentoName = tipoLancamentoName;
     this.resetErrors();
