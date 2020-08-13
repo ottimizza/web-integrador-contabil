@@ -17,7 +17,9 @@ export class TransactionListComponent {
     };
   }
 
-  onDevolve(event: any) {
+  async onDevolve(event: string) {
+    this.business = null;
+    await new Promise(resolve => setTimeout(resolve, 200));
     this.business = JSON.parse(event);
   }
 

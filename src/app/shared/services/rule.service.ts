@@ -22,8 +22,8 @@ export class RuleService {
     return this._http.post(`${BASE_URL}/api/v1/regras`, rule, 'Falha ao criar regra!');
   }
 
-  getAllIds(cnpjEmpresa: string, tipoLancamento: number) {
-    const url = `${BASE_URL}/api/v1/salesforce/id?cnpjEmpresa=${cnpjEmpresa}&tipoLancamento=${tipoLancamento}`;
+  getAllIds(cnpjEmpresa: string, cnpjContabilidade: string, tipoLancamento: number) {
+    const url = `${BASE_URL}/api/v1/salesforce/id?cnpjEmpresa=${cnpjEmpresa}&tipoLancamento=${tipoLancamento}&cnpjContabilidade=${cnpjContabilidade}`;
     return this._http.get<number[]>(url, 'Falha ao obter lista completa de regras!');
   }
 
