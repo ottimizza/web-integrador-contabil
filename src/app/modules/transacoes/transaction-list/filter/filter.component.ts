@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, HostListener, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { BusinessService } from '@shared/services/business.service';
 import { Empresa } from '@shared/models/Empresa';
 import { ToastService } from '@shared/services/toast.service';
@@ -10,11 +10,13 @@ import { Subject } from 'rxjs';
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent implements OnInit, AfterViewInit {
+
+  public static selected: Empresa;
 
   @Output() empresa = new EventEmitter();
-  business: Empresa[] = [];
 
+  business: Empresa[] = [];
   searchTerms = new Subject<string>();
 
   @ViewChild('company') companyInput: ElementRef<HTMLInputElement>;
@@ -41,6 +43,12 @@ export class FilterComponent implements OnInit {
       .subscribe(e => this.change(e));
   }
 
+  ngAfterViewInit() {
+    if (FilterComponent.selected) {
+      this.confirm(FilterComponent.selected);
+    }
+  }
+
   get info() {
     return 'Escreva o nome da empresa selecionada ou escolha dentre as sugeridas';
   }
@@ -48,6 +56,7 @@ export class FilterComponent implements OnInit {
   async confirm(company: Empresa) {
     company.razaoSocial = company.razaoSocial || '';
     this.companyInput.nativeElement.value = `${this.getErp(company.codigoERP)}${company.razaoSocial.toUpperCase()}`;
+    FilterComponent.selected = company;
     this._toast.show(`Empresa ${company.razaoSocial} selecionada.`, 'primary');
     await new Promise(resolve => setTimeout(resolve, 300));
     this.devolve(company);

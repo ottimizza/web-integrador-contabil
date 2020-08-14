@@ -193,14 +193,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     this.rows = this.logicService.reorder(this.rows, event.previousIndex, event.currentIndex);
   }
 
-  upAll(previousIndex: number) {
-    this.rows = this.logicService.reorder(this.rows, previousIndex, 0);
-  }
-
-  downAll(previousIndex: number) {
-    this.rows = this.logicService.sendToEnd(this.rows, previousIndex, this.pageInfo.totalElements);
-  }
-
   load() {
     const pageCriteria = { pageIndex: this.page };
     const sorting = { sortBy: 'posicao', sortOrder: 'asc' };

@@ -14,34 +14,22 @@ export class RuleLogicService {
   ) {}
 
   public reorder(ref: CompleteRule[], previousIndex: number, currentIndex: number) {
+    currentIndex = currentIndex >= 0 ? currentIndex : 0;
     let rules = ref.map(rule => rule);
     let element = rules[previousIndex];
 
-    if (previousIndex !== currentIndex) {
+    if (element.regras.length !== rules[currentIndex].regras.length) {
+      this.toastService.show('Você não pode trocar uma regra de posição com outra que tenha um número diferente de cláusulas!', 'warning');
+    } else if (previousIndex !== currentIndex) {
       rules[previousIndex].posicao = rules[currentIndex].posicao;
 
       moveItemInArray(rules, previousIndex, currentIndex);
+      this.changePosition(element);
       rules = this.syncPositions(rules);
 
       element = rules[currentIndex];
 
-      this.changePosition(element);
     }
-    return rules;
-  }
-
-  public sendToEnd(ref: CompleteRule[], previousIndex: number, totalElements: number) {
-    if (ref.length === totalElements) {
-      return this.reorder(ref, previousIndex, totalElements - 1);
-    }
-
-    const rules = ref.map(item => item);
-    const rule = rules[previousIndex];
-    rule.posicao = totalElements;
-
-    rules.splice(previousIndex, 1);
-    this.changePosition(rule);
-
     return rules;
   }
 
@@ -52,8 +40,8 @@ export class RuleLogicService {
 
     rules.push(rule);
     rules = rules.sort((a, b) => a.posicao - b.posicao);
-    rules = this.syncPositions(rules);
     this.changePosition(rule, 'clonada');
+    rules = this.syncPositions(rules);
 
     return rules;
   }
