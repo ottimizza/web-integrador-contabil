@@ -53,7 +53,7 @@ export class RuleLogicService {
 
   private syncPositions(rules: CompleteRule[]) {
     return rules.map((value, index) => {
-      value.posicao = index + 1;
+      value.posicao = index;
       return value;
     });
   }
