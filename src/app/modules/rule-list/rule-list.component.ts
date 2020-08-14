@@ -21,6 +21,8 @@ import { User } from '@shared/models/User';
 import { DOCUMENT } from '@angular/common';
 import { finalize, catchError } from 'rxjs/operators';
 import { ExportService } from '@app/services/export.service';
+import { RuleLogicService } from '@app/services/logic/rule-logic.service';
+import { ArrayUtils } from '@shared/utils/array.utils';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -46,7 +48,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     private service: RuleService,
     private toast: ToastService,
     public dialog: MatDialog,
-    public exportService: ExportService
+    public exportService: ExportService,
+    public logicService: RuleLogicService
   ) {}
 
   ngOnInit(): void {
@@ -183,47 +186,19 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   }
 
   async onClone(event: { rule: RuleCreateFormat; position: number }) {
-    const rs = await this.service.createRule(event.rule).toPromise();
-    const rule: CompleteRule = rs.record;
-    rule.posicao = event.position;
-
-    await this.service.changePosition(rule).toPromise();
-    this.rows.push(rule);
-    this.rows.sort((a, b) => a.posicao - b.posicao);
-    this.artificialClone = rule;
-    this.toast.show('Regra clonada com sucesso!', 'success');
+    this.rows = await this.logicService.clone(event, this.rows);
   }
 
   drop(event: CdkDragDrop<RuleCreateFormat[]>) {
-    if (event.previousIndex !== event.currentIndex) {
-      const rule = this.rows[event.previousIndex];
-      const position = this.rows[event.currentIndex].posicao;
-      rule.posicao = position;
-      this.service.changePosition(rule).subscribe(
-        info => {
-          moveItemInArray(this.rows, event.previousIndex, event.currentIndex);
-          this.toast.show('Regra movida com sucesso!', 'success');
-        });
-    }
+    this.rows = this.logicService.reorder(this.rows, event.previousIndex, event.currentIndex);
   }
 
   upAll(previousIndex: number) {
-    const rule = this.rows[previousIndex];
-    this.service.moveToTop(rule.id).subscribe(() => {
-      moveItemInArray(this.rows, previousIndex, 0);
-      this.toast.show('Regra movida com sucesso!', 'success');
-    });
+    this.rows = this.logicService.reorder(this.rows, previousIndex, 0);
   }
 
   downAll(previousIndex: number) {
-    const rule = this.rows[previousIndex];
-    this.service.moveToBottom(rule.id).subscribe(() => {
-        if (this.rows.length === this.pageInfo.totalElements || this.rows.length < this.pageInfo.pageSize) {
-          this.rows.push(rule);
-        }
-        this.rows.splice(previousIndex, 1);
-        this.toast.show('Regra movida com sucesso!', 'success');
-      });
+    this.rows = this.logicService.sendToEnd(this.rows, previousIndex, this.pageInfo.totalElements);
   }
 
   load() {
@@ -247,23 +222,10 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     const rs = await this.load();
     this.page++;
 
-    this.removeClone();
-
-    this.rows = this.rows.concat(rs.records);
+    this.rows = ArrayUtils.concatDifferentiatingProperty(this.rows, rs.records, 'id');
     this.pageInfo = rs.pageInfo;
 
     this.toast.hideSnack();
-  }
-
-  removeClone() {
-    const props1 = Object.values(this.artificialClone || {});
-    const props2 = Object.values(this.rows[this.rows.length - 1] || {});
-    const differentProperties = props1.filter(val => !props2.includes(val));
-
-    if (differentProperties.length === 0) {
-      this.rows.splice(this.rows.length - 1, 1);
-      this.artificialClone = null;
-    }
   }
 
   onScroll(event: boolean) {

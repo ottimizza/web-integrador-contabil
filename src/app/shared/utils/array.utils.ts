@@ -88,6 +88,7 @@ export class ArrayUtils {
 
     const props = array1.map(arrItem => arrItem[property]);
     array2 = array2.filter(arrItem => !props.includes(arrItem[property]));
+    console.log(array1, array2);
     return array1.concat(array2);
   }
 
