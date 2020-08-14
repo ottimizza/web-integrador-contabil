@@ -5,6 +5,10 @@ import { RuleService } from '@shared/services/rule.service';
 import { ToastService } from '@shared/services/toast.service';
 import { RuleCreateFormat } from '@shared/models/Rule';
 
+export const ruleNumberError = () => {
+  throw new Error('Não é possível trocar uma regra de posição com outra que tenha um número diferente de cláusulas!');
+};
+
 @Injectable({ providedIn: 'root' })
 export class RuleLogicService {
 
@@ -20,6 +24,7 @@ export class RuleLogicService {
 
     if (element.regras.length !== rules[currentIndex].regras.length) {
       this.toastService.show('Você não pode trocar uma regra de posição com outra que tenha um número diferente de cláusulas!', 'warning');
+      ruleNumberError();
     } else if (previousIndex !== currentIndex) {
       rules[previousIndex].posicao = rules[currentIndex].posicao;
 
@@ -51,7 +56,7 @@ export class RuleLogicService {
   }
 
   private syncPositions(rules: CompleteRule[]) {
-    // Confirmar com o lucas
+    // Confirmar com o Lucas
     return rules.map((value, index) => {
       value.posicao = index;
       return value;

@@ -20,10 +20,12 @@ import { ScrollTrackerModule } from '@shared/directives/scroll-tracker.module';
 import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.module';
 import { ActionButtonsModule } from '@shared/components/button/button.module';
 import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-layout.module';
+import { RuleDeleteConfirmDialogComponent } from './rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
 
 @NgModule({
   declarations: [
-    RuleListComponent
+    RuleListComponent,
+    RuleDeleteConfirmDialogComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +49,8 @@ import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-
   ],
   entryComponents: [
     RuleEditModalComponent,
-    ExportConfirmModalComponent
+    ExportConfirmModalComponent,
+    RuleDeleteConfirmDialogComponent
   ]
 })
 export class RuleListModule { }

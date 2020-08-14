@@ -88,7 +88,7 @@ export class RuleCardComponent {
   }
 
   close() {
-    this.rules = null;
+    // this.rules = null;
     this.delete.emit(this.index);
     this.haveToBeShown = true;
   }

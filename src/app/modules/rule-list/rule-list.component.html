@@ -1,4 +1,4 @@
-<app-layout [buttons]="buttons()" (buttonClicked)="openConfirmation()" (scrollHasEnded)="onScroll($event)">
+<app-layout [buttons]="buttons()" (buttonClicked)="onButton($event)" (scrollHasEnded)="onScroll($event)">
   <!-- <app-actions *ngIf="business && rows.length" [buttons]="buttons" (clicked)="openConfirmation()"></app-actions> -->
 
   <div
