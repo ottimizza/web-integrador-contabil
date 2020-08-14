@@ -336,7 +336,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   private _next() {
-    this.records || [];
+    this.records = this.records || [];
     this.records.splice(0, 1);
     this.resetErrors();
 
