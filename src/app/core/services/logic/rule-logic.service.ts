@@ -24,11 +24,10 @@ export class RuleLogicService {
       rules[previousIndex].posicao = rules[currentIndex].posicao;
 
       moveItemInArray(rules, previousIndex, currentIndex);
-      this.changePosition(element);
       rules = this.syncPositions(rules);
 
       element = rules[currentIndex];
-
+      this.changePosition(element);
     }
     return rules;
   }
@@ -40,8 +39,8 @@ export class RuleLogicService {
 
     rules.push(rule);
     rules = rules.sort((a, b) => a.posicao - b.posicao);
-    this.changePosition(rule, 'clonada');
     rules = this.syncPositions(rules);
+    this.changePosition(rule, 'clonada');
 
     return rules;
   }
@@ -52,6 +51,7 @@ export class RuleLogicService {
   }
 
   private syncPositions(rules: CompleteRule[]) {
+    // Confirmar com o lucas
     return rules.map((value, index) => {
       value.posicao = index;
       return value;
