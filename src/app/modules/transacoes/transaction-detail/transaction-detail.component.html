@@ -2,7 +2,7 @@
   <app-info [description]="info.info"></app-info>
 </div>
 
-<form autocomplete="off">
+<form autocomplete="off" (submit)="regra()">
   <div class="card">
     <mat-progress-bar [value]="percentage" class="progress-bar"  [matTooltip]="percentage + '%'" matTooltipShowDelay="300" matTooltipHideDelay="500"></mat-progress-bar>
     <mat-tab-group mat-align-tabs="center" (selectedTabChange)="onTab($event, false)">
@@ -141,10 +141,9 @@
         <div class="col-md-7 col-lg-7 col-xl-7">
           <div class="row w-100 m-0">
             <input
-              type="button"
+              type="submit"
               class="btn btn-primary col mx-2"
               value="Regra"
-              (click)="regra()"
               [matTooltip]="info.rule"
               matTooltipShowDelay="300"
               matTooltipHideDelay="500"

@@ -149,7 +149,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   regra() {
     const regra = this.ruleCreateFormat;
     const observable = this._ruleService.createRule(regra);
-    const verifications = [(this.account && this.account.length > 0), this.conditions.verify()];
+    const verifications = [!!this.account?.length, this.conditions.verify()];
     const errors = [
       'Para salvar uma regra você deve informar uma conta contábil.',
       'Para salvar uma regra você deve informar as condições da regra.'
@@ -336,6 +336,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   private _next() {
+    this.records = this.records || [];
     this.records.splice(0, 1);
     this.resetErrors();
 

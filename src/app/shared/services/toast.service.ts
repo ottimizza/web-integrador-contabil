@@ -20,12 +20,12 @@ export class ToastService {
     message: string,
     color?: 'primary' | 'success' | 'danger' | 'warning'
   ) {
-    this.snackbar.open(message, '', {
+    return this.snackbar.open(message, '', {
       duration: 3000,
       verticalPosition: 'top',
       horizontalPosition: 'right',
       panelClass: this.selectColor(color)
-    });
+    }).afterDismissed();
   }
 
   public showSimpleSnackBar(message: string): void {

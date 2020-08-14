@@ -97,4 +97,9 @@ export class ArrayUtils {
     }
   }
 
+  public static splice(array: any[], start?: number, count?: number) {
+    array = !!array ? array : [];
+    return array.splice(start, count);
+  }
+
 }

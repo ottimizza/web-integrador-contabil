@@ -26,8 +26,8 @@ export class RuleCardComponent {
 
   get info() {
     return {
-      upAll: 'Enviar para o topo da lista',
-      upDown: 'Enviar para o final da lista',
+      upAll: 'Subir regra',
+      upDown: 'Descer regra',
       trash: 'Excluir esta regra',
       clone: 'Clonar esta regra',
       edit: 'Alterar esta regra'
@@ -88,7 +88,7 @@ export class RuleCardComponent {
   }
 
   close() {
-    this.rules = null;
+    // this.rules = null;
     this.delete.emit(this.index);
     this.haveToBeShown = true;
   }
