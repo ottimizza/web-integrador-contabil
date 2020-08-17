@@ -8,6 +8,7 @@ import { GenericPageableResponse } from '@shared/models/GenericPageableResponse'
 import { FormattedHistoric } from '@shared/models/Historic';
 import { HttpHandlerService } from '@app/services/http-handler.service';
 import { GenericResponse } from '@shared/models/GenericResponse';
+import { appIterate } from '@shared/operators/iterate.operator';
 
 const BASE_URL = environment.serviceUrl;
 
@@ -31,6 +32,11 @@ export class HistoricService {
   public export(id: number, historico: FormattedHistoric) {
     const url = `${BASE_URL}/api/v1/salesforce/historico/${id}`;
     return this._http.patch(url, historico, 'Falha ao exportar histórico!');
+  }
+
+  exportAllHistorics(serachCriteria: any) {
+    return this.getAll(serachCriteria)
+    .pipe(appIterate((historic: FormattedHistoric) => this.export(historic.id, historic), 'records'));
   }
 
   public getAll(searchCriteria: any) {

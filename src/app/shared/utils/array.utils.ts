@@ -91,7 +91,10 @@ export class ArrayUtils {
     return array1.concat(array2);
   }
 
-  public static async asyncForEach(array: any[], callbackFn: (item?: any, index?: number, array?: any[]) => Promise<void>) {
+  public static async asyncForEach<T>(
+    array: T[],
+    callbackFn: (value?: T, index?: number, array?: T[]) => Promise<void>
+  ) {
     for (let i = 0; i < array.length; i++) {
       await callbackFn(array[i], i, array);
     }

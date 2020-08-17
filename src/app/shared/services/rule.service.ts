@@ -6,6 +6,7 @@ import { GenericPageableResponse } from '@shared/models/GenericPageableResponse'
 import { CompleteRule } from '@shared/models/CompleteRule';
 import { GenericResponse } from '@shared/models/GenericResponse';
 import { HttpHandlerService } from '@app/services/http-handler.service';
+import { Deprecated } from '@shared/decorators/deprecated.decorator';
 
 const BASE_URL = `${environment.serviceUrl}`;
 
@@ -40,15 +41,6 @@ export class RuleService {
     return this._http.put(url, { posicao: rule.posicao }, 'Falha ao alterar posição da regra!');
   }
 
-  moveToTop(id: number) {
-    const url = `${BASE_URL}/api/v1/regras/${id}/posicao/inicio`;
-    return this._http.put(url, {}, 'Falha ao mover regra para o início!');
-  }
-
-  moveToBottom(id: number) {
-    const url = `${BASE_URL}/api/v1/regras/${id}/posicao/final`;
-    return this._http.put(url, {}, 'Falha ao mover regra para o final!');
-  }
 
   delete(id: number) {
     const url = `${BASE_URL}/api/v1/regras/${id}`;
@@ -60,4 +52,15 @@ export class RuleService {
     return this._http.put<GenericResponse<CompleteRule>>(url, rule, 'Falha ao atualizar regra!');
   }
 
+  @Deprecated('Do not use')
+  moveToTop(id: number) {
+    const url = `${BASE_URL}/api/v1/regras/${id}/posicao/inicio`;
+    return this._http.put(url, {}, 'Falha ao mover regra para o início!');
+  }
+
+  @Deprecated('Do not use')
+  moveToBottom(id: number) {
+    const url = `${BASE_URL}/api/v1/regras/${id}/posicao/final`;
+    return this._http.put(url, {}, 'Falha ao mover regra para o final!');
+  }
 }

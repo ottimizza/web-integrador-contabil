@@ -56,10 +56,9 @@ export class RuleLogicService {
   }
 
   private syncPositions(rules: CompleteRule[]) {
-    // Confirmar com o Lucas
-    return rules.map((value, index) => {
-      value.posicao = index;
-      return value;
+    return rules.map((rule, index) => {
+      rule.posicao = index;
+      return rule;
     });
   }
 

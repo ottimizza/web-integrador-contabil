@@ -1,5 +1,4 @@
 export class Lancamento {
-
   public id: number;
   public dataMovimento: string;
   public documento: string;
@@ -31,7 +30,6 @@ export class Lancamento {
   public ativo: boolean;
   public competencia: string;
   public competenciaAnterior: string;
-
 }
 
 export class Arquivo {

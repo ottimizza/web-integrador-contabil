@@ -29,7 +29,7 @@ import { RuleDeleteConfirmDialogComponent } from './rule-delete-confirm-dialog/r
   templateUrl: './rule-list.component.html',
   styleUrls: ['./rule-list.component.scss']
 })
-export class RuleListComponent implements OnInit, GenericDragDropList, GenericPagination {
+export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRule>, GenericPagination {
 
   rows: CompleteRule[] = [];
   business: Empresa;

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, fromEvent, interval, of, from } from 'rxjs';
 
 import { MatTabChangeEvent } from '@angular/material';
 import { MatDialog } from '@angular/material/dialog';
@@ -21,7 +21,7 @@ import { RuleService } from '@shared/services/rule.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { Lancamento } from '@shared/models/Lancamento';
 import { Empresa } from '@shared/models/Empresa';
-import { finalize, catchError } from 'rxjs/operators';
+import { finalize, catchError, switchMap, map } from 'rxjs/operators';
 import { User } from '@shared/models/User';
 import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
 
@@ -30,21 +30,26 @@ import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-
   templateUrl: './transaction-detail.component.html',
   styleUrls: ['./transaction-detail.component.scss']
 })
-export class TransactionDetailComponent implements OnInit, GenericPagination {
+export class TransactionDetailComponent implements OnInit {
 
   @Output() tabSelect = new EventEmitter();
   @Input() business: Empresa;
+
   pageInfo = PageInfo.defaultPageInfo();
   records: Lancamento[] = [];
+
   conditions = new Rule();
+  account: string;
+
   tipoMovimento = 'PAG';
   tipoLancamentoName: string;
+
   errorText2: string;
   errorText: string;
-  account: string;
+
   destroy: boolean;
   tabIsClicked = false;
-  tipoConta = 0;
+
   impact = 0;
   percentage = 0;
   total = 0;
@@ -108,7 +113,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       ignore: 'Todos os lançamentos com as palavras selecionada serão ignorados.',
       affectedsOrientation: 'Lançamentos já parametrizados podem ser afetados',
       affecteds: 'Clique para visualizar os lançamentos afetados.',
-      skip: 'Deixar este lançamento para depois.'
     };
   }
 
@@ -171,19 +175,6 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     const verification = this.account && this.account.length > 0;
     const error = ['Para atrelar o lançamento à uma conta de fornecedor, você deve informar a conta.'];
     this._savePattern(observable, [verification], error);
-  }
-
-  skip() {
-    let observable = this._lancamentoService.skip(this.records[0].id);
-    const error = '';
-    if (this.records[0].tipoConta === 4) {
-      this.pageInfo.pageIndex++;
-      observable = observable.pipe(catchError(err => {
-        this.pageInfo.pageIndex = 0;
-        throw err;
-      }));
-    }
-    this._savePattern(observable, [true], [error], undefined);
   }
 
   private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[], rule?: boolean) {
@@ -295,8 +286,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     }
   }
 
-  async tabsPattern(tipoMovimento: string, tipoLancamentoName: string, isFirst: boolean) {
-    this.destroy = true;
+  tabsPattern(tipoMovimento: string, tipoLancamentoName: string, isFirst: boolean) {
     if (!isFirst) {
       this.tabIsClicked = true;
       this.tabSelect.emit('true');
@@ -306,22 +296,17 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this.tipoMovimento = tipoMovimento;
     this.tipoLancamentoName = tipoLancamentoName;
     this.resetErrors();
-    this.tipoConta = 0;
     this._partialDisable();
-    this.nextPage();
     this.getByRule();
-    await this._delay(300);
-    this.destroy = false;
+
+    this.proceed();
   }
 
-  async disable() {
+  disable() {
     // Reseta todas as variáveis locais após executar uma ação para permitir
     // que a próxima ação esteja pronta para ser executada.
-    this.destroy = true;
     this._partialDisable();
-    this._next();
-    await this._delay(320);
-    this.destroy = false;
+    this.proceed();
   }
 
   private _partialDisable() {
@@ -330,22 +315,38 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     this.account = null;
   }
 
-
-  private _delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  private _next() {
-    this.records = this.records || [];
-    this.records.splice(0, 1);
+  public async requestEntry() {
+    this.records = null;
     this.resetErrors();
 
-    if (this.records.length === 0 && (!this.pageInfo || this.pageInfo.hasNext)) {
-      this.tipoConta = 0
-      this.nextPage();
+    const rs = await this.fetch();
+    this.records = rs.records;
+    this.pageInfo = rs.pageInfo;
+
+    if (this.records.length) {
+      this.calcPercentage();
     } else {
       this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa.`]);
       this.percentage = 100;
+    }
+  }
+
+  public async proceed(animate = true) {
+    if (animate) {
+      this.destroy = true;
+    }
+    await this.requestEntry();
+    this.destroy = false;
+  }
+
+
+  public navigate(direction: 'next' | 'previous') {
+    if (direction === 'next' && this.pageInfo.hasNext) {
+      this.pageInfo.pageIndex++;
+      this.proceed();
+    } else if (direction === 'previous' && this.pageInfo.hasPrevious) {
+      this.pageInfo.pageIndex--;
+      this.proceed();
     }
   }
 
@@ -356,53 +357,42 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     });
     dialogRef.afterClosed().subscribe(e => {
       if (e === 'deleted') {
-        this.nextPage();
+        this.proceed(false);
       }
     });
   }
 
-  nextPage() {
+  fetch() {
     this.isFetching = true;
-    let tipoLancamento: number;
-    if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'EXDEB') {
-      tipoLancamento = 1;
-    } else if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE') {
+
+    let tipoLancamento = 1;
+    if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE') {
       tipoLancamento = 2;
     }
-    const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: this.pageInfo.pageSize };
-    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: this.tipoConta, ativo: true };
+
+    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: 0, ativo: true };
+    const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: 1 };
     Object.assign(filter, pageCriteria);
-    this._toast.showSnack('Aguardando resposta');
 
-    this.records = null;
-    this._lancamentoService.getLancamentos(filter)
-      .pipe(finalize(() => this.isFetching = false))
-      .subscribe(imports => {
+    this._toast.showSnack('Aguardando lançamento...');
+    return this._lancamentoService.getLancamentos(filter)
+      .pipe(finalize(() => {
+        this.isFetching = false;
+        this._toast.hideSnack();
+      }))
+      .toPromise();
+  }
 
-      this.records = imports.records;
-      this.pageInfo = imports.pageInfo;
-      this.resetErrors();
-      this._toast.hideSnack();
-
-      if (imports.pageInfo.totalElements === 0 && this.tipoConta === 0 && filter.tipoMovimento === this.tipoMovimento) {
-        this.tipoConta = 4;
-        this.nextPage();
-      }
-
-      if (this.tipoConta === 4 && this.pageInfo.totalElements === 0) {
-        this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa!`]);
-      }
-
-    });
-
-    this._lancamentoService.calcPercentage({ cnpjEmpresa: this.business.cnpj, tipoMovimento: this.tipoMovimento}).subscribe((percentage: any) => {
-      if (percentage.totalLancamentos) {
-        this.percentage = +(100 - (percentage.numeroLancamentosRestantes / percentage.totalLancamentos) * 100).toFixed(0);
+  public calcPercentage() {
+    const filter = { cnpjEmpresa: this.business.cnpj, tipoMovimento: this.tipoMovimento };
+    this._lancamentoService.calcPercentage(filter).subscribe((result: any) => {
+      if (result.totalLancamentos) {
+        this.percentage = +(100 - (result.numeroLancamentosRestantes / result.totalLancamentos) * 100).toFixed(0);
       } else {
         this.percentage = 100;
       }
-      this.total = percentage.totalLancamentos;
-    })
+      this.total = result.totalLancamentos;
+    });
   }
 
   descricao(): RuleConfig {

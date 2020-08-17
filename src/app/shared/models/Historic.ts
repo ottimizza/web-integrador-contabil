@@ -10,6 +10,8 @@ export class HistoricField {
 export class FormattedHistoric {
 
   public id: number;
+  public dataCriacao: string;
+  public dataAtualizacao: string;
 
   constructor(
     public historico: string,

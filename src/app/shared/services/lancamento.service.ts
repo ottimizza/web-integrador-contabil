@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { environment } from '@env';
 
 import { Lancamento } from '@shared/models/Lancamento';
@@ -7,6 +7,8 @@ import { GenericPageableResponse } from '@shared/models/GenericPageableResponse'
 import { Empresa } from '@shared/models/Empresa';
 import { PostFormatRule } from '@shared/models/Rule';
 import { HttpHandlerService } from '@app/services/http-handler.service';
+import { map, switchMap } from 'rxjs/operators';
+import { appIterate } from '@shared/operators/iterate.operator';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/lancamentos`;
 
@@ -17,6 +19,11 @@ export class LancamentoService {
 
   public getLancamentos(searchCriteria: any): Observable<GenericPageableResponse<Lancamento>> {
     return this.http.get<GenericPageableResponse<Lancamento>>([BASE_URL, searchCriteria], 'Falha ao obter lançamentos!');
+  }
+
+  public import(entry: Lancamento) {
+    const url = `${BASE_URL}/importar`;
+    return this.http.post(url, entry, 'Falha ao gerar lançamentos!');
   }
 
   public inactivate(fileId: number) {
