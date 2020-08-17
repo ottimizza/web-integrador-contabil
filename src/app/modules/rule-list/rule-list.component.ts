@@ -46,9 +46,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
 
   constructor(
     @Inject(DOCUMENT) public doc: Document,
+    public dialog: MatDialog,
     private service: RuleService,
     private toast: ToastService,
-    public dialog: MatDialog,
     public exportService: ExportService,
     public logicService: RuleLogicService,
   ) {}
@@ -147,7 +147,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
       return;
     }
     const dialogRef = this.dialog.open(ExportConfirmModalComponent, {
-      data: this.business,
+      data: this.business || {},
       maxWidth: '596px'
     });
 

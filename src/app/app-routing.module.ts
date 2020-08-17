@@ -47,6 +47,15 @@ const routes: Routes = [
     import('@modules/auth/auth.module').then(m => m.AuthModule)
   },
   {
+    path: 'historicos',
+    data: {
+      breadcrumb: 'Históricos'
+    },
+    canActivate: [AuthGuard],
+    component: ContentLayoutComponent,
+    loadChildren: () => import('@modules/historic/historic-list.module').then(m => m.HistoricListModule)
+  },
+  {
     path: 'regras',
     data: {
       breadcrumb: 'Regras'
