@@ -343,9 +343,11 @@ export class TransactionDetailComponent implements OnInit {
   public navigate(direction: 'next' | 'previous') {
     if (direction === 'next' && this.pageInfo.hasNext) {
       this.pageInfo.pageIndex++;
+      this.impact = 0;
       this.proceed();
     } else if (direction === 'previous' && this.pageInfo.hasPrevious) {
       this.pageInfo.pageIndex--;
+      this.impact = 0;
       this.proceed();
     }
   }
