@@ -27,7 +27,7 @@ export class HistoricListComponent implements OnInit {
   isExporting = false;
 
   records: FormattedHistoric[] = [];
-  pageInfo = new PageInfo({ pageIndex: 0, hasNext: true });
+  pageInfo = new PageInfo({ pageIndex: -1, hasNext: true });
 
   constructor(
     private toast: ToastService,
@@ -42,10 +42,12 @@ export class HistoricListComponent implements OnInit {
 
   onFilter(event: string) {
     this.company = JSON.parse(event);
+    this.fetch();
   }
 
   onTab(event: MatTabChangeEvent) {
     this.entryType = event.index + 1;
+    this.fetch();
   }
 
   public buttons(): ActionButton[] {

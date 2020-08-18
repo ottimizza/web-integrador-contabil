@@ -5,6 +5,7 @@ import { UpdateSerive } from '@app/services/update.service';
 import { MessagingService } from '@app/services/messaging.service';
 import { LoggerUtils } from '@shared/utils/logger.utills';
 import { User } from '@shared/models/User';
+import { Historic } from '@shared/models/Historic';
 
 @Component({
   selector: 'app-root',
@@ -40,6 +41,7 @@ export class AppComponent implements OnInit {
   }
 
   public ngOnInit() {
+    console.log(Historic.parse('CodigoHistorico:código$ texto ${descricao} texto ${portador} text ${competencia} texto'));
     this.messagingService.receiveMessage();
     this.messagingService.currentMessage.subscribe(msg => LoggerUtils.log(msg));
   }

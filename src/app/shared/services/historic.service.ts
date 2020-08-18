@@ -3,9 +3,11 @@ import { environment } from '@env';
 import { Empresa } from '@shared/models/Empresa';
 import { Observable } from 'rxjs';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
-import { FormattedHistoric } from '@shared/models/Historic';
+import { FormattedHistoric, Historic } from '@shared/models/Historic';
 import { HttpHandlerService } from '@app/services/http-handler.service';
 import { GenericResponse } from '@shared/models/GenericResponse';
+import { map } from 'rxjs/operators';
+import { appIterateMap } from '@shared/operators/iterate.operator';
 
 const BASE_URL = environment.serviceUrl;
 

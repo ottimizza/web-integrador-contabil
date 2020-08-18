@@ -1,3 +1,5 @@
+import { EntryUtils } from '@shared/utils/entry.utils';
+
 export class HistoricField {
   constructor(public field: string, public value: string) { }
 
@@ -41,6 +43,37 @@ export class Historic {
     this.field3 = HistoricField.null();
   }
 
+  public static parse(historic: string) {
+    const obj = new Historic();
+
+    const details = historic.split('}').map(text => text.trim());
+
+    if (details[0].includes('CodigoHistorico:')) {
+      obj.id = details[0].slice(16, details[0].indexOf('$'));
+      details[0] = details[0].slice(details[0].indexOf('$') + 1).trim();
+    }
+
+    obj.com1 = this._getValues(details[0]).com;
+    obj.com2 = this._getValues(details[1]).com;
+    obj.com3 = this._getValues(details[2]).com;
+    obj.com4 = this._getValues(details[3]).com;
+
+    obj.field1 = this._getValues(details[0]).field;
+    obj.field2 = this._getValues(details[1]).field;
+    obj.field3 = this._getValues(details[2]).field;
+
+    return obj;
+
+  }
+
+  private static _getValues(area: string) {
+    const values = area.split(' ${').map(val => val = val.trim());
+    return {
+      com: values[0],
+      field: { field: values[1], value: '' }
+    };
+  }
+
   public get preview() {
     const array = this._comments([
       { text: this.field1.value, param: false },
@@ -52,7 +85,7 @@ export class Historic {
 
   public historic(contaMovimento: string, cnpjEmpresa: string, cnpjContabilidade: string, tipoLancamento: number, idRoteiro: string): FormattedHistoric {
     return new FormattedHistoric(
-      this._toParams(),
+      this.toParams(),
       contaMovimento,
       tipoLancamento,
       idRoteiro,
@@ -61,7 +94,8 @@ export class Historic {
     );
   }
 
-  private _toParams() {
+
+  public toParams() {
     const array = this._comments([
       { text: this.field1.field, param: true },
       { text: this.field2.field, param: true },
