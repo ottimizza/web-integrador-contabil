@@ -266,9 +266,9 @@ export class TransactionDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this._subsAndDisable(obs);
-      if (result) {
-        this.disable();
-      }
+      // if (result) {
+      //   this.disable();
+      // }
     });
   }
 
