@@ -13,10 +13,13 @@ import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-
 import { HistoricListRoutingModule } from './historic.routing';
 import { HistoricListComponent } from './page/historic-list.component';
 import { ExportConfirmModalComponent } from '@modules/rule-list/export-confirm-modal/export-confirm-modal.component';
+import { HistoricCardComponent } from './support/historic-card/historic-card.component';
+import { VerticalAlignerModule } from '@shared/components/vertical-aligner/vertical-aligner.module';
 
 @NgModule({
   declarations: [
     HistoricListComponent,
+    HistoricCardComponent
   ],
   imports: [
     HistoricListRoutingModule,
@@ -34,7 +37,8 @@ import { ExportConfirmModalComponent } from '@modules/rule-list/export-confirm-m
     BreadcrumbModule,
     ActionButtonsModule,
     MatProgressBarModule,
-    NormalizedLayoutModule
+    NormalizedLayoutModule,
+    VerticalAlignerModule
   ],
   entryComponents: [ExportConfirmModalComponent]
 })

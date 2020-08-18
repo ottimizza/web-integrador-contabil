@@ -46,11 +46,11 @@ export class Historic {
   public static parse(historic: string) {
     const obj = new Historic();
 
-    const details = historic.split('}').map(text => text.trim());
+    const details = historic.split('}');
 
     if (details[0].includes('CodigoHistorico:')) {
       obj.id = details[0].slice(16, details[0].indexOf('$'));
-      details[0] = details[0].slice(details[0].indexOf('$') + 1).trim();
+      details[0] = details[0].slice(details[0].indexOf('$') + 1);
     }
 
     obj.com1 = this._getValues(details[0]).com;
@@ -68,6 +68,7 @@ export class Historic {
 
   private static _getValues(area: string) {
     const values = area.split(' ${').map(val => val = val.trim());
+    console.log(values);
     return {
       com: values[0],
       field: { field: values[1], value: '' }

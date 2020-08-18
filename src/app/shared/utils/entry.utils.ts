@@ -22,7 +22,8 @@ export class EntryUtils {
       labelComplemento03:  'Rótulo do Complemento 3',
       labelComplemento04:  'Rótulo do Complemento 4',
       labelComplemento05:  'Rótulo do Complemento 5',
-      contaSugerida:       'Conta(s) Sugerida(s)'
+      contaSugerida:       'Conta(s) Sugerida(s)',
+      nenhum:              '*'
     };
 
     if (reference.tipoLancamento === 1) {

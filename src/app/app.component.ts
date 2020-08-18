@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
   }
 
   public ngOnInit() {
-    console.log(Historic.parse('CodigoHistorico:código$ texto ${descricao} texto ${portador} text ${competencia} texto'));
+    console.log(Historic.parse('CodigoHistorico:3$ ${nenhum} ${nenhum} ${nenhum} '));
     this.messagingService.receiveMessage();
     this.messagingService.currentMessage.subscribe(msg => LoggerUtils.log(msg));
   }
