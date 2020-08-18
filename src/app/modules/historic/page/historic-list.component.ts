@@ -40,13 +40,23 @@ export class HistoricListComponent implements OnInit {
     this.currentUser = User.fromLocalStorage();
   }
 
+  public onChangeDetected(id: number) {
+    this.toast.show('Histórico excluído com sucesso!', 'success');
+  }
+
   onFilter(event: string) {
     this.company = JSON.parse(event);
-    this.fetch();
+    this.reset();
   }
 
   onTab(event: MatTabChangeEvent) {
     this.entryType = event.index + 1;
+    this.reset();
+  }
+
+  public reset() {
+    this.pageInfo = new PageInfo({ pageIndex: -1, hasNext: true });
+    this.records = [];
     this.fetch();
   }
 

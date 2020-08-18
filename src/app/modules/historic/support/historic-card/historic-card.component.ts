@@ -4,6 +4,8 @@ import { DOCUMENT } from '@angular/common';
 import { HistoricService } from '@shared/services/historic.service';
 import { MatDialog } from '@angular/material';
 import { EntryUtils } from '@shared/utils/entry.utils';
+import { RuleDeleteConfirmDialogComponent } from '@modules/rule-list/rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
+import { RuleType } from '@shared/models/Rule';
 
 type HistoricRow = { bold: boolean, value: string }[];
 
@@ -34,7 +36,7 @@ export class HistoricCardComponent implements OnInit {
 
     if (this.nativeHistoric.id !== undefined) {
       this.implement([
-        { bold: false, value: 'Código do Histórico:' },
+        { bold: false, value: 'Código:' },
         { bold: true, value: this.nativeHistoric.id + '.' },
       ]);
     }
@@ -56,10 +58,20 @@ export class HistoricCardComponent implements OnInit {
   }
 
   public delete() {
-    this.service.delete(this.historic.id).subscribe(() => {
-      this.sinalize();
-      this.historic = null;
-      this.nativeHistoric = null;
+    const dialogRef = this.dialog.open(RuleDeleteConfirmDialogComponent, {
+      width: '595px',
+      data: {
+        id: this.historic.id,
+        type: RuleType.HISTORIC
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.sinalize();
+        this.historic = null;
+        this.nativeHistoric = null;
+      }
     });
   }
 

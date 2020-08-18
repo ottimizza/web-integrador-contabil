@@ -1,6 +1,6 @@
 export class EntryUtils {
 
-  public static fromTo(from: string, reference: { tipoLancamento?: number } = {}) {
+  public static fromTo(from: string, reference: { tipoLancamento?: number } = {}): string {
     const labels = {
       dataMovimento:       'Data',
       documento:           'Documento',
@@ -23,6 +23,8 @@ export class EntryUtils {
       labelComplemento04:  'Rótulo do Complemento 4',
       labelComplemento05:  'Rótulo do Complemento 5',
       contaSugerida:       'Conta(s) Sugerida(s)',
+      tipoLancamento:      'Tipo do Lançamento',
+      tipoMovimento:       'Tipo do Movimento',
       nenhum:              '*'
     };
 
@@ -32,7 +34,7 @@ export class EntryUtils {
       labels.descricao = 'Cliente';
     }
 
-    return labels[from];
+    return labels[from] || from;
   }
 
 }

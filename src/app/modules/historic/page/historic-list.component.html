@@ -26,17 +26,7 @@
     >
       <div *ngFor="let rec of records; let i = index" cdkDrag>
         <div class="mb10">
-          <app-historic-card [historic]="rec"></app-historic-card>
-          <!-- <app-ruleico
-            (clone)="onClone($event)"
-            [rules]="rule"
-            [index]="i"
-            (downAll)="drop({ previousIndex: i, currentIndex: i + 1 })"
-            (upAll)="drop({ previousIndex: i, currentIndex: i - 1 })"
-            (delete)="onDelete($event)"
-            (update)="onUpdate($event)"
-          > -->
-          <!-- </app-ruleico> -->
+          <app-historic-card [historic]="rec" (changeDetected)="onChangeDetected($event)"></app-historic-card>
         </div>
       </div>
     </div>

@@ -15,6 +15,7 @@ import { HistoricListComponent } from './page/historic-list.component';
 import { ExportConfirmModalComponent } from '@modules/rule-list/export-confirm-modal/export-confirm-modal.component';
 import { HistoricCardComponent } from './support/historic-card/historic-card.component';
 import { VerticalAlignerModule } from '@shared/components/vertical-aligner/vertical-aligner.module';
+import { RuleDeleteConfirmDialogComponent } from '@modules/rule-list/rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,9 @@ import { VerticalAlignerModule } from '@shared/components/vertical-aligner/verti
     NormalizedLayoutModule,
     VerticalAlignerModule
   ],
-  entryComponents: [ExportConfirmModalComponent]
+  entryComponents: [
+    ExportConfirmModalComponent,
+    RuleDeleteConfirmDialogComponent
+  ]
 })
 export class HistoricListModule {}

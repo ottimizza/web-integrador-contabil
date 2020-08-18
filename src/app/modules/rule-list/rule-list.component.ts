@@ -15,7 +15,7 @@ import { ToastService } from '@shared/services/toast.service';
 import { RuleService } from '@shared/services/rule.service';
 import { CompleteRule } from '@shared/models/CompleteRule';
 import { LoggerUtils } from '@shared/utils/logger.utills';
-import { RuleCreateFormat } from '@shared/models/Rule';
+import { RuleCreateFormat, RuleType } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
 import { DOCUMENT } from '@angular/common';
@@ -107,7 +107,10 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
     const rule = this.rows[event];
     const dialogRef = this.dialog.open(RuleDeleteConfirmDialogComponent, {
       width: '596px',
-      data: rule.id
+      data: {
+        id: rule.id,
+        type: RuleType.RULE
+      }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {

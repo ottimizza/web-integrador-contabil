@@ -1,3 +1,10 @@
+import { EntryUtils } from '@shared/utils/entry.utils';
+
+export enum RuleType {
+  RULE,
+  HISTORIC
+}
+
 export interface PostFormatRule {
 
     campo: string;
@@ -36,46 +43,7 @@ export class Rule {
     public tipoMovimento: string[];
 
     public static getFieldName(field: string): string {
-      let strName = '';
-      switch (field) {
-        case 'descricao':
-          strName = 'FORNECEDOR';
-          break;
-        case 'documento':
-          strName = 'DOCUMENTO';
-          break;
-        case 'portador':
-          strName = 'BANCO';
-          break;
-        case 'complemento01':
-          strName = 'COMPLEMENTO 01';
-          break;
-        case 'complemento02':
-          strName = 'COMPLEMENTO 02';
-          break;
-        case 'complemento03':
-          strName = 'COMPLEMENTO 03';
-          break;
-        case 'complemento04':
-          strName = 'COMPLEMENTO 04';
-          break;
-        case 'complemento05':
-          strName = 'COMPLEMENTO 05';
-          break;
-        case 'tipoPlanilha':
-          strName = 'TIPO DA PLANILHA';
-          break;
-        case 'nomeArquivo':
-          strName = 'NOME DO ARQUIVO';
-          break;
-        case 'tipoLancamento':
-          strName = 'TIPO DO LANÇAMENTO';
-          break;
-        case 'tipoMovimento':
-          strName = 'TIPO DO MOVIMENTO';
-          break;
-      }
-      return strName;
+      return EntryUtils.fromTo(field).toUpperCase();
     }
 
     public static previewOut(rules: PostFormatRule[]) {
@@ -116,19 +84,6 @@ export class Rule {
           this._newRule(keys[i], values[i]);
         }
       }
-      // this._newRule('descricao', this.descricao);
-      // this._newRule('documento', this.documento);
-      // this._newRule('portador', this.portador);
-      // this._newRule('complemento01', this.complemento01);
-      // this._newRule('complemento02', this.complemento02);
-      // this._newRule('complemento03', this.complemento03);
-      // this._newRule('complemento04', this.complemento04);
-      // this._newRule('complemento05', this.complemento05);
-      // this._newRule('nomeArquivo', this.nomeArquivo);
-      // this._newRule('tipoPlanilha', this.tipoPlanilha);
-      // this._newRule('tipoLancamento', this.tipoLancamento);
-      // this._newRule('tipoMovimento', this.tipoMovimento);
-      // console.log(this._rules);
       return this._rules;
     }
 

@@ -70,7 +70,6 @@ export class Historic {
 
   private static _getValues(area: string) {
     const values = area.split(' ${').map(val => val = val.trim());
-    console.log(values);
     return {
       com: values[0],
       field: { field: values[1], value: '' }
