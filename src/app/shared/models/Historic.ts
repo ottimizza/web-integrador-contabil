@@ -51,6 +51,8 @@ export class Historic {
     if (details[0].includes('CodigoHistorico:')) {
       obj.id = details[0].slice(16, details[0].indexOf('$'));
       details[0] = details[0].slice(details[0].indexOf('$') + 1);
+    } else {
+      details[0] = details[0].slice(1);
     }
 
     obj.com1 = this._getValues(details[0]).com;

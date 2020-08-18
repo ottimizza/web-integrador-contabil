@@ -70,11 +70,12 @@ export class HistoricCardComponent implements OnInit {
   }
 
   public verify() {
-    const val = this.rows[this.rows.length - 1].value.trim();
-    if (val === '*' || val === '') {
-      this.rows.pop();
-      this.verify();
-    }
+    // const val = this.rows[this.rows.length - 1].value.trim();
+    // if (val === '*' || val === '') {
+    //   this.rows.pop();
+    //   this.verify();
+    // }
+    this.rows = this.rows.filter(row => row.value.trim() !== '*' && row.value.trim() !== '');
   }
 
   private sinalize() {
