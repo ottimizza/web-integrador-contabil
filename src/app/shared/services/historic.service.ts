@@ -7,7 +7,6 @@ import { FormattedHistoric, Historic } from '@shared/models/Historic';
 import { HttpHandlerService } from '@app/services/http-handler.service';
 import { GenericResponse } from '@shared/models/GenericResponse';
 import { map } from 'rxjs/operators';
-import { appIterateMap } from '@shared/operators/iterate.operator';
 
 const BASE_URL = environment.serviceUrl;
 

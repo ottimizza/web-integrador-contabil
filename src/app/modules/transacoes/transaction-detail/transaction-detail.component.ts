@@ -52,7 +52,6 @@ export class TransactionDetailComponent implements OnInit {
 
   impact = 0;
   percentage = 0;
-  total = 0;
 
   isFetching = false;
 
@@ -393,7 +392,6 @@ export class TransactionDetailComponent implements OnInit {
       } else {
         this.percentage = 100;
       }
-      this.total = result.totalLancamentos;
     });
   }
 
