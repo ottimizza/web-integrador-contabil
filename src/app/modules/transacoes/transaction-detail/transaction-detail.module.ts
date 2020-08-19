@@ -16,6 +16,7 @@ import { HistoricModule } from './historic/historic.module';
 import { HistoricComponent } from './historic/historic.component';
 import { RuleChipGroupModule } from './rule-creator/chips-group/chips-group.module';
 import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
+import { HistoricEditDialogModule } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.module';
 
 @NgModule({
     declarations: [TransactionDetailComponent, ConfirmDeleteDialogComponent],
@@ -32,7 +33,8 @@ import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-
         MatTabsModule,
         MatProgressSpinnerModule,
         MatProgressBarModule,
-        RuleChipGroupModule
+        RuleChipGroupModule,
+        HistoricEditDialogModule
     ],
     entryComponents: [
       RuleGridComponent,

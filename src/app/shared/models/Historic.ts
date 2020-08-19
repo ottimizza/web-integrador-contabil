@@ -43,7 +43,33 @@ export class Historic {
     this.field3 = HistoricField.null();
   }
 
-  public static parse(historic: string) {
+  public static verify(historic: string, repair = false): boolean {
+    let validate = true;
+
+    const details = historic.split('$');
+
+    if (details.length === 5) {
+      const start = details.shift().trim();
+      if (!start.startsWith('CodigoHistorico:') && start !== '') {
+        validate = false;
+      }
+    }
+
+    details.forEach(area => {
+      const text = area.slice(area.indexOf('{') + 1, area.indexOf('}')).trim();
+      if (area.startsWith('{') && EntryUtils.fromTo(text) === text) {
+        validate = false;
+      }
+    });
+
+    return validate;
+  }
+
+  public static parse(historic: string): Historic {
+    if (!this.verify(historic)) {
+      throw new Error(`Não foi possível converter o histórico para um objeto iterável: ${historic}`);
+    }
+
     const obj = new Historic();
 
     const details = historic.split('}');

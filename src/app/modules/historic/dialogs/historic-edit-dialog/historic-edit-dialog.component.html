@@ -1,0 +1,49 @@
+<h1 mat-dialog-title>
+  <i class="fad fa-history text-info"></i>
+  &nbsp;&nbsp; Histórico
+</h1>
+<div mat-dialog-content class="border-top border-bottom p-3 text-center">
+
+  <form class="w-75 m-auto" [formGroup]="form">
+
+    <fieldset>
+      <legend>Código</legend>
+      <small class="text-danger">Caso sua contabilidade não utilize Código do Histórico, desconsidere este campo.</small>
+
+      <div class="row m-0 mt-2">
+        <div class="col-12">
+          <input (input)="update()" [formControl]="form.get('code')" type="text" class="w-100 code" placeholder="Ex. 247">
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="mt-4" *ngIf="details?.length">
+      <legend>Descrição</legend>
+
+      <div class="row m-0 mt-3" *ngFor="let row of details">
+        <div class="col-md">
+          <label [for]="row.id1">{{ row.label1 }}:</label>
+          <input (input)="update()" type="text" class="w-100" [placeholder]="row.ex" [id]="row.id1" [formControl]="form.get(row.id1)">
+        </div>
+        <div class="col-md" *ngIf="row.id2">
+          <label [for]="row.id2">{{ row.label2 }}:</label>
+          <mat-select [id]="row.id2" [formControl]="form.get(row.id2)" (selectionChange)="update()">
+            <mat-option *ngFor="let opt of options" [value]="opt">{{ parse(opt) }}</mat-option>
+          </mat-select>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+</div>
+<div mat-dialog-actions class="text-center">
+  <div class="text-left" *ngIf="data.type === 'post' && (historic?.preview || historic?.id)">
+    <strong>Resultado: </strong>
+    <span>{{ getPreview() }}</span>
+  </div>
+  <div class="container-fluid px-0 py-3 justify-content-between">
+    <button class="btn btn-light text-danger mx-2" [mat-dialog-close]>Cancelar</button>
+    <button class="btn btn-primary text-light mx-2" (click)="submit()" [disabled]="isPosting">{{ label }}</button>
+  </div>
+</div>

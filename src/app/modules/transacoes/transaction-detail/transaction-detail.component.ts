@@ -24,6 +24,10 @@ import { Empresa } from '@shared/models/Empresa';
 import { finalize, catchError, switchMap, map } from 'rxjs/operators';
 import { User } from '@shared/models/User';
 import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
+import { DialogService, DialogWidth } from '@app/services/dialog.service';
+import { HistoricEditDialogComponent } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.component';
+import { FormattedHistoric } from '@shared/models/Historic';
+import { DateUtils } from '@shared/utils/date-utils';
 
 @Component({
   selector: 'app-tdetail',
@@ -63,7 +67,7 @@ export class TransactionDetailComponent implements OnInit {
     private _historicService: HistoricService,
     private _ruleService: RuleService,
     private _toast: ToastService,
-    public dialog: MatDialog
+    public dialog: DialogService
   ) { }
 
   ngOnInit(): void {
@@ -241,34 +245,31 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   openGrid(): void {
-    const dialogRef = this.dialog.open(RuleGridComponent, {
-      maxWidth: '1400px',
-      width: '95vw',
-      data: {
-        rules: this.conditions.rules,
-        business: this.business
-      }
-    });
-
-    dialogRef.afterClosed().subscribe();
+    this.dialog.openComplexDialog(RuleGridComponent, DialogWidth.EXTRA_LARGE, { rules: this.conditions.rules, company: this.business })
+    .subscribe();
   }
 
   openHistoric(obs: Observable<Lancamento>): void {
-    this.records[0].contaMovimento = this.account;
-    const dialogRef = this.dialog.open(HistoricComponent, {
-      maxWidth: '900px',
-      width: '90vw',
-      maxHeight: '90vh',
-      data: {
-        lancamento: this.records[0]
-      }
-    });
+    let tipoLancamento = 1;
+    if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE') {
+      tipoLancamento = 2;
+    }
 
-    dialogRef.afterClosed().subscribe(result => {
-      this._subsAndDisable(obs);
-      // if (result) {
-      //   this.disable();
-      // }
+    const entry: any = this.records[0];
+    Object.assign(entry, { competencia: DateUtils.ymdToCompetence(entry.dataMovimento) });
+    Object.assign(entry, { competenciaAnterior: DateUtils.lastCompetence(entry.competencia) })
+
+    const reference = new FormattedHistoric('', this.account, tipoLancamento, entry.idRoteiro, entry.cnpjEmpresa, entry.cnpjContabilidade);
+    this.dialog.openComplexDialog(HistoricEditDialogComponent, DialogWidth.LARGE, {
+      type: 'post',
+      reference,
+      entry
+    })
+      .subscribe(() => {
+        this._subsAndDisable(obs);
+        // if (result) {
+        //   this.disable();
+        // }
     });
   }
 
@@ -352,11 +353,7 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   delete() {
-    const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent, {
-      width: '596px',
-      data: this.records[0].arquivo
-    });
-    dialogRef.afterClosed().subscribe(e => {
+    this.dialog.open(ConfirmDeleteDialogComponent, this.records[0].arquivo).subscribe(e => {
       if (e === 'deleted') {
         this.proceed(false);
       }

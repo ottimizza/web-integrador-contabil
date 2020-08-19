@@ -2,10 +2,13 @@ import { Component, Input, OnInit, Inject, Output, EventEmitter, Optional } from
 import { FormattedHistoric, Historic } from '@shared/models/Historic';
 import { DOCUMENT } from '@angular/common';
 import { HistoricService } from '@shared/services/historic.service';
-import { MatDialog } from '@angular/material';
 import { EntryUtils } from '@shared/utils/entry.utils';
 import { RuleDeleteConfirmDialogComponent } from '@modules/rule-list/rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
 import { RuleType } from '@shared/models/Rule';
+import { HistoricEditDialogComponent } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.component';
+import { DialogService, DialogWidth } from '@app/services/dialog.service';
+import { ToastService } from '@shared/services/toast.service';
+import { GenericResponse } from '@shared/models/GenericResponse';
 
 type HistoricRow = { bold: boolean, value: string }[];
 
@@ -28,7 +31,8 @@ export class HistoricCardComponent implements OnInit {
   constructor(
     @Inject(DOCUMENT) public doc: Document,
     public service: HistoricService,
-    public dialog: MatDialog
+    public dialog: DialogService,
+    public toast: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -58,15 +62,10 @@ export class HistoricCardComponent implements OnInit {
   }
 
   public delete() {
-    const dialogRef = this.dialog.open(RuleDeleteConfirmDialogComponent, {
-      width: '595px',
-      data: {
-        id: this.historic.id,
-        type: RuleType.HISTORIC
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
+    this.dialog.open(RuleDeleteConfirmDialogComponent, {
+      id: this.historic.id,
+      type: RuleType.HISTORIC
+    }).subscribe(result => {
       if (result === true) {
         this.sinalize();
         this.historic = null;
@@ -75,7 +74,19 @@ export class HistoricCardComponent implements OnInit {
     });
   }
 
-  public openDialog() {}
+  public openDialog() {
+    this.dialog.openComplexDialog<GenericResponse<FormattedHistoric>>(HistoricEditDialogComponent, DialogWidth.LARGE, {
+      type: 'edit',
+      reference: this.historic
+    }).subscribe(result => {
+      if (result) {
+        this.toast.show('Histórico alterado com sucesso', 'success');
+        this.historic = result.record;
+        this.rows = [];
+        this.ngOnInit();
+      }
+    });
+  }
 
   public form(val: string) {
     return EntryUtils.fromTo(val, { tipoLancamento: this.entryType });

@@ -1,8 +1,8 @@
 <div class="filterBox mb-4 mt-4">
   <form (submit)="confirm(business[0])">
     <input type="text" (input)="onInput($event.target)" #company [matAutocomplete]="auto" autocomplete="off" placeholder="Filtro" [matTooltip]="info" matTooltipShowDelay="300" matTooltipHideDelay="500">
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let company of business" [value]="getErp(company.codigoERP) + company.razaoSocial" (onSelectionChange)="confirm(company)">{{ getErp(company.codigoERP) + company.razaoSocial }}</mat-option>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="select($event)">
+      <mat-option *ngFor="let company of business" [value]="company">{{ getErp(company.codigoERP) + company.razaoSocial }}</mat-option>
     </mat-autocomplete>
     <input type="submit" class="d-none">
   </form>
