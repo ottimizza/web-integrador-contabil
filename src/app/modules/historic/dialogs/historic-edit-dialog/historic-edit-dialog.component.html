@@ -11,9 +11,7 @@
       <small class="text-danger">Caso sua contabilidade não utilize Código do Histórico, desconsidere este campo.</small>
 
       <div class="row m-0 mt-2">
-        <div class="col-12">
-          <input (input)="update()" [formControl]="form.get('code')" type="text" class="w-100 code" placeholder="Ex. 247">
-        </div>
+        <app-input (input)="update()" [control]="form.get('code')" class="col-12" placeholder="Ex. 247"></app-input>
       </div>
     </fieldset>
 
