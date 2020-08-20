@@ -8,6 +8,12 @@ import { VerticalAlignerComponent } from './vertical-aligner/vertical-aligner.co
 import { CardComponent } from './card/card.component';
 import { InfoComponent } from './info/info.component';
 import { InputComponent } from './input/input.component';
+import { DatalistModule } from './datalist/datalist.module';
+import { DatalistComponent } from './datalist/datalist.component';
+import { FieldSetModule } from './fieldset/fieldset.module';
+import { FieldSetComponent } from './fieldset/fieldset.component';
+import { CommentComponent } from './comment/comment.component';
+import { CommentModule } from './comment/comment.module';
 
 @NgModule({
   imports: [
@@ -15,13 +21,19 @@ import { InputComponent } from './input/input.component';
     VerticalAlignerModule,
     CardModule,
     InfoModule,
-    InputModule
+    InputModule,
+    DatalistModule,
+    FieldSetModule,
+    CommentModule
   ],
   exports: [
     VerticalAlignerComponent,
     CardComponent,
     InfoComponent,
-    InputComponent
+    InputComponent,
+    DatalistComponent,
+    FieldSetComponent,
+    CommentComponent
   ]
 })
 export class DesignSystemModule {}

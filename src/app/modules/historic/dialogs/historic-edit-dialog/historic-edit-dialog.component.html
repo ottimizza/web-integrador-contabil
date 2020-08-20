@@ -6,28 +6,20 @@
 
   <form class="w-75 m-auto" [formGroup]="form">
 
-    <fieldset>
-      <legend>Código</legend>
-      <small class="text-danger">Caso sua contabilidade não utilize Código do Histórico, desconsidere este campo.</small>
-
+    <app-fieldset legend="Código">
+      <app-comment type="danger">Caso sua contabilidade não utilize código de histórico, desconsidere este campo.</app-comment>
       <div class="row m-0 mt-2">
         <app-input (input)="update()" [control]="form.get('code')" class="col-12" placeholder="Ex. 247"></app-input>
       </div>
-    </fieldset>
+    </app-fieldset>
 
-    <fieldset class="mt-4" *ngIf="details?.length">
-      <legend>Descrição</legend>
-
+    <app-fieldset legend="Descrição" *ngIf="details?.length">
       <div class="row m-0 mt-3" *ngFor="let row of details">
         <app-input class="col-md" [id]="row.id1" [placeholder]="row.ex" [control]="form.get(row.id1)" [label]="row.label1 + ':'" (input)="update()"></app-input>
-        <div class="col-md" *ngIf="row.id2">
-          <label [for]="row.id2">{{ row.label2 }}:</label>
-          <mat-select [id]="row.id2" [formControl]="form.get(row.id2)" (selectionChange)="update()">
-            <mat-option *ngFor="let opt of options" [value]="opt">{{ parse(opt) }}</mat-option>
-          </mat-select>
-        </div>
+        <app-datalist *ngIf="row.id2" class="col-md" [id]="row.id2" [label]="row.label2" [control]="form.get(row.id2)" (selectionChange)="update()" [parse]="parse" [source]="options"></app-datalist>
       </div>
-    </fieldset>
+    </app-fieldset>
+
   </form>
 
 
