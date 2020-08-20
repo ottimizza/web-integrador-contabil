@@ -21,10 +21,7 @@
       <legend>Descrição</legend>
 
       <div class="row m-0 mt-3" *ngFor="let row of details">
-        <div class="col-md">
-          <label [for]="row.id1">{{ row.label1 }}:</label>
-          <input (input)="update()" type="text" class="w-100" [placeholder]="row.ex" [id]="row.id1" [formControl]="form.get(row.id1)">
-        </div>
+        <app-input class="col-md" [id]="row.id1" [placeholder]="row.ex" [control]="form.get(row.id1)" [label]="row.label1 + ':'" (input)="update()"></app-input>
         <div class="col-md" *ngIf="row.id2">
           <label [for]="row.id2">{{ row.label2 }}:</label>
           <mat-select [id]="row.id2" [formControl]="form.get(row.id2)" (selectionChange)="update()">

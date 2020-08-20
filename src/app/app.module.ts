@@ -65,7 +65,7 @@ import { GlobalHttpInterceptorProvider } from '@app/interceptor/http/http-interc
     TransactionModule,
 
     // Rules
-    RuleListModule
+    RuleListModule,
   ],
   providers: [
     GlobalHttpInterceptorProvider

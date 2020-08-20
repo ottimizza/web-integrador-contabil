@@ -42,8 +42,8 @@ export class Rule {
     public tipoLancamento: number[];
     public tipoMovimento: string[];
 
-    public static getFieldName(field: string): string {
-      return EntryUtils.fromTo(field).toUpperCase();
+    public static getFieldName(field: string, tipoLancamento: number): string {
+      return EntryUtils.fromTo(field, { tipoLancamento }).toUpperCase();
     }
 
     public static previewOut(rules: PostFormatRule[]) {
@@ -56,7 +56,7 @@ export class Rule {
         } else if (id === rules.length - 1) {
           text += ' e';
         }
-        text += ` ${this.getFieldName(rule.campo)} contém ${rule.valor}`;
+        text += ` ${this.getFieldName(rule.campo, undefined)} contém ${rule.valor}`;
         if (id !== rules.length - 1) {
           text += ',';
         }

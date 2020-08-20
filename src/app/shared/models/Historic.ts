@@ -26,7 +26,6 @@ export class FormattedHistoric {
 
 }
 
-
 export class Historic {
   public id: string;
   public com1: string;

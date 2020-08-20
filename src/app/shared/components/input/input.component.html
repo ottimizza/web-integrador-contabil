@@ -1,0 +1,12 @@
+<div class="input-area text-center">
+  <label [for]="id" *ngIf="label">{{ label }}</label>
+  <input
+    class="w-100"
+    type="text"
+    [id]="id"
+    [value]="value"
+    [placeholder]="placeholder"
+    [formControl]="control"
+    [style]="deep"
+    (input)="emit($event)">
+</div>

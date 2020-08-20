@@ -44,8 +44,9 @@ export class RuleCardComponent {
 
   getText(rule: PostFormatRule) {
     // // return `${Rule.getFieldName(rule.campo)} ${this._getCondition(rule.condicao)} ${rule.valor}`;
+
     return {
-      field: Rule.getFieldName(rule.campo),
+      field: Rule.getFieldName(rule.campo, this.rules.tipoLancamento),
       text: ` ${this._getCondition(rule.condicao)} `,
       value: rule.valor
     };
@@ -63,7 +64,7 @@ export class RuleCardComponent {
   getFullRule() {
     let rule = '';
     this.rules.regras.forEach(rl => {
-      rule += `${Rule.getFieldName(rl.campo)} ${this._getCondition(rl.condicao)} ${rl.valor}. `;
+      rule += `${Rule.getFieldName(rl.campo, this.rules.tipoLancamento)} ${this._getCondition(rl.condicao)} ${rl.valor}. `;
     });
     return StringCutterUtils.cut(rule, 100);
   }

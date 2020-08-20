@@ -4,7 +4,7 @@
 
 <form autocomplete="off">
   <div class="card">
-    <mat-progress-bar [value]="percentage" class="progress-bar"  [matTooltip]="percentage + '%'" matTooltipShowDelay="300" matTooltipHideDelay="500"></mat-progress-bar>
+    <mat-progress-bar [value]="percentage" class="progress-bar"  [matTooltip]="percentage + '%'"></mat-progress-bar>
     <mat-tab-group mat-align-tabs="center" (selectedTabChange)="onTab($event, false)">
       <mat-tab label="Pagamentos"></mat-tab>
       <mat-tab label="Extrato Débitos"></mat-tab>
@@ -26,12 +26,10 @@
             (click)="openGrid()"
             class="text-danger"
             [matTooltip]="info.affecteds"
-            matTooltipShowDelay="300"
-            matTooltipHideDelay="500"
             >{{ impact }}</span
           >
           <span class="font-weight-normal" (click)="openGrid()"> lançamentos.</span>
-          <i class="ml-2 fad fa-question-circle" [matTooltip]="info.affectedsOrientation" matTooltipShowDelay="300" matTooltipHideDelay="500"></i>
+          <i class="ml-2 fad fa-question-circle" [matTooltip]="info.affectedsOrientation"></i>
         </div>
 
       </div>
@@ -120,8 +118,6 @@
           <strong
             class="account-field"
             [matTooltip]="info.account"
-            matTooltipShowDelay="300"
-            matTooltipHideDelay="500"
             >Conta:</strong
           >
           <input
@@ -130,8 +126,6 @@
             [(ngModel)]="account"
             name="account"
             [matTooltip]="info.account"
-            matTooltipShowDelay="300"
-            matTooltipHideDelay="500"
           />
           <datalist id="suggestions">
             <option *ngFor="let s of suggestions" [value]="s"></option>
@@ -146,8 +140,6 @@
               (click)="regra()"
               value="Regra"
               [matTooltip]="info.rule"
-              matTooltipShowDelay="300"
-              matTooltipHideDelay="500"
             />
             <input
               type="button"
@@ -155,8 +147,6 @@
               [value]="buttonLabel"
               (click)="fornecedor()"
               [matTooltip]="info.provider"
-              matTooltipShowDelay="300"
-              matTooltipHideDelay="500"
             />
             <input
               *ngIf="conditions.verify()"
@@ -165,16 +155,14 @@
               value="Ignorar"
               (click)="ignorar()"
               [matTooltip]="info.ignore"
-              matTooltipShowDelay="300"
-              matTooltipHideDelay="500"
             />
             <div class="button-area col mx-2">
               <div class="row w-100 m-0">
 
-                <button [disabled]="!pageInfo.hasPrevious" class="btn btn-outline-info col" (click)="navigate('previous')" matTooltip="Lançamento anterior" matTooltipShowDelay="300" matTooltipHideDelay="500">
+                <button [disabled]="!pageInfo.hasPrevious" class="btn btn-outline-info col" (click)="navigate('previous')" matTooltip="Lançamento anterior">
                   <i class="fad fa-chevron-double-left"></i>
                 </button>
-                <button [disabled]="!pageInfo.hasNext" class="btn btn-outline-info col" (click)="navigate('next')" matTooltip="Próximo lançamento" matTooltipShowDelay="300" matTooltipHideDelay="500">
+                <button [disabled]="!pageInfo.hasNext" class="btn btn-outline-info col" (click)="navigate('next')" matTooltip="Próximo lançamento">
                   <i class="fad fa-chevron-double-right"></i>
                 </button>
 
@@ -187,8 +175,6 @@
               value="Excluir"
               (click)="delete()"
               matTooltip="Remover todos os lançamentos do arquivo atual"
-              matTooltipShowDelay="300"
-              matTooltipHideDelay="500"
             />
           </div>
         </div>
