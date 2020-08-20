@@ -1,7 +1,7 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
-export interface GenericDragDropList {
+export interface GenericDragDropList<T> {
 
-  drop(event: CdkDragDrop<any[]>): void;
+  drop(event: CdkDragDrop<T[]>): void;
 
 }

@@ -6,6 +6,7 @@ import { RuleEditModalModule } from '../rule-edit-modal/rule-edit-modal.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ActionButtonsModule } from '@shared/components/button/button.module';
+import { VerticalAlignerModule } from '@shared/components/vertical-aligner/vertical-aligner.module';
 
 @NgModule({
   declarations: [RuleCardComponent],
@@ -14,7 +15,8 @@ import { ActionButtonsModule } from '@shared/components/button/button.module';
     ActionButtonsModule,
     RuleEditModalModule,
     MatTooltipModule,
-    DragDropModule
+    DragDropModule,
+    VerticalAlignerModule
   ],
   exports: [
     RuleCardComponent

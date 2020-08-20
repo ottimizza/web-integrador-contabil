@@ -148,7 +148,7 @@ export class HistoricComponent implements OnInit {
     const l = this.lancamento;
     const historic = this.historicObj.historic(l.contaMovimento, l.cnpjEmpresa, l.cnpjContabilidade, l.tipoLancamento, l.idRoteiro);
     this.service.createHistoric(historic).subscribe((results: any) => {
-      this.service.export(results.record.id, results.record).subscribe();
+      // this.service.export(results.record.id, results.record).subscribe();
       this.dialogRef.close(true);
     });
   }

@@ -1,4 +1,4 @@
-<app-layout [buttons]="buttons()" (buttonClicked)="openConfirmation()" (scrollHasEnded)="onScroll($event)">
+<app-layout [buttons]="buttons()" (buttonClicked)="onButton($event)" (scrollHasEnded)="onScroll($event)">
   <!-- <app-actions *ngIf="business && rows.length" [buttons]="buttons" (clicked)="openConfirmation()"></app-actions> -->
 
   <div
@@ -40,8 +40,8 @@
             (clone)="onClone($event)"
             [rules]="rule"
             [index]="i"
-            (downAll)="downAll($event)"
-            (upAll)="upAll($event)"
+            (downAll)="drop({ previousIndex: i, currentIndex: i + 1 })"
+            (upAll)="drop({ previousIndex: i, currentIndex: i - 1 })"
             (delete)="onDelete($event)"
             (update)="onUpdate($event)"
           >

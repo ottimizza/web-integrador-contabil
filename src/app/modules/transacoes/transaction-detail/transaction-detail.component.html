@@ -16,7 +16,7 @@
     <div class="p-5 pt-0">
       <div class="row m-0 w-100">
         <div class="col">
-          <span class="defaultSpan">Total de lançamentos: {{ total }}</span>
+          <span class="defaultSpan">Total de lançamentos: {{ pageInfo?.totalElements || 0 }}</span>
         </div>
       </div>
       <div class="row m-0 w-100 mb-4">
@@ -143,8 +143,8 @@
             <input
               type="button"
               class="btn btn-primary col mx-2"
-              value="Regra"
               (click)="regra()"
+              value="Regra"
               [matTooltip]="info.rule"
               matTooltipShowDelay="300"
               matTooltipHideDelay="500"
@@ -168,15 +168,18 @@
               matTooltipShowDelay="300"
               matTooltipHideDelay="500"
             />
-            <input
-              type="button"
-              class="btn btn-outline-primary col mx-2"
-              value="Pular"
-              (click)="skip()"
-              [matTooltip]="info.skip"
-              matTooltipShowDelay="300"
-              matTooltipHideDelay="500"
-            />
+            <div class="button-area col mx-2">
+              <div class="row w-100 m-0">
+
+                <button [disabled]="!pageInfo.hasPrevious" class="btn btn-outline-info col" (click)="navigate('previous')" matTooltip="Lançamento anterior" matTooltipShowDelay="300" matTooltipHideDelay="500">
+                  <i class="fad fa-chevron-double-left"></i>
+                </button>
+                <button [disabled]="!pageInfo.hasNext" class="btn btn-outline-info col" (click)="navigate('next')" matTooltip="Próximo lançamento" matTooltipShowDelay="300" matTooltipHideDelay="500">
+                  <i class="fad fa-chevron-double-right"></i>
+                </button>
+
+              </div>
+            </div>
             <input
               *ngIf="currentUser.type === 0"
               type="button"

@@ -1,20 +1,23 @@
-import { Component, OnInit, Output, EventEmitter, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, HostListener, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { BusinessService } from '@shared/services/business.service';
 import { Empresa } from '@shared/models/Empresa';
 import { ToastService } from '@shared/services/toast.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({
   selector: 'app-tfilter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent implements OnInit, AfterViewInit {
+
+  public static selected: Empresa;
 
   @Output() empresa = new EventEmitter();
-  business: Empresa[] = [];
 
+  business: Empresa[] = [];
   searchTerms = new Subject<string>();
 
   @ViewChild('company') companyInput: ElementRef<HTMLInputElement>;
@@ -41,13 +44,25 @@ export class FilterComponent implements OnInit {
       .subscribe(e => this.change(e));
   }
 
+  ngAfterViewInit() {
+    if (FilterComponent.selected) {
+      this.confirm(FilterComponent.selected);
+    }
+  }
+
   get info() {
     return 'Escreva o nome da empresa selecionada ou escolha dentre as sugeridas';
   }
 
+  public select(event: MatAutocompleteSelectedEvent) {
+    this.confirm(event.option.value);
+  }
+
   async confirm(company: Empresa) {
+    console.log(company);
     company.razaoSocial = company.razaoSocial || '';
     this.companyInput.nativeElement.value = `${this.getErp(company.codigoERP)}${company.razaoSocial.toUpperCase()}`;
+    FilterComponent.selected = company;
     this._toast.show(`Empresa ${company.razaoSocial} selecionada.`, 'primary');
     await new Promise(resolve => setTimeout(resolve, 300));
     this.devolve(company);

@@ -57,7 +57,8 @@ export class RuleChipGroupComponent implements OnInit {
     if (index < 0) {
       this.selecteds.push({ id, positions: [event.position] });
     } else {
-      const positions = this.selecteds[index].positions;
+      let positions = this.selecteds[index].positions;
+      positions = positions || [];
       if (positions.includes(event.position)) {
         positions.splice(positions.indexOf(event.position), 1);
       } else {

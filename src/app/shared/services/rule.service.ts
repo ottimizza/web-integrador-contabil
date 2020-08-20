@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@env';
-import { HttpClient } from '@angular/common/http';
 import { RuleCreateFormat, PostFormatRule } from '@shared/models/Rule';
 import { Observable } from 'rxjs';
-import { AuthenticationService } from '@app/authentication/authentication.service';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
 import { CompleteRule } from '@shared/models/CompleteRule';
 import { GenericResponse } from '@shared/models/GenericResponse';
 import { HttpHandlerService } from '@app/services/http-handler.service';
+import { Deprecated } from '@shared/decorators/deprecated.decorator';
 
 const BASE_URL = `${environment.serviceUrl}`;
 
@@ -19,7 +18,7 @@ export class RuleService {
   constructor(private _http: HttpHandlerService) { }
 
   createRule(rule: RuleCreateFormat): Observable<any> {
-    return this._http.post(`${BASE_URL}/api/v1/regras`, rule, 'Falha ao criar regra!');
+    return this._http.post<GenericResponse<CompleteRule>>(`${BASE_URL}/api/v1/regras`, rule, 'Falha ao criar regra!');
   }
 
   getAllIds(cnpjEmpresa: string, cnpjContabilidade: string, tipoLancamento: number) {
@@ -42,15 +41,6 @@ export class RuleService {
     return this._http.put(url, { posicao: rule.posicao }, 'Falha ao alterar posição da regra!');
   }
 
-  moveToTop(id: number) {
-    const url = `${BASE_URL}/api/v1/regras/${id}/posicao/inicio`;
-    return this._http.put(url, {}, 'Falha ao mover regra para o início!');
-  }
-
-  moveToBottom(id: number) {
-    const url = `${BASE_URL}/api/v1/regras/${id}/posicao/final`;
-    return this._http.put(url, {}, 'Falha ao mover regra para o final!');
-  }
 
   delete(id: number) {
     const url = `${BASE_URL}/api/v1/regras/${id}`;
@@ -59,7 +49,18 @@ export class RuleService {
 
   update(id: number, rule: { regras: PostFormatRule[], contaMovimento: string }) {
     const url = `${BASE_URL}/api/v1/regras/${id}`;
-    return this._http.put(url, rule, 'Falha ao atualizar regra!');
+    return this._http.put<GenericResponse<CompleteRule>>(url, rule, 'Falha ao atualizar regra!');
   }
 
+  @Deprecated('Do not use')
+  moveToTop(id: number) {
+    const url = `${BASE_URL}/api/v1/regras/${id}/posicao/inicio`;
+    return this._http.put(url, {}, 'Falha ao mover regra para o início!');
+  }
+
+  @Deprecated('Do not use')
+  moveToBottom(id: number) {
+    const url = `${BASE_URL}/api/v1/regras/${id}/posicao/final`;
+    return this._http.put(url, {}, 'Falha ao mover regra para o final!');
+  }
 }
