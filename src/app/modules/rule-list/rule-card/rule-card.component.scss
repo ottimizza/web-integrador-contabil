@@ -6,6 +6,13 @@
   }
 }
 
+.red, .gray, .purple {
+  background-color: white;
+  i {
+    font-size: 18px;
+  }
+}
+
 .desktop button {
   width: 33%;
   border-right: solid 1px rgb(226, 226, 226);

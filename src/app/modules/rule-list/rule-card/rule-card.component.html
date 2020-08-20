@@ -1,4 +1,4 @@
-<div class="cont row m-0 w-100" *ngIf="rules && rules.regras && rules.regras.length">
+<div class="cont row m-0 w-100 mb-4 shadow-sm" *ngIf="rules && rules.regras && rules.regras.length">
 
   <div class="col-md-2 col-lg-2 col-xl-2 p-0 desktop" *ngIf="mustBeShown()">
       <button class="red" (click)="close()" [matTooltip]="info.trash">

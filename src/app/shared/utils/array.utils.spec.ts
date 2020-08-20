@@ -104,10 +104,10 @@ describe('Utils: Array', () => {
       const validate3 = ArrayUtils.compare(array3, ['$', '32', ' ', '.', ' ', '50']);
       const validate4 = ArrayUtils.compare(array4, ['FIGURAS', '.', 'DE', '/', 'LINGUAGEM', '*', 'SÃO', '^', 'MUITO', '+', 'LEGAIS']);
 
-      // expect(validate1).toBeTruthy();
-      // expect(validate2).toBeTruthy();
+      expect(validate1).toBeTruthy();
+      expect(validate2).toBeTruthy();
       expect(validate3).toBeTruthy();
-      // expect(validate4).toBeTruthy();
+      expect(validate4).toBeTruthy();
 
     });
   });
