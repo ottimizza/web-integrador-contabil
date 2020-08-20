@@ -1,5 +1,5 @@
 <div class="comment-area">
-  <small [class]="type !== 'default' ? 'text-' + type : ''" [style]="deep">
+  <small [class]="type !== 'default' ? 'text-' + type : ''" [style]="deep" [ngClass]="{ 'text-bold': bold }">
     <ng-content></ng-content>
   </small>
 </div>

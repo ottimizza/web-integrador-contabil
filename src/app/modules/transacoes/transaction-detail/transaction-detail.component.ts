@@ -7,7 +7,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { DEFAULT_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DEFAULT_CHIP_PATTERN';
 import { VALUE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/VALUE_CHIP_PATTERN';
 import { DATE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DATE_CHIP_PATTERN';
-import { BANK_CHIP_PATTERN } from './rule-creator/chips-group/patterns/BANK_CHIP_PATTERN';
 import { RuleConfig } from './rule-creator/chips-group/chips-group.component';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { LancamentoService } from '@shared/services/lancamento.service';
@@ -368,7 +367,7 @@ export class TransactionDetailComponent implements OnInit {
       tipoLancamento = 2;
     }
 
-    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: 0, ativo: true };
+    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: 0, ativo: true, cnpjContabilidade: this.currentUser.organization.cnpj };
     const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: 1 };
     Object.assign(filter, pageCriteria);
 
@@ -415,7 +414,7 @@ export class TransactionDetailComponent implements OnInit {
         {
           key: 'portador',
           label: 'Banco',
-          pattern: BANK_CHIP_PATTERN,
+          pattern: DEFAULT_CHIP_PATTERN,
           value: this.records[0].portador
         }
       ]

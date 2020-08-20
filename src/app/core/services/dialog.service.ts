@@ -44,7 +44,6 @@ export class DialogService {
   ): Observable<T> {
 
     const config: MatDialogConfig<any> = { width: width.size, data };
-    console.log(config);
     Object.assign(config, optionalConfigs);
 
     const dialogRef = this.dialog.open(dialog, config);

@@ -59,7 +59,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   async confirm(company: Empresa) {
-    console.log(company);
     company.razaoSocial = company.razaoSocial || '';
     this.companyInput.nativeElement.value = `${this.getErp(company.codigoERP)}${company.razaoSocial.toUpperCase()}`;
     FilterComponent.selected = company;

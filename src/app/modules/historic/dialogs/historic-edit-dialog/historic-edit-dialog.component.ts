@@ -74,8 +74,17 @@ export class HistoricEditDialogComponent implements OnInit {
     }
   }
 
-  public parse(option: string) {
-    return EntryUtils.fromTo(option).replace('*', '');
+  public parse(data: HistoricEditDialogData) {
+    const reference = { tipoLancamento: data.reference.tipoLancamento };
+    if (data.entry) {
+      const entry = data.entry;
+      Object.assign(reference, { labelComplemento01: entry.arquivo.labelComplemento01 });
+      Object.assign(reference, { labelComplemento02: entry.arquivo.labelComplemento02 });
+      Object.assign(reference, { labelComplemento03: entry.arquivo.labelComplemento03 });
+      Object.assign(reference, { labelComplemento04: entry.arquivo.labelComplemento04 });
+      Object.assign(reference, { labelComplemento05: entry.arquivo.labelComplemento05 });
+    }
+    return (option: string) => EntryUtils.fromTo(option, reference).replace('*', '');
   }
 
   public update() {

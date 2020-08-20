@@ -13,10 +13,10 @@
       </div>
     </app-fieldset>
 
-    <app-fieldset legend="Descrição" *ngIf="details?.length">
+    <app-fieldset legend="Descrição" *ngIf="details?.length && data">
       <div class="row m-0 mt-3" *ngFor="let row of details">
         <app-input class="col-md" [id]="row.id1" [placeholder]="row.ex" [control]="form.get(row.id1)" [label]="row.label1 + ':'" (input)="update()"></app-input>
-        <app-datalist *ngIf="row.id2" class="col-md" [id]="row.id2" [label]="row.label2" [control]="form.get(row.id2)" (selectionChange)="update()" [parse]="parse" [source]="options"></app-datalist>
+        <app-datalist *ngIf="row.id2" class="col-md" [id]="row.id2" [label]="row.label2" [control]="form.get(row.id2)" (selectionChange)="update()" [parse]="parse(data)" [source]="options"></app-datalist>
       </div>
     </app-fieldset>
 

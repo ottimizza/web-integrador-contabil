@@ -8,5 +8,6 @@ export class CommentComponent {
 
   @Input() type: 'primary' | 'danger' | 'success' | 'info' | 'light' | 'secondary' | 'warning' | 'default' = 'default';
   @Input() deep = '';
+  @Input() bold = false;
 
 }
