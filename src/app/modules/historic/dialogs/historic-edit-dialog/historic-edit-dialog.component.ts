@@ -28,16 +28,20 @@ export class HistoricEditDialogComponent implements OnInit {
     'historicText2',
     'historicText3',
     'historicText4',
+    'historicText5',
     'historicField1',
     'historicField2',
     'historicField3',
+    'historicField4',
+    'historicField5',
   ]);
 
   public details = [
     { label1: 'Texto Inicial', label2: 'Campo 1', id1: 'historicText1', id2: 'historicField1', ex: 'Ex. Despesas bancárias' },
     { label1: 'Texto 2', label2: 'Campo 2', id1: 'historicText2', id2: 'historicField2', ex: 'Ex. Pagamento referente à' },
     { label1: 'Texto 3', label2: 'Campo 3', id1: 'historicText3', id2: 'historicField3', ex: 'Ex. Cheque emitido' },
-    { label1: 'Texto 4', id1: 'historicText4', ex: 'Ex. Repasse' }
+    { label1: 'Texto 4', label2: 'Campo 4', id1: 'historicText4', id2: 'historicField4', ex: 'Ex. Repasse' },
+    { label1: 'Texto 5', label2: 'Campo 5', id1: 'historicText5', id2: 'historicField5', ex: 'Ex. Orçamento gestão' }
   ];
 
   public options = [
@@ -68,9 +72,11 @@ export class HistoricEditDialogComponent implements OnInit {
       this.form.get('historicText2').setValue(this.historic.com2 || '');
       this.form.get('historicText3').setValue(this.historic.com3 || '');
       this.form.get('historicText4').setValue(this.historic.com4 || '');
+      this.form.get('historicText5').setValue(this.historic.com5 || '');
       this.form.get('historicField1').setValue(this.historic.field1.field || 'nenhum');
       this.form.get('historicField2').setValue(this.historic.field2.field || 'nenhum');
-      this.form.get('historicField3').setValue(this.historic.field3.field || 'nenhum');
+      this.form.get('historicField4').setValue(this.historic.field4.field || 'nenhum');
+      this.form.get('historicField5').setValue(this.historic.field5.field || 'nenhum');
     }
   }
 
@@ -95,14 +101,19 @@ export class HistoricEditDialogComponent implements OnInit {
     this.historic.com2 = get('historicText2');
     this.historic.com3 = get('historicText3');
     this.historic.com4 = get('historicText4');
+    this.historic.com5 = get('historicText5');
     this.historic.field1.field = get('historicField1');
     this.historic.field2.field = get('historicField2');
     this.historic.field3.field = get('historicField3');
+    this.historic.field4.field = get('historicField4');
+    this.historic.field5.field = get('historicField5');
 
     if (this.data.entry) {
       this.historic.field1.value = this.data.entry[get('historicField1')];
       this.historic.field2.value = this.data.entry[get('historicField2')];
       this.historic.field3.value = this.data.entry[get('historicField3')];
+      this.historic.field4.value = this.data.entry[get('historicField4')];
+      this.historic.field5.value = this.data.entry[get('historicField5')];
     }
   }
 

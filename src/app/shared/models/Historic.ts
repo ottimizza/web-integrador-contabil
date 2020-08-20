@@ -35,33 +35,43 @@ export class Historic {
   public com3: string;
   public field3: HistoricField;
   public com4: string;
+  public field4: HistoricField;
+  public com5: string;
+  public field5: HistoricField;
 
   constructor() {
     this.field1 = HistoricField.null();
     this.field2 = HistoricField.null();
     this.field3 = HistoricField.null();
+    this.field4 = HistoricField.null();
+    this.field5 = HistoricField.null();
   }
 
-  public static verify(historic: string, repair = false): boolean {
+  public static verify(historic: string): boolean {
     let validate = true;
 
-    const details = historic.split('$');
+    const details = historic.split('}');
+    details.pop();
 
-    if (details.length === 5) {
-      const start = details.shift().trim();
-      if (!start.startsWith('CodigoHistorico:') && start !== '') {
+    if (details.length !== 5) {
+      validate = false;
+    }
+    if (details[0].includes('CodigoHistorico:')) {
+      if (!details[0].split('$')[0].includes('CodigoHistorico:')) {
         validate = false;
       }
     }
 
-    details.forEach(area => {
-      const text = area.slice(area.indexOf('{') + 1, area.indexOf('}')).trim();
-      if (area.startsWith('{') && EntryUtils.fromTo(text) === text) {
+    details.forEach(info => {
+      const originalField = info.split('${')[1];
+      const field = EntryUtils.fromTo(originalField);
+      if (!originalField || field === originalField) {
         validate = false;
       }
     });
 
     return validate;
+
   }
 
   public static parse(historic: string): Historic {
@@ -84,10 +94,13 @@ export class Historic {
     obj.com2 = this._getValues(details[1]).com;
     obj.com3 = this._getValues(details[2]).com;
     obj.com4 = this._getValues(details[3]).com;
+    obj.com5 = this._getValues(details[4]).com;
 
     obj.field1 = this._getValues(details[0]).field;
     obj.field2 = this._getValues(details[1]).field;
     obj.field3 = this._getValues(details[2]).field;
+    obj.field4 = this._getValues(details[3]).field;
+    obj.field5 = this._getValues(details[4]).field;
 
     return obj;
 
@@ -105,7 +118,9 @@ export class Historic {
     const array = this._comments([
       { text: this.field1.value, param: false },
       { text: this.field2.value, param: false },
-      { text: this.field3.value, param: false }
+      { text: this.field3.value, param: false },
+      { text: this.field4.value, param: false },
+      { text: this.field5.value, param: false }
     ]);
     return this._iterate(array);
   }
@@ -126,7 +141,9 @@ export class Historic {
     const array = this._comments([
       { text: this.field1.field, param: true },
       { text: this.field2.field, param: true },
-      { text: this.field3.field, param: true }
+      { text: this.field3.field, param: true },
+      { text: this.field4.field, param: true },
+      { text: this.field5.field, param: true }
     ]);
     const text = this._iterate(array);
     if (this.id) {
@@ -144,7 +161,10 @@ export class Historic {
       fields[1],
       { text: this.com3, param: false },
       fields[2],
-      { text: this.com4, param: false }
+      { text: this.com4, param: false },
+      fields[3],
+      { text: this.com5, param: false },
+      fields[4]
     ];
   }
 

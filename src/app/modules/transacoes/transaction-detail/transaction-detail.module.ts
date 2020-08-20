@@ -12,8 +12,6 @@ import { RuleGridModule } from './rule-creator/rule-grid.module';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { CardModule } from '@shared/components/card/card.module';
 import { InfoModule } from '@shared/components/info/info.module';
-import { HistoricModule } from './historic/historic.module';
-import { HistoricComponent } from './historic/historic.component';
 import { RuleChipGroupModule } from './rule-creator/chips-group/chips-group.module';
 import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
 import { HistoricEditDialogModule } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.module';
@@ -29,7 +27,6 @@ import { HistoricEditDialogModule } from '@modules/historic/dialogs/historic-edi
         CardModule,
         MatProgressBarModule,
         InfoModule,
-        HistoricModule,
         MatTabsModule,
         MatProgressSpinnerModule,
         MatProgressBarModule,
@@ -38,7 +35,6 @@ import { HistoricEditDialogModule } from '@modules/historic/dialogs/historic-edi
     ],
     entryComponents: [
       RuleGridComponent,
-      HistoricComponent,
       ConfirmDeleteDialogComponent
     ],
     exports: [TransactionDetailComponent]

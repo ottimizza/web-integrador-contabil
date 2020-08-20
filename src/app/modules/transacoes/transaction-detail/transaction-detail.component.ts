@@ -12,7 +12,6 @@ import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { LancamentoService } from '@shared/services/lancamento.service';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { HistoricService } from '@shared/services/historic.service';
-import { HistoricComponent } from './historic/historic.component';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { ToastService } from '@shared/services/toast.service';
 import { Rule, RuleCreateFormat } from '@shared/models/Rule';
