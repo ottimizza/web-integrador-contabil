@@ -52,7 +52,10 @@ export class HistoricCardComponent implements OnInit {
       { bold: false, value: this.form(this.nativeHistoric.field2.field) },
       { bold: true, value: this.nativeHistoric.com3 },
       { bold: false, value: this.form(this.nativeHistoric.field3.field) },
-      { bold: true, value: this.nativeHistoric.com4 }
+      { bold: true, value: this.nativeHistoric.com4 },
+      { bold: false, value: this.form(this.nativeHistoric.field4.field) },
+      { bold: true, value: this.nativeHistoric.com5 },
+      { bold: false, value: this.form(this.nativeHistoric.field5.field) }
     ]);
   }
 

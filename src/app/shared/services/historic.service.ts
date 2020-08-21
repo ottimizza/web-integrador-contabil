@@ -24,7 +24,16 @@ export class HistoricService {
 
   public fetch(searchCriteria: any) {
     const url = `${BASE_URL}/api/v1/historicos`;
-    return this._http.get<GenericPageableResponse<FormattedHistoric>>([url, searchCriteria], 'Falha ao obter históricos!');
+    return this._http.get<GenericPageableResponse<FormattedHistoric>>([url, searchCriteria], 'Falha ao obter históricos!')
+      .pipe(map(results => {
+        results.records = results.records.map(rec => {
+          if (rec.historico.match(/\$\{.*?\}/g).length === 3) {
+            rec.historico = rec.historico + ' ${nenhum}  ${nenhum} ';
+          }
+          return rec;
+        });
+        return results;
+      }));
   }
 
   public createHistoric(historic: FormattedHistoric): Observable<any> {
@@ -49,7 +58,16 @@ export class HistoricService {
 
   public getAll(searchCriteria: any) {
     const url = `${BASE_URL}/api/v1/historicos/sf`;
-    return this._http.get<GenericResponse<FormattedHistoric>>([url, searchCriteria], 'Falha ao obter lista de históricos!');
+    return this._http.get<GenericResponse<FormattedHistoric>>([url, searchCriteria], 'Falha ao obter lista de históricos!')
+      .pipe(map(results => {
+        results.records = results.records.map(rec => {
+          if (rec.historico.match(/\$\{.*?\}/g).length === 3) {
+            rec.historico = rec.historico + ' ${nenhum}  ${nenhum} ';
+          }
+          return rec;
+        });
+        return results;
+      }));
   }
 
 }

@@ -1,6 +1,15 @@
+export class FromToReference {
+  tipoLancamento?: number;
+  labelComplemento01?: string;
+  labelComplemento02?: string;
+  labelComplemento03?: string;
+  labelComplemento04?: string;
+  labelComplemento05?: string;
+}
+
 export class EntryUtils {
 
-  public static fromTo(from: string, reference: { tipoLancamento?: number } = {}): string {
+  public static fromTo(from: string, reference: FromToReference = {}): string {
     const labels = {
       dataMovimento:       'Data',
       documento:           'Documento',
@@ -32,6 +41,21 @@ export class EntryUtils {
       labels.descricao = 'Fornecedor';
     } else if (reference.tipoLancamento === 2) {
       labels.descricao = 'Cliente';
+    }
+    if (reference.labelComplemento01) {
+      labels.complemento01 = reference.labelComplemento01;
+    }
+    if (reference.labelComplemento02) {
+      labels.complemento02 = reference.labelComplemento02;
+    }
+    if (reference.labelComplemento03) {
+      labels.complemento03 = reference.labelComplemento03;
+    }
+    if (reference.labelComplemento04) {
+      labels.complemento04 = reference.labelComplemento04;
+    }
+    if (reference.labelComplemento05) {
+      labels.complemento05 = reference.labelComplemento05;
     }
 
     return labels[from] || from;

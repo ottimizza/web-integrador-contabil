@@ -4,6 +4,12 @@ export const DATE_CHIP_PATTERN: IChipGroupPattern = {
   separators: ['-'],
   starting: '',
   ending: '',
+  treatment: (chip: string) => {
+    if (chip !== '-') {
+      return chip;
+    }
+    return null;
+  },
   intersect: () => '/',
   sort: (chips: string[]) => {
     if (chips.length !== 3) {

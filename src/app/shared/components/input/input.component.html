@@ -1,0 +1,13 @@
+<div class="input-area text-center">
+  <label [for]="id" *ngIf="label && showLabel">{{ label }}:</label>
+  <input
+    class="form-control"
+    autocomplete="off"
+    type="text"
+    [id]="id"
+    [value]="value"
+    [placeholder]="placeholder"
+    [formControl]="control"
+    [style]="deep"
+    (input)="emit($event)">
+</div>

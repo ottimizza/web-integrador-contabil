@@ -1,38 +1,25 @@
 <h1 mat-dialog-title>
-  <i class="fad fa-history text-info"></i>
+  <app-icon src="history" color="info"></app-icon>
   &nbsp;&nbsp; Histórico
 </h1>
 <div mat-dialog-content class="border-top border-bottom p-3 text-center">
 
   <form class="w-75 m-auto" [formGroup]="form">
 
-    <fieldset>
-      <legend>Código</legend>
-      <small class="text-danger">Caso sua contabilidade não utilize Código do Histórico, desconsidere este campo.</small>
-
+    <app-fieldset legend="Código">
+      <app-comment type="danger">Caso sua contabilidade não utilize código de histórico, desconsidere este campo.</app-comment>
       <div class="row m-0 mt-2">
-        <div class="col-12">
-          <input (input)="update()" [formControl]="form.get('code')" type="text" class="w-100 code" placeholder="Ex. 247">
-        </div>
+        <app-input (input)="update()" [control]="form.get('code')" class="col-12" placeholder="Ex. 247"></app-input>
       </div>
-    </fieldset>
+    </app-fieldset>
 
-    <fieldset class="mt-4" *ngIf="details?.length">
-      <legend>Descrição</legend>
-
+    <app-fieldset legend="Descrição" *ngIf="details?.length && data">
       <div class="row m-0 mt-3" *ngFor="let row of details">
-        <div class="col-md">
-          <label [for]="row.id1">{{ row.label1 }}:</label>
-          <input (input)="update()" type="text" class="w-100" [placeholder]="row.ex" [id]="row.id1" [formControl]="form.get(row.id1)">
-        </div>
-        <div class="col-md" *ngIf="row.id2">
-          <label [for]="row.id2">{{ row.label2 }}:</label>
-          <mat-select [id]="row.id2" [formControl]="form.get(row.id2)" (selectionChange)="update()">
-            <mat-option *ngFor="let opt of options" [value]="opt">{{ parse(opt) }}</mat-option>
-          </mat-select>
-        </div>
+        <app-input class="col-md" [id]="row.id1" [control]="form.get(row.id1)" [label]="row.label1" (input)="update()" [placeholder]="row.ex"></app-input>
+        <app-datalist *ngIf="row.id2" class="col-md" [id]="row.id2" [label]="row.label2" [control]="form.get(row.id2)" (selectionChange)="update()" [parse]="parse(data)" [source]="options"></app-datalist>
       </div>
-    </fieldset>
+    </app-fieldset>
+
   </form>
 
 

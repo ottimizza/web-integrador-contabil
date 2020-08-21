@@ -37,7 +37,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
   page = 0;
   tabIsSelected = false;
   tipoLancamento = 1;
-  artificialClone: CompleteRule;
   isExporting: boolean;
   isFetching = false;
   currentUser: User;
@@ -114,7 +113,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        this.rows.splice(event, 1);
+        this.rows = this.logicService.delete(this.rows, event);
         this.toast.show('Regra alterada com sucesso, recomendamos clicar em "Atualizar"', 'success');
       }
     });

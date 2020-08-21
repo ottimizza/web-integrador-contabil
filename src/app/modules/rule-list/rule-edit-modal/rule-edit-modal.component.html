@@ -64,14 +64,14 @@
         <input matInput placeholder="Informe um valor" [value]="rule.valor" (keyup)="valueChange($event, id)">
       </div>
       <div class="col-1 p-0" *ngIf="ruleDefault.regras.length > 1">
-        <div (click)="remove(id)" [matTooltip]="info.remove" matTooltipShowDelay="300" matTooltipHideDelay="500">
+        <div (click)="remove(id)" [matTooltip]="info.remove">
           <i class="fad fa-times-circle text-danger cursor-pointer" style="font-size: 120%;"></i>
         </div>
       </div>
     </div>
 
     <div class="row w-100 m-0 text-center">
-      <div class="center cursor-pointer" (click)="add()" [matTooltip]="info.add" matTooltipShowDelay="300" matTooltipHideDelay="500">
+      <div class="center cursor-pointer" (click)="add()" [matTooltip]="info.add">
         <i class="fad fa-plus-circle fa-2x"></i>
       </div>
     </div>

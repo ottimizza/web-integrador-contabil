@@ -7,13 +7,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { DEFAULT_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DEFAULT_CHIP_PATTERN';
 import { VALUE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/VALUE_CHIP_PATTERN';
 import { DATE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DATE_CHIP_PATTERN';
-import { BANK_CHIP_PATTERN } from './rule-creator/chips-group/patterns/BANK_CHIP_PATTERN';
 import { RuleConfig } from './rule-creator/chips-group/chips-group.component';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { LancamentoService } from '@shared/services/lancamento.service';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { HistoricService } from '@shared/services/historic.service';
-import { HistoricComponent } from './historic/historic.component';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { ToastService } from '@shared/services/toast.service';
 import { Rule, RuleCreateFormat } from '@shared/models/Rule';
@@ -58,6 +56,8 @@ export class TransactionDetailComponent implements OnInit {
   percentage = 0;
 
   isFetching = false;
+
+  total = 'Calculando...';
 
   currentUser: User;
 
@@ -270,6 +270,7 @@ export class TransactionDetailComponent implements OnInit {
         // if (result) {
         //   this.disable();
         // }
+
     });
   }
 
@@ -291,6 +292,8 @@ export class TransactionDetailComponent implements OnInit {
       this.tabIsClicked = true;
       this.tabSelect.emit('true');
     }
+
+    this.total = 'Calculando...'
 
     this.pageInfo = PageInfo.defaultPageInfo();
     this.tipoMovimento = tipoMovimento;
@@ -323,9 +326,9 @@ export class TransactionDetailComponent implements OnInit {
     this.records = rs.records;
     this.pageInfo = rs.pageInfo;
 
-    if (this.records.length) {
-      this.calcPercentage();
-    } else {
+    this.calcPercentage();
+
+    if (!this.records.length) {
       this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa.`]);
       this.percentage = 100;
     }
@@ -368,7 +371,7 @@ export class TransactionDetailComponent implements OnInit {
       tipoLancamento = 2;
     }
 
-    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: 0, ativo: true };
+    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: 0, ativo: true, cnpjContabilidade: this.currentUser.organization.cnpj };
     const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: 1 };
     Object.assign(filter, pageCriteria);
 
@@ -389,6 +392,7 @@ export class TransactionDetailComponent implements OnInit {
       } else {
         this.percentage = 100;
       }
+      this.total = `${result.totalLancamentos || 0}`;
     });
   }
 
@@ -415,7 +419,7 @@ export class TransactionDetailComponent implements OnInit {
         {
           key: 'portador',
           label: 'Banco',
-          pattern: BANK_CHIP_PATTERN,
+          pattern: DEFAULT_CHIP_PATTERN,
           value: this.records[0].portador
         }
       ]

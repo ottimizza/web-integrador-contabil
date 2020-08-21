@@ -114,7 +114,7 @@ export class RuleChipGroupComponent implements OnInit {
       let chipValue = [config.value];
 
       if (config.pattern.separators.length) {
-        chipValue = ArrayUtils.split(chipValue[0], ...config.pattern.separators);
+        chipValue = ArrayUtils.magicSplit(chipValue[0], ...config.pattern.separators).filter(el => el !== ' ');
       }
       if (config.pattern.treatment) {
         chipValue = chipValue.filter(chip => config.pattern.treatment(chip) !== null);

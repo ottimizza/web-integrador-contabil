@@ -1,6 +1,6 @@
 <div class="filterBox mb-4 mt-4">
   <form (submit)="confirm(business[0])">
-    <input type="text" (input)="onInput($event.target)" #company [matAutocomplete]="auto" autocomplete="off" placeholder="Filtro" [matTooltip]="info" matTooltipShowDelay="300" matTooltipHideDelay="500">
+    <input type="text" (input)="onInput($event.target)" #company [matAutocomplete]="auto" autocomplete="off" placeholder="Filtro" [matTooltip]="info">
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="select($event)">
       <mat-option *ngFor="let company of business" [value]="company">{{ getErp(company.codigoERP) + company.razaoSocial }}</mat-option>
     </mat-autocomplete>
