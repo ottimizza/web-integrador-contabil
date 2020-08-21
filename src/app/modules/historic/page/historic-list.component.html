@@ -1,0 +1,35 @@
+<app-layout [buttons]="buttons()" (buttonClicked)="openDialog()">
+
+  <app-tfilter (empresa)="onFilter($event)"></app-tfilter>
+
+  <div *ngIf="company">
+    <div class="card">
+      <mat-progress-bar
+        mode="determinate"
+        [value]="percentage"
+        *ngIf="isExporting"
+        [color]="'#000'"
+        class="progress-bar"
+      ></mat-progress-bar>
+      <mat-tab-group
+        (selectedTabChange)="onTab($event)"
+        mat-align-tabs="center"
+      >
+        <mat-tab label="Pagamentos"></mat-tab>
+        <mat-tab label="Recebimentos"></mat-tab>
+      </mat-tab-group>
+    </div>
+    <br />
+
+    <div
+      class="example-list"
+      *ngIf="records?.length"
+    >
+      <div *ngFor="let rec of records; let i = index" cdkDrag>
+        <div class="mb10">
+          <app-historic-card [historic]="rec" (changeDetected)="onChangeDetected($event)"></app-historic-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-layout>

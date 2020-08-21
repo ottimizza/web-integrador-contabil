@@ -4,6 +4,7 @@ import { Empresa } from '@shared/models/Empresa';
 import { ToastService } from '@shared/services/toast.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({
   selector: 'app-tfilter',
@@ -51,6 +52,10 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   get info() {
     return 'Escreva o nome da empresa selecionada ou escolha dentre as sugeridas';
+  }
+
+  public select(event: MatAutocompleteSelectedEvent) {
+    this.confirm(event.option.value);
   }
 
   async confirm(company: Empresa) {

@@ -82,4 +82,34 @@ describe('Utils: Array', () => {
 
   });
 
+  describe('Method: magicSplit()', () => {
+    it('Must separeate correctly', () => {
+      const text1 = 'LEONARDO DA VINCI';
+      const text2 = 'CARTÃO/DEBITO';
+      const text3 = '$32 . 50';
+      const text4 = 'FIGURAS.DE/LINGUAGEM*SÃO^MUITO+LEGAIS';
+
+      const array1 = ArrayUtils.magicSplit(text1, ' ');
+      const array2 = ArrayUtils.magicSplit(text2, '/');
+      const array3 = ArrayUtils.magicSplit(text3, '$', ' ', '.');
+      const array4 = ArrayUtils.magicSplit(text4, '.', '/', '*', '^', '+');
+
+      console.log(array1);
+      console.log(array2);
+      console.log(array3);
+      console.log(array4);
+
+      const validate1 = ArrayUtils.compare(array1, ['LEONARDO', ' ', 'DA', ' ', 'VINCI']);
+      const validate2 = ArrayUtils.compare(array2, ['CARTÃO', '/', 'DEBITO']);
+      const validate3 = ArrayUtils.compare(array3, ['$', '32', ' ', '.', ' ', '50']);
+      const validate4 = ArrayUtils.compare(array4, ['FIGURAS', '.', 'DE', '/', 'LINGUAGEM', '*', 'SÃO', '^', 'MUITO', '+', 'LEGAIS']);
+
+      expect(validate1).toBeTruthy();
+      expect(validate2).toBeTruthy();
+      expect(validate3).toBeTruthy();
+      expect(validate4).toBeTruthy();
+
+    });
+  });
+
 });

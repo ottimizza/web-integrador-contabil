@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, fromEvent, interval, of, from } from 'rxjs';
 
 import { MatTabChangeEvent } from '@angular/material';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,13 +7,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { DEFAULT_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DEFAULT_CHIP_PATTERN';
 import { VALUE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/VALUE_CHIP_PATTERN';
 import { DATE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DATE_CHIP_PATTERN';
-import { BANK_CHIP_PATTERN } from './rule-creator/chips-group/patterns/BANK_CHIP_PATTERN';
 import { RuleConfig } from './rule-creator/chips-group/chips-group.component';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { LancamentoService } from '@shared/services/lancamento.service';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { HistoricService } from '@shared/services/historic.service';
-import { HistoricComponent } from './historic/historic.component';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { ToastService } from '@shared/services/toast.service';
 import { Rule, RuleCreateFormat } from '@shared/models/Rule';
@@ -21,35 +19,46 @@ import { RuleService } from '@shared/services/rule.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { Lancamento } from '@shared/models/Lancamento';
 import { Empresa } from '@shared/models/Empresa';
-import { finalize, catchError } from 'rxjs/operators';
+import { finalize, catchError, switchMap, map } from 'rxjs/operators';
 import { User } from '@shared/models/User';
 import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
+import { DialogService, DialogWidth } from '@app/services/dialog.service';
+import { HistoricEditDialogComponent } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.component';
+import { FormattedHistoric } from '@shared/models/Historic';
+import { DateUtils } from '@shared/utils/date-utils';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-tdetail',
   templateUrl: './transaction-detail.component.html',
   styleUrls: ['./transaction-detail.component.scss']
 })
-export class TransactionDetailComponent implements OnInit, GenericPagination {
+export class TransactionDetailComponent implements OnInit {
 
   @Output() tabSelect = new EventEmitter();
   @Input() business: Empresa;
+
   pageInfo = PageInfo.defaultPageInfo();
   records: Lancamento[] = [];
+
   conditions = new Rule();
+  account = new FormControl();
+
   tipoMovimento = 'PAG';
   tipoLancamentoName: string;
+
   errorText2: string;
   errorText: string;
-  account: string;
-  destroy: boolean;
+
   tabIsClicked = false;
-  tipoConta = 0;
+
   impact = 0;
   percentage = 0;
-  total = 0;
 
   isFetching = false;
+  rebuild = 0;
+
+  total = 'Calculando...';
 
   currentUser: User;
 
@@ -59,7 +68,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     private _historicService: HistoricService,
     private _ruleService: RuleService,
     private _toast: ToastService,
-    public dialog: MatDialog
+    public dialog: DialogService
   ) { }
 
   ngOnInit(): void {
@@ -83,32 +92,16 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     }
   }
 
-  get suggestions() {
-    if (this.records.length > 0 && this.records[0].contaSugerida) {
-      const account = this.records[0].contaSugerida;
-        const array = account.split(',');
-        for (let i = 0; i < array.length; i++) {
-          if (array[i] === 'null' || array[i] === 'IGNORAR') {
-            array.splice(i, 1);
-          }
-        }
-        return array
-    } else {
-      return [];
-    }
-  }
-
   get info() {
     return {
       provider: 'A conta informada será aplicada para todas as ocorrências deste fornecedor e qualquer outro campo marcado será ignorado.',
       ok: 'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
       info: 'Selecione os termos que justificam o lançamento ser vinculado a determinada conta ou ser ignorado.',
-      account: 'Insira neste campo, a conta relativa a este lançamento ou selecione uma das sugeridas.',
+      account: 'Insira neste campo, a conta relativa a este lançamento.',
       rule: 'A conta informada deve ser aplicada em todas as ocorrências das palavras selecionada.',
       ignore: 'Todos os lançamentos com as palavras selecionada serão ignorados.',
       affectedsOrientation: 'Lançamentos já parametrizados podem ser afetados',
       affecteds: 'Clique para visualizar os lançamentos afetados.',
-      skip: 'Deixar este lançamento para depois.'
     };
   }
 
@@ -142,14 +135,14 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
       this.records[0].cnpjContabilidade,
       this.records[0].tipoLancamento,
       this.records[0].idRoteiro,
-      this.account
+      this.account.value
     );
   }
 
   regra() {
     const regra = this.ruleCreateFormat;
     const observable = this._ruleService.createRule(regra);
-    const verifications = [!!this.account?.length, this.conditions.verify()];
+    const verifications = [!!this.account?.value?.length, this.conditions.verify()];
     const errors = [
       'Para salvar uma regra você deve informar uma conta contábil.',
       'Para salvar uma regra você deve informar as condições da regra.'
@@ -167,23 +160,10 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   fornecedor() {
-    const observable = this._lancamentoService.saveAsDePara(this.records[0], this.account);
-    const verification = this.account && this.account.length > 0;
+    const observable = this._lancamentoService.saveAsDePara(this.records[0], this.account.value);
+    const verification = this.account && this.account.value.length > 0;
     const error = ['Para atrelar o lançamento à uma conta de fornecedor, você deve informar a conta.'];
     this._savePattern(observable, [verification], error);
-  }
-
-  skip() {
-    let observable = this._lancamentoService.skip(this.records[0].id);
-    const error = '';
-    if (this.records[0].tipoConta === 4) {
-      this.pageInfo.pageIndex++;
-      observable = observable.pipe(catchError(err => {
-        this.pageInfo.pageIndex = 0;
-        throw err;
-      }));
-    }
-    this._savePattern(observable, [true], [error], undefined);
   }
 
   private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[], rule?: boolean) {
@@ -193,7 +173,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     if (verify) {
       if (rule) {
         this._historicService
-          .getHistoric(this.business, this.account, this.records[0].tipoLancamento)
+          .getHistoric(this.business, this.account.value, this.records[0].tipoLancamento)
           .subscribe(data => {
             if (!data.records.length) {
               this.openHistoric(obs);
@@ -251,34 +231,28 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
   }
 
   openGrid(): void {
-    const dialogRef = this.dialog.open(RuleGridComponent, {
-      maxWidth: '1400px',
-      width: '95vw',
-      data: {
-        rules: this.conditions.rules,
-        business: this.business
-      }
-    });
-
-    dialogRef.afterClosed().subscribe();
+    this.dialog.openComplexDialog(RuleGridComponent, DialogWidth.EXTRA_LARGE, { rules: this.conditions.rules, company: this.business })
+    .subscribe();
   }
 
   openHistoric(obs: Observable<Lancamento>): void {
-    this.records[0].contaMovimento = this.account;
-    const dialogRef = this.dialog.open(HistoricComponent, {
-      maxWidth: '900px',
-      width: '90vw',
-      maxHeight: '90vh',
-      data: {
-        lancamento: this.records[0]
-      }
-    });
+    let tipoLancamento = 1;
+    if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE') {
+      tipoLancamento = 2;
+    }
 
-    dialogRef.afterClosed().subscribe(result => {
-      this._subsAndDisable(obs);
-      // if (result) {
-      //   this.disable();
-      // }
+    const entry: any = this.records[0];
+    Object.assign(entry, { competencia: DateUtils.ymdToCompetence(entry.dataMovimento) });
+    Object.assign(entry, { competenciaAnterior: DateUtils.lastCompetence(entry.competencia) })
+
+    const reference = new FormattedHistoric('', this.account.value, tipoLancamento, entry.idRoteiro, entry.cnpjEmpresa, entry.cnpjContabilidade);
+    this.dialog.openComplexDialog(HistoricEditDialogComponent, DialogWidth.LARGE, {
+      type: 'post',
+      reference,
+      entry
+    })
+      .subscribe(() => {
+        this._subsAndDisable(obs);
     });
   }
 
@@ -295,114 +269,117 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
     }
   }
 
-  async tabsPattern(tipoMovimento: string, tipoLancamentoName: string, isFirst: boolean) {
-    this.destroy = true;
+  tabsPattern(tipoMovimento: string, tipoLancamentoName: string, isFirst: boolean) {
     if (!isFirst) {
       this.tabIsClicked = true;
       this.tabSelect.emit('true');
     }
 
+    this.total = 'Calculando...'
+
     this.pageInfo = PageInfo.defaultPageInfo();
     this.tipoMovimento = tipoMovimento;
     this.tipoLancamentoName = tipoLancamentoName;
     this.resetErrors();
-    this.tipoConta = 0;
     this._partialDisable();
-    this.nextPage();
     this.getByRule();
-    await this._delay(300);
-    this.destroy = false;
+
+    this.proceed();
   }
 
-  async disable() {
+  disable() {
     // Reseta todas as variáveis locais após executar uma ação para permitir
     // que a próxima ação esteja pronta para ser executada.
-    this.destroy = true;
     this._partialDisable();
-    this._next();
-    await this._delay(320);
-    this.destroy = false;
+    this.proceed();
   }
 
   private _partialDisable() {
     this.conditions = new Rule();
     this.getByRule();
-    this.account = null;
+    this.account.setValue('');
   }
 
-
-  private _delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  private _next() {
-    this.records = this.records || [];
-    this.records.splice(0, 1);
+  public async requestEntry() {
     this.resetErrors();
 
-    if (this.records.length === 0 && (!this.pageInfo || this.pageInfo.hasNext)) {
-      this.tipoConta = 0
-      this.nextPage();
-    } else {
+    const rs = await this.fetch();
+    this.records = rs.records;
+    this.pageInfo = rs.pageInfo;
+
+    this.reConstruct();
+
+    this.calcPercentage();
+
+    if (!this.records.length) {
       this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa.`]);
       this.percentage = 100;
     }
   }
 
+  public async reConstruct() {
+    for (let i = 1; i < 7; i++) {
+      this.rebuild = i;
+      await new Promise(resolve => setTimeout(resolve, 1));
+    }
+    this.rebuild = 0;
+  }
+
+  public async proceed() {
+    this.isFetching = true;
+    await this.requestEntry();
+    this.isFetching = false;
+  }
+
+
+  public navigate(direction: 'next' | 'previous') {
+    if (direction === 'next' && this.pageInfo.hasNext) {
+      this.pageInfo.pageIndex++;
+      this.impact = 0;
+      this.proceed();
+    } else if (direction === 'previous' && this.pageInfo.hasPrevious) {
+      this.pageInfo.pageIndex--;
+      this.impact = 0;
+      this.proceed();
+    }
+  }
+
   delete() {
-    const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent, {
-      width: '596px',
-      data: this.records[0].arquivo
-    });
-    dialogRef.afterClosed().subscribe(e => {
+    this.dialog.open(ConfirmDeleteDialogComponent, this.records[0].arquivo).subscribe(e => {
       if (e === 'deleted') {
-        this.nextPage();
+        this.proceed();
       }
     });
   }
 
-  nextPage() {
-    this.isFetching = true;
-    let tipoLancamento: number;
-    if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'EXDEB') {
-      tipoLancamento = 1;
-    } else if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE') {
+  fetch() {
+    let tipoLancamento = 1;
+    if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE') {
       tipoLancamento = 2;
     }
-    const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: this.pageInfo.pageSize };
-    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: this.tipoConta, ativo: true };
+
+    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: 0, ativo: true, cnpjContabilidade: this.currentUser.organization.cnpj };
+    const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: 1 };
     Object.assign(filter, pageCriteria);
-    this._toast.showSnack('Aguardando resposta');
 
-    this.records = null;
-    this._lancamentoService.getLancamentos(filter)
-      .pipe(finalize(() => this.isFetching = false))
-      .subscribe(imports => {
+    this._toast.showSnack('Aguardando lançamento...');
+    return this._lancamentoService.getLancamentos(filter)
+      .pipe(finalize(() => {
+        this._toast.hideSnack();
+      }))
+      .toPromise();
+  }
 
-      this.records = imports.records;
-      this.pageInfo = imports.pageInfo;
-      this.resetErrors();
-      this._toast.hideSnack();
-
-      if (imports.pageInfo.totalElements === 0 && this.tipoConta === 0 && filter.tipoMovimento === this.tipoMovimento) {
-        this.tipoConta = 4;
-        this.nextPage();
-      }
-
-      if (this.tipoConta === 4 && this.pageInfo.totalElements === 0) {
-        this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa!`]);
-      }
-
-    });
-
-    this._lancamentoService.calcPercentage({ cnpjEmpresa: this.business.cnpj, tipoMovimento: this.tipoMovimento}).subscribe((percentage: any) => {
-      if (percentage.totalLancamentos) {
-        this.percentage = +(100 - (percentage.numeroLancamentosRestantes / percentage.totalLancamentos) * 100).toFixed(0);
+  public calcPercentage() {
+    const filter = { cnpjEmpresa: this.business.cnpj, tipoMovimento: this.tipoMovimento };
+    this._lancamentoService.calcPercentage(filter).subscribe((result: any) => {
+      if (result.totalLancamentos) {
+        this.percentage = +(100 - (result.numeroLancamentosRestantes / result.totalLancamentos) * 100).toFixed(0);
       } else {
         this.percentage = 100;
       }
-      this.total = percentage.totalLancamentos;
-    })
+      this.total = `${result.totalLancamentos || 0}`;
+    });
   }
 
   descricao(): RuleConfig {
@@ -428,7 +405,7 @@ export class TransactionDetailComponent implements OnInit, GenericPagination {
         {
           key: 'portador',
           label: 'Banco',
-          pattern: BANK_CHIP_PATTERN,
+          pattern: DEFAULT_CHIP_PATTERN,
           value: this.records[0].portador
         }
       ]

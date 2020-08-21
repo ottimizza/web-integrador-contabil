@@ -6,8 +6,16 @@
   }
 }
 
+.red, .gray, .purple {
+  background-color: white;
+  i {
+    font-size: 18px;
+  }
+}
+
 .desktop button {
   width: 33%;
+  border-right: solid 1px rgb(226, 226, 226);
 }
 
 .cont {
@@ -38,7 +46,6 @@ strong {
 button {
   border: none;
   height: 100%;
-  color: white;
 }
 
 .mobile-button {
@@ -46,7 +53,7 @@ button {
 }
 
 .red {
-  background-color: rgb(255, 0, 0);
+  color: rgb(255, 0, 0);
   // border-radius: 5px 0 0 5px;
 }
 
@@ -55,12 +62,12 @@ button {
 }
 
 .gray {
-  background-color: rgb(47, 129, 223);
+  color: rgb(47, 129, 223);
   // background-color: rgb(180, 180, 180);
 }
 
 .purple {
-  background-color: rgb(84, 0, 255);
+  color: rgb(84, 0, 255);
 }
 
 .cont {

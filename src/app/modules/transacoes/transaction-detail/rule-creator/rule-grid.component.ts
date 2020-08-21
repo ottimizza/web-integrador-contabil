@@ -20,8 +20,6 @@ export class RuleGridComponent implements OnInit, GenericPagination {
   info: Lancamento[];
   pageInfo: PageInfo;
   page = 0;
-  rules: PostFormatRule[];
-  business: Empresa;
   isFetching = false;
 
 
@@ -33,8 +31,6 @@ export class RuleGridComponent implements OnInit, GenericPagination {
   ) { }
 
   ngOnInit(): void {
-    this.rules = this.data.rules;
-    this.business = this.data.business;
     this.info = [];
     this.nextPage();
   }
@@ -44,7 +40,7 @@ export class RuleGridComponent implements OnInit, GenericPagination {
       this.isFetching = true;
       this._toast.showSnack('Aguardando resposta');
       this._service
-        .getByRulePaginated(this.rules, this.business, this.page, pageSize)
+        .getByRulePaginated(this.data.rules, this.data.company, this.page, pageSize)
         .pipe(finalize(() => this.isFetching = false))
         .subscribe(imports => {
           this.info = imports.records

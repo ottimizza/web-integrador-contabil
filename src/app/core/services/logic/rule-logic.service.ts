@@ -50,16 +50,20 @@ export class RuleLogicService {
     return rules;
   }
 
+  public delete(rules: CompleteRule[], index: number) {
+    rules.splice(index, 1);
+    return this.syncPositions(rules);
+  }
+
   private async changePosition(rule: CompleteRule, verb = 'movida') {
     await this.ruleService.changePosition(rule).toPromise();
     this.toastService.show(`Regra ${verb} com sucesso!`, 'success');
   }
 
   private syncPositions(rules: CompleteRule[]) {
-    // Confirmar com o Lucas
-    return rules.map((value, index) => {
-      value.posicao = index;
-      return value;
+    return rules.map((rule, index) => {
+      rule.posicao = index;
+      return rule;
     });
   }
 

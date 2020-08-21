@@ -1,0 +1,30 @@
+<div class="cont row m-0 w-100 mb-4 shadow-sm" *ngIf="nativeHistoric">
+
+  <div class="col-md-2 col-lg-2 col-xl-2 p-0 desktop" *ngIf="mustBeShown()">
+      <button class="red" (click)="delete()" matTooltip="Excluir histórico">
+        <i class="fad fa-trash-alt"></i>
+      </button>
+      <button class="purple" (click)="openDialog()" matTooltip="Editar histórico">
+        <i class="fad fa-edit"></i>
+      </button>
+  </div>
+
+  <div class="col-md-2 col-lg-2 col-xl-2 p-0 mobile" *ngIf="!mustBeShown()">
+      <button class="blue" (click)="haveToBeShown = true">
+        <i class="fad fa-cog"></i>
+      </button>
+  </div>
+
+  <div class="col-lg-8 col-xl-8 col-sm-12 col-xs-12 col-md-12 p-2 pt-3 pb-3">
+    <div class="text-center">
+      <span *ngFor="let row of rows" [ngClass]="{ 'text-bold': row.bold }" class="">{{ row.value }}</span>
+    </div>
+  </div>
+
+  <div class="col-xl-2 col-lg-2 text-center text-truncate">
+    <app-vertial-align>
+      <strong [matTooltip]="historic.contaMovimento">{{ historic.contaMovimento }}</strong>
+    </app-vertial-align>
+  </div>
+
+</div>

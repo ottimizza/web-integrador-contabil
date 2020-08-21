@@ -15,7 +15,7 @@ import { ToastService } from '@shared/services/toast.service';
 import { RuleService } from '@shared/services/rule.service';
 import { CompleteRule } from '@shared/models/CompleteRule';
 import { LoggerUtils } from '@shared/utils/logger.utills';
-import { RuleCreateFormat } from '@shared/models/Rule';
+import { RuleCreateFormat, RuleType } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
 import { DOCUMENT } from '@angular/common';
@@ -29,7 +29,7 @@ import { RuleDeleteConfirmDialogComponent } from './rule-delete-confirm-dialog/r
   templateUrl: './rule-list.component.html',
   styleUrls: ['./rule-list.component.scss']
 })
-export class RuleListComponent implements OnInit, GenericDragDropList, GenericPagination {
+export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRule>, GenericPagination {
 
   rows: CompleteRule[] = [];
   business: Empresa;
@@ -37,7 +37,6 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
   page = 0;
   tabIsSelected = false;
   tipoLancamento = 1;
-  artificialClone: CompleteRule;
   isExporting: boolean;
   isFetching = false;
   currentUser: User;
@@ -46,9 +45,9 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
 
   constructor(
     @Inject(DOCUMENT) public doc: Document,
+    public dialog: MatDialog,
     private service: RuleService,
     private toast: ToastService,
-    public dialog: MatDialog,
     public exportService: ExportService,
     public logicService: RuleLogicService,
   ) {}
@@ -107,11 +106,14 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
     const rule = this.rows[event];
     const dialogRef = this.dialog.open(RuleDeleteConfirmDialogComponent, {
       width: '596px',
-      data: rule.id
+      data: {
+        id: rule.id,
+        type: RuleType.RULE
+      }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        this.rows.splice(event, 1);
+        this.rows = this.logicService.delete(this.rows, event);
         this.toast.show('Regra alterada com sucesso, recomendamos clicar em "Atualizar"', 'success');
       }
     });
@@ -147,7 +149,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList, GenericPa
       return;
     }
     const dialogRef = this.dialog.open(ExportConfirmModalComponent, {
-      data: this.business,
+      data: this.business || {},
       maxWidth: '596px'
     });
 

@@ -3,7 +3,7 @@
   &nbsp;&nbsp; Confirmar Exclusão
 </h1>
 <div mat-dialog-content class="border-top border-bottom p-3 text-center">
-  <p>Você tem certeza que deseja excluir esta regra?</p>
+  <p>Você tem certeza que deseja excluir {{ data.type === 0 ? 'esta regra' : 'este histórico' }}?</p>
 </div>
 <div mat-dialog-actions class="text-center">
   <div class="container-fluid px-0 py-3 justify-content-between">

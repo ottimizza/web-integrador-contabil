@@ -1,0 +1,36 @@
+<h1 mat-dialog-title>
+  <app-icon src="history" color="info"></app-icon>
+  &nbsp;&nbsp; Histórico
+</h1>
+<div mat-dialog-content class="border-top border-bottom p-3 text-center">
+
+  <form class="w-75 m-auto" [formGroup]="form">
+
+    <app-fieldset legend="Código">
+      <app-comment type="danger">Caso sua contabilidade não utilize código de histórico, desconsidere este campo.</app-comment>
+      <div class="row m-0 mt-2">
+        <app-input (input)="update()" [control]="form.get('code')" class="col-12" placeholder="Ex. 247"></app-input>
+      </div>
+    </app-fieldset>
+
+    <app-fieldset legend="Descrição" *ngIf="details?.length && data">
+      <div class="row m-0 mt-3" *ngFor="let row of details">
+        <app-input class="col-md" [id]="row.id1" [control]="form.get(row.id1)" [label]="row.label1" (input)="update()" [placeholder]="row.ex"></app-input>
+        <app-datalist *ngIf="row.id2" class="col-md" [id]="row.id2" [label]="row.label2" [control]="form.get(row.id2)" (selectionChange)="update()" [parse]="parse(data)" [source]="options"></app-datalist>
+      </div>
+    </app-fieldset>
+
+  </form>
+
+
+</div>
+<div mat-dialog-actions class="text-center">
+  <div class="text-left" *ngIf="data.type === 'post' && (historic?.preview || historic?.id)">
+    <strong>Resultado: </strong>
+    <span>{{ getPreview() }}</span>
+  </div>
+  <div class="container-fluid px-0 py-3 justify-content-between">
+    <button class="btn btn-light text-danger mx-2" [mat-dialog-close]>Cancelar</button>
+    <button class="btn btn-primary text-light mx-2" (click)="submit()" [disabled]="isPosting">{{ label }}</button>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { IChipGroupPattern, IChipGroupParcialPattern } from './patterns/IChipGroupPattern';
 import { ArrayUtils } from '@shared/utils/array.utils';
 
@@ -32,6 +32,10 @@ export class RuleChipGroupComponent implements OnInit {
   impositive: boolean[];
 
   ngOnInit(): void {
+    this.init();
+  }
+
+  public init() {
     this._parse();
     this.impositive = this.chipLists.map(() => false);
   }
@@ -114,7 +118,7 @@ export class RuleChipGroupComponent implements OnInit {
       let chipValue = [config.value];
 
       if (config.pattern.separators.length) {
-        chipValue = ArrayUtils.split(chipValue[0], ...config.pattern.separators);
+        chipValue = ArrayUtils.magicSplit(chipValue[0], ...config.pattern.separators).filter(el => el !== ' ');
       }
       if (config.pattern.treatment) {
         chipValue = chipValue.filter(chip => config.pattern.treatment(chip) !== null);

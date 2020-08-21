@@ -1,16 +1,16 @@
-input[type="button"], input[type="submit"] {
+input[type="button"], input[type="submit"], div.button-area {
   margin-top: 3vh;
   font-size: 80%;
 }
 
 @media (max-width: 1100px) {
-  input[type="button"], input[type="submit"] {
+  input[type="button"], input[type="submit"], button {
     width: 100%;
   }
 }
 
 @media (min-width: 1100px) {
-  input[type="button"], input[type="submit"] {
+  input[type="button"], input[type="submit"], button {
     width: 7vw;
   }
 }
@@ -54,4 +54,8 @@ span {
 
 .progress-bar {
   height: 13px;
+}
+
+.action-set {
+  margin: 14px 0 0 0 !important;
 }

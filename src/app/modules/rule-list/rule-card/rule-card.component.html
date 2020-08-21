@@ -1,13 +1,13 @@
-<div class="cont row m-0 w-100" *ngIf="rules && rules.regras && rules.regras.length">
+<div class="cont row m-0 w-100 mb-4 shadow-sm" *ngIf="rules && rules.regras && rules.regras.length">
 
   <div class="col-md-2 col-lg-2 col-xl-2 p-0 desktop" *ngIf="mustBeShown()">
-      <button class="red" (click)="close()" [matTooltip]="info.trash" matTooltipShowDelay="300" matTooltipHideDelay="500">
+      <button class="red" (click)="close()" [matTooltip]="info.trash">
         <i class="fad fa-trash-alt"></i>
       </button>
-      <button class="gray" (click)="cloning()" [matTooltip]="info.clone" matTooltipShowDelay="300" matTooltipHideDelay="500">
+      <button class="gray" (click)="cloning()" [matTooltip]="info.clone">
         <i class="fad fa-clone"></i>
       </button>
-      <button class="purple" (click)="openModal()" [matTooltip]="info.edit" matTooltipShowDelay="300" matTooltipHideDelay="500">
+      <button class="purple" (click)="openModal()" [matTooltip]="info.edit">
         <i class="fad fa-edit"></i>
       </button>
   </div>
@@ -32,19 +32,17 @@
 
   <div class="col-xl-2 col-lg-2 text-center">
     <app-vertial-align>
-      <strong [matTooltip]="rules.contaMovimento" matTooltipShowDelay="300" matTooltipHideDelay="500">{{ account }}</strong>
+      <strong [matTooltip]="rules.contaMovimento">{{ account }}</strong>
     </app-vertial-align>
   </div>
 
   <div class="col-xl-1 col-lg-1 p-0">
     <div class="row w-100 m-0 h-100">
       <div class="col-12 p-0 h-100">
-      <button class="w-50 h-10 text-primary border-left" (click)="down()" [matTooltip]="info.upDown" matTooltipShowDelay="300" matTooltipHideDelay="500"><i class="fal fa-chevron-down"></i></button>
-      <button class="w-50 h-10 text-primary border-left" (click)="up()" [matTooltip]="info.upAll" matTooltipShowDelay="300" matTooltipHideDelay="500"><i class="fal fa-chevron-up"></i></button>
+      <button class="w-50 h-10 text-primary border-left" (click)="down()" [matTooltip]="info.upDown"><i class="fal fa-chevron-down"></i></button>
+      <button class="w-50 h-10 text-primary border-left" (click)="up()" [matTooltip]="info.upAll"><i class="fal fa-chevron-up"></i></button>
       </div>
     </div>
-    <!-- <div class="row h-50 w-100 m-0"><i class="fal fa-chevron-up cursor-pointer cursor-pointer" (click)="up()" [matTooltip]="info.upAll" matTooltipShowDelay="300" matTooltipHideDelay="500"></i></div> -->
-    <!-- <div class="row h-50 w-100 m-0"><i class="fal fa-chevron-down cursor-pointer cursor-pointer" (click)="down()" [matTooltip]="info.upDown" matTooltipShowDelay="300" matTooltipHideDelay="500"></i></div> -->
   </div>
 
 </div>
