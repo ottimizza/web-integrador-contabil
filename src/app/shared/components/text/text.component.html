@@ -1,5 +1,5 @@
-<div class="text-area">
-  <span [ngClass]="{ 'text-bold': isBold }" [ngClass]="{ 'text-italic': isItalic }" [style]="deep">
+<div class="text-area d-inline-flex">
+  <span [class]="class" [style]="deep">
     <ng-content></ng-content>
   </span>
 </div>

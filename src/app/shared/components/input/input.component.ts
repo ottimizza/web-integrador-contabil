@@ -12,13 +12,12 @@ export class InputComponent {
   @Input() value = '';
   @Input() placeholder = '';
   @Input() label = '';
-  @Input() showLabel = true;
   @Input() control = new FormControl();
   @Input() deep = '';
 
-  @PropertyValidator() @Input() id: string;
+  @Input() id: string;
 
-  @Output() input = new EventEmitter<InputEvent>();
+  @Output() input = new EventEmitter<any>();
 
   public emit(e: InputEvent) {
     this.input.emit(e);

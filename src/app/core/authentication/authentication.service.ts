@@ -97,7 +97,7 @@ export class AuthenticationService {
           console.error(err);
           if (err.status === 403) {
             alert(
-              'Seu usuário não tem acesso a este produto! Se você acha que isto é um erro, entre em contato com seua administrador.'
+              'Seu usuário não tem acesso a este produto! Se você acha que isto é um erro, entre em contato com seu administrador.'
             );
             this.authorize();
           }

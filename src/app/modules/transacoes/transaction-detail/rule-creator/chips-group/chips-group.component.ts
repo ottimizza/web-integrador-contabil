@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { IChipGroupPattern, IChipGroupParcialPattern } from './patterns/IChipGroupPattern';
 import { ArrayUtils } from '@shared/utils/array.utils';
 
@@ -32,6 +32,10 @@ export class RuleChipGroupComponent implements OnInit {
   impositive: boolean[];
 
   ngOnInit(): void {
+    this.init();
+  }
+
+  public init() {
     this._parse();
     this.impositive = this.chipLists.map(() => false);
   }

@@ -49,13 +49,13 @@ export class TransactionDetailComponent implements OnInit {
   errorText2: string;
   errorText: string;
 
-  destroy: boolean;
   tabIsClicked = false;
 
   impact = 0;
   percentage = 0;
 
   isFetching = false;
+  rebuild = 0;
 
   total = 'Calculando...';
 
@@ -91,27 +91,12 @@ export class TransactionDetailComponent implements OnInit {
     }
   }
 
-  get suggestions() {
-    if (this.records.length > 0 && this.records[0].contaSugerida) {
-      const account = this.records[0].contaSugerida;
-        const array = account.split(',');
-        for (let i = 0; i < array.length; i++) {
-          if (array[i] === 'null' || array[i] === 'IGNORAR') {
-            array.splice(i, 1);
-          }
-        }
-        return array
-    } else {
-      return [];
-    }
-  }
-
   get info() {
     return {
       provider: 'A conta informada será aplicada para todas as ocorrências deste fornecedor e qualquer outro campo marcado será ignorado.',
       ok: 'Salvar a regra selecionada para uma conta contábil ou ignorar todos os lançamentos que se encaixem nesta regra.',
       info: 'Selecione os termos que justificam o lançamento ser vinculado a determinada conta ou ser ignorado.',
-      account: 'Insira neste campo, a conta relativa a este lançamento ou selecione uma das sugeridas.',
+      account: 'Insira neste campo, a conta relativa a este lançamento.',
       rule: 'A conta informada deve ser aplicada em todas as ocorrências das palavras selecionada.',
       ignore: 'Todos os lançamentos com as palavras selecionada serão ignorados.',
       affectedsOrientation: 'Lançamentos já parametrizados podem ser afetados',
@@ -267,10 +252,6 @@ export class TransactionDetailComponent implements OnInit {
     })
       .subscribe(() => {
         this._subsAndDisable(obs);
-        // if (result) {
-        //   this.disable();
-        // }
-
     });
   }
 
@@ -319,12 +300,13 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   public async requestEntry() {
-    this.records = null;
     this.resetErrors();
 
     const rs = await this.fetch();
     this.records = rs.records;
     this.pageInfo = rs.pageInfo;
+
+    this.reConstruct();
 
     this.calcPercentage();
 
@@ -334,12 +316,18 @@ export class TransactionDetailComponent implements OnInit {
     }
   }
 
-  public async proceed(animate = true) {
-    if (animate) {
-      this.destroy = true;
+  public async reConstruct() {
+    for (let i = 1; i < 7; i++) {
+      this.rebuild = i;
+      await new Promise(resolve => setTimeout(resolve, 1));
     }
+    this.rebuild = 0;
+  }
+
+  public async proceed() {
+    this.isFetching = true;
     await this.requestEntry();
-    this.destroy = false;
+    this.isFetching = false;
   }
 
 
@@ -358,14 +346,12 @@ export class TransactionDetailComponent implements OnInit {
   delete() {
     this.dialog.open(ConfirmDeleteDialogComponent, this.records[0].arquivo).subscribe(e => {
       if (e === 'deleted') {
-        this.proceed(false);
+        this.proceed();
       }
     });
   }
 
   fetch() {
-    this.isFetching = true;
-
     let tipoLancamento = 1;
     if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE') {
       tipoLancamento = 2;
@@ -378,7 +364,6 @@ export class TransactionDetailComponent implements OnInit {
     this._toast.showSnack('Aguardando lançamento...');
     return this._lancamentoService.getLancamentos(filter)
       .pipe(finalize(() => {
-        this.isFetching = false;
         this._toast.hideSnack();
       }))
       .toPromise();
