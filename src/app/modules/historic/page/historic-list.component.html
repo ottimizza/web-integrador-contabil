@@ -1,4 +1,5 @@
 <app-layout [buttons]="buttons()" (buttonClicked)="openDialog()">
+
   <app-tfilter (empresa)="onFilter($event)"></app-tfilter>
 
   <div *ngIf="company">

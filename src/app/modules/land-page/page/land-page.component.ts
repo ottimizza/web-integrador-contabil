@@ -21,7 +21,7 @@ export class LandPageComponent implements OnInit {
   }
 
   authenticate() {
-    localStorage.clear();
+    this.authenticationService.clearStorage();
     this.authenticationService.authorize();
   }
 

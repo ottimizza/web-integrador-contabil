@@ -15,42 +15,35 @@
 
     <div class="p-5 pt-0">
       <div class="row m-0 w-100">
-        <div class="col">
-          <span class="defaultSpan">Total de lançamentos: {{ total }}</span>
-        </div>
+        <app-text class="col">Total de lançamentos: {{ total }}</app-text>
       </div>
       <div class="row m-0 w-100 mb-4">
         <div class="col" *ngIf="impact > 0">
-          <span class="defaultSpan mt-3">Impacto: </span>
-          <span
-            (click)="openGrid()"
-            class="text-danger"
-            [matTooltip]="info.affecteds"
-            >{{ impact }}</span
-          >
-          <span class="font-weight-normal" (click)="openGrid()"> lançamentos.</span>
-          <i class="ml-2 fad fa-question-circle" [matTooltip]="info.affectedsOrientation"></i>
+          <app-text class="mt-3">Impacto: </app-text>
+          <app-text class="ml-1 cursor-pointer"(click)="openGrid()" color="danger" [matTooltip]="info.affecteds" bold="true" >{{ impact }}</app-text>
+          <app-text class="ml-1"(click)="openGrid()"> lançamentos.</app-text>
+          <app-icon class="ml-2" src="question-circle" [matTooltip]="info.affectedsOrientation"></app-icon>
         </div>
 
       </div>
       <app-card *ngIf="records && (records[0] || isFetching)">
         <app-card>
-          <app-card main="true" [destroy]="destroy">
+          <app-card main="true">
 
-            <div class="row text-center" *ngIf="isFetching"><br><br><br><i class="fad fa-spinner fa-4x p-0 m-auto rotate-constant"></i><br><br><br></div>
+            <div *ngIf="isFetching && !records?.length"><br><br><br><br><br><br><br><br></div>
 
             <div
               class="row m-0 mb-2"
               *ngIf="records[0]?.descricao || records[0]?.portador"
             >
-            <app-chips-group
-              *ngIf="records[0]?.descricao"
-              [config]="descricao()"
-              (clicked)="onDevolve($event)"
-              class="col"
-            ></app-chips-group>
               <app-chips-group
-                *ngIf="records[0]?.portador"
+                *ngIf="records[0]?.descricao && rebuild !== 1"
+                [config]="descricao()"
+                (clicked)="onDevolve($event)"
+                class="col"
+              ></app-chips-group>
+              <app-chips-group
+                *ngIf="records[0]?.portador && rebuild !== 2"
                 [config]="portador()"
                 (clicked)="onDevolve($event)"
                 class="col"
@@ -60,31 +53,31 @@
             <div
               class="row m-0 mb-2"
               *ngIf="
-                records[0]?.dataMovimento ||
+                (records[0]?.dataMovimento ||
                 records[0]?.valorOriginal ||
-                records[0]?.documento"
+                records[0]?.documento) "
             >
               <app-chips-group
-                *ngIf="records[0]?.dataMovimento"
+                *ngIf="records[0]?.dataMovimento && rebuild !== 3"
                 [config]="dataMovimento()"
                 (clicked)="onDevolve($event)"
                 class="col"
               ></app-chips-group>
               <app-chips-group
-                *ngIf="records[0]?.valorOriginal"
+                *ngIf="records[0]?.valorOriginal && rebuild !== 4"
                 [config]="valorOriginal()"
                 (clicked)="onDevolve($event)"
                 class="col"
               ></app-chips-group>
               <app-chips-group
-                *ngIf="records[0]?.documento"
+                *ngIf="records[0]?.documento && rebuild !== 5"
                 [config]="documento()"
                 (clicked)="onDevolve($event)"
                 class="col"
               ></app-chips-group>
             </div>
 
-            <div class="row m-0 mb-2" *ngIf="hasComplements && tipo == 'MOVIMENTO'">
+            <div class="row m-0 mb-2" *ngIf="hasComplements && tipo == 'MOVIMENTO' && rebuild !== 6">
               <app-chips-group
                 *ngIf="hasComplements"
                 [config]="complementos()"
@@ -93,7 +86,7 @@
               ></app-chips-group>
             </div>
 
-            <div class="row m-0 mb-2" *ngIf="records[0]?.complemento02 && records[0]?.arquivo.labelComplemento02 && records[0]?.complemento02.length > 1 && tipo == 'EXTRATO'">
+            <div class="row m-0 mb-2" *ngIf="records[0]?.complemento02 && records[0]?.arquivo.labelComplemento02 && records[0]?.complemento02.length > 1 && tipo == 'EXTRATO' && rebuild !== 7">
               <app-chips-group
                 [config]="complemento02()"
                 (clicked)="onDevolve($event)"
@@ -105,9 +98,9 @@
         </app-card>
       </app-card>
 
-      <div class="row mt-4 ml-3 text-danger">
-        <p *ngIf="errorText">{{ errorText }}</p>
-        <p *ngIf="errorText2">{{ errorText2 }}</p>
+      <div class="row mt-4 ml-3 d-block">
+        <app-comment type="danger" *ngIf="errorText">{{ errorText }}</app-comment>
+        <app-comment type="danger" *ngIf="errorText2">{{ errorText2 }}</app-comment>
       </div>
 
       <div
@@ -115,25 +108,11 @@
         *ngIf="records && records.length"
       >
         <div class="form-group col-md-5 col-lg-5 col-xl-5 mt-1">
-          <strong
-            class="account-field"
-            [matTooltip]="info.account"
-            >Conta:</strong
-          >
-          <input
-            list="suggestions"
-            type="text"
-            [(ngModel)]="account"
-            name="account"
-            [matTooltip]="info.account"
-          />
-          <datalist id="suggestions">
-            <option *ngFor="let s of suggestions" [value]="s"></option>
-          </datalist>
+          <app-input [control]="account" [matTooltip]="info.account" label="Conta"></app-input>
         </div>
 
         <div class="col-md-7 col-lg-7 col-xl-7">
-          <div class="row w-100 m-0">
+          <div class="row w-100 action-set">
             <input
               type="button"
               class="btn btn-primary col mx-2"

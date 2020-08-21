@@ -7,20 +7,27 @@ import { Component, Input } from '@angular/core';
 })
 export class TextComponent {
 
-  @Input() bold: string | boolean;
-  @Input() italic: string | boolean;
+  @Input() bold = false;
+  @Input() italic = false;
+
+  @Input() color: 'primary' | 'danger' | 'success' | 'info' | 'light' | 'secondary' | 'warning' | 'default' = 'default';
   @Input() deep = '';
 
-  public get isBold() {
-    return this.is(this.bold);
+
+  get class() {
+    let clazz = '';
+    if (this.bold) {
+      clazz += 'text-bold';
+    }
+    if (this.italic) {
+      clazz += ' text-italic';
+    }
+    clazz += ' ' + this.getColor();
+    return clazz;
   }
 
-  public get isItalic() {
-    return this.is(this.italic);
-  }
-
-  private is(option: string | boolean) {
-    return option === '' || option === true;
+  public getColor() {
+    return this.color === 'default' ? '' : `text-${this.color}`;
   }
 
 }

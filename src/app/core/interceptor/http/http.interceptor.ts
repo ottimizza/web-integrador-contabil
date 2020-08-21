@@ -4,7 +4,7 @@ import {
   HttpRequest,
   HttpErrorResponse,
   HttpHandler,
-  HttpEvent
+  HttpEvent,
 } from '@angular/common/http';
 
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
@@ -17,7 +17,8 @@ import { Router } from '@angular/router';
 export const HttpStatus = {
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
-  FORBIDDEN: 403
+  FORBIDDEN: 403,
+  NOT_FOUND: 404
 };
 
 @Injectable()
@@ -25,7 +26,9 @@ export class GlobalHttpInterceptor implements HttpInterceptor {
 
   private refreshTokenEmProgresso = false;
 
-  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
+    null
+  );
 
   constructor(private authenticationService: AuthenticationService, private router: Router) {
   }
@@ -141,8 +144,7 @@ export class GlobalHttpInterceptor implements HttpInterceptor {
 
   private id() {
     let state = '';
-    const possible =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (let i = 0; i < 16; i++) {
       state += possible.charAt(Math.floor(Math.random() * possible.length));
     }
