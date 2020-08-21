@@ -27,7 +27,7 @@ export class HistoricService {
     return this._http.get<GenericPageableResponse<FormattedHistoric>>([url, searchCriteria], 'Falha ao obter históricos!')
       .pipe(map(results => {
         results.records = results.records.map(rec => {
-          if (rec.historico.match(/\${+/g).length === 3) {
+          if (rec.historico.match(/\$\{.*?\}/g).length === 3) {
             rec.historico = rec.historico + ' ${nenhum}  ${nenhum} ';
           }
           return rec;

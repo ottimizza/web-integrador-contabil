@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PropertyValidator } from '@shared/decorators/validate.decorator';
 
@@ -12,6 +12,7 @@ export class InputComponent {
   @Input() value = '';
   @Input() placeholder = '';
   @Input() label = '';
+  @Input() showLabel = true;
   @Input() control = new FormControl();
   @Input() deep = '';
 

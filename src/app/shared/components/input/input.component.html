@@ -1,7 +1,8 @@
 <div class="input-area text-center">
-  <label [for]="id" *ngIf="label">{{ label }}</label>
+  <label [for]="id" *ngIf="label && showLabel">{{ label }}:</label>
   <input
-    class="w-100"
+    class="form-control"
+    autocomplete="off"
     type="text"
     [id]="id"
     [value]="value"

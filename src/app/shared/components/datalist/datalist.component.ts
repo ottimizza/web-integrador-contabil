@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatOptionSelectionChange } from '@angular/material';
+import { MatSelectChange, MatSelect } from '@angular/material';
 import { PropertyValidator } from '@shared/decorators/validate.decorator';
 
 @Component({
@@ -13,15 +13,17 @@ export class DatalistComponent {
   @Input() source: any[] = [];
   @Input() control = new FormControl();
   @Input() label = '';
+  @Input() showLabel = true;
   @Input() deep = '';
 
   @Input() parse: (src: any) => string;
 
   @PropertyValidator() @Input() id: string;
 
-  @Output() selectionChange = new EventEmitter<MatOptionSelectionChange>();
+  @Output() selectionChange = new EventEmitter<MatSelectChange>();
 
-  public emit(e: MatOptionSelectionChange) {
+  public emit(e: MatSelectChange) {
+    console.log(e);
     this.selectionChange.emit(e);
   }
 

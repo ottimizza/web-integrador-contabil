@@ -14,6 +14,10 @@ import { FieldSetModule } from './fieldset/fieldset.module';
 import { FieldSetComponent } from './fieldset/fieldset.component';
 import { CommentComponent } from './comment/comment.component';
 import { CommentModule } from './comment/comment.module';
+import { TextModule } from './text/text.module';
+import { TextComponent } from './text/text.component';
+import { IconModule } from './icon/icon.module';
+import { IconComponent } from './icon/icon.component';
 
 @NgModule({
   imports: [
@@ -24,7 +28,9 @@ import { CommentModule } from './comment/comment.module';
     InputModule,
     DatalistModule,
     FieldSetModule,
-    CommentModule
+    CommentModule,
+    TextModule,
+    IconModule
   ],
   exports: [
     VerticalAlignerComponent,
@@ -33,7 +39,9 @@ import { CommentModule } from './comment/comment.module';
     InputComponent,
     DatalistComponent,
     FieldSetComponent,
-    CommentComponent
+    CommentComponent,
+    TextComponent,
+    IconComponent
   ]
 })
 export class DesignSystemModule {}

@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>
-  <i class="fad fa-history text-info"></i>
+  <app-icon src="history" color="info"></app-icon>
   &nbsp;&nbsp; Histórico
 </h1>
 <div mat-dialog-content class="border-top border-bottom p-3 text-center">
@@ -15,7 +15,7 @@
 
     <app-fieldset legend="Descrição" *ngIf="details?.length && data">
       <div class="row m-0 mt-3" *ngFor="let row of details">
-        <app-input class="col-md" [id]="row.id1" [placeholder]="row.ex" [control]="form.get(row.id1)" [label]="row.label1 + ':'" (input)="update()"></app-input>
+        <app-input class="col-md" [id]="row.id1" [control]="form.get(row.id1)" [label]="row.label1" (input)="update()" [placeholder]="row.ex"></app-input>
         <app-datalist *ngIf="row.id2" class="col-md" [id]="row.id2" [label]="row.label2" [control]="form.get(row.id2)" (selectionChange)="update()" [parse]="parse(data)" [source]="options"></app-datalist>
       </div>
     </app-fieldset>
