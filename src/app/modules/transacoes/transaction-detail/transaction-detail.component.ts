@@ -26,6 +26,7 @@ import { DialogService, DialogWidth } from '@app/services/dialog.service';
 import { HistoricEditDialogComponent } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.component';
 import { FormattedHistoric } from '@shared/models/Historic';
 import { DateUtils } from '@shared/utils/date-utils';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-tdetail',
@@ -41,7 +42,7 @@ export class TransactionDetailComponent implements OnInit {
   records: Lancamento[] = [];
 
   conditions = new Rule();
-  account: string;
+  account = new FormControl();
 
   tipoMovimento = 'PAG';
   tipoLancamentoName: string;
@@ -134,14 +135,14 @@ export class TransactionDetailComponent implements OnInit {
       this.records[0].cnpjContabilidade,
       this.records[0].tipoLancamento,
       this.records[0].idRoteiro,
-      this.account
+      this.account.value
     );
   }
 
   regra() {
     const regra = this.ruleCreateFormat;
     const observable = this._ruleService.createRule(regra);
-    const verifications = [!!this.account?.length, this.conditions.verify()];
+    const verifications = [!!this.account?.value?.length, this.conditions.verify()];
     const errors = [
       'Para salvar uma regra você deve informar uma conta contábil.',
       'Para salvar uma regra você deve informar as condições da regra.'
@@ -159,8 +160,8 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   fornecedor() {
-    const observable = this._lancamentoService.saveAsDePara(this.records[0], this.account);
-    const verification = this.account && this.account.length > 0;
+    const observable = this._lancamentoService.saveAsDePara(this.records[0], this.account.value);
+    const verification = this.account && this.account.value.length > 0;
     const error = ['Para atrelar o lançamento à uma conta de fornecedor, você deve informar a conta.'];
     this._savePattern(observable, [verification], error);
   }
@@ -172,7 +173,7 @@ export class TransactionDetailComponent implements OnInit {
     if (verify) {
       if (rule) {
         this._historicService
-          .getHistoric(this.business, this.account, this.records[0].tipoLancamento)
+          .getHistoric(this.business, this.account.value, this.records[0].tipoLancamento)
           .subscribe(data => {
             if (!data.records.length) {
               this.openHistoric(obs);
@@ -244,7 +245,7 @@ export class TransactionDetailComponent implements OnInit {
     Object.assign(entry, { competencia: DateUtils.ymdToCompetence(entry.dataMovimento) });
     Object.assign(entry, { competenciaAnterior: DateUtils.lastCompetence(entry.competencia) })
 
-    const reference = new FormattedHistoric('', this.account, tipoLancamento, entry.idRoteiro, entry.cnpjEmpresa, entry.cnpjContabilidade);
+    const reference = new FormattedHistoric('', this.account.value, tipoLancamento, entry.idRoteiro, entry.cnpjEmpresa, entry.cnpjContabilidade);
     this.dialog.openComplexDialog(HistoricEditDialogComponent, DialogWidth.LARGE, {
       type: 'post',
       reference,
@@ -296,7 +297,7 @@ export class TransactionDetailComponent implements OnInit {
   private _partialDisable() {
     this.conditions = new Rule();
     this.getByRule();
-    this.account = null;
+    this.account.setValue('');
   }
 
   public async requestEntry() {

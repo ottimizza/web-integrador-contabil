@@ -108,7 +108,7 @@
         *ngIf="records && records.length"
       >
         <div class="form-group col-md-5 col-lg-5 col-xl-5 mt-1">
-          <app-input (input)="account = $event.target.value" [matTooltip]="info.account" label="Conta"></app-input>
+          <app-input [control]="account" [matTooltip]="info.account" label="Conta"></app-input>
         </div>
 
         <div class="col-md-7 col-lg-7 col-xl-7">
