@@ -270,6 +270,7 @@ export class TransactionDetailComponent implements OnInit {
         // if (result) {
         //   this.disable();
         // }
+
     });
   }
 
