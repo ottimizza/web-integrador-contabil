@@ -57,6 +57,8 @@ export class TransactionDetailComponent implements OnInit {
 
   isFetching = false;
 
+  total = 'Calculando...';
+
   currentUser: User;
 
   constructor(
@@ -290,6 +292,8 @@ export class TransactionDetailComponent implements OnInit {
       this.tabSelect.emit('true');
     }
 
+    this.total = 'Calculando...'
+
     this.pageInfo = PageInfo.defaultPageInfo();
     this.tipoMovimento = tipoMovimento;
     this.tipoLancamentoName = tipoLancamentoName;
@@ -321,9 +325,9 @@ export class TransactionDetailComponent implements OnInit {
     this.records = rs.records;
     this.pageInfo = rs.pageInfo;
 
-    if (this.records.length) {
-      this.calcPercentage();
-    } else {
+    this.calcPercentage();
+
+    if (!this.records.length) {
       this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa.`]);
       this.percentage = 100;
     }
@@ -387,6 +391,7 @@ export class TransactionDetailComponent implements OnInit {
       } else {
         this.percentage = 100;
       }
+      this.total = `${result.totalLancamentos || 0}`;
     });
   }
 
