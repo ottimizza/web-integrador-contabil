@@ -30,7 +30,7 @@ import { IconComponent } from './icon/icon.component';
     FieldSetModule,
     CommentModule,
     TextModule,
-    IconModule
+    IconModule,
   ],
   exports: [
     VerticalAlignerComponent,
@@ -41,7 +41,7 @@ import { IconComponent } from './icon/icon.component';
     FieldSetComponent,
     CommentComponent,
     TextComponent,
-    IconComponent
+    IconComponent,
   ]
 })
 export class DesignSystemModule {}

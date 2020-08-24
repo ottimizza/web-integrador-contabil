@@ -18,9 +18,14 @@ export class InputComponent {
   @Input() id: string;
 
   @Output() input = new EventEmitter<any>();
+  @Output() submit = new EventEmitter<any>();
 
-  public emit(e: InputEvent) {
+  public emitInput(e: any) {
     this.input.emit(e);
+  }
+
+  public emitSubmit(e: any) {
+    this.submit.emit(e);
   }
 
 }
