@@ -18,6 +18,10 @@ import { TextModule } from './text/text.module';
 import { TextComponent } from './text/text.component';
 import { IconModule } from './icon/icon.module';
 import { IconComponent } from './icon/icon.component';
+import { FlexModule } from './flex/flex.module.';
+import { ContainerComponent } from './flex/container/container.component';
+import { RowComponent } from './flex/row/row.component';
+import { ColumnDirective } from './flex/column/column.directive';
 
 @NgModule({
   imports: [
@@ -30,7 +34,8 @@ import { IconComponent } from './icon/icon.component';
     FieldSetModule,
     CommentModule,
     TextModule,
-    IconModule
+    IconModule,
+    FlexModule
   ],
   exports: [
     VerticalAlignerComponent,
@@ -41,7 +46,10 @@ import { IconComponent } from './icon/icon.component';
     FieldSetComponent,
     CommentComponent,
     TextComponent,
-    IconComponent
+    IconComponent,
+    ContainerComponent,
+    RowComponent,
+    ColumnDirective
   ]
 })
 export class DesignSystemModule {}
