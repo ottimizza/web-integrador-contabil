@@ -244,8 +244,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
     this.toast.hideSnack();
   }
 
-  onScroll(event: boolean) {
-    if (event && this.pageInfo.hasNext && !this.isFetching) {
+  onScroll() {
+    if (this.pageInfo.hasNext && !this.isFetching) {
       this.nextPage();
     }
   }

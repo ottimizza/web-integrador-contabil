@@ -1,4 +1,4 @@
-<app-layout [buttons]="buttons()" (buttonClicked)="onButton($event)" (scrollHasEnded)="onScroll($event)">
+<app-layout [buttons]="buttons()" (buttonClicked)="onButton($event)" (scrollHasEnded)="onScroll()">
   <!-- <app-actions *ngIf="business && rows.length" [buttons]="buttons" (clicked)="openConfirmation()"></app-actions> -->
 
   <div
@@ -52,6 +52,9 @@
         </div>
       </div>
     </div>
+
+    <button class="btn btn-secondary m-auto mb-3" mat-stroked-button *ngIf="pageInfo?.hasNext" [disabled]="isFetching" (click)="nextPage()">Próxima Página</button>
+
   </div>
 
 </app-layout>
