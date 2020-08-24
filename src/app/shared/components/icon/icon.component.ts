@@ -8,10 +8,10 @@ export class IconComponent {
 
   @Input() type: 'default' | 'solid' | 'regular' | 'light' | 'duotone' = 'duotone';
   @Input() color: 'primary' | 'danger' | 'success' | 'info' | 'light' | 'secondary' | 'warning' | 'default' = 'default';
-  @Input() src = 'icons-alt';
+  @Input() name = 'icons-alt';
 
   public get icon() {
-    return `fa-fw ${this.init} fa-${this.src} ${this.textColor}`;
+    return `fa-fw ${this.init} fa-${this.name} ${this.textColor}`;
   }
 
   private get textColor() {

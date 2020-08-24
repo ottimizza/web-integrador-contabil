@@ -9,5 +9,6 @@
     [placeholder]="placeholder"
     [formControl]="control"
     [style]="deep"
-    (input)="emit($event)">
+    (input)="emitInput($event)"
+    (keyup.enter)="emitSubmit($event)">
 </div>
