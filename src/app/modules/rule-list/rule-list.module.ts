@@ -15,12 +15,12 @@ import { RuleEditModalModule } from './rule-edit-modal/rule-edit-modal.module';
 import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
 import { ExportConfirmModalModule } from './export-confirm-modal/export-confirm-modal.module';
-import { FilterModule } from '@modules/transacoes/transaction-list/filter/filter.module';
 import { ScrollTrackerModule } from '@shared/directives/scroll-tracker.module';
 import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.module';
 import { ActionButtonsModule } from '@shared/components/button/button.module';
 import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-layout.module';
 import { RuleDeleteConfirmDialogComponent } from './rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
+import { FilterModule } from '@shared/components/filter/filter.module';
 
 @NgModule({
   declarations: [

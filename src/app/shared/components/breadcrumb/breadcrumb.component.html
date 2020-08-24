@@ -1,42 +1,32 @@
-<nav aria-label="breadcrumb" class="breadcrumb">
-  <div class="content-wrapper m-0 w-100">
-    <div class="container">
-      <ol class="breadcrumb m-0 p-0 d-none d-md-flex">
-        <li *ngFor="let breadcrumb of breadcrumbs" class="breadcrumb-item">
+<nav aria-label="breadcrumb" style="position: sticky; top: 0; z-index: 10;">
+  <div class="content m-0 w-100 mt-0 mb-0">
+    <div class="container p-0">
+
+      <ol class="bc d-flex row w-100 m-0">
+
+        <li *ngFor="let breadcrumb of breadcrumbs" class="p-4 mt-1 col-3 text-right d-none d-md-block">
           <a [routerLink]="[breadcrumb.url, breadcrumb.params]">
             <span class="d-md-inline-block">
-              {{ breadcrumb.label }}
+              {{ breadcrumb.label }} /
             </span>
           </a>
         </li>
-        <li *ngIf="append" class="breadcrumb-item">
-          <a [routerLink]="append.params ? [append.url, append.params] : [append.url]" class="">
+
+        <li class="col-md-6 text-center">
+          <app-tfilter (empresa)="companySelected.emit($event)"></app-tfilter>
+        </li>
+
+        <li *ngIf="append" class="p-4 mt-1 col-3 text-left d-none d-md-block">
+          <a [routerLink]="append?.url">
             <span class="d-md-inline-block">
-              {{ append.label }}
+              / {{ append.label }}
             </span>
           </a>
         </li>
+
       </ol>
 
-      <ol class="breadcrumb m-0 p-0 d-flex d-md-none">
-        <li class="breadcrumb-item">
-          <a
-            *ngIf="breadcrumbs.length > 1; else inicio"
-            [routerLink]="route"
-          >
-            <span>
-              Voltar
-            </span>
-          </a>
-          <ng-template #inicio>
-            <a>
-              <span>
-                Início
-              </span>
-            </a>
-          </ng-template>
-        </li>
-      </ol>
+
     </div>
   </div>
 </nav>

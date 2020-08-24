@@ -1,6 +1,4 @@
-<app-layout [buttons]="buttons()" (buttonClicked)="openDialog()">
-
-  <app-tfilter (empresa)="onFilter($event)"></app-tfilter>
+<app-layout [buttons]="buttons()" (buttonClicked)="openDialog()" (companySelected)="onFilter($event)" [breadcrumbAppend]="append">
 
   <div *ngIf="company">
     <div class="card">

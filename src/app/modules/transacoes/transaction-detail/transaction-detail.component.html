@@ -26,9 +26,9 @@
         </div>
 
       </div>
-      <app-card *ngIf="records && (records[0] || isFetching)">
-        <app-card>
-          <app-card main="true">
+      <app-card *ngIf="records && (records[0] || isFetching)" [main]="false">
+        <app-card [main]="false">
+          <app-card>
 
             <div *ngIf="isFetching && !records?.length"><br><br><br><br><br><br><br><br></div>
 

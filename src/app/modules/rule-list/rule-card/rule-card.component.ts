@@ -18,7 +18,7 @@ export class RuleCardComponent {
   @Output() upAll: EventEmitter<number> = new EventEmitter();
   @Output() delete: EventEmitter<number> = new EventEmitter();
   @Output() update: EventEmitter<string> = new EventEmitter();
-  @Output() clone: EventEmitter<{ rule: RuleCreateFormat, position: number }> = new EventEmitter();
+  @Output() clone: EventEmitter<CompleteRule> = new EventEmitter();
 
   haveToBeShown = false;
 
@@ -74,17 +74,7 @@ export class RuleCardComponent {
     this.rules.regras.forEach(r => {
       regras.push({ campo: r.campo, condicao: r.condicao, valor: r.valor });
     });
-    this.clone.emit({
-      rule: new RuleCreateFormat(
-        regras,
-        this.rules.cnpjEmpresa,
-        this.rules.cnpjContabilidade,
-        this.rules.tipoLancamento,
-        this.rules.idRoteiro,
-        this.rules.contaMovimento
-      ),
-      position: this.rules.posicao
-    });
+    this.clone.emit(this.rules);
     this.haveToBeShown = false;
   }
 

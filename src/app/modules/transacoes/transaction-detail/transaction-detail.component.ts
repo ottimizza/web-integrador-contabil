@@ -259,27 +259,27 @@ export class TransactionDetailComponent implements OnInit {
   onTab(event: MatTabChangeEvent, isFirst: boolean) {
     const id = event.index;
     if (id === 0) {
-      this.tabsPattern('PAG', 'pagamentos', isFirst);
+      this.tabsPattern('PAG', 'Pagamentos', isFirst);
     } else if (id === 1) {
-      this.tabsPattern('EXDEB', 'extratos de débitos', isFirst);
+      this.tabsPattern('EXDEB', 'Extratos de Débitos', isFirst);
     } else if (id === 2) {
-      this.tabsPattern('REC', 'recebimentos', isFirst);
+      this.tabsPattern('REC', 'Recebimentos', isFirst);
     } else if (id === 3) {
-      this.tabsPattern('EXCRE', 'extratos de créditos', isFirst);
+      this.tabsPattern('EXCRE', 'Extratos de Créditos', isFirst);
     }
   }
 
   tabsPattern(tipoMovimento: string, tipoLancamentoName: string, isFirst: boolean) {
     if (!isFirst) {
       this.tabIsClicked = true;
-      this.tabSelect.emit('true');
     }
+    this.tabSelect.emit(tipoLancamentoName);
 
     this.total = 'Calculando...'
 
     this.pageInfo = PageInfo.defaultPageInfo();
     this.tipoMovimento = tipoMovimento;
-    this.tipoLancamentoName = tipoLancamentoName;
+    this.tipoLancamentoName = tipoLancamentoName.toLowerCase();
     this.resetErrors();
     this._partialDisable();
     this.getByRule();

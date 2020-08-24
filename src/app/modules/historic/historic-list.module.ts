@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { CardModule } from '@shared/components/card/card.module';
 import { MatTooltipModule, MatDialogModule, MatSnackBarModule, MatTabsModule, MatButtonModule, MatProgressBarModule } from '@angular/material';
 import { InfoModule } from '@shared/components/info/info.module';
-import { FilterModule } from '@modules/transacoes/transaction-list/filter/filter.module';
 import { RuleEditModalModule } from '@modules/rule-list/rule-edit-modal/rule-edit-modal.module';
 import { ExportConfirmModalModule } from '@modules/rule-list/export-confirm-modal/export-confirm-modal.module';
 import { ScrollTrackerModule } from '@shared/directives/scroll-tracker.module';
@@ -19,6 +18,7 @@ import { RuleDeleteConfirmDialogComponent } from '@modules/rule-list/rule-delete
 import { HistoricEditDialogModule } from './dialogs/historic-edit-dialog/historic-edit-dialog.module';
 import { HistoricEditDialogComponent } from './dialogs/historic-edit-dialog/historic-edit-dialog.component';
 import { ShimmerModule } from '@shared/components/shimmer/shimmer.module';
+import { FilterModule } from '@shared/components/filter/filter.module';
 
 @NgModule({
   declarations: [

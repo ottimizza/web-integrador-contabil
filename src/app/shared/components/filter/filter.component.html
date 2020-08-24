@@ -1,0 +1,14 @@
+<div class="filterBox mb-4 mt-4">
+  <form>
+    <input (keyup.enter)="confirm(business[0])" type="text" (input)="onInput($event.target)" #company [matAutocomplete]="auto" autocomplete="off" placeholder="Filtro" [matTooltip]="info">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="select($event)">
+      <mat-option *ngFor="let company of business" [value]="company" [matTooltip]="(getErp(company.codigoERP) + company.razaoSocial).trim() + ': ' + company.cnpj">
+        {{ getErp(company.codigoERP) + company.razaoSocial }}
+      </mat-option>
+    </mat-autocomplete>
+
+    <button (click)="clear()">
+      <app-icon type="far" name="times" color="danger"></app-icon>
+    </button>
+  </form>
+</div>

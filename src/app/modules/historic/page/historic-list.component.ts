@@ -10,6 +10,7 @@ import { ExportService } from '@app/services/export.service';
 import { FormattedHistoric } from '@shared/models/Historic';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { HistoricService } from '@shared/services/historic.service';
+import { BreadCrumb } from '@shared/components/breadcrumb/breadcrumb.component';
 
 @Component({
   templateUrl: './historic-list.component.html',
@@ -28,6 +29,8 @@ export class HistoricListComponent implements OnInit {
 
   records: FormattedHistoric[] = [];
   pageInfo = new PageInfo({ pageIndex: -1, hasNext: true });
+
+  append: BreadCrumb;
 
   constructor(
     private toast: ToastService,
@@ -57,6 +60,7 @@ export class HistoricListComponent implements OnInit {
   public reset() {
     this.pageInfo = new PageInfo({ pageIndex: -1, hasNext: true });
     this.records = [];
+    this.append = { label: this.entryType === 1 ? 'Pagamentos' : 'Recebimentos', url: '/historicos' };
     this.fetch();
   }
 

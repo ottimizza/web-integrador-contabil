@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Empresa } from '@shared/models/Empresa';
+import { BreadCrumb } from '@shared/components/breadcrumb/breadcrumb.component';
 
 @Component({
     templateUrl: './transaction-list.component.html',
@@ -8,7 +9,7 @@ import { Empresa } from '@shared/models/Empresa';
 export class TransactionListComponent {
 
   business: Empresa;
-  tabIsSelected = false;
+  append: BreadCrumb;
 
   get info() {
     return {
@@ -23,10 +24,11 @@ export class TransactionListComponent {
     this.business = JSON.parse(event);
   }
 
-  onSelect(event: any) {
-    if (event === 'true') {
-      this.tabIsSelected = true;
-    }
+  onSelect(event: string) {
+    this.append = {
+      label: event,
+      url: '/'
+    };
   }
 
 }
