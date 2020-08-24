@@ -95,16 +95,21 @@ export class HistoricEditDialogComponent implements OnInit {
 
   public update() {
     const get = (formControl: string) => {
+      this.form.get(formControl).setValue(this.form.get(formControl).value);
+      return this.form.get(formControl).value;
+    };
+
+    const getUpperCase = (formControl: string) => {
       this.form.get(formControl).setValue((this.form.get(formControl).value || '').toUpperCase());
       return this.form.get(formControl).value;
     };
 
-    this.historic.id = get('code').toUpperCase();
-    this.historic.com1 = get('historicText1');
-    this.historic.com2 = get('historicText2');
-    this.historic.com3 = get('historicText3');
-    this.historic.com4 = get('historicText4');
-    this.historic.com5 = get('historicText5');
+    this.historic.id = getUpperCase('code').toUpperCase();
+    this.historic.com1 = getUpperCase('historicText1');
+    this.historic.com2 = getUpperCase('historicText2');
+    this.historic.com3 = getUpperCase('historicText3');
+    this.historic.com4 = getUpperCase('historicText4');
+    this.historic.com5 = getUpperCase('historicText5');
     this.historic.field1.field = get('historicField1');
     this.historic.field2.field = get('historicField2');
     this.historic.field3.field = get('historicField3');
