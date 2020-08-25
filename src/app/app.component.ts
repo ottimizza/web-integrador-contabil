@@ -6,6 +6,7 @@ import { MessagingService } from '@app/services/messaging.service';
 import { LoggerUtils } from '@shared/utils/logger.utills';
 import { User } from '@shared/models/User';
 import { Historic } from '@shared/models/Historic';
+import { environment } from '@env';
 
 @Component({
   selector: 'app-root',
@@ -43,6 +44,15 @@ export class AppComponent implements OnInit {
   public ngOnInit() {
     this.messagingService.receiveMessage();
     this.messagingService.currentMessage.subscribe(msg => LoggerUtils.log(msg));
+    this.setVariables();
+  }
+
+  private setVariables() {
+    const theme = environment.theme;
+    this.document.documentElement.style.setProperty('--primary-color', theme.primaryColor);
+    this.document.documentElement.style.setProperty('--secondary-color', theme.secondaryColor);
+    this.document.documentElement.style.setProperty('--primary-accent', theme.primaryAccent);
+    this.document.documentElement.style.setProperty('--dark', theme.dark);
   }
 
 }

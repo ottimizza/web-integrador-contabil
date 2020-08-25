@@ -1,0 +1,30 @@
+<form [formGroup]="form" class="form-body">
+  <div class="form-group m-0">
+    <div class="input-group w-100">
+      <div class="input-group-prepend">
+        <span (click)="show(input);" class="input-group-text">
+          <i class="far fa-sliders-h"></i>
+        </span>
+      </div>
+      <input #input [matAutocomplete]="auto" class="form-control" formControlName="search" placeholder="Buscar">
+      <div class="input-group-append">
+        <span *ngIf="!isFetching  && options.length === 0" class="input-group-text bg-white">
+          <i class="fal fa-search"></i>
+        </span>
+        <span *ngIf="isFetching" class="input-group-text bg-white">
+          <i class="fal fa-spinner-third fa-spin"></i>
+        </span>
+        <span *ngIf="!isFetching && options.length > 0" (click)="clear()"
+          class="input-group-text cursor-pointer bg-white text-danger">
+          <i class="fad fa-times "></i>
+        </span>
+      </div>
+    </div>
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of options" (onSelectionChange)="apply(option)">
+        <span>{{ option.description }}</span>
+      </mat-option>
+    </mat-autocomplete>
+    <br>
+  </div>
+</form>

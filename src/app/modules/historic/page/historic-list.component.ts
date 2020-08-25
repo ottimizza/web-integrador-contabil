@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '@shared/models/User';
 import { ActionButton } from '@shared/components/button/button.component';
 import { ExportConfirmModalComponent } from '@modules/rule-list/export-confirm-modal/export-confirm-modal.component';
-import { Organization } from '@shared/models/Organization';
-import { MatDialog, MatTabChangeEvent } from '@angular/material';
+import { MatTabChangeEvent } from '@angular/material';
 import { ToastService } from '@shared/services/toast.service';
 import { Empresa } from '@shared/models/Empresa';
 import { ExportService } from '@app/services/export.service';
@@ -11,6 +10,7 @@ import { FormattedHistoric } from '@shared/models/Historic';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { HistoricService } from '@shared/services/historic.service';
 import { BreadCrumb } from '@shared/components/breadcrumb/breadcrumb.component';
+import { DialogService } from '@app/services/dialog.service';
 
 @Component({
   templateUrl: './historic-list.component.html',
@@ -34,7 +34,7 @@ export class HistoricListComponent implements OnInit {
 
   constructor(
     private toast: ToastService,
-    private dialog: MatDialog,
+    private dialog: DialogService,
     private service: HistoricService,
     private exportService: ExportService
   ) {}
@@ -44,6 +44,8 @@ export class HistoricListComponent implements OnInit {
   }
 
   public onChangeDetected(id: number) {
+    const index = this.records.map(hist => hist.id).indexOf(id);
+    this.records.splice(index, 1);
     this.toast.show('Histórico excluído com sucesso!', 'success');
   }
 
@@ -79,12 +81,8 @@ export class HistoricListComponent implements OnInit {
     if (this.currentUser.type !== 0) {
       return;
     }
-    const dialogRef = this.dialog.open(ExportConfirmModalComponent, {
-      data: this.company || {},
-      maxWidth: '596px'
-    });
-
-    dialogRef.afterClosed().subscribe(results => {
+    this.dialog.open(ExportConfirmModalComponent, this.company || {})
+    .subscribe(results => {
       if (results) {
         this.export();
       } else {

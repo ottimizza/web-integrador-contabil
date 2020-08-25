@@ -39,7 +39,7 @@ export class TransactionDetailComponent implements OnInit {
   @Input() business: Empresa;
 
   pageInfo = PageInfo.defaultPageInfo();
-  records: Lancamento[] = [];
+  entry: Lancamento;
 
   conditions = new Rule();
   account = new FormControl();
@@ -106,7 +106,7 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   get hasComplements() {
-    const l: any = this.records[0] || {};
+    const l: any = this.entry || {};
     const a = l.arquivo;
     return !!((l.complemento01 && a.labelComplemento01) ||
             (l.complemento02 && a.labelComplemento02) ||
@@ -132,14 +132,19 @@ export class TransactionDetailComponent implements OnInit {
     return new RuleCreateFormat(
       this.conditions.rules,
       this.business.cnpj,
-      this.records[0].cnpjContabilidade,
-      this.records[0].tipoLancamento,
-      this.records[0].idRoteiro,
+      this.entry.cnpjContabilidade,
+      this.entry.tipoLancamento,
+      this.entry.idRoteiro,
       this.account.value
     );
   }
 
   regra() {
+    if (this.ruleCreateFormat.regras.length > 7) {
+      console.log(this.ruleCreateFormat);
+      this.errorText = 'Você não pode salvar uma regra com mais de 5 cláusolas!';
+      return;
+    }
     const regra = this.ruleCreateFormat;
     const observable = this._ruleService.createRule(regra);
     const verifications = [!!this.account?.value?.length, this.conditions.verify()];
@@ -151,6 +156,10 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   ignorar() {
+    if (this.ruleCreateFormat.regras.length > 7) {
+      this.errorText = 'Você não pode salvar uma regra com mais de 5 cláusolas!';
+      return;
+    }
     const regra = this.ruleCreateFormat;
     regra.contaMovimento = 'IGNORAR';
     const observable = this._ruleService.createRule(regra);
@@ -160,7 +169,7 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   fornecedor() {
-    const observable = this._lancamentoService.saveAsDePara(this.records[0], this.account.value);
+    const observable = this._lancamentoService.saveAsDePara(this.entry, this.account.value);
     const verification = this.account && this.account.value.length > 0;
     const error = ['Para atrelar o lançamento à uma conta de fornecedor, você deve informar a conta.'];
     this._savePattern(observable, [verification], error);
@@ -173,7 +182,7 @@ export class TransactionDetailComponent implements OnInit {
     if (verify) {
       if (rule) {
         this._historicService
-          .getHistoric(this.business, this.account.value, this.records[0].tipoLancamento)
+          .getHistoric(this.business, this.account.value, this.entry.tipoLancamento)
           .subscribe(data => {
             if (!data.records.length) {
               this.openHistoric(obs);
@@ -201,8 +210,8 @@ export class TransactionDetailComponent implements OnInit {
 
   onDevolve(events: { title: string, selecteds: string[] }[]) {
 
-    this.conditions.tipoPlanilha = [this.records[0].tipoPlanilha];
-    this.conditions.tipoMovimento = [this.records[0].tipoMovimento];
+    this.conditions.tipoPlanilha = [this.entry.tipoPlanilha];
+    this.conditions.tipoMovimento = [this.entry.tipoMovimento];
 
     events.forEach(event => {
       this.conditions[event.title] = event.selecteds.length ? event.selecteds : undefined;
@@ -241,7 +250,7 @@ export class TransactionDetailComponent implements OnInit {
       tipoLancamento = 2;
     }
 
-    const entry: any = this.records[0];
+    const entry: any = this.entry;
     Object.assign(entry, { competencia: DateUtils.ymdToCompetence(entry.dataMovimento) });
     Object.assign(entry, { competenciaAnterior: DateUtils.lastCompetence(entry.competencia) })
 
@@ -304,14 +313,14 @@ export class TransactionDetailComponent implements OnInit {
     this.resetErrors();
 
     const rs = await this.fetch();
-    this.records = rs.records;
+    this.entry = rs.records[0];
     this.pageInfo = rs.pageInfo;
 
     this.reConstruct();
 
     this.calcPercentage();
 
-    if (!this.records.length) {
+    if (!this.entry) {
       this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa.`]);
       this.percentage = 100;
     }
@@ -345,7 +354,7 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   delete() {
-    this.dialog.open(ConfirmDeleteDialogComponent, this.records[0].arquivo).subscribe(e => {
+    this.dialog.open(ConfirmDeleteDialogComponent, this.entry.arquivo).subscribe(e => {
       if (e === 'deleted') {
         this.proceed();
       }
@@ -391,7 +400,7 @@ export class TransactionDetailComponent implements OnInit {
           key: 'descricao',
           label: this.buttonLabel,
           pattern: DEFAULT_CHIP_PATTERN,
-          value: this.records[0].descricao
+          value: this.entry.descricao
         }
       ]
     };
@@ -406,7 +415,7 @@ export class TransactionDetailComponent implements OnInit {
           key: 'portador',
           label: 'Banco',
           pattern: DEFAULT_CHIP_PATTERN,
-          value: this.records[0].portador
+          value: this.entry.portador
         }
       ]
     };
@@ -421,7 +430,7 @@ export class TransactionDetailComponent implements OnInit {
           key: 'dataMovimento',
           label: 'Data',
           pattern: DATE_CHIP_PATTERN,
-          value: this.records[0].dataMovimento
+          value: this.entry.dataMovimento
         }
       ]
     };
@@ -436,7 +445,7 @@ export class TransactionDetailComponent implements OnInit {
           key: 'valorOriginal',
           label: 'Valor',
           pattern: VALUE_CHIP_PATTERN,
-          value: `${this.records[0].valorOriginal}`
+          value: `${this.entry.valorOriginal}`
         }
       ]
     };
@@ -451,7 +460,7 @@ export class TransactionDetailComponent implements OnInit {
           key: 'documento',
           label: 'Documento',
           pattern: DEFAULT_CHIP_PATTERN,
-          value: this.records[0].documento
+          value: this.entry.documento
         }
       ]
     };
@@ -464,33 +473,33 @@ export class TransactionDetailComponent implements OnInit {
       values: [
         {
           key: 'complemento01',
-          label: this.records[0].arquivo.labelComplemento01,
+          label: this.entry.arquivo.labelComplemento01,
           pattern: DEFAULT_CHIP_PATTERN,
-          value: this.records[0].complemento01
+          value: this.entry.complemento01
         },
         {
           key: 'complemento02',
-          label: this.records[0].arquivo.labelComplemento02,
+          label: this.entry.arquivo.labelComplemento02,
           pattern: DEFAULT_CHIP_PATTERN,
-          value: this.records[0].complemento02
+          value: this.entry.complemento02
         },
         {
           key: 'complemento03',
-          label: this.records[0].arquivo.labelComplemento03,
+          label: this.entry.arquivo.labelComplemento03,
           pattern: DEFAULT_CHIP_PATTERN,
-          value: this.records[0].complemento03
+          value: this.entry.complemento03
         },
         {
           key: 'complemento04',
-          label: this.records[0].arquivo.labelComplemento04,
+          label: this.entry.arquivo.labelComplemento04,
           pattern: DEFAULT_CHIP_PATTERN,
-          value: this.records[0].complemento04
+          value: this.entry.complemento04
         },
         {
           key: 'complemento05',
-          label: this.records[0].arquivo.labelComplemento05,
+          label: this.entry.arquivo.labelComplemento05,
           pattern: DEFAULT_CHIP_PATTERN,
-          value: this.records[0].complemento05
+          value: this.entry.complemento05
         }
       ]
     };
@@ -499,13 +508,13 @@ export class TransactionDetailComponent implements OnInit {
   complemento02(): RuleConfig {
     return {
       selectable: true,
-      title: this.records[0].arquivo.labelComplemento02,
+      title: this.entry.arquivo.labelComplemento02,
       values: [
         {
           key: 'complemento02',
-          label: this.records[0].arquivo.labelComplemento02,
+          label: this.entry.arquivo.labelComplemento02,
           pattern: DEFAULT_CHIP_PATTERN,
-          value: this.records[0].complemento02
+          value: this.entry.complemento02
         }
       ]
     };

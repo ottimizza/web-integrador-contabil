@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MessagingService } from '@app/services/messaging.service';
 import { environment } from '@env';
+import { DialogService } from '@app/services/dialog.service';
+import { SigninAsDialogComponent } from '@shared/components/dialogs/signin-as-dialog/signin-as-dialog.component';
 // import { OverlayContainer } from '@angular/cdk/overlay';
 
 // import { ThemeService } from '@app/service/theme.service';
@@ -26,7 +28,7 @@ export class NavbarLayoutComponent implements OnInit {
 
   constructor(
     @Inject(DOCUMENT) public document: Document,
-    public dialog: MatDialog,
+    public dialog: DialogService,
     public router: Router,
     public storageService: StorageService,
     public authorizationService: AuthenticationService,
@@ -58,12 +60,6 @@ export class NavbarLayoutComponent implements OnInit {
 
   public logout() {
     this.router.navigate(['auth', 'logout']);
-    // this.authorizationService.revokeToken().subscribe((r1: any) => {
-    //   this.authorizationService.clearStorage();
-    //   return this.authorizationService.logout().subscribe((r2: any) => {
-    //     this.authorizationService.authorize();
-    //   });
-    // });
   }
 
   allowNotifications() {
@@ -83,5 +79,9 @@ export class NavbarLayoutComponent implements OnInit {
       const avatar = this.currentUser.organization.avatar;
       this.logo = (avatar) ? avatar : this.DEFAULT_LOGO;
     }
+  }
+
+  openSiginAsModal() {
+    this.dialog.open(SigninAsDialogComponent);
   }
 }
