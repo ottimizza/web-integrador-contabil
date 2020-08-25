@@ -7,17 +7,9 @@ export class DialogWidth {
 
   constructor(public size: string) {}
 
-  public static get DEFAULT() {
-    return new DialogWidth('596px');
-  }
-
-  public static get LARGE() {
-    return new DialogWidth('800px');
-  }
-
-  public static get EXTRA_LARGE() {
-    return new DialogWidth('80%');
-  }
+  public static readonly DEFAULT = new DialogWidth('596px');
+  public static readonly LARGE = new DialogWidth('800px');
+  public static readonly EXTRA_LARGE = new DialogWidth('80%');
 }
 
 @Injectable({ providedIn: 'root' })

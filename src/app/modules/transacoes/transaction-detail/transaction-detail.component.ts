@@ -327,7 +327,7 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   public async reConstruct() {
-    for (let i = 1; i < 7; i++) {
+    for (let i = 1; i < 8; i++) {
       this.rebuild = i;
       await new Promise(resolve => setTimeout(resolve, 1));
     }

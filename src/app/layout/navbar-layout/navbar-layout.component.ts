@@ -82,6 +82,10 @@ export class NavbarLayoutComponent implements OnInit {
   }
 
   openSiginAsModal() {
-    this.dialog.open(SigninAsDialogComponent);
+    this.dialog.open(SigninAsDialogComponent).subscribe(result => {
+      if (result) {
+        window.location.href = window.location.href;
+      }
+    });
   }
 }
