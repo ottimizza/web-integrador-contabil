@@ -15,7 +15,7 @@ function createEnvironementFile() {
   storageAccountingId: '${getEnvironmentVariable('STORAGE_ACCOUNTING_ID', 'ottimizza')}',
   portalBaseUrl: '${getEnvironmentVariable('PORTAL_BASE_URL')}',
   supportUrl: '${getEnvironmentVariable('SUPPORT_URL', 'https://suporte.ottimizza.com.br')}',
-  theme: ${getEnvironmentVariable('THEME', '{"primaryColor":"#004ecb","secondaryColor":"#ff8a00","primaryAccent":"#0081bf","dark":"#373435"}')}
+  theme: ${getEnvironmentVariable('THEME', '{"primaryColor":"#004ecb","secondaryColor":"#ff8a00","primaryAccent":"#0081bf","dark":"#373435"}')},
   firebase: ${getEnvironmentVariable('FIREBASE')}
 };`;
 }
