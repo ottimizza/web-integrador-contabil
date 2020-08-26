@@ -318,7 +318,7 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   public async reConstruct() {
-    for (let i = 1; i < 7; i++) {
+    for (let i = 1; i < 8; i++) {
       this.rebuild = i;
       await new Promise(resolve => setTimeout(resolve, 1));
     }
@@ -499,11 +499,11 @@ export class TransactionDetailComponent implements OnInit {
   complemento02(): RuleConfig {
     return {
       selectable: true,
-      title: this.records[0].arquivo.labelComplemento02,
+      title: 'Complemento',
       values: [
         {
           key: 'complemento02',
-          label: this.records[0].arquivo.labelComplemento02,
+          label: 'Complemento',
           pattern: DEFAULT_CHIP_PATTERN,
           value: this.records[0].complemento02
         }
