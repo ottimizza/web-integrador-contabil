@@ -17,10 +17,10 @@ import { ExportConfirmModalComponent } from './export-confirm-modal/export-confi
 import { ExportConfirmModalModule } from './export-confirm-modal/export-confirm-modal.module';
 import { ScrollTrackerModule } from '@shared/directives/scroll-tracker.module';
 import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.module';
-import { ActionButtonsModule } from '@shared/components/button/button.module';
 import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-layout.module';
 import { RuleDeleteConfirmDialogComponent } from './rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
 import { FilterModule } from '@shared/components/filter/filter.module';
+import { ActionButtonsModule } from '@shared/components/action-buttons/action-buttons.module';
 
 @NgModule({
   declarations: [

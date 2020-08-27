@@ -374,6 +374,7 @@ export class TransactionDetailComponent implements OnInit {
     this._toast.showSnack('Aguardando lançamento...');
     return this._lancamentoService.getLancamentos(filter)
       .pipe(finalize(() => {
+        this.conditions = new Rule();
         this._toast.hideSnack();
       }))
       .toPromise();
@@ -508,11 +509,11 @@ export class TransactionDetailComponent implements OnInit {
   complemento02(): RuleConfig {
     return {
       selectable: true,
-      title: this.entry.arquivo.labelComplemento02,
+      title: 'Complemento',
       values: [
         {
           key: 'complemento02',
-          label: this.entry.arquivo.labelComplemento02,
+          label: 'Complemento',
           pattern: DEFAULT_CHIP_PATTERN,
           value: this.entry.complemento02
         }

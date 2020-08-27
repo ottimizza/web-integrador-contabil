@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-icon',
@@ -10,7 +10,8 @@ export class IconComponent {
   @Input() color: 'primary' | 'danger' | 'success' | 'info' | 'light' | 'secondary' | 'warning' | 'default' = 'default';
   @Input() name = 'icons-alt';
 
-  public get icon() {
+
+  icon() {
     return `fa-fw ${this.init} fa-${this.name} ${this.textColor}`;
   }
 

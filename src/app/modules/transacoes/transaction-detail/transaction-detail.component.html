@@ -22,7 +22,7 @@
           <app-text class="mt-3">Impacto: </app-text>
           <app-text class="ml-1 cursor-pointer"(click)="openGrid()" color="danger" [matTooltip]="info.affecteds" bold="true" >{{ impact }}</app-text>
           <app-text class="ml-1"(click)="openGrid()"> lançamentos.</app-text>
-          <app-icon class="ml-2" name="question-circle" [matTooltip]="info.affectedsOrientation"></app-icon>
+          <app-icon class="ml-2" [matTooltip]="info.affectedsOrientation" name="question-circle"></app-icon>
         </div>
 
       </div>

@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
     this.document.documentElement.style.setProperty('--primary-color', theme.primaryColor);
     this.document.documentElement.style.setProperty('--secondary-color', theme.secondaryColor);
     this.document.documentElement.style.setProperty('--primary-accent', theme.primaryAccent);
-    this.document.documentElement.style.setProperty('--dark', theme.dark);
+    this.document.documentElement.style.setProperty('--dark-legacy', theme.dark);
   }
 
 }

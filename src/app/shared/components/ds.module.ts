@@ -18,6 +18,10 @@ import { TextModule } from './text/text.module';
 import { TextComponent } from './text/text.component';
 import { IconModule } from './icon/icon.module';
 import { IconComponent } from './icon/icon.component';
+import { TitleModule } from './title/title.module';
+import { TitleComponent } from './title/title.component';
+import { ButtonModule } from './button/button.module';
+import { ButtonComponent } from './button/button.component';
 
 @NgModule({
   imports: [
@@ -31,6 +35,8 @@ import { IconComponent } from './icon/icon.component';
     CommentModule,
     TextModule,
     IconModule,
+    TitleModule,
+    ButtonModule
   ],
   exports: [
     VerticalAlignerComponent,
@@ -42,6 +48,8 @@ import { IconComponent } from './icon/icon.component';
     CommentComponent,
     TextComponent,
     IconComponent,
+    TitleComponent,
+    ButtonComponent
   ]
 })
 export class DesignSystemModule {}

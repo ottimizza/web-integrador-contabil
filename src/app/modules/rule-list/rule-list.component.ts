@@ -8,7 +8,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
 import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
-import { ActionButton } from '@shared/components/button/button.component';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { ToastService } from '@shared/services/toast.service';
@@ -25,6 +24,7 @@ import { RuleLogicService } from '@app/services/logic/rule-logic.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { RuleDeleteConfirmDialogComponent } from './rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
 import { BreadCrumb } from '@shared/components/breadcrumb/breadcrumb.component';
+import { ActionButton } from '@shared/components/action-buttons/action-buttons.component';
 
 @Component({
   templateUrl: './rule-list.component.html',

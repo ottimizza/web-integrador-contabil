@@ -7,7 +7,6 @@ import { RuleEditModalModule } from '@modules/rule-list/rule-edit-modal/rule-edi
 import { ExportConfirmModalModule } from '@modules/rule-list/export-confirm-modal/export-confirm-modal.module';
 import { ScrollTrackerModule } from '@shared/directives/scroll-tracker.module';
 import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.module';
-import { ActionButtonsModule } from '@shared/components/button/button.module';
 import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-layout.module';
 import { HistoricListRoutingModule } from './historic.routing';
 import { HistoricListComponent } from './page/historic-list.component';
@@ -19,6 +18,9 @@ import { HistoricEditDialogModule } from './dialogs/historic-edit-dialog/histori
 import { HistoricEditDialogComponent } from './dialogs/historic-edit-dialog/historic-edit-dialog.component';
 import { ShimmerModule } from '@shared/components/shimmer/shimmer.module';
 import { FilterModule } from '@shared/components/filter/filter.module';
+import { LazyImgModule } from '@shared/directives/lazy-img/lazy-img.module';
+import { EmptyStateModule } from '@shared/components/empty-state/empty-state.module';
+import { ActionButtonsModule } from '@shared/components/action-buttons/action-buttons.module';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,8 @@ import { FilterModule } from '@shared/components/filter/filter.module';
     NormalizedLayoutModule,
     VerticalAlignerModule,
     HistoricEditDialogModule,
-    ShimmerModule
+    EmptyStateModule,
+    MatButtonModule
   ],
   entryComponents: [
     ExportConfirmModalComponent,

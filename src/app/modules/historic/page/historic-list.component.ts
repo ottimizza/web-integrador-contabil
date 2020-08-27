@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '@shared/models/User';
-import { ActionButton } from '@shared/components/button/button.component';
 import { ExportConfirmModalComponent } from '@modules/rule-list/export-confirm-modal/export-confirm-modal.component';
 import { MatTabChangeEvent } from '@angular/material';
 import { ToastService } from '@shared/services/toast.service';
@@ -11,6 +10,7 @@ import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { HistoricService } from '@shared/services/historic.service';
 import { BreadCrumb } from '@shared/components/breadcrumb/breadcrumb.component';
 import { DialogService } from '@app/services/dialog.service';
+import { ActionButton } from '@shared/components/action-buttons/action-buttons.component';
 
 @Component({
   templateUrl: './historic-list.component.html',

@@ -7,6 +7,7 @@ export class DialogWidth {
 
   constructor(public size: string) {}
 
+  public static readonly SMALL = new DialogWidth('360px'); // NÃO RECOMENDADO
   public static readonly DEFAULT = new DialogWidth('596px');
   public static readonly LARGE = new DialogWidth('800px');
   public static readonly EXTRA_LARGE = new DialogWidth('80%');

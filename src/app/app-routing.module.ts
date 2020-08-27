@@ -11,18 +11,62 @@ import { RuleListComponent } from '@modules/rule-list/rule-list.component';
 import { LandPageComponent } from '@modules/land-page/page/land-page.component';
 
 const routes: Routes = [
+  // {
+  //   path: 'auth',
+  //   component: AuthLayoutComponent,
+  //   loadChildren: () =>
+  //   import('@modules/auth/auth.module').then(m => m.AuthModule)
+  // },
+  // {
+  //   path: 'landpage',
+  //   data: {
+  //     breadcrumb: null
+  //   },
+  //   canActivate: [NoAuthGuard],
+  //   loadChildren: () => import('@modules/land-page/land-page.module').then(m => m.LandPageModule)
+  // },
+  // {
+  //   path: 'dashboard',
+  //   canActivate: [AuthGuard],
+  //   data: {
+  //     breadcrumb: null
+  //   },
+  //   component: ContentLayoutComponent,
+  //   children: [
+
+  //     {
+  //       path: 'historic',
+  //       data: {
+  //         breadcrumb: 'Históricos'
+  //       },
+  //       loadChildren: () => import('@modules/historic/historic-list.module').then(m => m.HistoricListModule)
+  //     },
+  //     {
+  //       path: 'workflow',
+  //       data: {
+  //         breadcrumb: 'Fluxo de Planilhas'
+  //       },
+  //       loadChildren: () => import('@modules/workflow/workflow.module').then(m => m.WorkflowModule)
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '',
+  //   redirectTo: 'dashboard/',
+  //   pathMatch: 'full'
+  // },
+  // {
+  //   path: '**',
+  //   redirectTo: 'dashboard/',
+  //   pathMatch: 'full'
+  // }
+
+
+
   {
     path: '',
     redirectTo: 'lancamentos/',
     pathMatch: 'full'
-  },
-  {
-    path: 'landpage',
-    data: {
-      breadcrumb: null
-    },
-    component: LandPageComponent,
-    canActivate: [NoAuthGuard]
   },
   {
     path: 'lancamentos/',
@@ -56,6 +100,15 @@ const routes: Routes = [
     loadChildren: () => import('@modules/historic/historic-list.module').then(m => m.HistoricListModule)
   },
   {
+    path: 'fluxo',
+    data: {
+      breadcrumb: 'Fluxo de Planilhas',
+    },
+    canActivate: [AuthGuard],
+    component: ContentLayoutComponent,
+    loadChildren: () => import('@modules/workflow/workflow.module').then(m => m.WorkflowModule)
+  },
+  {
     path: 'regras',
     data: {
       breadcrumb: 'Regras'
@@ -73,11 +126,6 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'lancamentos/',
-    pathMatch: 'full'
-  },
-  {
-    path: 'lancamentos/:ReportId',
     redirectTo: 'lancamentos/',
     pathMatch: 'full'
   }
