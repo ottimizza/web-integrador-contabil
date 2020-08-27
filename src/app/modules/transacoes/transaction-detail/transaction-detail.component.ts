@@ -366,6 +366,7 @@ export class TransactionDetailComponent implements OnInit {
     return this._lancamentoService.getLancamentos(filter)
       .pipe(finalize(() => {
         this._toast.hideSnack();
+        this.conditions = new Rule();
       }))
       .toPromise();
   }
