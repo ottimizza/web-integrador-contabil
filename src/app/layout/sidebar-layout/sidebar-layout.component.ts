@@ -7,6 +7,7 @@ import { environment } from '@env';
 // import { ThemeService } from '@app/service/theme.service';
 
 export interface SidebarItem {
+  id: string;
   icon: string;
   label: string;
   url: string;
@@ -32,9 +33,9 @@ export class SidebarLayoutComponent implements OnInit {
 
   ngOnInit() {
     this.items = [
-      { icon: 'fad fa-typewriter', label: 'Última Digitação', url: '/dashboard/entrys' },
-      { icon: 'fad fa-list-ol', label: 'Regras', url: '/dashboard/rules' },
-      { icon: 'fad fa-history', label: 'Históricos', url: '/dashboard/historics'},
+      { id: 'sidebar-item-ultima-digitacao', icon: 'fad fa-typewriter', label: 'Última Digitação', url: '/dashboard/entrys' },
+      { id: 'sidebar-item-regras', icon: 'fad fa-list-ol', label: 'Regras', url: '/dashboard/rules' },
+      { id: 'sidebar-item-historicos', icon: 'fad fa-history', label: 'Históricos', url: '/dashboard/historics' },
       // { icon: 'fad fa-file-spreadsheet', label: 'Fluxo de Planilhas', url: '/dashboard/workflow' }
     ];
   }
