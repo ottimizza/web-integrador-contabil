@@ -7,13 +7,15 @@ import { InfoModule } from '@shared/components/info/info.module';
 import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.module';
 import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-layout.module';
 import { FilterModule } from '@shared/components/filter/filter.module';
+import { TransactionRoutingModule } from '../transaction.routing';
 
 @NgModule({
     declarations: [TransactionListComponent],
     imports: [
+        CommonModule,
+        TransactionRoutingModule,
         TransactionDetailModule,
         FilterModule,
-        CommonModule,
         InfoModule,
         NormalizedLayoutModule
     ]

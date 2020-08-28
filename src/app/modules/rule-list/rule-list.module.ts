@@ -21,6 +21,7 @@ import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-
 import { RuleDeleteConfirmDialogComponent } from './rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
 import { FilterModule } from '@shared/components/filter/filter.module';
 import { ActionButtonsModule } from '@shared/components/action-buttons/action-buttons.module';
+import { RuleListRoutingModule } from './rule-list.routing';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ActionButtonsModule } from '@shared/components/action-buttons/action-bu
   ],
   imports: [
     CommonModule,
+    RuleListRoutingModule,
     CardModule,
     DragDropModule,
     MatTooltipModule,
