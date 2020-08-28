@@ -1,13 +1,3 @@
-<div class="content-wrapper full-width-nav-tabs py-2 mb-3">
-  <div class="container">
-    <ul class="nav nav-pills flex-row-reverse">
-      <li class="nav-item notification-sidebar-toggle" [ngClass]="{'mx-auto': buttons.length > 1}" *ngFor="let btn of buttons">
-        <button *ngIf="btn.verification != false" class="btn nav-link py-1 px-2 active" [class]="btn.color ? btn.color : 'btn-primary'"
-          (click)="select(btn.id)">
-          <i aria-hidden="true" [class]="btn.icon"></i>
-          <span class="ml-2"> {{ btn.label.toUpperCase() }} </span>
-        </button>
-      </li>
-    </ul>
-  </div>
-</div>
+<button [class]="'btn w-100 ' + classes + ' mx-2'" mat-raised-button (click)="press($event)">
+  <ng-content></ng-content>
+</button>

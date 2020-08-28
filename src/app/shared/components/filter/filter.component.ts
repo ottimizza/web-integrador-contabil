@@ -44,6 +44,11 @@ export class FilterComponent implements OnInit, AfterViewInit {
       .subscribe(e => this.change(e));
   }
 
+  clear() {
+    FilterComponent.selected = null;
+    this.companyInput.nativeElement.value = '';
+  }
+
   ngAfterViewInit() {
     if (FilterComponent.selected) {
       this.confirm(FilterComponent.selected);

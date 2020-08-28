@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@env';
-import { RuleCreateFormat, PostFormatRule } from '@shared/models/Rule';
+import { RuleCreateFormat, PostFormatRule, Rule } from '@shared/models/Rule';
 import { Observable } from 'rxjs';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
 import { CompleteRule } from '@shared/models/CompleteRule';
@@ -24,6 +24,11 @@ export class RuleService {
   getAllIds(cnpjEmpresa: string, cnpjContabilidade: string, tipoLancamento: number) {
     const url = `${BASE_URL}/api/v1/salesforce/id?cnpjEmpresa=${cnpjEmpresa}&tipoLancamento=${tipoLancamento}&cnpjContabilidade=${cnpjContabilidade}`;
     return this._http.get<number[]>(url, 'Falha ao obter lista completa de regras!');
+  }
+
+  clone(id: number) {
+    const url = `${BASE_URL}/api/v1/regras/${id}`;
+    return this._http.post<GenericResponse<CompleteRule>>(url, {}, 'Falha ao clonar regra');
   }
 
   exportById(id: number) {

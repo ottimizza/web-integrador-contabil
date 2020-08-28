@@ -8,7 +8,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
 import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
-import { ActionButton } from '@shared/components/button/button.component';
 import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { ToastService } from '@shared/services/toast.service';
@@ -24,6 +23,8 @@ import { ExportService } from '@app/services/export.service';
 import { RuleLogicService } from '@app/services/logic/rule-logic.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { RuleDeleteConfirmDialogComponent } from './rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
+import { BreadCrumb } from '@shared/components/breadcrumb/breadcrumb.component';
+import { ActionButton } from '@shared/components/action-buttons/action-buttons.component';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -42,6 +43,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
   currentUser: User;
 
   percentage: number;
+
+  append: BreadCrumb;
 
   constructor(
     @Inject(DOCUMENT) public doc: Document,
@@ -201,6 +204,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
     this.tabIsSelected = true;
     this.tipoLancamento = event.index + 1;
     this.page = 0;
+    this.append = { label: this.tipoLancamento === 1 ? 'Pagamentos' : 'Recebimentos', url: '/regras' };
     this.nextPage();
   }
 
@@ -209,8 +213,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
     this.onTab({ tab: null, index: this.tipoLancamento - 1 });
   }
 
-  async onClone(event: { rule: RuleCreateFormat; position: number }) {
-    this.rows = await this.logicService.clone(event, this.rows);
+  async onClone(event: CompleteRule) {
+    this.rows = await this.logicService.clone(event.id, this.rows);
   }
 
   drop(event: CdkDragDrop<RuleCreateFormat[]>) {
@@ -244,8 +248,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
     this.toast.hideSnack();
   }
 
-  onScroll(event: boolean) {
-    if (event && this.pageInfo.hasNext && !this.isFetching) {
+  onScroll() {
+    if (this.pageInfo.hasNext && !this.isFetching) {
       this.nextPage();
     }
   }

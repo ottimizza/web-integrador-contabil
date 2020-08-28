@@ -1,9 +1,13 @@
-.breadcrumb {
-  margin-bottom: 0;
+nav {
+  margin: 0 !important;
   display: flex;
   flex-wrap: wrap;
-  padding: .75rem 1rem;
-  list-style: none;
+  // padding: .75rem 1rem;
   background-color: #e9ecef;
-  border-radius: 0.25rem;
+  position: sticky; top: 0;
+  z-index: 9;
+}
+
+.bc {
+  list-style: none;
 }

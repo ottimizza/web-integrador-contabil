@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { User } from '@shared/models/User';
+import { environment } from '@env';
 // import { OverlayContainer } from '@angular/cdk/overlay';
 
 // import { ThemeService } from '@app/service/theme.service';
@@ -31,9 +32,10 @@ export class SidebarLayoutComponent implements OnInit {
 
   ngOnInit() {
     this.items = [
-      { icon: 'fad fa-typewriter', label: 'Última Digitação', url: '/lancamentos' },
-      { icon: 'fad fa-list-ol', label: 'Regras', url: '/regras' },
-      { icon: 'fad fa-history', label: 'Históricos', url: '/historicos'}
+      { icon: 'fad fa-typewriter', label: 'Última Digitação', url: '/dashboard/entrys' },
+      { icon: 'fad fa-list-ol', label: 'Regras', url: '/dashboard/rules' },
+      { icon: 'fad fa-history', label: 'Históricos', url: '/dashboard/historics'},
+      // { icon: 'fad fa-file-spreadsheet', label: 'Fluxo de Planilhas', url: '/dashboard/workflow' }
     ];
   }
 }

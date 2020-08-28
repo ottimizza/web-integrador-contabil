@@ -7,6 +7,12 @@ export const environment = {
   storageAccountingId: 'ottimizza',
   portalBaseUrl: 'https://staging-accounts.ottimizza.com.br',
   supportUrl: 'https://suporte.ottimizza.com.br',
+  theme: {
+    primaryColor: '#004ecb',
+    secondaryColor: '#ff8a00',
+    primaryAccent: '#0081bf',
+    dark: '#373435'
+  },
   firebase: {
     apiKey: 'AIzaSyBT6UPIBsSCwF9dMgjn-0GoB9ZCgKkoWCs',
     authDomain: 'integrador-contabil.firebaseapp.com',

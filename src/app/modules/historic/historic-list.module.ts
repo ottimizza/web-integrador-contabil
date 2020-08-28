@@ -3,12 +3,10 @@ import { CommonModule } from '@angular/common';
 import { CardModule } from '@shared/components/card/card.module';
 import { MatTooltipModule, MatDialogModule, MatSnackBarModule, MatTabsModule, MatButtonModule, MatProgressBarModule } from '@angular/material';
 import { InfoModule } from '@shared/components/info/info.module';
-import { FilterModule } from '@modules/transacoes/transaction-list/filter/filter.module';
 import { RuleEditModalModule } from '@modules/rule-list/rule-edit-modal/rule-edit-modal.module';
 import { ExportConfirmModalModule } from '@modules/rule-list/export-confirm-modal/export-confirm-modal.module';
 import { ScrollTrackerModule } from '@shared/directives/scroll-tracker.module';
 import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.module';
-import { ActionButtonsModule } from '@shared/components/button/button.module';
 import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-layout.module';
 import { HistoricListRoutingModule } from './historic.routing';
 import { HistoricListComponent } from './page/historic-list.component';
@@ -19,6 +17,10 @@ import { RuleDeleteConfirmDialogComponent } from '@modules/rule-list/rule-delete
 import { HistoricEditDialogModule } from './dialogs/historic-edit-dialog/historic-edit-dialog.module';
 import { HistoricEditDialogComponent } from './dialogs/historic-edit-dialog/historic-edit-dialog.component';
 import { ShimmerModule } from '@shared/components/shimmer/shimmer.module';
+import { FilterModule } from '@shared/components/filter/filter.module';
+import { LazyImgModule } from '@shared/directives/lazy-img/lazy-img.module';
+import { EmptyStateModule } from '@shared/components/empty-state/empty-state.module';
+import { ActionButtonsModule } from '@shared/components/action-buttons/action-buttons.module';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,8 @@ import { ShimmerModule } from '@shared/components/shimmer/shimmer.module';
     NormalizedLayoutModule,
     VerticalAlignerModule,
     HistoricEditDialogModule,
-    ShimmerModule
+    EmptyStateModule,
+    MatButtonModule
   ],
   entryComponents: [
     ExportConfirmModalComponent,
