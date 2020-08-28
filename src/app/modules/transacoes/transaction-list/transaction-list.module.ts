@@ -9,15 +9,20 @@ import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-
 import { FilterModule } from '@shared/components/filter/filter.module';
 import { TransactionRoutingModule } from '../transaction.routing';
 
+import { NgxGuidedTourModule } from '@gobsio/ngx-guided-tour';
+
 @NgModule({
-    declarations: [TransactionListComponent],
-    imports: [
-        CommonModule,
-        TransactionRoutingModule,
-        TransactionDetailModule,
-        FilterModule,
-        InfoModule,
-        NormalizedLayoutModule
-    ]
+  declarations: [
+    TransactionListComponent
+  ],
+  imports: [
+    CommonModule,
+    TransactionRoutingModule,
+    TransactionDetailModule,
+    FilterModule,
+    InfoModule,
+    NormalizedLayoutModule,
+    NgxGuidedTourModule.forRoot(),
+  ]
 })
 export class TransactionListModule { }

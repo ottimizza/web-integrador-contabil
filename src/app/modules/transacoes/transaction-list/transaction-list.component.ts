@@ -2,11 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { Empresa } from '@shared/models/Empresa';
 import { BreadCrumb } from '@shared/components/breadcrumb/breadcrumb.component';
 
+import { GuidedTour } from '@gobsio/ngx-guided-tour';
+import TUTORIAL from './tutorial/transaction-list.tutorial';
+
 @Component({
-    templateUrl: './transaction-list.component.html',
-    styleUrls: ['./transaction-list.component.scss']
+  templateUrl: './transaction-list.component.html',
+  styleUrls: ['./transaction-list.component.scss']
 })
 export class TransactionListComponent {
+
+  public tutorial: GuidedTour = TUTORIAL;
 
   business: Empresa;
   append: BreadCrumb;

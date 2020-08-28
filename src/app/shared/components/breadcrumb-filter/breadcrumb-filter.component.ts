@@ -2,6 +2,9 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router, Params, NavigationEnd, PRIMARY_OUTLET } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
+import { GuidedTour, GuidedTourService } from '@gobsio/ngx-guided-tour';
+
+
 export interface BreadCrumb {
   label: string;
   params?: Params;
@@ -25,7 +28,34 @@ export class BreadcrumbFilterComponent implements OnInit {
   @Output()
   public companySelected = new EventEmitter<string>();
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) { }
+
+  /**
+   * User guided tour, if specified a button is shown at end of the breadcrumb
+   * where the user can get a tutorial of how the current page works.
+   */
+  @Input()
+  public tutorial: GuidedTour;
+
+  constructor(
+    private guidedTourService: GuidedTourService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) { }
+
+  /**
+   * Method used by the template, to check wheater there's
+   * a tutorial available or not.
+   */
+  public isTutorialAvailable(): boolean {
+    return !!this.tutorial && !!this.tutorial.steps.length;
+  }
+
+  /**
+   * Method used by the template to start/ restart the tutorial.
+   */
+  public startTutorial() {
+    this.guidedTourService.startTour(this.tutorial);
+  }
 
   private getBreadcrumbs(
     route: ActivatedRoute,
