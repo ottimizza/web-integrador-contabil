@@ -1,0 +1,42 @@
+<!--
+<div class="filterBox mb-4 mt-4">
+  <form>
+    <input (keyup.enter)="confirm(business[0])" type="text" (input)="onInput($event.target)" #company
+      [matAutocomplete]="auto" autocomplete="off" placeholder="Filtro" [matTooltip]="info">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="select($event)">
+      <mat-option *ngFor="let company of business" [value]="company"
+        [matTooltip]="(getErp(company.codigoERP) + company.razaoSocial).trim() + ': ' + company.cnpj">
+        {{ getErp(company.codigoERP) + company.razaoSocial }}
+      </mat-option>
+    </mat-autocomplete>
+
+    <button (click)="clear()">
+      <i class="far fa-times text-danger"></i>
+    </button>
+  </form>
+</div>
+-->
+<div id="breadcrumb-input-filter-content" class="input-group">
+  <!-- Input -->
+  <input #company class="form-control" placeholder="Filtrar Empresa..." autocomplete="off" type="text"
+      (keyup.enter)="confirm(business[0])" (input)="onInput($event.target)" 
+      [matAutocomplete]="auto" [matTooltip]="HELP_MESSAGE">
+
+  <!-- Appends -->
+  <div class="input-group-append">
+    <button class="btn text-danger bg-light" (click)="clear()">
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
+
+  <!-- Autocomplete -->
+  <mat-autocomplete #auto="matAutocomplete" [autoActiveFirstOption]="true" (optionSelected)="select($event)" class="multiline-autocomplete">
+    <mat-option class="multiline-autocomplete-option"  *ngFor="let company of business" [value]="company"
+        [matTooltip]="getEmpresaDisplayName(company)">
+      <div class="overflow-ellipsis">
+        <span>{{ getEmpresaDisplayName(company) }}</span><br>
+        <small>{{ getEmpresaDisplayCnpj(company) }}</small>
+      </div>
+    </mat-option>
+  </mat-autocomplete>
+</div>
