@@ -1,0 +1,10 @@
+<app-layout [buttons]="[button]" (buttonClicked)="create()">
+
+  <app-empty-state
+    firstTitle="Sua contabilidade ainda não possue nenhum roteiro :("
+    subtitle="Clique no {icon} para criar seu primeiro"
+    icon="file-spreadsheet"
+    (iconPressed)="create()"
+  ></app-empty-state>
+
+</app-layout>

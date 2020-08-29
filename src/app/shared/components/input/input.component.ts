@@ -14,6 +14,7 @@ export class InputComponent {
   @Input() label = '';
   @Input() control = new FormControl();
   @Input() deep = '';
+  @Input() disabled = false;
 
   @Input() id: string;
 

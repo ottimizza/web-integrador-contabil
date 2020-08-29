@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router, Params, NavigationEnd, PRIMARY_OUTLET } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
@@ -18,6 +18,8 @@ export class BreadcrumbComponent implements OnInit {
 
   @Input()
   public append: BreadCrumb;
+
+  @Output() companySelected = new EventEmitter<string>();
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
 

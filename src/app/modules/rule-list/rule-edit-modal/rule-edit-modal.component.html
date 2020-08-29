@@ -70,7 +70,7 @@
       </div>
     </div>
 
-    <div class="row w-100 m-0 text-center">
+    <div class="row w-100 m-0 text-center" *ngIf="ruleDefault.regras.length < 6">
       <div class="center cursor-pointer" (click)="add()" [matTooltip]="info.add">
         <i class="fad fa-plus-circle fa-2x"></i>
       </div>

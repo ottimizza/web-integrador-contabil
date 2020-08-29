@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { FilterComponent } from './filter.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material';
+import { DesignSystemModule } from '../ds.module';
 
 @NgModule({
   declarations: [FilterComponent],
@@ -11,7 +12,8 @@ import { MatAutocompleteModule } from '@angular/material';
     CommonModule,
     FormsModule,
     MatTooltipModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    DesignSystemModule
   ],
   exports: [FilterComponent]
 })

@@ -6,40 +6,8 @@ import { ContentLayoutComponent } from './layout/content-layout/content-layout.c
 
 import { AuthGuard } from '@app/guard/auth.guard';
 import { NoAuthGuard } from '@app/guard/no-auth.guard';
-import { TransactionListComponent } from '@modules/transacoes/transaction-list/transaction-list.component';
-import { RuleListComponent } from '@modules/rule-list/rule-list.component';
-import { LandPageComponent } from '@modules/land-page/page/land-page.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'lancamentos/',
-    pathMatch: 'full'
-  },
-  {
-    path: 'landpage',
-    data: {
-      breadcrumb: null
-    },
-    component: LandPageComponent,
-    canActivate: [NoAuthGuard]
-  },
-  {
-    path: 'lancamentos/',
-    data: {
-      breadcrumb: 'Última Digitação'
-    },
-    component: ContentLayoutComponent,
-    canActivate: [AuthGuard], // Should be replaced with actual auth guard
-    children: [
-      {
-        path: '',
-        component: TransactionListComponent,
-        pathMatch: 'full',
-        canActivate: [AuthGuard]
-      }
-    ]
-  },
   {
     path: 'auth',
     component: AuthLayoutComponent,
@@ -47,40 +15,68 @@ const routes: Routes = [
     import('@modules/auth/auth.module').then(m => m.AuthModule)
   },
   {
-    path: 'historicos',
-    data: {
-      breadcrumb: 'Históricos'
-    },
-    canActivate: [AuthGuard],
-    component: ContentLayoutComponent,
-    loadChildren: () => import('@modules/historic/historic-list.module').then(m => m.HistoricListModule)
+    path: 'landpage',
+    canActivate: [NoAuthGuard],
+    loadChildren: () => import('@modules/land-page/land-page.module').then(m => m.LandPageModule)
   },
   {
-    path: 'regras',
-    data: {
-      breadcrumb: 'Regras'
-    },
+    path: 'dashboard',
+    canActivate: [AuthGuard],
     component: ContentLayoutComponent,
-    canActivate: [AuthGuard], // Should be replaced with actual auth guard
     children: [
+
+      {
+        path: 'historics',
+        data: {
+          breadcrumb: 'Históricos'
+        },
+        loadChildren: () => import('@modules/historic/historic-list.module').then(m => m.HistoricListModule)
+      },
+      // {
+      //   path: 'workflow',
+      //   data: {
+      //     breadcrumb: 'Fluxo de Planilhas'
+      //   },
+      //   loadChildren: () => import('@modules/workflow/workflow.module').then(m => m.WorkflowModule)
+      // },
+      {
+        path: 'rules',
+        data: {
+          breadcrumb: 'Regras'
+        },
+        loadChildren: () => import('@modules/rule-list/rule-list.module').then(m => m.RuleListModule)
+      },
+      {
+        path: 'entrys',
+        data: {
+          breadcrumb: 'Última Digitação'
+        },
+        loadChildren: () => import('@modules/transacoes/transaction.module').then(m => m.TransactionModule)
+      },
       {
         path: '',
-        component: RuleListComponent,
-        pathMatch: 'full',
-        canActivate: [AuthGuard]
+        redirectTo: 'entrys',
+        pathMatch: 'full'
+      },
+      {
+        path: '**',
+        redirectTo: 'entrys',
+        pathMatch: 'full'
       }
-    ],
+
+    ]
+  },
+  {
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full'
   },
   {
     path: '**',
-    redirectTo: 'lancamentos/',
-    pathMatch: 'full'
-  },
-  {
-    path: 'lancamentos/:ReportId',
-    redirectTo: 'lancamentos/',
+    redirectTo: 'dashboard',
     pathMatch: 'full'
   }
+
 ];
 
 @NgModule({

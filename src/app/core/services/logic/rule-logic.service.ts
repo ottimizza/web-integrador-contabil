@@ -37,17 +37,16 @@ export class RuleLogicService {
     return rules;
   }
 
-  public async clone(cloningEvent: { rule: RuleCreateFormat; position: number }, rules: CompleteRule[]) {
-    const rs = await this.ruleService.createRule(cloningEvent.rule).toPromise();
-    const rule: CompleteRule = rs.record;
-    rule.posicao = cloningEvent.position;
+  public async clone(ruleIdToBeClones: number, rules: CompleteRule[]) {
+    let ref = rules.map(r => r);
 
-    rules.push(rule);
-    rules = rules.sort((a, b) => a.posicao - b.posicao);
-    rules = this.syncPositions(rules);
-    this.changePosition(rule, 'clonada');
+    const result = await this.ruleService.clone(ruleIdToBeClones).toPromise();
 
-    return rules;
+    ref.push(result.record);
+    ref = ref.sort((a, b) => a.posicao - b.posicao);
+
+    this.successMessage('clonada');
+    return this.syncPositions(ref);
   }
 
   public delete(rules: CompleteRule[], index: number) {
@@ -55,9 +54,13 @@ export class RuleLogicService {
     return this.syncPositions(rules);
   }
 
-  private async changePosition(rule: CompleteRule, verb = 'movida') {
-    await this.ruleService.changePosition(rule).toPromise();
-    this.toastService.show(`Regra ${verb} com sucesso!`, 'success');
+  private changePosition(rule: CompleteRule, verb = 'movida') {
+    this.ruleService.changePosition(rule).subscribe(() => this.successMessage(verb));
+
+  }
+
+  private successMessage(message: string) {
+    this.toastService.show(`Regra ${message} com sucesso!`, 'success');
   }
 
   private syncPositions(rules: CompleteRule[]) {

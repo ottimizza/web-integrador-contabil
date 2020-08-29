@@ -1,4 +1,4 @@
-<app-layout [buttons]="buttons()" (buttonClicked)="onButton($event)" (scrollHasEnded)="onScroll($event)">
+<app-layout [buttons]="buttons()" (buttonClicked)="onButton($event)" (scrollHasEnded)="onScroll()" [breadcrumbAppend]="append" (companySelected)="onFilter($event)">
   <!-- <app-actions *ngIf="business && rows.length" [buttons]="buttons" (clicked)="openConfirmation()"></app-actions> -->
 
   <div
@@ -6,8 +6,6 @@
     <div *ngIf="!business">
       <app-info [description]="info.text1"></app-info>
     </div>
-
-    <app-tfilter (empresa)="onFilter($event)"></app-tfilter>
 
     <div *ngIf="business">
       <app-info [description]="info.text2"></app-info>
@@ -52,6 +50,9 @@
         </div>
       </div>
     </div>
+
+    <button class="btn btn-secondary m-auto mb-3" mat-stroked-button *ngIf="pageInfo?.hasNext" [disabled]="isFetching" (click)="nextPage()">Próxima Página</button>
+
   </div>
 
 </app-layout>
