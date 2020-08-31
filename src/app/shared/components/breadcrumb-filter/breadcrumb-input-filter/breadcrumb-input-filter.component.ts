@@ -82,7 +82,8 @@ export class BreadcrumbInputFilterComponent implements OnInit, AfterViewInit {
   }
 
   public getEmpresaDisplayName(empresa: Empresa): string {
-    return `${empresa.codigoERP ? empresa.codigoERP + ' - ' : ''}${empresa.razaoSocial || ''}`.toUpperCase().trim();
+    const validate = empresa.codigoERP && empresa.codigoERP !== 'null'
+    return `${validate ? empresa.codigoERP + ' - ' : ''}${empresa.razaoSocial || ''}`.toUpperCase().trim();
   }
 
   public getEmpresaDisplayCnpj(empresa: Empresa): string {
