@@ -1,0 +1,27 @@
+#breadcrumb-input-filter-content {
+  .input-group-append {
+    button {
+      border: 1px solid #ced4da;
+      border-right: 1px solid transparent;
+      &:last-child {
+        border-right: 1px solid #ced4da;
+        border-radius: 0 0.25rem 0.25rem 0;
+      }
+    }
+  }
+}
+
+.multiline-autocomplete {
+  .multiline-autocomplete-option {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    height: auto !important;
+    line-height: unset !important;
+    border-bottom: solid 1px #e7e7e7;
+  }
+}
+
+.overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

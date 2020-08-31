@@ -1,16 +1,11 @@
-<ngx-guided-tour></ngx-guided-tour>
-<layout (companySelected)="onDevolve($event)" [breadcrumbAppend]="append">
+<layout (companySelected)="onDevolve($event)" [breadcrumbAppend]="append" [tutorial]="tutorial">
   <div class="pt-1">
     <div *ngIf="!business">
-      <info [description]="info.first"></info>
+      <info [description]="info.first" class="d-none"></info>
     </div>
     <div class="mb-4" *ngIf="business && !append">
       <info [description]="info.second"></info>
     </div>
-    <app-tdetail
-      *ngIf="business"
-      [business]="business"
-      (tabSelect)="onSelect($event)"
-    ></app-tdetail>
+    <app-tdetail *ngIf="business" [business]="business" (tabSelect)="onSelect($event)"></app-tdetail>
   </div>
 </layout>

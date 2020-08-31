@@ -4,11 +4,7 @@
     <nav class="sidebar-nav">
       <ul id="sidebarnav">
         <li *ngFor="let item of items" [id]="item.id">
-          <a
-            class="waves-effect waves-dark"
-            [routerLink]="item.url"
-            aria-expanded="false"
-          >
+          <a class="waves-effect waves-dark" [routerLink]="item.url" aria-expanded="false">
             <i class="fa-fw" [class]="item.icon"></i>
             <span class="hide-menu">{{ item.label }}</span>
           </a>

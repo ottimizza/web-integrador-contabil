@@ -1,0 +1,18 @@
+nav {
+  margin: 0 !important;
+  display: flex;
+  flex-wrap: wrap;
+  // padding: .75rem 1rem;
+  background-color: #e9ecef;
+  position: sticky;
+  top: 0;
+  z-index: 9;
+}
+
+.bc {
+  list-style: none;
+}
+
+#btn-tutorial-toggle {
+  font-size: 20px;
+}

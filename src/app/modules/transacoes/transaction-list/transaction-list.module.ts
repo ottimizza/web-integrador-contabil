@@ -11,7 +11,10 @@ import { TransactionRoutingModule } from '../transaction.routing';
 import { NgxGuidedTourModule } from '@gobsio/ngx-guided-tour';
 
 @NgModule({
-  declarations: [TransactionListComponent],
+  declarations: [
+    TransactionListComponent
+  ],
+
   imports: [
     CommonModule,
     TransactionRoutingModule,
@@ -19,9 +22,7 @@ import { NgxGuidedTourModule } from '@gobsio/ngx-guided-tour';
     FilterModule,
     InfoModule,
     NormalizedLayoutModule,
-
-    //
-    NgxGuidedTourModule.forRoot()
+    NgxGuidedTourModule.forRoot(),
   ]
 })
 export class TransactionListModule { }
