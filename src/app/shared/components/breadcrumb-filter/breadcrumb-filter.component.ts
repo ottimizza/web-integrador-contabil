@@ -125,4 +125,5 @@ export class BreadcrumbFilterComponent implements OnInit {
       this.breadcrumbs = this.getBreadcrumbs(this.activatedRoute.root);
     });
   }
+
 }
