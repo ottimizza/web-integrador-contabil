@@ -32,13 +32,13 @@ const routes: Routes = [
         },
         loadChildren: () => import('@modules/historic/historic-list.module').then(m => m.HistoricListModule)
       },
-      // {
-      //   path: 'workflow',
-      //   data: {
-      //     breadcrumb: 'Fluxo de Planilhas'
-      //   },
-      //   loadChildren: () => import('@modules/workflow/workflow.module').then(m => m.WorkflowModule)
-      // },
+      {
+        path: 'workflow',
+        data: {
+          breadcrumb: 'Fluxo de Planilhas'
+        },
+        loadChildren: () => import('@modules/workflow/workflow.module').then(m => m.WorkflowModule)
+      },
       {
         path: 'rules',
         data: {

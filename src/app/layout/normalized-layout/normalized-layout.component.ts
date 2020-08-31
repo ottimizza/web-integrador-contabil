@@ -4,7 +4,7 @@ import { BreadCrumb } from '@shared/components/breadcrumb/breadcrumb.component';
 import { Empresa } from '@shared/models/Empresa';
 
 @Component({
-  selector: 'app-layout',
+  selector: 'layout',
   templateUrl: './normalized-layout.component.html',
   styleUrls: ['./normalized-layout.component.scss']
 })

@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-empty-state',
+  selector: 'empty-state',
   templateUrl: './empty-state.component.html',
   styleUrls: ['./empty-state.component.scss']
 })

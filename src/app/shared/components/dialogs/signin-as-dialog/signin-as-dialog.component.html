@@ -3,7 +3,7 @@
   <form>
 
     <div class="mb-4 mt-3">
-      <app-info description="Busque a contabilidade que deseja acessar."></app-info>
+      <info description="Busque a contabilidade que deseja acessar."></info>
     </div>
 
     <app-complex-search-input [hackings]="hackings()" [defaultRule]="defaultRule" (filterApplied)="apply($event)"></app-complex-search-input>
@@ -18,7 +18,7 @@
     <table mat-table matSort [dataSource]="dataSource" class="table-hover mat-elevation-z0 w-100" *ngIf="dataSource.length">
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="name">
-          <app-text [bold]="true">Nome</app-text>
+          <text [bold]="true">Nome</text>
         </th>
         <td mat-cell *matCellDef="let element">
           {{ element.name }}

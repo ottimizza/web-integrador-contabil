@@ -1,5 +1,5 @@
 <div class="mt-2 mb-4" *ngIf="tabIsClicked">
-  <app-info [description]="info.info"></app-info>
+  <info [description]="info.info"></info>
 </div>
 
 <form autocomplete="off">
@@ -15,20 +15,20 @@
 
     <div class="p-5 pt-0">
       <div class="row m-0 w-100">
-        <app-text class="col">Total de lançamentos: {{ total }}</app-text>
+        <text class="col">Total de lançamentos: {{ total }}</text>
       </div>
       <div class="row m-0 w-100 mb-4">
         <div class="col" *ngIf="impact > 0">
-          <app-text class="mt-3">Impacto: </app-text>
-          <app-text class="ml-1 cursor-pointer"(click)="openGrid()" color="danger" [matTooltip]="info.affecteds" bold="true" >{{ impact }}</app-text>
-          <app-text class="ml-1"(click)="openGrid()"> lançamentos.</app-text>
-          <app-icon class="ml-2" [matTooltip]="info.affectedsOrientation" name="question-circle"></app-icon>
+          <text class="mt-3">Impacto: </text>
+          <text class="ml-1 cursor-pointer"(click)="openGrid()" color="danger" [matTooltip]="info.affecteds" bold="true" >{{ impact }}</text>
+          <text class="ml-1"(click)="openGrid()"> lançamentos.</text>
+          <icon class="ml-2" [matTooltip]="info.affectedsOrientation" name="question-circle"></icon>
         </div>
 
       </div>
-      <app-card *ngIf="entry || isFetching" [main]="false">
-        <app-card [main]="false">
-          <app-card>
+      <card *ngIf="entry || isFetching" [main]="false">
+        <card [main]="false">
+          <card>
 
             <div *ngIf="isFetching && !entry"><br><br><br><br><br><br><br><br></div>
 
@@ -94,13 +94,13 @@
               ></app-chips-group>
             </div>
 
-          </app-card>
-        </app-card>
-      </app-card>
+          </card>
+        </card>
+      </card>
 
       <div class="row mt-4 ml-3 d-block">
-        <app-comment type="danger" *ngIf="errorText">{{ errorText }}</app-comment>
-        <app-comment type="danger" *ngIf="errorText2">{{ errorText2 }}</app-comment>
+        <comment type="danger" *ngIf="errorText">{{ errorText }}</comment>
+        <comment type="danger" *ngIf="errorText2">{{ errorText2 }}</comment>
       </div>
 
       <div
@@ -108,7 +108,7 @@
         *ngIf="entry"
       >
         <div class="form-group col-md-5 mt-1">
-          <app-input [control]="account" [matTooltip]="info.account" label="Conta" (submit)="regra()"></app-input>
+          <ott-input [control]="account" [matTooltip]="info.account" label="Conta" (submit)="regra()"></ott-input>
         </div>
 
         <div class="col-md-7 col-lg-7 col-xl-7">

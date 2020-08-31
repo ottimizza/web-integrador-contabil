@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { PropertyValidator } from '@shared/decorators/validate.decorator';
 
 @Component({
-  selector: 'app-input',
+  selector: 'ott-input',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss']
 })

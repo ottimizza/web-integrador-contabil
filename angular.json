@@ -153,5 +153,8 @@
       }
     }
   },
-  "defaultProject": "OIC"
+  "defaultProject": "OIC",
+  "cli": {
+    "analytics": false
+  }
 }

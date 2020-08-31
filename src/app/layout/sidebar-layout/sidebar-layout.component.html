@@ -3,7 +3,7 @@
   <div class="scroll-sidebar">
     <nav class="sidebar-nav">
       <ul id="sidebarnav">
-        <li *ngFor="let item of items">
+        <li *ngFor="let item of items" [id]="item.id">
           <a
             class="waves-effect waves-dark"
             [routerLink]="item.url"

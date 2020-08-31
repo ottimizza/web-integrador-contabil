@@ -16,7 +16,6 @@ import { RuleChipGroupModule } from './rule-creator/chips-group/chips-group.modu
 import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
 import { HistoricEditDialogModule } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.module';
 import { DesignSystemModule } from '@shared/components/ds.module';
-import { ShimmerModule } from '@shared/components/shimmer/shimmer.module';
 
 @NgModule({
     declarations: [TransactionDetailComponent, ConfirmDeleteDialogComponent],
@@ -36,7 +35,6 @@ import { ShimmerModule } from '@shared/components/shimmer/shimmer.module';
       HistoricEditDialogModule,
       DesignSystemModule,
       MatButtonModule,
-      ShimmerModule
     ],
     entryComponents: [
       RuleGridComponent,

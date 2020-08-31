@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({
-  selector: 'app-tfilter',
+  selector: 'company-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })

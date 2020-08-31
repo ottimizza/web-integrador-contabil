@@ -9,7 +9,7 @@ export interface BreadCrumb {
 }
 
 @Component({
-  selector: 'app-breadcrumb',
+  selector: 'breadcrumb',
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.scss']
 })

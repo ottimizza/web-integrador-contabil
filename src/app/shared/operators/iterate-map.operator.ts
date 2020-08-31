@@ -1,15 +1,15 @@
 import { Observable, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-export function appIterateMap(operator: (item: any) => Observable<unknown>, key?: string) {
+export function appIterateMap(switchFn: (item: any) => Observable<unknown>, key?: string) {
   return switchMap((resultSet) => {
     const preValues = key ? resultSet[key] : resultSet;
 
     if (Array.isArray(preValues)) {
-      return combineLatest(preValues.map(val => operator(val)))
+      return combineLatest(preValues.map(val => switchFn(val)))
       .pipe(map(rs => {
         return {
-          raw: preValues,
+          raw: resultSet,
           iterated: rs
         };
       }));

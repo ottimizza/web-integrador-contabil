@@ -4,6 +4,8 @@ import { environment } from '@env';
 import { GenericResponse } from '@shared/models/GenericResponse';
 import { interval, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { OrganizationService } from './organizations.service';
+import { appIterateMap } from '@shared/operators/iterate-map.operator';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/workflow`;
 
@@ -13,11 +15,13 @@ export class WorkflowService {
   private intervals: any = {};
 
   constructor(
-    private http: HttpHandlerService
+    private http: HttpHandlerService,
+    private organizationService: OrganizationService
   ) { }
 
   public fetch(searchCriteria: any) {
-    return this.http.get([BASE_URL, searchCriteria], 'Falha ao buscar roteiros!');
+    return this.http.get([BASE_URL, searchCriteria], 'Falha ao buscar roteiros!')
+    .pipe(appIterateMap(script => this.organizationService.fetchById(script.empresaId), 'record'));
   }
 
   public delete(id: number) {

@@ -1,4 +1,4 @@
-<div class="filterBox mb-4 mt-4">
+<div class="filterBox mt-4 mb-4" id="company-filter">
   <form>
     <input (keyup.enter)="confirm(business[0])" type="text" (input)="onInput($event.target)" #company [matAutocomplete]="auto" autocomplete="off" placeholder="Filtro" [matTooltip]="info">
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="select($event)">
@@ -8,7 +8,7 @@
     </mat-autocomplete>
 
     <button (click)="clear()">
-      <app-icon type="far" color="danger" name="times"></app-icon>
+      <icon type="far" color="danger" name="times"></icon>
     </button>
   </form>
 </div>

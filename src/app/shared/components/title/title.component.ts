@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-title',
+  selector: 'ott-title',
   templateUrl: './title.component.html',
   styleUrls: ['./title.component.scss']
 })

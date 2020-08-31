@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 
 @Component({
-  selector: 'app-icon',
+  selector: 'icon',
   templateUrl: './icon.component.html'
 })
 export class IconComponent {

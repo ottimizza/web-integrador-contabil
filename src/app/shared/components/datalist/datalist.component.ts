@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatSelectChange, MatSelect } from '@angular/material';
 
 @Component({
-  selector: 'app-datalist',
+  selector: 'datalist',
   templateUrl: './datalist.component.html',
   styleUrls: ['./datalist.component.scss']
 })
