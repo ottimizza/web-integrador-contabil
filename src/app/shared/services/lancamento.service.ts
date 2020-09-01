@@ -8,6 +8,7 @@ import { Empresa } from '@shared/models/Empresa';
 import { PostFormatRule } from '@shared/models/Rule';
 import { HttpHandlerService } from '@app/services/http-handler.service';
 import { map, switchMap } from 'rxjs/operators';
+import { GenericResponse } from '@shared/models/GenericResponse';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/lancamentos`;
 
@@ -33,6 +34,13 @@ export class LancamentoService {
   public calcPercentage(searchCriteria: any) {
     const url = `${BASE_URL}/porcentagem`;
     return this.http.get([url, searchCriteria], 'Falha ao obter porcentagem de lançamentos concluídos!');
+  }
+
+  public totalPerFile(tipoMovimento: string, cnpjEmpresa: string, cnpjContabilidade: string) {
+    const searchCriteria = { tipoMovimento, cnpjEmpresa, cnpjContabilidade };
+    const url = `${BASE_URL}/total_arquivos`;
+    return this.http.get<GenericResponse<{ numeroLancamentos: number, nomeArquivo: string }>>
+      ([url, searchCriteria], 'Falha ao obter o total de lançamentos agrupado por arquivo!');
   }
 
   public skip(id: number): Observable<Lancamento> {

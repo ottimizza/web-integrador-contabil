@@ -5,7 +5,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormField, MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatSelectModule, MatAutocomplete, MatAutocompleteModule } from '@angular/material';
+import { MatSelectModule, MatAutocomplete, MatAutocompleteModule, MatButton, MatButtonModule } from '@angular/material';
+import { DesignSystemModule } from '@shared/components/ds.module';
 
 @NgModule({
   declarations: [RuleEditModalComponent],
@@ -16,7 +17,10 @@ import { MatSelectModule, MatAutocomplete, MatAutocompleteModule } from '@angula
     FormsModule,
     MatTooltipModule,
     MatSelectModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatButtonModule,
+
+    DesignSystemModule
   ],
   exports: [RuleEditModalComponent]
 })

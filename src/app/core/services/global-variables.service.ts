@@ -49,7 +49,8 @@ export class GlobalVariableService {
   }
 
   public async deleteVariable(name: string, backup = false) {
-    const result = delete this.vars[name];
+    const result = delete this.vars[name.toUpperCase()];
+
     if (backup) {
       await this._backup();
     }

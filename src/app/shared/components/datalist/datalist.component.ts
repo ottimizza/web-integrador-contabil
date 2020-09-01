@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatSelectChange, MatSelect } from '@angular/material';
 
 @Component({
-  selector: 'datalist',
+  selector: 'ott-datalist',
   templateUrl: './datalist.component.html',
   styleUrls: ['./datalist.component.scss']
 })
@@ -21,7 +21,6 @@ export class DatalistComponent {
   @Output() selectionChange = new EventEmitter<MatSelectChange>();
 
   public emit(e: MatSelectChange) {
-    console.log(e);
     this.selectionChange.emit(e);
   }
 

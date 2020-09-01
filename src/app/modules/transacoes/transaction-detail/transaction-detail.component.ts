@@ -1,32 +1,30 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Observable, fromEvent, interval, of, from } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { MatTabChangeEvent } from '@angular/material';
-import { MatDialog } from '@angular/material/dialog';
 
+import { HistoricEditDialogComponent } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.component';
+import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
 import { DEFAULT_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DEFAULT_CHIP_PATTERN';
 import { VALUE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/VALUE_CHIP_PATTERN';
 import { DATE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DATE_CHIP_PATTERN';
 import { RuleConfig } from './rule-creator/chips-group/chips-group.component';
-import { GenericPagination } from '@shared/interfaces/GenericPagination';
+import { DialogService, DialogWidth } from '@app/services/dialog.service';
 import { LancamentoService } from '@shared/services/lancamento.service';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { HistoricService } from '@shared/services/historic.service';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { ToastService } from '@shared/services/toast.service';
 import { Rule, RuleCreateFormat } from '@shared/models/Rule';
+import { FormattedHistoric } from '@shared/models/Historic';
 import { RuleService } from '@shared/services/rule.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { Lancamento } from '@shared/models/Lancamento';
-import { Empresa } from '@shared/models/Empresa';
-import { finalize, catchError, switchMap, map } from 'rxjs/operators';
-import { User } from '@shared/models/User';
-import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
-import { DialogService, DialogWidth } from '@app/services/dialog.service';
-import { HistoricEditDialogComponent } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.component';
-import { FormattedHistoric } from '@shared/models/Historic';
 import { DateUtils } from '@shared/utils/date-utils';
+import { Empresa } from '@shared/models/Empresa';
 import { FormControl } from '@angular/forms';
+import { User } from '@shared/models/User';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tdetail',
@@ -89,6 +87,14 @@ export class TransactionDetailComponent implements OnInit {
       return 'Fornecedor';
     } else {
       return 'Cliente';
+    }
+  }
+
+  get accountLabel() {
+    if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'EXDEB') {
+      return 'Conta Débito';
+    } else {
+      return 'Conta Crédito';
     }
   }
 

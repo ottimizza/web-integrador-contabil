@@ -32,8 +32,8 @@
       <tr mat-row class="cursor-pointer w-100" [ngClass]="{'signin-as-row-selected': currentAccounting.id === row.id}" *matRowDef="let row; columns: displayedColumns;" (click)="select(row)">
       </tr>
     </table>
-    <mat-paginator [length]="pageInfo.totalElements" [pageSize]="pageInfo.pageSize" [pageSizeOptions]="[5, 10, 20]" (page)="onPageChange($event)" *ngIf="dataSource.length">
-    </mat-paginator>
+    <paginator [length]="pageInfo.totalElements" [pageSize]="pageInfo.pageSize" [pageSizeOptions]="[5, 10, 20]" (page)="onPageChange($event)" *ngIf="dataSource.length">
+    </paginator>
 
   </form>
 </div>

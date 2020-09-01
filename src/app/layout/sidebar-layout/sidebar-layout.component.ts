@@ -36,7 +36,7 @@ export class SidebarLayoutComponent implements OnInit {
       { id: 'sidebar-item-ultima-digitacao', icon: 'fad fa-typewriter', label: 'Última Digitação', url: '/dashboard/entrys' },
       { id: 'sidebar-item-regras', icon: 'fad fa-list-ol', label: 'Regras', url: '/dashboard/rules' },
       { id: 'sidebar-item-historicos', icon: 'fad fa-history', label: 'Históricos', url: '/dashboard/historics'},
-      // { id: 'sidebar-item-fluxo-planilhas', icon: 'fad fa-file-spreadsheet', label: 'Fluxo de Planilhas', url: '/dashboard/workflow' }
+      { id: 'sidebar-item-fluxo-planilhas', icon: 'fad fa-file-spreadsheet', label: 'Fluxo de Planilhas', url: '/dashboard/workflow' }
     ];
   }
 }

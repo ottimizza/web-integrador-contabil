@@ -1,7 +1,3 @@
-<div class="mt-2 mb-4" *ngIf="tabIsClicked">
-  <info [description]="info.info"></info>
-</div>
-
 <form autocomplete="off">
   <div class="card">
     <mat-progress-bar [value]="percentage" class="progress-bar"  [matTooltip]="percentage + '%'"></mat-progress-bar>
@@ -25,6 +21,10 @@
           <icon class="ml-2" [matTooltip]="info.affectedsOrientation" name="question-circle"></icon>
         </div>
 
+
+
+
+
       </div>
       <card *ngIf="entry || isFetching" [main]="false">
         <card [main]="false">
@@ -40,13 +40,13 @@
                 *ngIf="entry?.descricao && rebuild !== 1"
                 [config]="descricao()"
                 (clicked)="onDevolve($event)"
-                class="col"
+                class="col-md"
               ></app-chips-group>
               <app-chips-group
                 *ngIf="entry?.portador && rebuild !== 2"
                 [config]="portador()"
                 (clicked)="onDevolve($event)"
-                class="col"
+                class="col-md"
               ></app-chips-group>
             </div>
 
@@ -61,19 +61,19 @@
                 *ngIf="entry?.dataMovimento && rebuild !== 3"
                 [config]="dataMovimento()"
                 (clicked)="onDevolve($event)"
-                class="col"
+                class="col-md"
               ></app-chips-group>
               <app-chips-group
                 *ngIf="entry?.valorOriginal && rebuild !== 4"
                 [config]="valorOriginal()"
                 (clicked)="onDevolve($event)"
-                class="col"
+                class="col-md"
               ></app-chips-group>
               <app-chips-group
                 *ngIf="entry?.documento && rebuild !== 5"
                 [config]="documento()"
                 (clicked)="onDevolve($event)"
-                class="col"
+                class="col-md"
               ></app-chips-group>
             </div>
 
@@ -82,7 +82,7 @@
                 *ngIf="hasComplements"
                 [config]="complementos()"
                 (clicked)="onDevolve($event)"
-                class="col"
+                class="col-md"
               ></app-chips-group>
             </div>
 
@@ -90,9 +90,15 @@
               <app-chips-group
                 [config]="complemento02()"
                 (clicked)="onDevolve($event)"
-                class="col"
+                class="col-md"
               ></app-chips-group>
             </div>
+
+
+
+
+
+
 
           </card>
         </card>
@@ -108,7 +114,7 @@
         *ngIf="entry"
       >
         <div class="form-group col-md-5 mt-1">
-          <ott-input [control]="account" [matTooltip]="info.account" label="Conta" (submit)="regra()"></ott-input>
+          <ott-input [control]="account" [matTooltip]="info.account" [label]="accountLabel" (submit)="regra()"></ott-input>
         </div>
 
         <div class="col-md-7 col-lg-7 col-xl-7">

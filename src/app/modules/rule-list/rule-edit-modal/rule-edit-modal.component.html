@@ -4,93 +4,54 @@
 </h1>
 <div mat-dialog-content class="border-top border-bottom p-3 text-center">
 
+  <form>
+    <div class="row w-100 m-0 w-100">
 
-    <div class="row w-100 m-0 mt-4 text-center">
-      <div class="col">
-        <h4>Campo</h4>
-      </div>
-      <div class="col">
-        <h4>Condição</h4>
-      </div>
-      <div class="col">
-        <h4>Termo</h4>
-      </div>
-    </div>
-
-    <br>
-
-    <div class="row w-100 m-0 mb-4 text-center" id="ruleFieldModal" *ngFor="let rule of ruleDefault.regras; let id = index" [ngClass]="{ 'd-none': rule.campo === 'tipoMovimento' || (rule.campo === 'tipoPlanilha' && currentUser.type !== 0) }">
-      <div class="col">
-        <select (change)="fieldChange($event, id)">
-          <option value="" selected disabled hidden>Selecione um campo</option>
-          <option value="descricao" *ngIf="rule.campo === 'descricao'" selected>Fornecedor</option>
-          <option value="descricao" *ngIf="rule.campo !== 'descricao'">Fornecedor</option>
-          <option value="documento" *ngIf="rule.campo === 'documento'" selected>Documento</option>
-          <option value="documento" *ngIf="rule.campo !== 'documento'">Documento</option>
-          <option value="portador" *ngIf="rule.campo === 'portador'" selected>Banco</option>
-          <option value="portador" *ngIf="rule.campo !== 'portador'">Banco</option>
-          <option value="complemento01" *ngIf="rule.campo === 'complemento01'" selected>Complemento 01</option>
-          <option value="complemento01" *ngIf="rule.campo !== 'complemento01'">Complemento 01</option>
-          <option value="complemento02" *ngIf="rule.campo === 'complemento02'" selected>Complemento 02</option>
-          <option value="complemento02" *ngIf="rule.campo !== 'complemento02'">Complemento 02</option>
-          <option value="complemento03" *ngIf="rule.campo === 'complemento03'" selected>Complemento 03</option>
-          <option value="complemento03" *ngIf="rule.campo !== 'complemento03'">Complemento 03</option>
-          <option value="complemento04" *ngIf="rule.campo === 'complemento04'" selected>Complemento 04</option>
-          <option value="complemento04" *ngIf="rule.campo !== 'complemento04'">Complemento 04</option>
-          <option value="complemento05" *ngIf="rule.campo === 'complemento05'" selected>Complemento 05</option>
-          <option value="complemento05" *ngIf="rule.campo !== 'complemento05'">Complemento 05</option>
-          <option value="tipoPlanilha" *ngIf="rule.campo === 'tipoPlanilha'" selected>Tipo da Planilha</option>
-          <option value="tipoPlanilha" *ngIf="rule.campo !== 'tipoPlanilha'">Tipo da Planilha</option>
-          <option value="nomeArquivo" *ngIf="rule.campo === 'nomeArquivo'" selected>Nome do Arquivo</option>
-          <option value="nomeArquivo" *ngIf="rule.campo !== 'nomeArquivo'">Nome do Arquivo</option>
-          <option value="tipoMovimento" *ngIf="rule.campo === 'tipoMovimento'" selected>Tipo do Movimento</option>
-          <option value="tipoMovimento" *ngIf="rule.campo !== 'tipoMovimento'">Tipo do Movimento</option>
-        </select>
-      </div>
-      <div class="col">
-        <select id="ruleConditionModal" (change)="conditionChange($event, id)">
-          <option value="" selected disabled hidden>Selecione uma condição</option>
-          <option [value]="conditon.CONTEM" *ngIf="rule.condicao === 1" selected>Contém</option>
-          <option [value]="conditon.CONTEM" *ngIf="rule.condicao !== 1">Contém</option>
-          <option [value]="conditon.NAO_CONTEM" *ngIf="rule.condicao === 2" selected>Não contém</option>
-          <option [value]="conditon.NAO_CONTEM" *ngIf="rule.condicao !== 2">Não contém</option>
-          <option [value]="conditon.COMECAO_COM" *ngIf="rule.condicao === 3" selected>Começa com</option>
-          <option [value]="conditon.COMECAO_COM" *ngIf="rule.condicao !== 3">Começa com</option>
-          <option [value]="conditon.IGUAL" *ngIf="rule.condicao === 4" selected>Igual</option>
-          <option [value]="conditon.IGUAL" *ngIf="rule.condicao !== 4">Igual</option>
-        </select>
-      </div>
-      <div class="col">
-        <input matInput placeholder="Informe um valor" [value]="rule.valor" (keyup)="valueChange($event, id)">
-      </div>
-      <div class="col-1 p-0" *ngIf="ruleDefault.regras.length > 1">
-        <div (click)="remove(id)" [matTooltip]="info.remove">
-          <i class="fad fa-times-circle text-danger cursor-pointer" style="font-size: 120%;"></i>
+      <ott-fieldset legend="Campo" class="col">
+        <div class="mb-2" *ngFor="let rule of ruleDefault.regras; let id = index" [ngClass]="{ 'd-none': rule.campo === 'tipoMovimento' || (rule.campo === 'tipoPlanilha' && currentUser.type !== 0) }">
+          <ott-datalist [control]="controlBuilder(rule.campo)" (selectionChange)="fieldChange($event, id)" [source]="source" [parse]="parseDataSource"></ott-datalist>
         </div>
-      </div>
+      </ott-fieldset>
+
+      <ott-fieldset legend="Condição" class="col">
+        <div class="mb-2" *ngFor="let rule of ruleDefault.regras; let id = index" [ngClass]="{ 'd-none': rule.campo === 'tipoMovimento' || (rule.campo === 'tipoPlanilha' && currentUser.type !== 0) }">
+          <ott-datalist [control]="controlBuilder(rule.condicao)" (selectionChange)="conditionChange($event, id)" [source]="[1, 2, 3, 4]" [parse]="parseConditionSource"></ott-datalist>
+        </div>
+      </ott-fieldset>
+
+      <ott-fieldset legend="Valor" class="col">
+        <div class="mb-2" *ngFor="let rule of ruleDefault.regras; let id = index" [ngClass]="{ 'd-none': rule.campo === 'tipoMovimento' || (rule.campo === 'tipoPlanilha' && currentUser.type !== 0) }">
+          <ott-input placeholder="Informe um valor" [control]="controlBuilder(rule.valor)" (input)="valueChange($event, id)"></ott-input>
+        </div>
+      </ott-fieldset>
+
+      <ott-fieldset legend="&nbsp;" class="col-1">
+        <div class="mb-2" *ngFor="let rule of ruleDefault.regras; let id = index" [ngClass]="{ 'd-none': rule.campo === 'tipoMovimento' || (rule.campo === 'tipoPlanilha' && currentUser.type !== 0) }">
+          <button mat-icon-button class="btn" [matTooltip]="info.remove" (click)="remove(id)">
+            <icon name="times-circle" color="danger"></icon>
+          </button>
+        </div>
+      </ott-fieldset>
     </div>
 
     <div class="row w-100 m-0 text-center" *ngIf="ruleDefault.regras.length < 6">
-      <div class="center cursor-pointer" (click)="add()" [matTooltip]="info.add">
+      <button mat-icon-button (click)="add()" [matTooltip]="info.add" class="m-auto btn">
         <i class="fad fa-plus-circle fa-2x"></i>
+      </button>
+    </div>
+
+    <div class="row text-center justify-content-center m-2">
+      <div class="col-6">
+        <ott-input [control]="controlBuilder(ruleDefault.contaMovimento)" (input)="ruleDefault.contaMovimento = $event.target.value" label="Conta" placeholder="Informe a conta de movimento atrelada à esta regra"></ott-input>
       </div>
     </div>
 
-    <div class="row text-center">
-      <div class="col">
-        <p>Conta: </p>
-      </div>
-      <div class="col">
-        <input type="text" class="text-center" placeholder="Informa a conta de movimento atrelada à esta regra" [(ngModel)]="ruleDefault.contaMovimento">
-      </div>
-    </div>
-
-
+  </form>
 
 </div>
 <div mat-dialog-actions class="text-center">
-  <div class="row w-100 m-0 mb-4" *ngIf="errorText">
-    <strong class="text-danger">{{ errorText }}</strong>
+  <div class="row w-100 m-1" *ngIf="errorText">
+    <text color="danger">* {{ errorText }}</text>
   </div>
   <div class="container-fluid px-0 py-3 justify-content-between">
     <button class="btn btn-light text-danger mx-2" mat-dialog-close>Fechar</button>

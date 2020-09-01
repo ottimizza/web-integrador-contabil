@@ -19,8 +19,18 @@ export class WorkflowComponent implements OnInit {
   columnDefinition: ColumnDefinition<Lancamento>[] = [
     ColumnDefinition.default('portador', 'Banco'),
     ColumnDefinition.default('descricao', 'Fornecedor / Cliente'),
-    ColumnDefinition.default('valorOriginal', 'Valor'),
-    ColumnDefinition.default('complemento01', 'Complemento')
+    {
+      header: 'Valor',
+      id: 'valorOriginal',
+      key: 'valorOriginal',
+      transform: (valorOriginal: number) => `R$ ${valorOriginal.toFixed(2).replace('.', ',')}`
+    },
+    {
+      header: 'Complemento',
+      id: 'complemento01',
+      key: 'complemento01',
+      transform: (complemento: string) => complemento || 'NÃO POSSUE COMPLEMENTO'
+    }
   ];
   isEmpty = false;
 
