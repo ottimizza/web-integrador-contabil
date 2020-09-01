@@ -32,7 +32,7 @@ const TUTORIAL: GuidedTour = {
       title: '',
       content: `
       <h5>
-        3. Verificar históricos já definidas anteriormente.
+        3. Verificar históricos já definidos anteriormente.
       </h5>
       `,
       selector: '#sidebar-item-historicos',
