@@ -1,0 +1,34 @@
+<div class="async-table" *ngIf="data?.records?.length">
+  <table
+    mat-table
+    [dataSource]="data.records"
+    class="mat-elevation-z0 w-100"
+    [ngClass]="{ 'table-hover': selectable }"
+  >
+    <ng-container *ngFor="let col of definition" [matColumnDef]="col.id">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+      >
+        <strong>{{ col.header }}</strong>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        {{ col.key ? col.transform(element[col.key]) : col.transform(element) }}
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columns()"></tr>
+    <tr
+      mat-row
+      [ngClass]="{ 'cursor-pointer': selectable }"
+      *matRowDef="let row; columns: columns()"
+      (click)="onSelect(row)"
+    ></tr>
+  </table>
+  <paginator
+    [length]="data.pageInfo.totalElements"
+    [pageSize]="data.pageInfo.pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange($event)"
+  >
+  </paginator>
+</div>

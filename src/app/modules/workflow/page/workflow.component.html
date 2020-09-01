@@ -1,49 +1,18 @@
 <layout [buttons]="[button]" (buttonClicked)="create()">
 
   <empty-state
-    *ngIf="scripts && !scripts.length"
+    *ngIf="isEmpty"
     firstTitle="Sua contabilidade ainda não possue nenhum roteiro :("
     subtitle="Clique no {icon} para criar seu primeiro"
     icon="file-spreadsheet"
     (iconPressed)="create()"
   ></empty-state>
 
-  <div *ngIf="scripts?.length">
-
-    <table mat-table matSort [dataSource]="scripts" class="table-hover mat-elevation-z0 w-100 text-center">
-      <ng-container matColumnDef="name">
-        <th class="text-center" mat-header-cell *matHeaderCellDef mat-sort-header="name">
-          <text [bold]="true">Nome</text>
-        </th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.nome }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="cnpj">
-        <th class="text-center" mat-header-cell *matHeaderCellDef>
-          <text [bold]="true">CNPJ da Empresa</text>
-        </th>
-        <td mat-cell *matCellDef="let element"> {{ element.cnpjEmpresa }} </td>
-      </ng-container>
-      <ng-container matColumnDef="status">
-        <th class="text-center" mat-header-cell *matHeaderCellDef>
-          <text [bold]="true">Status</text>
-        </th>
-        <td mat-cell *matCellDef="let element">{{ element.status }} / 4</td>
-      </ng-container>
-      <ng-container matColumnDef="type">
-        <th class="text-center" mat-header-cell *matHeaderCellDef>
-          <text [bold]="true">Tipo</text>
-        </th>
-        <td mat-cell *matCellDef="let element">{{ element.tipoRoteiro }}</td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row class="cursor-pointer w-100" *matRowDef="let row; columns: displayedColumns;" (click)="select(row)">
-      </tr>
-    </table>
-    <mat-paginator [length]="pageInfo.totalElements" [pageSize]="pageInfo.pageSize" [pageSizeOptions]="[5, 10, 20]" (page)="onPageChange($event)">
-    </mat-paginator>
-
-  </div>
+  <async-table
+    [origin]="getData"
+    [definition]="columnDefinition"
+    (emptyState)="isEmpty = true"
+    [selectable]="false"
+  ></async-table>
 
 </layout>

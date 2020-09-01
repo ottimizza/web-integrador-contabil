@@ -20,6 +20,12 @@
       </div>
     </ott-fieldset>
 
+    <!-- <app-fieldset legend="Descrição" *ngIf="details?.length && data">
+      <div class="row w-100 m-0 mt-3" *ngFor="let row of details">
+        <app-input class="col-md" (submit)="submit()" [id]="row.id1" [control]="form.get(row.id1)" [label]="row.label1" (input)="update()" [placeholder]="row.ex"></app-input>
+      </div>
+    </app-fieldset> -->
+
   </form>
 
 

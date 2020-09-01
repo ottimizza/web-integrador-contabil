@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { InfoModule } from '@shared/components/info/info.module';
 import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.module';
 import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-layout.module';
-import { FilterModule } from '@shared/components/filter/filter.module';
 import { TransactionRoutingModule } from '../transaction.routing';
 import { NgxGuidedTourModule } from '@gobsio/ngx-guided-tour';
 
@@ -19,7 +18,6 @@ import { NgxGuidedTourModule } from '@gobsio/ngx-guided-tour';
     CommonModule,
     TransactionRoutingModule,
     TransactionDetailModule,
-    FilterModule,
     InfoModule,
     NormalizedLayoutModule,
     NgxGuidedTourModule.forRoot(),

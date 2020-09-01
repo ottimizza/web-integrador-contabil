@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableModule, MatPaginatorModule } from '@angular/material';
+import { MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
 import { AsyncTableComponent } from './async-table.component';
+import { PaginatorModule } from '../paginator/paginator.module';
 
 @NgModule({
   declarations: [AsyncTableComponent],
   imports: [
     CommonModule,
     MatTableModule,
-    MatPaginatorModule
+    MatSortModule,
+    PaginatorModule
   ],
   exports: [AsyncTableComponent]
 })
-export class DataTableModule { }
+export class AsyncTableModule { }

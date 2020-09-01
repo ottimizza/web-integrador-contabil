@@ -6,6 +6,8 @@ import { EmptyStateModule } from '@shared/components/empty-state/empty-state.mod
 import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-layout.module';
 import { MatTableModule, MatPaginatorModule } from '@angular/material';
 import { DesignSystemModule } from '@shared/components/ds.module';
+import { PaginatorModule } from '@shared/components/paginator/paginator.module';
+import { AsyncTableModule } from '@shared/components/async-table/async-table.module';
 
 @NgModule({
   imports: [
@@ -15,7 +17,8 @@ import { DesignSystemModule } from '@shared/components/ds.module';
     NormalizedLayoutModule,
     MatTableModule,
     DesignSystemModule,
-    MatPaginatorModule
+    PaginatorModule,
+    AsyncTableModule
   ],
   declarations: [WorkflowComponent],
   exports: [],
