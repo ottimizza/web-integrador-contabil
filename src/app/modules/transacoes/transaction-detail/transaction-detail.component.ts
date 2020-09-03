@@ -17,7 +17,7 @@ import { ToastService } from '@shared/services/toast.service';
 import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { RuleService } from '@shared/services/rule.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
-import { Lancamento } from '@shared/models/Lancamento';
+import { Lancamento, TipoLancamento } from '@shared/models/Lancamento';
 import { Empresa } from '@shared/models/Empresa';
 import { finalize, catchError, switchMap, map } from 'rxjs/operators';
 import { User } from '@shared/models/User';
@@ -76,6 +76,14 @@ export class TransactionDetailComponent implements OnInit {
     this.onTab({ tab: null, index: 0 }, true);
   }
 
+
+  /**
+   * 
+   */
+  public getLabelContaMovimento(lancamento: Lancamento = this.entry): string {
+    return lancamento.tipoLancamento === TipoLancamento.PAGAMENTOS ? 'Conta Débito' : 'Conta Crédito';
+  }
+
   get tipo() {
     if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'REC') {
       return 'MOVIMENTO';
@@ -109,10 +117,10 @@ export class TransactionDetailComponent implements OnInit {
     const l: any = this.entry || {};
     const a = l.arquivo;
     return !!((l.complemento01 && a.labelComplemento01) ||
-            (l.complemento02 && a.labelComplemento02) ||
-            (l.complemento03 && a.labelComplemento03) ||
-            (l.complemento04 && a.labelComplemento04) ||
-            (l.complemento05 && a.labelComplemento05));
+      (l.complemento02 && a.labelComplemento02) ||
+      (l.complemento03 && a.labelComplemento03) ||
+      (l.complemento04 && a.labelComplemento04) ||
+      (l.complemento05 && a.labelComplemento05));
   }
 
   resetErrors(errors?: string[]) {
@@ -241,7 +249,7 @@ export class TransactionDetailComponent implements OnInit {
 
   openGrid(): void {
     this.dialog.openComplexDialog(RuleGridComponent, DialogWidth.EXTRA_LARGE, { rules: this.conditions.rules, company: this.business })
-    .subscribe();
+      .subscribe();
   }
 
   openHistoric(obs: Observable<Lancamento>): void {
@@ -262,7 +270,7 @@ export class TransactionDetailComponent implements OnInit {
     })
       .subscribe(() => {
         this._subsAndDisable(obs);
-    });
+      });
   }
 
   onTab(event: MatTabChangeEvent, isFirst: boolean) {
