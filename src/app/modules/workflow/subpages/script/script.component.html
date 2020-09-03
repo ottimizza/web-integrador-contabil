@@ -1,0 +1,57 @@
+<layout [breadcrumbAppend]="breadcrumbAppend" [buttons]="buttons" (buttonClicked)="onClick($event)">
+
+  <mat-horizontal-stepper [linear]="true" [selectedIndex]="selectedIndex" (selectionChange)="selectedIndex = $event.selectedIndex">
+    <mat-step label="Empresa" [completed]="company">
+
+      <async-table
+        [reload]="reload"
+        [origin]="getCompanies"
+        [definition]="columns"
+        (rowSelected)="onCompanySelect($event)"
+      ></async-table>
+
+    </mat-step>
+    <mat-step label="Tipo" [completed]="type">
+
+      <div class="m-4 mb-5 w-100 text-center">
+        <ott-title>Tipo do Roteiro</ott-title>
+      </div>
+
+      <div class="row type-buttons m-auto text-center">
+        <div class="col-md p-5 cursor-pointer pag" [ngClass]="{ 'selected-type': type === 'PAG' }" (click)="type = 'PAG'">
+          <text [bold]="true">PAGAMENTOS</text>
+        </div>
+        <div class="col-md p-5 cursor-pointer rec" [ngClass]="{ 'selected-type': type === 'REC' }" (click)="type = 'REC'">
+          <text [bold]="true">RECEBIMENTOS</text>
+        </div>
+      </div>
+
+    </mat-step>
+    <mat-step label="Planilha" [completed]="spreadsheetUrl">
+
+      <div class="m-4 mb-5 w-100 text-center">
+        <ott-title>Subir Arquivo</ott-title>
+      </div>
+
+      <file-upload></file-upload>
+
+    </mat-step>
+    <mat-step label="Definições">
+
+    </mat-step>
+    <mat-step label="Confirmação" [completed]="name">
+
+    </mat-step>
+  </mat-horizontal-stepper>
+
+  <div class="w-100 m-2 text-center">
+    <ott-button color="var(--secondary-color)" (pressed)="navigate(-1)" *ngIf="selectedIndex !== 0">
+      <icon name="arrow-left"></icon>&nbsp;&nbsp;Anterior
+    </ott-button>
+
+    <ott-button color="var(--secondary-color)" (pressed)="navigate(1)" *ngIf="selectedIndex !== 3">
+      Próximo&nbsp;&nbsp;<icon name="arrow-right"></icon>
+    </ott-button>
+  </div>
+
+</layout>

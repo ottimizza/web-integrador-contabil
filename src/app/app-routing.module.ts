@@ -32,13 +32,13 @@ const routes: Routes = [
         },
         loadChildren: () => import('@modules/historic/historic-list.module').then(m => m.HistoricListModule)
       },
-      {
-        path: 'workflow',
-        data: {
-          breadcrumb: 'Fluxo de Planilhas'
-        },
-        loadChildren: () => import('@modules/workflow/workflow.module').then(m => m.WorkflowModule)
-      },
+      // {
+      //   path: 'workflow',
+      //   data: {
+      //     breadcrumb: 'Fluxo de Planilhas'
+      //   },
+      //   loadChildren: () => import('@modules/workflow/workflow.module').then(m => m.WorkflowModule)
+      // },
       {
         path: 'rules',
         data: {
@@ -69,6 +69,26 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'dashboard',
+    pathMatch: 'full'
+  },
+  {
+    path: 'entrys',
+    redirectTo: 'dashboard/entrys',
+    pathMatch: 'full'
+  },
+  {
+    path: 'rules',
+    redirectTo: 'dashboard/rules',
+    pathMatch: 'full'
+  },
+  {
+    path: 'historics',
+    redirectTo: 'dashboard/historics',
+    pathMatch: 'full'
+  },
+  {
+    path: 'workflow',
+    redirectTo: 'dashboard/workflow',
     pathMatch: 'full'
   },
   {

@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { CNPJUtils } from '@shared/utils/docs.utils';
 import { GlobalVariableService } from '@app/services/global-variables.service';
+import { User } from '@shared/models/User';
 
 @Component({
   selector: 'app-breadcrumb-input-filter',
@@ -38,10 +39,6 @@ export class BreadcrumbInputFilterComponent implements OnInit, AfterViewInit {
     private _toast: ToastService,
     private _variables: GlobalVariableService
   ) { }
-
-  private storeEmpresaSelecionada(empresa: Empresa): void {
-
-  }
 
   @HostListener('input', ['$event.target.value'])
   onInput(value: string) {
@@ -104,8 +101,8 @@ export class BreadcrumbInputFilterComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const empresa = this._variables.getVariable(this.VARIABLE_KEY);
-    if (empresa) {
+    const empresa = this._variables.getVariable<Empresa>(this.VARIABLE_KEY);
+    if (empresa && empresa.accountingId === User.fromLocalStorage().organization.id) {
       this.confirm(empresa);
     }
   }

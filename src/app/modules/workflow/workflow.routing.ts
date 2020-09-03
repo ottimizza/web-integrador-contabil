@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { WorkflowComponent } from './page/workflow.component';
+import { ScriptComponent } from './subpages/script/script.component';
 
 export const routes: Routes = [
   {
@@ -11,11 +12,11 @@ export const routes: Routes = [
     component: WorkflowComponent
   },
   {
-    path: 'novo',
+    path: 'new',
     data: {
       breadcrumb: null,
     },
-    // component: HistoricListComponent
+    component: ScriptComponent
   },
   {
     path: ':id',

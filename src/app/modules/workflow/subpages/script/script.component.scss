@@ -1,0 +1,20 @@
+.type-buttons {
+  width: 50%;
+  height: 50%;
+  border: solid 3px var(--primary-color);
+  border-radius: 8px;
+  color: var(--primary-color);
+}
+
+.selected-type {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.pag {
+  border-radius: 2px 0 0 2px;
+}
+
+.rec {
+  border-radius: 0 2px 2px 0;
+}

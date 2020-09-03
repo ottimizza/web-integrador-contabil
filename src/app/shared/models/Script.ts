@@ -2,10 +2,27 @@ import { Integration } from './Integration';
 import { Organization } from './Organization';
 import { User } from './User';
 
+export enum ScriptStatus {
+  ENCAMINHADO_PARA_PRE_ENTREGA = -1,
+
+  INICIANDO,
+  PROCESSANDO_PLANILHA,
+
+  AGUARDANDO_MAPEAMENTO,
+  AGUARDANDO_CONFIRMACAO,
+  OK
+
+  // Fluxo Padrão:            0 > 3 > -1 > 4
+  // Fluxo Planilha Simples:  0 > 1 > 2 > 3 > 4
+  // Fluxo Planilha Complexa: 0 > 1 > -1 > 3 > 4
+  // Fluxo Cartão/Extrato:    0 > 3 > 4
+
+}
+
 export class Script {
 
   public id: number;
-  public status: number;
+  public status: ScriptStatus;
   public dataCriacao: any;
   public dataAtualizacao: any;
 
@@ -27,6 +44,7 @@ export class Script {
     script.contabilidadeId = currentAccounting.id;
     script.cnpjContabilidade = currentAccounting.cnpj;
     script.tipoRoteiro = type;
+    script.status = ScriptStatus.INICIANDO;
 
     return script;
   }
@@ -39,6 +57,18 @@ export class Script {
     script.mapeamento = completeMapping;
 
     return script;
+  }
+
+  public statusDescription() {
+    switch (this.status) {
+      case ScriptStatus.INICIANDO:                    return 'INICIANDO - 1 / 5';
+      case ScriptStatus.PROCESSANDO_PLANILHA:         return 'PROCESSANDO PLANILHA - 2 / 5';
+      case ScriptStatus.AGUARDANDO_MAPEAMENTO:        return 'AGUARDANDO MAPEAMENTO - 3 / 5';
+      case ScriptStatus.AGUARDANDO_CONFIRMACAO:       return 'CONCLUINDO - 4 / 5';
+      case ScriptStatus.OK:                           return 'OK - 5 / 5';
+      case ScriptStatus.ENCAMINHADO_PARA_PRE_ENTREGA: return 'ENCAMINHADO PARA OTTIMIZZA';
+      default:                                        return 'PROCESSO INVÁLIDO!';
+    }
   }
 
 }

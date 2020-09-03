@@ -5,23 +5,43 @@
     class="mat-elevation-z0 w-100"
     [ngClass]="{ 'table-hover': selectable }"
   >
-    <ng-container *ngFor="let col of definition" [matColumnDef]="col.id">
-      <th
-        mat-header-cell
-        *matHeaderCellDef
-      >
+
+
+
+    <ng-container *ngFor="let col of definition; let ind = index" [matColumnDef]="col.id">
+      <th mat-header-cell *matHeaderCellDef>
         <strong>{{ col.header }}</strong>
       </th>
+
       <td mat-cell *matCellDef="let element">
-        {{ col.key ? col.transform(element[col.key]) : col.transform(element) }}
+
+        <span *ngIf="!col.data">
+          {{ col.key ? col.transform(element[col.key]) : col.transform(element) }}
+        </span>
+        <div *ngIf="col.data && col.data.buttons">
+            <icon
+              *ngFor="let button of col.data.buttons"
+              class="cursor-pointer col"
+              [type]="button.icon.type"
+              [color]="button.icon.color"
+              [name]="button.icon.name"
+              [matTooltip]="button.label"
+              (click)="col.data.clicked(button.selector, element)"
+            ></icon>
+        </div>
+
       </td>
     </ng-container>
+
+
+
     <tr mat-header-row *matHeaderRowDef="columns()"></tr>
     <tr
       mat-row
-      [ngClass]="{ 'cursor-pointer': selectable }"
-      *matRowDef="let row; columns: columns()"
-      (click)="onSelect(row)"
+      [class]="selectable ? 'cursor-pointer' : ''"
+      [ngClass]="{ 'text-bold': i === selectedIndex }"
+      *matRowDef="let row; columns: columns(); let i = index"
+      (click)="onSelect(row, i)"
     ></tr>
   </table>
   <paginator

@@ -25,6 +25,7 @@ import { ArrayUtils } from '@shared/utils/array.utils';
 import { RuleDeleteConfirmDialogComponent } from './rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
 import { BreadCrumb } from '@shared/components/breadcrumb/breadcrumb.component';
 import { ActionButton } from '@shared/components/action-buttons/action-buttons.component';
+import { DialogService, DialogWidth } from '@app/services/dialog.service';
 
 @Component({
   templateUrl: './rule-list.component.html',
@@ -48,7 +49,7 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
 
   constructor(
     @Inject(DOCUMENT) public doc: Document,
-    public dialog: MatDialog,
+    public dialog: DialogService,
     private service: RuleService,
     private toast: ToastService,
     public exportService: ExportService,
@@ -107,14 +108,10 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
 
   onDelete(event: number) {
     const rule = this.rows[event];
-    const dialogRef = this.dialog.open(RuleDeleteConfirmDialogComponent, {
-      width: '596px',
-      data: {
-        id: rule.id,
-        type: RuleType.RULE
-      }
-    });
-    dialogRef.afterClosed().subscribe(result => {
+    this.dialog.open(RuleDeleteConfirmDialogComponent, {
+      id: rule.id,
+      type: RuleType.RULE
+    }).subscribe(result => {
       if (result === true) {
         this.rows = this.logicService.delete(this.rows, event);
         this.toast.show('Regra alterada com sucesso, recomendamos clicar em "Atualizar"', 'success');
@@ -124,15 +121,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
 
   async onUpdate(event: string) {
     const rule = JSON.parse(event) as CompleteRule;
-    const dialogRef = this.dialog.open(RuleEditModalComponent, {
-      width: '84%',
-      maxWidth: '1300px',
-      data: {
-        rule
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(async (result: CompleteRule) => {
+    this.dialog.openComplexDialog(RuleEditModalComponent, DialogWidth.EXTRA_LARGE, { rule })
+    .subscribe(async (result: CompleteRule) => {
       if (result && result.regras && result.contaMovimento) {
         const rs = await this.service.update(result.id, { regras: result.regras, contaMovimento: result.contaMovimento }).toPromise();
         this.rows[this.rows.indexOf(rule)] = rs.record;
@@ -151,12 +141,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
     if (this.currentUser.type !== 0) {
       return;
     }
-    const dialogRef = this.dialog.open(ExportConfirmModalComponent, {
-      data: this.business || {},
-      maxWidth: '596px'
-    });
-
-    dialogRef.afterClosed().subscribe(results => {
+    this.dialog.open(ExportConfirmModalComponent, this.business || {})
+    .subscribe(results => {
       if (results) {
         this.export();
       } else {

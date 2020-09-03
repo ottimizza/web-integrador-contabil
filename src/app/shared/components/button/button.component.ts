@@ -1,13 +1,16 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'ott-button',
-  templateUrl: './button.component.html'
+  templateUrl: './button.component.html',
 })
 
 export class ButtonComponent {
 
   @Input() classes = '';
+  @Input() color = 'var(--primary-color)';
+  @Input() text = 'white';
+  @Input() deep = '';
 
   @Output() pressed = new EventEmitter<Event>();
 

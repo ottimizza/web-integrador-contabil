@@ -6,10 +6,12 @@ export class Organization {
   };
 
   id: number;
+  organizationId: number;
 
   cnpj: string;
   externalId: boolean;
   type: number;
+  active: boolean;
 
   name: string;
   codigoERP: string;

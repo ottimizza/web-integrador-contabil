@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActionButton, HexColor } from '@shared/components/action-buttons/action-buttons.component';
 import { environment } from '@env';
-import { Script } from '@shared/models/Script';
-import { PageInfo, GenericPageableResponse } from '@shared/models/GenericPageableResponse';
-import { MatPaginator, PageEvent } from '@angular/material';
-import { Observable } from 'rxjs';
+import { PageEvent } from '@angular/material';
 import { Lancamento } from '@shared/models/Lancamento';
 import { LancamentoService } from '@shared/services/lancamento.service';
 import { ColumnDefinition } from '@shared/components/async-table/models/ColumnDefinition';
+import { Router } from '@angular/router';
+import { WorkflowService } from '@app/http/workflow.service';
+import { User } from '@shared/models/User';
+import { ScriptStatus, Script } from '@shared/models/Script';
 
 @Component({
   templateUrl: './workflow.component.html',
@@ -16,23 +17,23 @@ import { ColumnDefinition } from '@shared/components/async-table/models/ColumnDe
 
 export class WorkflowComponent implements OnInit {
 
-  columnDefinition: ColumnDefinition<Lancamento>[] = [
-    ColumnDefinition.default('portador', 'Banco'),
-    ColumnDefinition.default('descricao', 'Fornecedor / Cliente'),
-    {
-      header: 'Valor',
-      id: 'valorOriginal',
-      key: 'valorOriginal',
-      transform: (valorOriginal: number) => `R$ ${valorOriginal.toFixed(2).replace('.', ',')}`
-    },
-    {
-      header: 'Complemento',
-      id: 'complemento01',
-      key: 'complemento01',
-      transform: (complemento: string) => complemento || 'NÃO POSSUE COMPLEMENTO'
-    }
+  columnDefinition: ColumnDefinition<Script>[] = [
+    ColumnDefinition.default('nome', 'Nome'),
+    ColumnDefinition.activeDefault('tipoRoteiro', 'Tipo', (tipoRoteiro => {
+      switch (tipoRoteiro) {
+        case 'PAG': return 'PAGAMENTOS';
+        case 'REC': return 'RECEBIMENTOS';
+      }
+    })),
+    ColumnDefinition.activeDefault('status', 'Status', (status => {
+      const script = new Script();
+      script.status = status;
+      return script.statusDescription();
+    })),
   ];
   isEmpty = false;
+
+  currentUser: User;
 
   public button: ActionButton = {
     id: 'new-script',
@@ -42,15 +43,19 @@ export class WorkflowComponent implements OnInit {
   };
 
   constructor(
-    private lancamentoService: LancamentoService
+    private router: Router,
+    private service: WorkflowService
   ) {}
 
   ngOnInit() {
+    this.currentUser = User.fromLocalStorage();
   }
 
   create() {
+    this.router.navigate(['/dashboard', 'workflow', 'new']);
   }
 
-  getData = (page: PageEvent) => this.lancamentoService.getLancamentos({ cnpjEmpresa: '12362390000100', cnpjContabilidade: '20000000000000', pageSize: page.pageSize, pageIndex: page.pageIndex, tipoLancamento: 1, tipoMovimento: 'PAG' });
+  getData = (page: PageEvent) =>
+    this.service.fetch({ cnpjContabilidade: this.currentUser.organization.cnpj, pageIndex: page.pageIndex, pageSize: page.pageSize })
 
 }

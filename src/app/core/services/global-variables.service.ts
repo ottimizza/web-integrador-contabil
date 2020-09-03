@@ -25,7 +25,7 @@ export class GlobalVariableService {
     return true;
   }
 
-  public getVariable(name: string) {
+  public getVariable<T>(name: string): T | null {
     return this.vars[name.toUpperCase()] || null;
   }
 
@@ -48,7 +48,7 @@ export class GlobalVariableService {
     return this.setAnonymousVariable(value, backup);
   }
 
-  public async deleteVariable(name: string, backup = false) {
+  public async deleteVariable(name: string, backup = true) {
     const result = delete this.vars[name.toUpperCase()];
 
     if (backup) {

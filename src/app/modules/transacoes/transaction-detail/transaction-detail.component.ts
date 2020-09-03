@@ -391,7 +391,7 @@ export class TransactionDetailComponent implements OnInit {
     const filter = { cnpjEmpresa: this.business.cnpj, tipoMovimento: this.tipoMovimento };
     this._lancamentoService.calcPercentage(filter).subscribe((result: any) => {
       if (result.totalLancamentos) {
-        this.percentage = +(100 - (result.numeroLancamentosRestantes / result.totalLancamentos) * 100).toFixed(0);
+        this.percentage = Math.floor(100 - (result.numeroLancamentosRestantes / result.totalLancamentos) * 100);
       } else {
         this.percentage = 100;
       }
