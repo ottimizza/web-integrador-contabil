@@ -117,10 +117,11 @@
               type="button"
               class="btn btn-primary col mx-2"
               (click)="regra()"
-              value="Regra"
+              value="Não é Fornecedor"
               [matTooltip]="info.rule"
             />
             <input
+              [disabled]="conditions.hasOtherFieldsThan('fornecedor')"
               type="button"
               class="btn btn-primary col mx-2"
               [value]="buttonLabel"
