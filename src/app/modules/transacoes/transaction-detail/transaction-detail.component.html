@@ -114,19 +114,19 @@
         <div class="col-md-7 col-lg-7 col-xl-7">
           <div class="row w-100 action-set">
             <input
-              type="button"
-              class="btn btn-primary col mx-2"
-              (click)="regra()"
-              value="Outras Contas"
-              [matTooltip]="info.rule"
-            />
-            <input
               [disabled]="conditions.hasOtherFieldsThan('fornecedor')"
               type="button"
               class="btn btn-primary col mx-2"
               [value]="buttonLabel"
               (click)="fornecedor()"
               [matTooltip]="info.provider"
+            />
+            <input
+              type="button"
+              class="btn btn-primary col mx-2"
+              (click)="regra()"
+              value="Outras"
+              [matTooltip]="info.rule"
             />
             <input
               *ngIf="conditions.verify()"
