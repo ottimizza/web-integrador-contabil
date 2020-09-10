@@ -1,18 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@env';
 
 import { CompanyCreateDialogComponent } from '@modules/workflow/dialogs/company-create-dialog.component';
 import { ActionButton, HexColor } from '@shared/components/action-buttons/action-buttons.component';
 import { ColumnDefinition } from '@shared/components/async-table/models/ColumnDefinition';
-import { BreadCrumb } from '@shared/components/breadcrumb/breadcrumb.component';
-import { OrganizationService } from '@app/http/organizations.service';
+import { BusinessService } from '@shared/services/business.service';
+import { SearchCriteria } from '@shared/models/SearchCriteria';
 import { refresh, TimeUtils } from '@shared/utils/time.utils';
+import { ToastService } from '@shared/services/toast.service';
 import { WorkflowService } from '@app/http/workflow.service';
 import { DialogService } from '@app/services/dialog.service';
 import { Organization } from '@shared/models/Organization';
+import { Script } from '@shared/models/Script';
 import { PageEvent } from '@angular/material';
 import { User } from '@shared/models/User';
+import { switchMap } from 'rxjs/operators';
+import { Empresa } from '@shared/models/Empresa';
 
 @Component({
   templateUrl: './script.component.html',
@@ -21,45 +25,34 @@ import { User } from '@shared/models/User';
 export class ScriptComponent implements OnInit {
 
   public columns: ColumnDefinition<Organization>[] = [
-    ColumnDefinition.default('name', 'Nome'),
-    ColumnDefinition.default('cnpj', 'CPF / CNPJ')
+    ColumnDefinition.default('razaoSocial', 'Nome'),
+    ColumnDefinition.default('cnpj', 'CPF / CNPJ'),
   ];
 
-  public breadcrumbAppend: BreadCrumb = {
-    label: 'Roteiro',
-    url: '/dashboard/workflow/new'
-  };
+  public breadcrumbAppend = { label: 'Roteiro' };
   public buttons: ActionButton[] = [
-    {
-      icon: 'fad fa-plus-square',
-      id: 'new-company',
-      label: 'Nova Empresa',
-      color: new HexColor(environment.theme.primaryColor)
-    },
-    {
-      icon: 'fad fa-times-square',
-      id: 'cancel',
-      label: 'Cancelar',
-      color: 'btn-light'
-    }
+    { icon: 'fad fa-plus-square', id: 'new-company', label: 'Nova Empresa', color: new HexColor(environment.theme.primaryColor) },
+    { icon: 'fad fa-times-square', id: 'cancel', label: 'Cancelar', color: 'btn-light' }
   ];
 
   public currentUser: User;
 
   public reload = false;
 
-  public company: Organization;
+  public company: Empresa;
   public type: 'REC' | 'PAG';
-  public spreadsheetUrl: string;
   public name: string;
 
   public selectedIndex = 0;
+  public currentScript: Script;
 
   constructor(
     private router: Router,
+    private routes: ActivatedRoute,
     private service: WorkflowService,
     private dialog: DialogService,
-    private organizationService: OrganizationService
+    private toast: ToastService,
+    private companyService: BusinessService
   ) {}
 
   onClick(id: string) {
@@ -81,13 +74,27 @@ export class ScriptComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = User.fromLocalStorage();
+    if (this.routes.snapshot.params.id) {
+      this.load();
+    }
   }
 
-  async onCompanySelect(event: Organization) {
-    console.log('abc', event);
+  load() {
+    this.toast.showSnack('Obtendo informações...');
+    this.service.getById(this.routes.snapshot.params.id)
+    .pipe(switchMap(result => {
+      this.currentScript = result.record;
+      return this.companyService.getById(this.currentScript.empresaId);
+    }))
+    .subscribe(result => {
+      this.company = result.record;
+      this.toast.show('Projeto acessado com sucesso!', 'success');
+    });
+  }
+
+  async onCompanySelect(event: Empresa) {
     this.company = event;
     await refresh();
-    this.type = 'PAG';
     this.selectedIndex = 1;
   }
 
@@ -95,11 +102,23 @@ export class ScriptComponent implements OnInit {
     this.selectedIndex += page;
   }
 
-  getCompanies = (page: PageEvent) => {
-    const sortInfo = { 'sort.order': 'asc', 'sort.attribute': 'name' };
-    const filter = Object.assign({ type: 2 }, sortInfo);
-    Object.assign(filter, { pageIndex: page.pageIndex, pageSize: page.pageSize });
-    return this.organizationService.fetch(filter);
+  async emitFile(file: File) {
+    this.toast.showSnack('Enviando arquivo...');
+    if (!this.currentScript) {
+      const rs = await this.create();
+      this.currentScript = rs.record;
+    }
+    this.service.upload(this.currentScript.id, file).subscribe(resultSet => {
+      this.currentScript = resultSet.record;
+      this.toast.hideSnack();
+    });
   }
+
+  create() {
+    const script = Script.firstPart(this.company);
+    return this.service.start(script).toPromise();
+  }
+
+  getCompanies = (page: PageEvent) => this.companyService.fetch(SearchCriteria.of(page));
 
 }

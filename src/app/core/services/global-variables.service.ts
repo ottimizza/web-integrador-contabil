@@ -30,7 +30,7 @@ export class GlobalVariableService {
   }
 
   public has(name: string) {
-    return !!this.getVariable(name);
+    return (this.getVariable(name) !== undefined);
   }
 
   public isSetted(value: any) {
@@ -60,7 +60,7 @@ export class GlobalVariableService {
   private _backup() {
     return new Promise(resolve => {
       localStorage.setItem(this.BACKUP_KEY, JSON.stringify(this.vars));
-      resolve();
+      resolve('ok');
     });
   }
 

@@ -11,10 +11,19 @@
       ></async-table>
 
     </mat-step>
+    <mat-step label="Material" [completed]="currentScript?.urlArquivo">
+
+      <div class="m-4 mb-5 w-100 text-center">
+        <ott-title>Subir Arquivo</ott-title>
+      </div>
+
+      <file-upload (fileChange)="emitFile($event)"></file-upload>
+
+    </mat-step>
     <mat-step label="Tipo" [completed]="type">
 
       <div class="m-4 mb-5 w-100 text-center">
-        <ott-title>Tipo do Roteiro</ott-title>
+        <ott-title>Tipo da Integração</ott-title>
       </div>
 
       <div class="row type-buttons m-auto text-center">
@@ -27,16 +36,11 @@
       </div>
 
     </mat-step>
-    <mat-step label="Planilha" [completed]="spreadsheetUrl">
+    <mat-step label="Definições">
 
       <div class="m-4 mb-5 w-100 text-center">
-        <ott-title>Subir Arquivo</ott-title>
+        <ott-title>Detalhes do Roteiro</ott-title>
       </div>
-
-      <file-upload></file-upload>
-
-    </mat-step>
-    <mat-step label="Definições">
 
     </mat-step>
     <mat-step label="Confirmação" [completed]="name">
@@ -44,7 +48,7 @@
     </mat-step>
   </mat-horizontal-stepper>
 
-  <div class="w-100 m-2 text-center">
+  <!-- <div class="w-100 m-2 text-center">
     <ott-button color="var(--secondary-color)" (pressed)="navigate(-1)" *ngIf="selectedIndex !== 0">
       <icon name="arrow-left"></icon>&nbsp;&nbsp;Anterior
     </ott-button>
@@ -52,6 +56,6 @@
     <ott-button color="var(--secondary-color)" (pressed)="navigate(1)" *ngIf="selectedIndex !== 3">
       Próximo&nbsp;&nbsp;<icon name="arrow-right"></icon>
     </ott-button>
-  </div>
+  </div> -->
 
 </layout>

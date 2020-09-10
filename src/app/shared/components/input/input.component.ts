@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { PropertyValidator } from '@shared/decorators/validate.decorator';
 
 @Component({
   selector: 'ott-input',

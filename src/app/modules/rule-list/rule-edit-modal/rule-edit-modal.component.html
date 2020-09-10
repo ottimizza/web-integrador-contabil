@@ -21,7 +21,7 @@
 
       <ott-fieldset legend="Valor" class="col">
         <div class="mb-2" *ngFor="let rule of ruleDefault.regras; let id = index" [ngClass]="{ 'd-none': rule.campo === 'tipoMovimento' || (rule.campo === 'tipoPlanilha' && currentUser.type !== 0) }">
-          <ott-input placeholder="Informe um valor" [control]="controlBuilder(rule.valor)" (input)="valueChange($event, id)"></ott-input>
+          <ott-input (submit)="save()" placeholder="Informe um valor" [control]="controlBuilder(rule.valor)" (input)="valueChange($event, id)"></ott-input>
         </div>
       </ott-fieldset>
 
@@ -42,7 +42,7 @@
 
     <div class="row text-center justify-content-center m-2">
       <div class="col-6">
-        <ott-input [control]="controlBuilder(ruleDefault.contaMovimento)" (input)="ruleDefault.contaMovimento = $event.target.value" label="Conta" placeholder="Informe a conta de movimento atrelada à esta regra"></ott-input>
+        <ott-input [control]="controlBuilder(ruleDefault.contaMovimento)" (input)="ruleDefault.contaMovimento = $event.target.value" label="Conta" placeholder="Informe a conta de movimento atrelada à esta regra" (submit)="save()"></ott-input>
       </div>
     </div>
 

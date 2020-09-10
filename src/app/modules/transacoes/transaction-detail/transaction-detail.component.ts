@@ -147,7 +147,7 @@ export class TransactionDetailComponent implements OnInit {
 
   regra() {
     if (this.ruleCreateFormat.regras.length > 7) {
-      console.log(this.ruleCreateFormat);
+      (this.ruleCreateFormat);
       this.errorText = 'Você não pode salvar uma regra com mais de 5 cláusolas!';
       return;
     }

@@ -1,4 +1,4 @@
-import { IButtonData } from '@shared/models/IButtonData';
+import { IButtonData, ColorData, IconData } from '@shared/models/IButtonData';
 
 export class ColumnDefinition<T> {
   id: string;
@@ -18,6 +18,16 @@ export class ColumnDefinition<T> {
       key: property,
       transform
     };
+  }
+
+  public static singleIconColumn<T>(
+    icon: string,
+    header: string,
+    color: ColorData,
+    label = '',
+    onClick: (buttonSelector: string, el: T) => void = () => {}
+  ) {
+    return this.actionIconColumn<T>(icon, header, [{ icon: new IconData('duotone', color, icon), label, color }], onClick);
   }
 
   public static actionIconColumn<T>(

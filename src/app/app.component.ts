@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
     @Inject(DOCUMENT) public document: Document,
     public events: RxEvent,
     public updateService: UpdateSerive,
-    public messagingService: MessagingService
+    public messagingService: MessagingService,
   ) {
     this.updateService.checkForUpdates();
     this.events.subscribe('sw::update', () => {

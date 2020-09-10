@@ -1,72 +1,46 @@
-import { Component, Input, Output, EventEmitter, OnInit, Inject } from '@angular/core';
-import { User } from '@shared/models/User';
-import { DOCUMENT } from '@angular/common';
-import { WorkflowService } from '@app/http/workflow.service';
-
-export class FileUrlChangeOptions {
-  url: string;
-  name: string;
-  extension: string;
-}
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { ToastService } from '@shared/services/toast.service';
 
 @Component({
   selector: 'file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss']
 })
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent {
 
-  public readonly ID = 'file-upload-component';
-
-  @Input() autoStore = true;
-
-  @Output() fileChange: EventEmitter<File> = new EventEmitter();
-  @Output() urlChange: EventEmitter<FileUrlChangeOptions> = new EventEmitter();
-
+  // Lógica interna
   fileToUpload: File = null;
-
-  inputRef: HTMLInputElement;
-
-  accountingId: number;
-
   hasFileName = false;
 
-  constructor(
-    private service: WorkflowService,
-    @Inject(DOCUMENT) private document: Document
-  ) {}
+  // Tipos de arquivos válidos (caso não seja informado, aceitará todos os tipos)
+  @Input() allowedTypes: string[];
 
-  ngOnInit(): void {
-    this.accountingId = User.fromLocalStorage().organization.id;
-  }
+  // Evento disparado quando um arquivo é selecionado
+  @Output() fileChange: EventEmitter<File> = new EventEmitter();
+
+  // Referência de origem do arquivo
+  @ViewChild('fileInput') inputRef: ElementRef<HTMLInputElement>;
+
+  constructor (private toast: ToastService) {}
 
   handleFileInput(files: FileList) {
-    this.fileToUpload = files.item(0);
-    console.log(this.fileToUpload);
-
-    this.hasFileName = true;
-    if (this.autoStore) {
-      this.store();
+    const fileToUpload = files.item(0);
+    const ok = this.allowedTypes ? this.allowedTypes.includes(this.getFileExtension(fileToUpload)) : true;
+    if (ok) {
+      this.fileToUpload = fileToUpload;
+      this.upload();
     } else {
-      this.fileChange.emit(this.fileToUpload);
+      this.toast.show(`${fileToUpload.name} não é um arquivo válido`, 'danger');
     }
   }
 
-  store() {
-    // this.service.fakeStore(this.fileToUpload, this.accountingId).subscribe(result => {
-    //   this.urlChange.emit({
-    //     url: result,
-    //     name: this.getFileName(),
-    //     extension: this.getFileExtension()
-    //   });
-    // });
+  upload() {
+    this.hasFileName = true;
+    this.fileChange.emit(this.fileToUpload);
   }
 
   trigger() {
-    if (!this.inputRef) {
-      this.inputRef = this.document.getElementById(this.ID) as HTMLInputElement;
-    }
-    this.inputRef.click();
+    this.inputRef.nativeElement.click();
   }
 
   getFileName() {
@@ -77,10 +51,10 @@ export class FileUploadComponent implements OnInit {
     }
   }
 
-  getFileExtension() {
-    if (this.fileToUpload) {
-      const props = this.fileToUpload.name.split('.');
-      return this.fileToUpload.type ? `${this.fileToUpload.type}:NATIVE` : props[props.length - 1];
+  getFileExtension(file: File) {
+    if (file) {
+      const props = file.name.split('.');
+      return file.type ? file.type : props[props.length - 1];
     }
   }
 

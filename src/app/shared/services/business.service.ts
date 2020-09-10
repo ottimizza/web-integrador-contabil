@@ -3,6 +3,9 @@ import { environment } from '@env';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
 import { Empresa } from '@shared/models/Empresa';
 import { HttpHandlerService } from '@app/services/http-handler.service';
+import { map } from 'rxjs/operators';
+import { GenericResponse } from '@shared/models/GenericResponse';
+import { ottUnpaginate } from '@shared/operators/paginate.operator';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/empresas`;
 
@@ -17,15 +20,13 @@ export class BusinessService {
     return this._http.get<GenericPageableResponse<Empresa>>([BASE_URL, searchCriteria], 'Falha ao obter empresas!');
   }
 
-  // @Deprecated('Prefer to use fetch directly')
-  // getBusiness(business: string): Observable<GenericPageableResponse<Empresa>> {
-  //   return this.fetch({ razaoSocial: business, tipo: 2 });
-  // }
+  public getById(id: number) {
+    return this.fetch({ id })
+    .pipe(ottUnpaginate());
+  }
 
-  // @Deprecated('Prefer to use fetch directly')
-  // getByErpCode(erp: string): Observable<GenericPageableResponse<Empresa>> {
-  //   return this.fetch({ codigoErp: erp, tipo: 2 });
-  // }
-
+  public create(company: Empresa) {
+    return this._http.post(BASE_URL, company, 'Falha ao criar empresa!');
+  }
 
 }

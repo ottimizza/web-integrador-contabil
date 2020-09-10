@@ -1,7 +1,7 @@
 <input type="file"
-       [id]="ID"
        class="d-none"
-       (change)="handleFileInput($event.target.files)">
+       (change)="handleFileInput($event.target.files)"
+       #fileInput>
 
 
 <div (click)="trigger()" class="drag-box cursor-pointer p-3" appDragDrop (fileDropped)="handleFileInput($event.target.files)">

@@ -56,6 +56,7 @@ export class AsyncTableComponent implements OnInit, OnChanges {
     this.toast.showSnack('Aguardando resposta...');
     this.origin(event).subscribe(rs => {
       this.data = rs;
+      console.log(this.data.records[0]);
       if (!this.data.records.length) {
         this.emptyState.emit(204);
       }

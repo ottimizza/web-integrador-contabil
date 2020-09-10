@@ -1,22 +1,32 @@
 <h1 mat-dialog-title><i class="fad fa-industry"></i>&nbsp;&nbsp; Criar Empresa</h1>
 <div mat-dialog-content class="border-top border-bottom p-4">
 
-  <form [formGroup]="form">
+  <form *ngIf="firstStep">
+    <ott-fieldset legend="Importar empresa" deep="padding-top: 16px;">
+      <ott-input label="CPF ou CNPJ *" placeholder="99.999.999/0001-99" [control]="cnpj" (submit)="import()"></ott-input>
+    </ott-fieldset>
+  </form>
+
+  <form [formGroup]="form" *ngIf="!firstStep">
 
     <div class="container">
 
       <div class="row mb-2">
         <div class="col-md-6">
-          <ott-input (submit)="save()" label="CPF ou CNPJ *" placeholder="99.999.999/0001-99" [control]="form.get('cnpj')" id="company-create-cnpj-input"></ott-input>
+          <ott-input (submit)="save()" label="CPF ou CNPJ *" placeholder="99.999.999/0001-99" [control]="cnpj" id="company-create-cnpj-input"></ott-input>
+        </div>
+        <div class="mt-4 mt-md-0 col-md-6">
+          <ott-input (submit)="save()" label="Apelido *" placeholder="Nome simplificado" [control]="nick" id="company-create-nick-input"></ott-input>
+          <small class="float-right">{{ (nick.value || '').length }} / 30</small>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-8 mt-4">
-          <ott-input (submit)="save()" label="Nome *" placeholder="Nome da Empresa" [control]="form.get('name')" id="company-create-name-input"></ott-input>
+          <ott-input (submit)="save()" label="Nome *" placeholder="Nome da Empresa" [control]="name" id="company-create-name-input"></ott-input>
         </div>
         <div class="col-md-4 mt-5 mt-md-1">
-          <ott-input (submit)="save()" label="Código no Sistema Contábil *" placeholder="999" [control]="form.get('erp')" id="company-create-erp-input"></ott-input>
+          <ott-input (submit)="save()" label="Código no Sistema Contábil *" placeholder="999" [control]="erp" id="company-create-erp-input"></ott-input>
         </div>
       </div>
 
@@ -38,9 +48,9 @@
         <icon name="times-square"></icon>
         Cancelar
       </button>
-      <button class="btn btn-primary text-light mx-2" [disabled]="isCreating" (click)="save()">
-        <icon name="save"></icon>
-        Salvar
+      <button class="btn btn-primary text-light mx-2" [disabled]="isCreating" (click)="firstStep ? import() : save()">
+        <icon [name]="firstStep ? 'download' : 'save'"></icon>
+        {{ firstStep ? 'Importar' : 'Salvar' }}
       </button>
     </div>
 </div>

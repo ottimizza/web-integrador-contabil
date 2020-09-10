@@ -23,7 +23,7 @@ export const routes: Routes = [
     data: {
       breadcrumb: null
     },
-    // component:
+    component: ScriptComponent
   }
 ];
 

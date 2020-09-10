@@ -1,6 +1,8 @@
 import { Integration } from './Integration';
 import { Organization } from './Organization';
 import { User } from './User';
+import { Subject } from 'rxjs';
+import { Empresa } from './Empresa';
 
 export enum ScriptStatus {
   ENCAMINHADO_PARA_PRE_ENTREGA = -1,
@@ -35,7 +37,7 @@ export class Script {
   public tipoRoteiro: 'PAG' | 'REC';
   public mapeamento: Integration;
 
-  public static firstPart(company: Organization, type: 'PAG' | 'REC') {
+  public static firstPart(company: Empresa) {
     const script = new Script();
     const currentAccounting = User.fromLocalStorage().organization;
 
@@ -43,7 +45,6 @@ export class Script {
     script.cnpjEmpresa = company.cnpj;
     script.contabilidadeId = currentAccounting.id;
     script.cnpjContabilidade = currentAccounting.cnpj;
-    script.tipoRoteiro = type;
     script.status = ScriptStatus.INICIANDO;
 
     return script;
