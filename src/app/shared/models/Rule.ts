@@ -69,7 +69,8 @@ export class Rule {
     }
 
     public hasOtherFieldsThan(field: string) {
-      return this.rules.filter(rule => !['tipoMovimento', 'tipoLancamento', 'tipoConta', 'tipoPlanilha', field].includes(rule.campo)).length > 0;
+      console.log(field);
+      return this.rules.filter(rule => !['tipoMovimento', 'tipoLancamento', 'tipoPlanilha', field].includes(rule.campo)).length > 0;
     }
 
     public verify() {
