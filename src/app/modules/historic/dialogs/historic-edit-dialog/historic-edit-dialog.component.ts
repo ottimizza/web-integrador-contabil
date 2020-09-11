@@ -6,6 +6,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { EntryUtils } from '@shared/utils/entry.utils';
 import { FormUtils } from '@shared/utils/form.utils';
 import { Lancamento } from '@shared/models/Lancamento';
+import { CNPJUtils } from '@shared/utils/docs.utils';
 
 export class HistoricEditDialogData {
   type: 'post' | 'edit';
@@ -91,6 +92,13 @@ export class HistoricEditDialogComponent implements OnInit {
       Object.assign(reference, { labelComplemento05: entry.arquivo.labelComplemento05 });
     }
     return (option: string) => EntryUtils.fromTo(option, reference).replace('*', '');
+  }
+
+  public updateCode() {
+    const formattedCode = CNPJUtils.cleanMask(this.form.get('code').value || '');
+    console.log(formattedCode);
+    this.form.get('code').setValue(formattedCode);
+    this.update();
   }
 
   public update() {

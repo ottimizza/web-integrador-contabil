@@ -9,7 +9,7 @@
     <app-fieldset legend="Código">
       <app-comment type="danger">Caso sua contabilidade não utilize código de histórico, desconsidere este campo.</app-comment>
         <div class="row w-100 m-0 mt-2">
-          <app-input (submit)="submit()" (input)="update()" [control]="form.get('code')" class="col-12" placeholder="Ex. 247"></app-input>
+          <app-input (submit)="submit()" (input)="updateCode()" [control]="form.get('code')" class="col-12" placeholder="Ex. 247"></app-input>
         </div>
     </app-fieldset>
 

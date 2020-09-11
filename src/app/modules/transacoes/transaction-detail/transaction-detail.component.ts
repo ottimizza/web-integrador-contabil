@@ -78,7 +78,7 @@ export class TransactionDetailComponent implements OnInit {
 
 
   /**
-   * 
+   *
    */
   public getLabelContaMovimento(lancamento: Lancamento = this.entry): string {
     return lancamento.tipoLancamento === TipoLancamento.PAGAMENTOS ? 'Conta Débito' : 'Conta Crédito';
@@ -148,9 +148,8 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   regra() {
-    if (this.ruleCreateFormat.regras.length > 7) {
-      console.log(this.ruleCreateFormat);
-      this.errorText = 'Você não pode salvar uma regra com mais de 5 cláusolas!';
+    if (this.ruleCreateFormat.regras.length > 6) {
+      this.errorText = 'Você não pode salvar uma regra com mais de 4 cláusulas!';
       return;
     }
     const regra = this.ruleCreateFormat;
@@ -164,8 +163,8 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   ignorar() {
-    if (this.ruleCreateFormat.regras.length > 7) {
-      this.errorText = 'Você não pode salvar uma regra com mais de 5 cláusolas!';
+    if (this.ruleCreateFormat.regras.length > 6) {
+      this.errorText = 'Você não pode salvar uma regra com mais de 5 cláusulas!';
       return;
     }
     const regra = this.ruleCreateFormat;
