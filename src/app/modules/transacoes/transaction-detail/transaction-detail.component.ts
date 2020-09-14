@@ -400,6 +400,18 @@ export class TransactionDetailComponent implements OnInit {
     });
   }
 
+  /**
+   * @description Obtém o label do botão de regras
+   * @returns o label
+   */
+  public getRuleButtonDescription() {
+    switch (this.entry.tipoLancamento) {
+      case TipoLancamento.PAGAMENTOS:   return 'Não é fornecedor'
+      case TipoLancamento.RECEBIMENTOS: return 'Não é cliente'
+      default:                          return 'Regra'
+    }
+  }
+
   descricao(): RuleConfig {
     return {
       selectable: true,

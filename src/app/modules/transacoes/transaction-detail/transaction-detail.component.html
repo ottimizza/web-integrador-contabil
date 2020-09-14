@@ -117,7 +117,7 @@
               type="button"
               class="btn btn-primary col mx-2"
               (click)="regra()"
-              value="Não é fornecedor"
+              [value]="getRuleButtonDescription()"
               [matTooltip]="info.rule"
             />
             <input
