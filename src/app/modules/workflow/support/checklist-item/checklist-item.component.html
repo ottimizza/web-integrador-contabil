@@ -1,0 +1,57 @@
+<div class="checklist-item mb-3">
+
+  <div class="row w-100 m-0">
+
+
+    <div class="col-lg-8" [ngSwitch]="question.tipoInput">
+      <ott-input
+        [id]="'checklist-item-' + question.id"
+        *ngSwitchCase="type.INPUT"
+        [label]="question.descricao"
+        [control]="ctrl"
+        (input)="submit()"
+        (submit)="submit()"
+      ></ott-input>
+
+      <mat-checkbox
+        [id]="'checklist-item-' + question.id"
+        *ngSwitchCase="type.CHECKBOX"
+        [formControl]="ctrl"
+        (change)="submit()">
+          {{ question.descricao }}
+      </mat-checkbox>
+
+      <calendar
+        [id]="'checklist-item-' + question.id"
+        *ngSwitchCase="type.DATE"
+        [control]="ctrl"
+        (dateChanged)="submit()"
+        [label]="question.descricao"
+      ></calendar>
+
+      <ott-datalist
+        [id]="'checklist-item-' + question.id"
+        *ngSwitchDefault
+        [multiple]="question.tipoInput === type.MULT_SELECT"
+        [label]="question.descricao"
+        [control]="ctrl"
+        [source]="question.opcoesResposta"
+        [parse]="parse"
+        (selectionChange)="submit()"
+      ></ott-datalist>
+    </div>
+
+    <div class="col-md mt-2 mt-lg-0">
+      <ott-input
+        [id]="'checklist-observation-' + question.id"
+        label="Observações"
+        [control]="observation"
+        (input)="submit()"
+        (submit)="submit()"
+      ></ott-input>
+    </div>
+
+  </div>
+
+
+</div>

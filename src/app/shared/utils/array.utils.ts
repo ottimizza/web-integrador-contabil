@@ -94,18 +94,12 @@ export class ArrayUtils {
     }).filter(el => el !== '');
   }
 
-  public static verify(array: boolean[]): boolean {
-    /*
-     * Verifica se todos os elementos de um array são true
-     */
-
-    let verify = true;
-    array.forEach(arr => {
-      if (arr !== true) {
-        verify = false;
-      }
-    });
-    return verify;
+  /**
+   * @description Verifica se todos os elementos de um array são validos
+   * @param array o array que será verificado
+   */
+  public static verify<T>(array: T[]): boolean {
+    return array.filter(item => !item).length === 0;
 
   }
 
@@ -141,6 +135,17 @@ export class ArrayUtils {
       }
     });
     return items;
+  }
+
+  /**
+   * @description Transforma um array bidimensional em um array plano
+   * @param arrays array bidimensional a ser planificado
+   * @returns um array plano
+   */
+  public static reduce<T>(arrays: T[][]) {
+    const result: T[] = [];
+    arrays.forEach(arr => arr.forEach(item => result.push(item)));
+    return result;
   }
 
 }

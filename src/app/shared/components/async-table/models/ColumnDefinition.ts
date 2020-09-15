@@ -20,14 +20,34 @@ export class ColumnDefinition<T> {
     };
   }
 
+  public static defaultWithoutProperty(id: string, header: string, transform: (val: any) => string): ColumnDefinition<any> {
+    return {
+      header,
+      id,
+      transform
+    };
+  }
+
+  public static reactiveIconColumn<T>(id: string, header: string, content: (el: T) => IconData & { tooltip: string }): ColumnDefinition<T> {
+    return {
+      header,
+      id,
+      transform: () => '',
+      data: {
+        type: 'reactive-icon',
+        getIcon: content,
+      }
+    };
+  }
+
   public static singleIconColumn<T>(
-    icon: string,
+    icon: IconData,
     header: string,
     color: ColorData,
     label = '',
     onClick: (buttonSelector: string, el: T) => void = () => {}
   ) {
-    return this.actionIconColumn<T>(icon, header, [{ icon: new IconData('duotone', color, icon), label, color }], onClick);
+    return this.actionIconColumn<T>(icon.name, header, [{ icon, label, color }], onClick);
   }
 
   public static actionIconColumn<T>(

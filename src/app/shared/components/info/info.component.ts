@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class InfoComponent implements OnInit {
 
   @Input() description: string;
+  @Input() important = true;
   isOpen: boolean;
 
   ngOnInit(): void {

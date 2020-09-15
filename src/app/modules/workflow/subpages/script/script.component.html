@@ -1,7 +1,11 @@
-<layout [breadcrumbAppend]="breadcrumbAppend" [buttons]="buttons" (buttonClicked)="onClick($event)">
+<layout [buttons]="buttons" (buttonClicked)="onClick($event)" [overwriteBreadcrumb]="true">
+
+  <div breadcrumb>
+    <app-breadcrumb></app-breadcrumb>
+  </div>
 
   <mat-horizontal-stepper [linear]="true" [selectedIndex]="selectedIndex" (selectionChange)="selectedIndex = $event.selectedIndex">
-    <mat-step label="Empresa" [completed]="company">
+    <mat-step label="Empresa" [completed]="company" [editable]="false">
 
       <async-table
         [reload]="reload"
@@ -11,7 +15,7 @@
       ></async-table>
 
     </mat-step>
-    <mat-step label="Material" [completed]="currentScript?.urlArquivo">
+    <mat-step label="Material" [completed]="currentScript?.urlArquivo" [editable]="false">
 
       <div class="m-4 mb-5 w-100 text-center">
         <ott-title>Subir Arquivo</ott-title>
@@ -20,7 +24,7 @@
       <file-upload (fileChange)="emitFile($event)"></file-upload>
 
     </mat-step>
-    <mat-step label="Tipo" [completed]="type">
+    <mat-step label="Tipo" [completed]="currentScript?.tipoRoteiro" [editable]="!currentScript?.nome">
 
       <div class="m-4 mb-5 w-100 text-center">
         <ott-title>Tipo da Integração</ott-title>
@@ -35,27 +39,38 @@
         </div>
       </div>
 
-    </mat-step>
-    <mat-step label="Definições">
-
-      <div class="m-4 mb-5 w-100 text-center">
-        <ott-title>Detalhes do Roteiro</ott-title>
+      <div class="w-100 text-center mt-3" *ngIf="type">
+        <ott-button (pressed)="confirmType()">Confirmar Tipo</ott-button>
       </div>
 
     </mat-step>
-    <mat-step label="Confirmação" [completed]="name">
+    <mat-step label="Definições" [completed]="currentScript?.checkList" [editable]="!currentScript?.nome">
+
+      <div class="m-4 mb-5 w-100 text-center">
+        <ott-title>Detalhes do Projeto</ott-title>
+      </div>
+
+      <script-checklist
+        *ngIf="checklist.isValid && currentScript"
+        [checklist]="checklist.value"
+        [scriptId]="currentScript.id"
+        (completed)="onChecklistCompleted($event)"
+      ></script-checklist>
+
+    </mat-step>
+    <mat-step label="Confirmação" [completed]="currentScript?.nome">
+
+      <div class="m-4 mb-5 w-100 text-center">
+        <ott-title>Confirmar informações</ott-title>
+      </div>
+
+      <script-project-confirmation
+        *ngIf="selectedIndex === 4"
+        [script]="currentScript"
+        [company]="company"
+      ></script-project-confirmation>
 
     </mat-step>
   </mat-horizontal-stepper>
-
-  <!-- <div class="w-100 m-2 text-center">
-    <ott-button color="var(--secondary-color)" (pressed)="navigate(-1)" *ngIf="selectedIndex !== 0">
-      <icon name="arrow-left"></icon>&nbsp;&nbsp;Anterior
-    </ott-button>
-
-    <ott-button color="var(--secondary-color)" (pressed)="navigate(1)" *ngIf="selectedIndex !== 3">
-      Próximo&nbsp;&nbsp;<icon name="arrow-right"></icon>
-    </ott-button>
-  </div> -->
 
 </layout>

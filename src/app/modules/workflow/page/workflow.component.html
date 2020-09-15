@@ -1,4 +1,8 @@
 <layout [buttons]="[button]" (buttonClicked)="create()" [overwriteBreadcrumb]="true">
+  <div breadcrumb>
+    <app-breadcrumb></app-breadcrumb>
+  </div>
+
   <div class="w-100 text-center">
     <ott-title>Projetos</ott-title>
   </div>
@@ -10,6 +14,10 @@
     icon="file-spreadsheet"
     (iconPressed)="create()"
   ></empty-state>
+
+  <app-complex-search-input>
+
+  </app-complex-search-input>
 
   <async-table
     [origin]="getData"

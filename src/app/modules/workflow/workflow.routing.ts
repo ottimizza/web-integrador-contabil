@@ -14,14 +14,14 @@ export const routes: Routes = [
   {
     path: 'new',
     data: {
-      breadcrumb: null,
+      breadcrumb: 'Novo',
     },
     component: ScriptComponent
   },
   {
     path: ':id',
     data: {
-      breadcrumb: null
+      breadcrumb: 'Criação'
     },
     component: ScriptComponent
   }

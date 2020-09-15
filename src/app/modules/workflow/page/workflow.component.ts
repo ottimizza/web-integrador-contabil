@@ -24,7 +24,7 @@ export class WorkflowComponent implements OnInit {
       switch (tipoRoteiro) {
         case 'PAG': return 'PAGAMENTOS';
         case 'REC': return 'RECEBIMENTOS';
-        default: return 'Não definido';
+        default:    return 'Não definido';
       }
     })),
     ColumnDefinition.activeDefault('status', 'Status', (status => {

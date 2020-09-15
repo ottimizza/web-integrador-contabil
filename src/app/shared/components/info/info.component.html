@@ -1,3 +1,3 @@
-<div class="info-container" matTooltip="Clique para fechar" *ngIf="isOpen" (click)="close()">
+<div class="info-container" [class]="important ? 'important' : 'regular'" matTooltip="Clique para fechar" *ngIf="isOpen" (click)="close()">
   <span>{{ description }}</span>
 </div>

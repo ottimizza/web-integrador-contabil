@@ -55,12 +55,12 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'entrys',
+        redirectTo: 'workflow',
         pathMatch: 'full'
       },
       {
         path: '**',
-        redirectTo: 'entrys',
+        redirectTo: 'workflow',
         pathMatch: 'full'
       }
 

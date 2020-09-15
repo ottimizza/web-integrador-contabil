@@ -1,23 +1,17 @@
 import { Integration } from './Integration';
-import { Organization } from './Organization';
 import { User } from './User';
-import { Subject } from 'rxjs';
 import { Empresa } from './Empresa';
 
 export enum ScriptStatus {
-  ENCAMINHADO_PARA_PRE_ENTREGA = -1,
 
-  INICIANDO,
+  INICIANDO = 1,
   PROCESSANDO_PLANILHA,
-
+  ARQUIVO_OK,
   AGUARDANDO_MAPEAMENTO,
+  AGUARDANDO_DETALHAMENTO,
   AGUARDANDO_CONFIRMACAO,
+  PRE_ENTREGA,
   OK
-
-  // Fluxo Padrão:            0 > 3 > -1 > 4
-  // Fluxo Planilha Simples:  0 > 1 > 2 > 3 > 4
-  // Fluxo Planilha Complexa: 0 > 1 > -1 > 3 > 4
-  // Fluxo Cartão/Extrato:    0 > 3 > 4
 
 }
 
@@ -36,6 +30,7 @@ export class Script {
   public cnpjContabilidade: string;
   public tipoRoteiro: 'PAG' | 'REC';
   public mapeamento: Integration;
+  public checkList: boolean;
 
   public static firstPart(company: Empresa) {
     const script = new Script();
@@ -62,12 +57,14 @@ export class Script {
 
   public statusDescription() {
     switch (this.status) {
-      case ScriptStatus.INICIANDO:                    return 'INICIANDO - 1 / 5';
-      case ScriptStatus.PROCESSANDO_PLANILHA:         return 'PROCESSANDO PLANILHA - 2 / 5';
-      case ScriptStatus.AGUARDANDO_MAPEAMENTO:        return 'AGUARDANDO MAPEAMENTO - 3 / 5';
-      case ScriptStatus.AGUARDANDO_CONFIRMACAO:       return 'CONCLUINDO - 4 / 5';
-      case ScriptStatus.OK:                           return 'OK - 5 / 5';
-      case ScriptStatus.ENCAMINHADO_PARA_PRE_ENTREGA: return 'ENCAMINHADO PARA OTTIMIZZA';
+      case ScriptStatus.INICIANDO:                    return '1 / 7 - INICIADO';
+      case ScriptStatus.PROCESSANDO_PLANILHA:         return '2 / 7 - PROCESSANDO PLANILHA';
+      case ScriptStatus.ARQUIVO_OK:                   return '3 / 7 - ARQUIVO PROCESSADO, PRONTO PARA PROSSEGUIR';
+      case ScriptStatus.AGUARDANDO_MAPEAMENTO:        return '4 / 7 - AGUARDANDO MAPEAMENTO';
+      case ScriptStatus.AGUARDANDO_DETALHAMENTO:      return '5 / 7 - AGUARDANDO PREENCHIMENTO DE DETALHES';
+      case ScriptStatus.AGUARDANDO_CONFIRMACAO:       return '6 / 7 - AGUARDANDO CONFIRMAÇÃO';
+      case ScriptStatus.OK:                           return '7 / 7 - OK';
+      case ScriptStatus.PRE_ENTREGA:                  return 'ENCAMINHADO PARA ANÁLISE DA EQUIPE OTTIMIZZA';
       default:                                        return 'PROCESSO INVÁLIDO!';
     }
   }

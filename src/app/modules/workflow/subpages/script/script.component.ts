@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { switchMap } from 'rxjs/operators';
 import { environment } from '@env';
+
+import { PageEvent } from '@angular/material';
 
 import { CompanyCreateDialogComponent } from '@modules/workflow/dialogs/company-create-dialog.component';
 import { ActionButton, HexColor } from '@shared/components/action-buttons/action-buttons.component';
@@ -11,12 +14,13 @@ import { refresh, TimeUtils } from '@shared/utils/time.utils';
 import { ToastService } from '@shared/services/toast.service';
 import { WorkflowService } from '@app/http/workflow.service';
 import { DialogService } from '@app/services/dialog.service';
-import { Organization } from '@shared/models/Organization';
-import { Script } from '@shared/models/Script';
-import { PageEvent } from '@angular/material';
-import { User } from '@shared/models/User';
-import { switchMap } from 'rxjs/operators';
+import { Script, ScriptStatus } from '@shared/models/Script';
+import { LazyLoader } from '@shared/models/LazyLoader';
+import { Checklist, ChecklistInputType } from '@shared/models/Checklist';
 import { Empresa } from '@shared/models/Empresa';
+import { User } from '@shared/models/User';
+import { ChecklistService } from '@app/http/checklist.service';
+import { combineLatest } from 'rxjs';
 
 @Component({
   templateUrl: './script.component.html',
@@ -24,7 +28,7 @@ import { Empresa } from '@shared/models/Empresa';
 })
 export class ScriptComponent implements OnInit {
 
-  public columns: ColumnDefinition<Organization>[] = [
+  public columns: ColumnDefinition<Empresa>[] = [
     ColumnDefinition.default('razaoSocial', 'Nome'),
     ColumnDefinition.default('cnpj', 'CPF / CNPJ'),
   ];
@@ -41,15 +45,17 @@ export class ScriptComponent implements OnInit {
 
   public company: Empresa;
   public type: 'REC' | 'PAG';
-  public name: string;
 
   public selectedIndex = 0;
   public currentScript: Script;
+
+  public checklist = new LazyLoader<Checklist>();
 
   constructor(
     private router: Router,
     private routes: ActivatedRoute,
     private service: WorkflowService,
+    private checklistService: ChecklistService,
     private dialog: DialogService,
     private toast: ToastService,
     private companyService: BusinessService
@@ -74,9 +80,14 @@ export class ScriptComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = User.fromLocalStorage();
+    this.startChecklist();
     if (this.routes.snapshot.params.id) {
       this.load();
     }
+  }
+
+  public startChecklist() {
+    this.checklist.call(this.checklistService.fetch(2), 'record');
   }
 
   load() {
@@ -86,10 +97,29 @@ export class ScriptComponent implements OnInit {
       this.currentScript = result.record;
       return this.companyService.getById(this.currentScript.empresaId);
     }))
-    .subscribe(result => {
+    .subscribe(async result => {
       this.company = result.record;
+      let page = 1;
+      if (this.currentScript.urlArquivo) {
+        page = 2;
+      }
+      if (this.currentScript.tipoRoteiro) {
+        page = 3;
+      }
+      if (this.currentScript.checkList) {
+        page = 4;
+      }
+      await refresh();
+      this.navigate(page);
       this.toast.show('Projeto acessado com sucesso!', 'success');
     });
+  }
+
+  async onChecklistCompleted(event: Script) {
+    this.currentScript = event;
+    this.currentScript.checkList = true;
+    await refresh();
+    this.navigate(4);
   }
 
   async onCompanySelect(event: Empresa) {
@@ -99,7 +129,7 @@ export class ScriptComponent implements OnInit {
   }
 
   navigate(page: number) {
-    this.selectedIndex += page;
+    this.selectedIndex = page;
   }
 
   async emitFile(file: File) {
@@ -108,15 +138,27 @@ export class ScriptComponent implements OnInit {
       const rs = await this.create();
       this.currentScript = rs.record;
     }
-    this.service.upload(this.currentScript.id, file).subscribe(resultSet => {
+    this.service.upload(this.currentScript.id, file, this.company.cnpj, this.currentUser.organization.cnpj, environment.storageApplicationId)
+    .subscribe(async resultSet => {
       this.currentScript = resultSet.record;
       this.toast.hideSnack();
+      await refresh();
+      this.selectedIndex = 2;
     });
   }
 
   create() {
     const script = Script.firstPart(this.company);
     return this.service.start(script).toPromise();
+  }
+
+  async confirmType() {
+    this.toast.showSnack('Definindo tipo...');
+    const rs = await this.service.patch(this.currentScript.id, { tipoRoteiro: this.type, status: 5 }).toPromise();
+    this.currentScript = rs.record;
+    this.toast.hideSnack();
+    await refresh();
+    this.selectedIndex = 3;
   }
 
   getCompanies = (page: PageEvent) => this.companyService.fetch(SearchCriteria.of(page));

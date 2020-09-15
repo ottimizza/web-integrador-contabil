@@ -4,11 +4,19 @@
   padding: 10px;
   border-radius: 3px;
   transition: 300ms;
-  background-color: rgb(255, 219, 133);
   padding: 15px;
 
   span {
-    color: black;
     font-size: 17px;
   }
+}
+
+.important {
+  background-color: rgb(255, 219, 133);
+  color: black;
+}
+
+.regular {
+  background-color: #d1ecf1;
+  color: #0c5460;
 }

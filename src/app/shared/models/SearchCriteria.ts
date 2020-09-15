@@ -4,8 +4,8 @@ import { PageEvent } from '@angular/material';
 export class SearchCriteria {
 
   constructor(
-    public pageIndex: number,
-    public pageSize: number
+    public pageIndex?: number,
+    public pageSize?: number
   ) {}
 
   public static of(pageCriteria: PageInfo | PageEvent | SearchCriteria) {

@@ -22,6 +22,8 @@ export class DebounceDirective implements OnInit, OnDestroy {
   public debounceTime = 300;
   @Input()
   public debounceEvent: string;
+  @Input()
+  public debounceActivated = true;
 
   private sub$ = new Subject<Event>();
   private eventsToListen = ['input', 'click'];
@@ -35,6 +37,10 @@ export class DebounceDirective implements OnInit, OnDestroy {
 
     if (this.debounceEvent) {
       this.eventsToListen.push(this.debounceEvent);
+    }
+
+    if (!this.debounceActivated) {
+      return;
     }
 
     this.eventsToListen.forEach(eventName => {

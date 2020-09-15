@@ -5,11 +5,9 @@
     autocomplete="off"
     type="text"
     [id]="id"
-    [value]="value"
     [placeholder]="placeholder"
     [formControl]="control"
     [style]="deep"
-    [disabled]="disabled"
     (input)="emitInput($event)"
     (keyup.enter)="emitSubmit($event)">
 </div>

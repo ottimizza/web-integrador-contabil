@@ -7,6 +7,7 @@ import { Component, Output, EventEmitter, Input, ViewEncapsulation } from '@angu
 
 export class ButtonComponent {
 
+  @Input() disabled = false;
   @Input() classes = '';
   @Input() color = 'var(--primary-color)';
   @Input() text = 'white';

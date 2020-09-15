@@ -1,32 +1,32 @@
-<nav aria-label="breadcrumb">
-  <div class="content m-0 w-100 mt-0 mb-0">
-    <div class="container p-0">
-
-      <ol class="bc d-flex row w-100 m-0">
-
-        <li *ngFor="let breadcrumb of breadcrumbs" class="p-4 mt-1 col-3 text-right d-none d-md-block">
+<nav aria-label="breadcrumb" class="breadcrumb m-0">
+  <div class="content-wrapper m-0 w-100">
+    <div class="container">
+      <ol class="breadcrumb m-0 p-0 d-none d-md-flex">
+        <li *ngFor="let breadcrumb of breadcrumbs" class="breadcrumb-item">
           <a [routerLink]="[breadcrumb.url, breadcrumb.params]">
             <span class="d-md-inline-block">
-              {{ breadcrumb.label }} /
+              {{ breadcrumb.label }}
             </span>
           </a>
         </li>
-<!--
-        <li class="col-md-6 text-center">
-          <company-filter (empresa)="companySelected.emit($event)"></company-filter>
-        </li> -->
-
-        <li *ngIf="append" class="p-4 mt-1 col-3 text-left d-none d-md-block">
-          <a [routerLink]="append?.url">
+        <li *ngIf="append" class="breadcrumb-item">
+          <a [routerLink]="append.params ? [append.url, append.params] : [append.url]" class="">
             <span class="d-md-inline-block">
-              / {{ append.label }}
+              {{ append.label }}
             </span>
           </a>
         </li>
-
       </ol>
 
-
+      <ol class="breadcrumb m-0 p-0 d-flex d-md-none">
+        <li class="breadcrumb-item">
+            <a>
+              <span>
+                Início
+              </span>
+            </a>
+        </li>
+      </ol>
     </div>
   </div>
 </nav>

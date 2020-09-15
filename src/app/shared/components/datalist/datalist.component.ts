@@ -16,6 +16,8 @@ export class DatalistComponent {
 
   @Input() parse: (src: any) => string;
 
+  @Input() multiple = false;
+
   @Input() id: string;
 
   @Output() selectionChange = new EventEmitter<MatSelectChange>();

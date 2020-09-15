@@ -1,4 +1,5 @@
 import { HexColor } from '@shared/components/action-buttons/action-buttons.component';
+import { IconSize } from '@shared/components/icon/icon.component';
 
 export type ColorData = 'primary'
                       | 'secondary'
@@ -17,7 +18,8 @@ export class IconData {
   constructor(
     public type: 'default' | 'solid' | 'regular' | 'light' | 'duotone',
     public color: ColorData | 'default',
-    public name: string
+    public name: string,
+    public size: IconSize = 'md'
   ) {}
 
   public static default(icon: string) {

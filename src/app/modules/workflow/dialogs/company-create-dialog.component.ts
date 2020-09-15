@@ -103,6 +103,7 @@ export class CompanyCreateDialogComponent {
     company.razaoSocial = this.name.value;
     company.codigoERP = this.erp.value;
     company.accountingId = User.fromLocalStorage().organization.id;
+    company.nomeCompleto = `${company.codigoERP} - ${company.razaoSocial}`;
 
     this.toast.showSnack('Criando empresa, aguarde alguns instantes...');
     this.companyService.create(company).subscribe(() => {
