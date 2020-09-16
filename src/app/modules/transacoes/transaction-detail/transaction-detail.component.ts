@@ -19,7 +19,7 @@ import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { FormattedHistoric } from '@shared/models/Historic';
 import { RuleService } from '@shared/services/rule.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
-import { Lancamento } from '@shared/models/Lancamento';
+import { Lancamento, TipoLancamento } from '@shared/models/Lancamento';
 import { DateUtils } from '@shared/utils/date-utils';
 import { Empresa } from '@shared/models/Empresa';
 import { FormControl } from '@angular/forms';
@@ -74,6 +74,14 @@ export class TransactionDetailComponent implements OnInit {
     this.onTab({ tab: null, index: 0 }, true);
   }
 
+
+  /**
+   *
+   */
+  public getLabelContaMovimento(lancamento: Lancamento = this.entry): string {
+    return lancamento.tipoLancamento === TipoLancamento.PAGAMENTOS ? 'Conta Débito' : 'Conta Crédito';
+  }
+
   get tipo() {
     if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'REC') {
       return 'MOVIMENTO';
@@ -115,10 +123,10 @@ export class TransactionDetailComponent implements OnInit {
     const l: any = this.entry || {};
     const a = l.arquivo;
     return !!((l.complemento01 && a.labelComplemento01) ||
-            (l.complemento02 && a.labelComplemento02) ||
-            (l.complemento03 && a.labelComplemento03) ||
-            (l.complemento04 && a.labelComplemento04) ||
-            (l.complemento05 && a.labelComplemento05));
+      (l.complemento02 && a.labelComplemento02) ||
+      (l.complemento03 && a.labelComplemento03) ||
+      (l.complemento04 && a.labelComplemento04) ||
+      (l.complemento05 && a.labelComplemento05));
   }
 
   resetErrors(errors?: string[]) {
@@ -146,9 +154,8 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   regra() {
-    if (this.ruleCreateFormat.regras.length > 7) {
-      (this.ruleCreateFormat);
-      this.errorText = 'Você não pode salvar uma regra com mais de 5 cláusolas!';
+    if (this.ruleCreateFormat.regras.length > 6) {
+      this.errorText = 'Você não pode salvar uma regra com mais de 4 cláusulas!';
       return;
     }
     const regra = this.ruleCreateFormat;
@@ -162,8 +169,8 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   ignorar() {
-    if (this.ruleCreateFormat.regras.length > 7) {
-      this.errorText = 'Você não pode salvar uma regra com mais de 5 cláusolas!';
+    if (this.ruleCreateFormat.regras.length > 6) {
+      this.errorText = 'Você não pode salvar uma regra com mais de 5 cláusulas!';
       return;
     }
     const regra = this.ruleCreateFormat;
@@ -247,7 +254,7 @@ export class TransactionDetailComponent implements OnInit {
 
   openGrid(): void {
     this.dialog.openComplexDialog(RuleGridComponent, DialogWidth.EXTRA_LARGE, { rules: this.conditions.rules, company: this.business })
-    .subscribe();
+      .subscribe();
   }
 
   openHistoric(obs: Observable<Lancamento>): void {
@@ -268,7 +275,7 @@ export class TransactionDetailComponent implements OnInit {
     })
       .subscribe(() => {
         this._subsAndDisable(obs);
-    });
+      });
   }
 
   onTab(event: MatTabChangeEvent, isFirst: boolean) {
