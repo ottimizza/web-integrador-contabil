@@ -1,5 +1,9 @@
 <div class="project-confirmation">
 
+  <better-info *ngIf="error" type="danger">
+    {{ error }}
+  </better-info>
+
   <form *ngIf="data.isValid">
 
     <ott-fieldset legend="Nome">

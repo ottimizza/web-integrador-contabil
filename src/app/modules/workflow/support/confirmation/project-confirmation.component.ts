@@ -25,6 +25,7 @@ export class ProjectConfirmationComponent implements OnInit {
   public name = new FormControl('', Validators.required);
 
   public isSaving = false;
+  public error: string;
 
   constructor(
     private workflowService: WorkflowService,
@@ -80,6 +81,10 @@ export class ProjectConfirmationComponent implements OnInit {
       nome: this.name.value,
     }).pipe(catchError(err => {
       this.isSaving = false;
+      if (`${err?.status}` === '500' || `${err?.statusCode}` === '500') {
+        this.error = err.error_description;
+        window.scrollTo(0, 0);
+      }
       throw err;
     })).subscribe(() => {
       this.toast.show('Parabéns, o projeto foi criado com sucesso e encaminhado para análise da Equipe Ottimizza', 'success').subscribe(() => {
