@@ -20,7 +20,7 @@ export class ColumnDefinition<T> {
     };
   }
 
-  public static defaultWithoutProperty(id: string, header: string, transform: (val: any) => string): ColumnDefinition<any> {
+  public static defaultWithoutProperty<T>(id: string, header: string, transform: (val: T) => string): ColumnDefinition<T> {
     return {
       header,
       id,

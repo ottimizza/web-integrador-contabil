@@ -14,6 +14,7 @@ export class InputComponent implements OnChanges {
   @Input() control = new FormControl();
   @Input() deep = '';
   @Input() disabled = false;
+  @Input() type: 'text' | 'search' = 'text';
 
   @Input() id: string;
 

@@ -7,22 +7,17 @@
     <ott-title>Projetos</ott-title>
   </div>
 
-  <empty-state
-    *ngIf="isEmpty"
-    firstTitle="Sua contabilidade ainda não possui nenhum projeto :("
-    subtitle="Clique no {icon} para criar seu primeiro"
-    icon="file-spreadsheet"
-    (iconPressed)="create()"
-  ></empty-state>
-
-  <app-complex-search-input>
-
-  </app-complex-search-input>
+  <div class="mt-5 mb-3">
+    <default-filter
+      [options]="options"
+      (filterChanged)="onFilterChanged($event)"
+    ></default-filter>
+  </div>
 
   <async-table
     [origin]="getData"
     [definition]="columnDefinition"
-    (emptyState)="isEmpty = true"
+    [reload]="reload"
     (rowSelected)="onRowSelected($event)"
   ></async-table>
 

@@ -4,7 +4,7 @@ import { WorkflowRoutingModule } from './workflow.routing';
 import { WorkflowComponent } from './page/workflow.component';
 import { EmptyStateModule } from '@shared/components/empty-state/empty-state.module';
 import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-layout.module';
-import { MatTableModule, MatDialogModule, MatStepperModule, MatCheckboxModule } from '@angular/material';
+import { MatTableModule, MatDialogModule, MatStepperModule, MatCheckboxModule, MatChipsModule, MatIconModule, MatButtonModule } from '@angular/material';
 import { DesignSystemModule } from '@shared/components/ds.module';
 import { PaginatorModule } from '@shared/components/paginator/paginator.module';
 import { AsyncTableModule } from '@shared/components/async-table/async-table.module';
@@ -14,11 +14,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FileUploadModule } from '@shared/components/file-upload/file-upload.module';
 import { ChecklistComponent } from './support/checklist/checklist.component';
 import { ChecklistItemComponent } from './support/checklist-item/checklist-item.component';
-import { FormFieldModule } from '@shared/components/form-field/form-field.module';
 import { CalendarModule } from '@shared/components/calendar/calendar.module';
 import { ProjectConfirmationComponent } from './support/confirmation/project-confirmation.component';
 import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.module';
-import { ComplexSearchModule } from '@shared/components/search/complex-search.module';
+import { DefaultFilterModule } from '@shared/components/default-filter/default-filter.module';
 
 @NgModule({
   imports: [
@@ -36,10 +35,11 @@ import { ComplexSearchModule } from '@shared/components/search/complex-search.mo
     MatStepperModule,
     FileUploadModule,
     MatCheckboxModule,
-    FormFieldModule,
     CalendarModule,
     BreadcrumbModule,
-    ComplexSearchModule
+    DefaultFilterModule,
+    MatIconModule,
+    MatButtonModule
   ],
   declarations: [
     WorkflowComponent,

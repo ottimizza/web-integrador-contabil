@@ -7,8 +7,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
 import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
-import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
-import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { ToastService } from '@shared/services/toast.service';
 import { RuleService } from '@shared/services/rule.service';
@@ -31,7 +29,7 @@ import { DialogService, DialogWidth } from '@app/services/dialog.service';
   templateUrl: './rule-list.component.html',
   styleUrls: ['./rule-list.component.scss']
 })
-export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRule>, GenericPagination {
+export class RuleListComponent implements OnInit {
 
   rows: CompleteRule[] = [];
   business: Empresa;

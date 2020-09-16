@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControlOptions } from '@angular/forms';
 import { OrganizationService } from '@app/http/organizations.service';
 import { Organization } from '@shared/models/Organization';
 import { User } from '@shared/models/User';
@@ -8,6 +8,7 @@ import { ToastService } from '@shared/services/toast.service';
 import { CNPJUtils } from '@shared/utils/docs.utils';
 import { Empresa } from '@shared/models/Empresa';
 import { BusinessService } from '@shared/services/business.service';
+import { StringUtils } from '@shared/utils/string.utils';
 
 @Component({
   templateUrl: './company-create-dialog.component.html'
@@ -16,13 +17,12 @@ export class CompanyCreateDialogComponent {
 
   errorText: string;
   isCreating = false;
-  firstStep = true;
 
   form = new FormGroup({
     cnpj: new FormControl('', Validators.required),
-    name: new FormControl('', Validators.required),
-    erp: new FormControl('', Validators.required),
-    nick: new FormControl('', [Validators.required, Validators.maxLength(30), Validators.pattern('[a-zA-Z ]*')])
+    name: new FormControl({ value: '', disabled: true }, Validators.required),
+    erp: new FormControl({ value: '', disabled: true }, Validators.required),
+    nick: new FormControl({ value: '', disabled: true }, [Validators.required, Validators.maxLength(30), Validators.pattern('[a-zA-Z ]*')])
   });
 
   constructor(
@@ -42,7 +42,7 @@ export class CompanyCreateDialogComponent {
       this.errorText = 'CPF ou CNPJ é obrigatório';
     } else {
       this.toast.showSnack('Analisando registros anteriores...');
-      const filter = { cnpj: this.cnpj.value, type: 2, organizationId: User.fromLocalStorage().organization.id, active: true };
+      const filter = { cnpj: CNPJUtils.cleanMask(this.cnpj.value), type: 2, organizationId: User.fromLocalStorage().organization.id, active: true };
       this.organizationService.fetch(filter).subscribe(rs => {
         this.toast.hideSnack();
         this.buildOrganization(rs.records[0]);
@@ -57,13 +57,15 @@ export class CompanyCreateDialogComponent {
     }
     if (company?.name) {
       this.name.setValue(company.name);
-      this.name.disable();
+    } else {
+      this.name.enable();
     }
     if (company?.codigoERP) {
       this.erp.setValue(company.codigoERP);
-      this.erp.disable();
+    } else {
+      this.erp.enable();
     }
-    this.firstStep = false;
+    this.nick.enable();
   }
 
   save() {
@@ -86,6 +88,16 @@ export class CompanyCreateDialogComponent {
       this.errorText = '';
       this._save();
     }
+  }
+
+  public updateNick() {
+    const nomeResumido = (this.nick.value as string)
+      .replace(/ /g, '_')
+      .toLowerCase()
+      .split('');
+    nomeResumido[0] = nomeResumido[0].toUpperCase();
+    const nickname = StringUtils.normalize(nomeResumido.join(''));
+    this.nick.setValue(nickname);
   }
 
   private _save() {

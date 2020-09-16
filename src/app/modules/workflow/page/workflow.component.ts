@@ -10,6 +10,7 @@ import { SearchCriteria } from '@shared/models/SearchCriteria';
 import { WorkflowService } from '@app/http/workflow.service';
 import { Script } from '@shared/models/Script';
 import { User } from '@shared/models/User';
+import { WORKFLOW_COMPLEX_FILTER_OPTIONS } from '../support/complex-filter/workflow-complex-filter';
 
 @Component({
   templateUrl: './workflow.component.html',
@@ -18,8 +19,8 @@ import { User } from '@shared/models/User';
 
 export class WorkflowComponent implements OnInit {
 
-  columnDefinition: ColumnDefinition<Script & { nomeEmpresa: string, erpEmpresa: string }>[] = [
-    ColumnDefinition.activeDefault('nome', 'Nome', val => val || 'Não definido'),
+  columnDefinition: ColumnDefinition<Script & { nomeEmpresa: string, erpEmpresa: string, nomeCompleto: string }>[] = [
+    ColumnDefinition.default('nomeCompleto', 'Empresa'),
     ColumnDefinition.activeDefault('tipoRoteiro', 'Tipo', (tipoRoteiro => {
       switch (tipoRoteiro) {
         case 'PAG': return 'PAGAMENTOS';
@@ -27,14 +28,14 @@ export class WorkflowComponent implements OnInit {
         default:    return 'Não definido';
       }
     })),
+    ColumnDefinition.activeDefault('nome', 'Projeto', val => val || 'Não definido'),
     ColumnDefinition.activeDefault('status', 'Status', (status => {
       const script = new Script();
       script.status = status;
       return script.statusDescription();
     })),
-    ColumnDefinition.default('nomeEmpresa', 'Empresa')
   ];
-  isEmpty = false;
+  public reload = false;
 
   currentUser: User;
 
@@ -44,6 +45,9 @@ export class WorkflowComponent implements OnInit {
     label: 'Novo Projeto',
     color: new HexColor(environment.theme.primaryColor)
   };
+
+  public options = WORKFLOW_COMPLEX_FILTER_OPTIONS;
+  public filters: any = {};
 
   constructor(
     private router: Router,
@@ -60,11 +64,17 @@ export class WorkflowComponent implements OnInit {
 
   getData = (page: PageEvent) => {
     const filter = { cnpjContabilidade: this.currentUser.organization.cnpj };
+    Object.assign(filter, this.filters);
     return this.service.fetchWithCompany(SearchCriteria.of(page).with(filter));
   }
 
   public onRowSelected(event: Script) {
     this.router.navigate(['/dashboard', 'workflow', event.id]);
+  }
+
+  public onFilterChanged(newFilter: any) {
+    this.filters = newFilter;
+    this.reload = !this.reload;
   }
 
 }

@@ -22,8 +22,8 @@ import { TitleModule } from './title/title.module';
 import { TitleComponent } from './title/title.component';
 import { ButtonModule } from './button/button.module';
 import { ButtonComponent } from './button/button.component';
-import { FormFieldModule } from './form-field/form-field.module';
-import { FormFieldComponent } from './form-field/form-field.component';
+import { BetterInfoModule } from './better-info/better-info.module';
+import { BetterInfoComponent } from './better-info/better-info.component';
 
 @NgModule({
   imports: [
@@ -39,7 +39,7 @@ import { FormFieldComponent } from './form-field/form-field.component';
     IconModule,
     TitleModule,
     ButtonModule,
-    FormFieldModule
+    BetterInfoModule
   ],
   exports: [
     VerticalAlignerComponent,
@@ -53,7 +53,7 @@ import { FormFieldComponent } from './form-field/form-field.component';
     IconComponent,
     TitleComponent,
     ButtonComponent,
-    FormFieldComponent
+    BetterInfoComponent
   ]
 })
 export class DesignSystemModule {}

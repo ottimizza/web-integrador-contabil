@@ -21,6 +21,7 @@ import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
 import { ChecklistService } from '@app/http/checklist.service';
 import { combineLatest } from 'rxjs';
+import { SCRIPT_COMPLEX_FILTER_OPTIONS } from '@modules/workflow/support/complex-filter/script-complex-filter';
 
 @Component({
   templateUrl: './script.component.html',
@@ -29,7 +30,9 @@ import { combineLatest } from 'rxjs';
 export class ScriptComponent implements OnInit {
 
   public columns: ColumnDefinition<Empresa>[] = [
-    ColumnDefinition.default('razaoSocial', 'Nome'),
+    ColumnDefinition.defaultWithoutProperty('name', 'Nome', company => {
+      return `${(company.codigoERP && company.codigoERP !== 'null') ? company.codigoERP + ' - ' : ''}${company.razaoSocial || ''}`.toUpperCase().trim();
+    }),
     ColumnDefinition.default('cnpj', 'CPF / CNPJ'),
   ];
 
@@ -50,6 +53,9 @@ export class ScriptComponent implements OnInit {
   public currentScript: Script;
 
   public checklist = new LazyLoader<Checklist>();
+
+  public filterOptions = SCRIPT_COMPLEX_FILTER_OPTIONS;
+  filter: any = {};
 
   constructor(
     private router: Router,
@@ -161,6 +167,11 @@ export class ScriptComponent implements OnInit {
     this.selectedIndex = 3;
   }
 
-  getCompanies = (page: PageEvent) => this.companyService.fetch(SearchCriteria.of(page));
+  public onFilterChanged(event: any) {
+    this.filter = event;
+    this.reload = !this.reload;
+  }
+
+  getCompanies = (page: PageEvent) => this.companyService.fetch(SearchCriteria.of(page).with(this.filter));
 
 }

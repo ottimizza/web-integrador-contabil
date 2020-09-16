@@ -3,12 +3,13 @@ import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ChecklistService } from '@app/http/checklist.service';
 import { WorkflowService } from '@app/http/workflow.service';
-import { ChecklistAnswer, ChecklistQuestion } from '@shared/models/Checklist';
+import { ChecklistAnswer, ChecklistInputType, ChecklistQuestion } from '@shared/models/Checklist';
 import { Empresa } from '@shared/models/Empresa';
 import { GenericResponse } from '@shared/models/GenericResponse';
 import { LazyLoader } from '@shared/models/LazyLoader';
 import { Script, ScriptStatus } from '@shared/models/Script';
 import { ToastService } from '@shared/services/toast.service';
+import { momentjs } from '@shared/utils/moment';
 import { catchError } from 'rxjs/operators';
 
 @Component({
@@ -40,6 +41,33 @@ export class ProjectConfirmationComponent implements OnInit {
       this.name.setValue(`${this.script.tipoRoteiro === 'REC' ? 'RECEBIMENTOS' : 'PAGAMENTOS'} - ${this.company.razaoSocial.toUpperCase()}`);
     }
     this.data.call(this.checklistService.getCompletedForm(2, this.script.id));
+  }
+
+  public checkAnswer(question: ChecklistQuestion & ChecklistAnswer): string {
+    let value: string = question.resposta;
+    const type = ChecklistInputType;
+
+    switch (question.tipoInput) {
+      case type.CHECKBOX:
+        value = (`${value}` === 'true') ? 'Sim' : 'Não';
+        break;
+      case type.DATE:
+        value = momentjs(value).format('DD/MM/YYYY');
+        break;
+      case type.SELECT:
+        const index = question.opcoesResposta.map(or => or.valor).indexOf(value);
+        value = question.opcoesResposta[index].descricao;
+        break;
+      case type.MULT_SELECT:
+        const values = value.split(';').map(val => {
+          const i = question.opcoesResposta.map(oq => oq.valor).indexOf(val);
+          return question.opcoesResposta[i].descricao;
+        });
+        value = values.join(', ');
+        break;
+    }
+
+    return value;
   }
 
   public confirm() {

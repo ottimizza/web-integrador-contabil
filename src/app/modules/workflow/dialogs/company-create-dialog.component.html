@@ -1,22 +1,20 @@
 <h1 mat-dialog-title><i class="fad fa-industry"></i>&nbsp;&nbsp; Criar Empresa</h1>
 <div mat-dialog-content class="border-top border-bottom p-4">
 
-  <form *ngIf="firstStep">
-    <ott-fieldset legend="Importar empresa" deep="padding-top: 16px;">
-      <ott-input label="CPF ou CNPJ *" placeholder="99.999.999/0001-99" [control]="cnpj" (submit)="import()"></ott-input>
-    </ott-fieldset>
-  </form>
+  <better-info>
+    Clique na lupa para pesquisar empresas com o CNPJ desejado
+  </better-info>
 
-  <form [formGroup]="form" *ngIf="!firstStep">
+  <form [formGroup]="form">
 
     <div class="container">
 
       <div class="row mb-2">
         <div class="col-md-6">
-          <ott-input (submit)="save()" label="CPF ou CNPJ *" placeholder="99.999.999/0001-99" [control]="cnpj" id="company-create-cnpj-input"></ott-input>
+          <ott-input type="search" (submit)="import()" label="CPF ou CNPJ *" placeholder="99.999.999/0001-99" [control]="cnpj" id="company-create-cnpj-input"></ott-input>
         </div>
         <div class="mt-4 mt-md-0 col-md-6">
-          <ott-input (submit)="save()" label="Apelido *" placeholder="Nome simplificado" [control]="nick" id="company-create-nick-input"></ott-input>
+          <ott-input (submit)="save()" label="Apelido *" placeholder="Nome simplificado" (input)="updateNick()" [control]="nick" id="company-create-nick-input"></ott-input>
           <small class="float-right">{{ (nick.value || '').length }} / 30</small>
         </div>
       </div>
@@ -48,9 +46,9 @@
         <icon name="times-square"></icon>
         Cancelar
       </button>
-      <button class="btn btn-primary text-light mx-2" [disabled]="isCreating" (click)="firstStep ? import() : save()">
-        <icon [name]="firstStep ? 'download' : 'save'"></icon>
-        {{ firstStep ? 'Importar' : 'Salvar' }}
+      <button class="btn btn-primary text-light mx-2" [disabled]="isCreating" (click)="save()">
+        <icon name="save"></icon>
+        Salvar
       </button>
     </div>
 </div>

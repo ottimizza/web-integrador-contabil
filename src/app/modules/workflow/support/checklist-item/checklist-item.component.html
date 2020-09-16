@@ -13,13 +13,14 @@
         (submit)="submit()"
       ></ott-input>
 
-      <mat-checkbox
-        [id]="'checklist-item-' + question.id"
-        *ngSwitchCase="type.CHECKBOX"
-        [formControl]="ctrl"
-        (change)="submit()">
-          {{ question.descricao }}
-      </mat-checkbox>
+      <div class="mt-4" *ngSwitchCase="type.CHECKBOX">
+        <mat-checkbox
+          [id]="'checklist-item-' + question.id"
+          [formControl]="ctrl"
+          (change)="submit()">
+            {{ question.descricao }}
+        </mat-checkbox>
+      </div>
 
       <calendar
         [id]="'checklist-item-' + question.id"

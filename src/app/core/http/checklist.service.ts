@@ -29,7 +29,6 @@ export class ChecklistService {
   public fetch(type: number) {
     return this._fetchDefault(type)
     .pipe(map((result: any) => {
-      result.record.perguntas[0].tipoInput = 1;
       result.record = Checklist.fromRequest(result.record);
       return result as GenericResponse<Checklist>;
     }));

@@ -28,8 +28,9 @@ export class ChecklistItemComponent implements AfterViewInit {
     const type = this.type;
 
     switch (this.question.tipoInput) {
+      case type.CHECKBOX:    return !!value;
       case type.SELECT:      return value.valor;
-      case type.MULT_SELECT: return value.map(val => val.valor);
+      case type.MULT_SELECT: return value.map(val => val.valor).join(';');
       case type.DATE:        return momentjs(value).format('YYYY-MM-DD');
       default:               return value;
     }

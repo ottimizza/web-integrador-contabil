@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { GenericPagination } from '@shared/interfaces/GenericPagination';
 import { LancamentoService } from '@shared/services/lancamento.service';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { ToastService } from '@shared/services/toast.service';
@@ -15,7 +14,7 @@ import { MatPaginator } from '@angular/material';
 @Component({
   templateUrl: './rule-grid.component.html'
 })
-export class RuleGridComponent implements OnInit, GenericPagination {
+export class RuleGridComponent implements OnInit {
 
   info: Lancamento[];
   pageInfo: PageInfo;

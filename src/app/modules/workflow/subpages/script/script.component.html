@@ -7,6 +7,13 @@
   <mat-horizontal-stepper [linear]="true" [selectedIndex]="selectedIndex" (selectionChange)="selectedIndex = $event.selectedIndex">
     <mat-step label="Empresa" [completed]="company" [editable]="false">
 
+      <div class="mt-5 mb-3">
+        <default-filter
+          [options]="filterOptions"
+          (filterChanged)="onFilterChanged($event)"
+        ></default-filter>
+      </div>
+
       <async-table
         [reload]="reload"
         [origin]="getCompanies"

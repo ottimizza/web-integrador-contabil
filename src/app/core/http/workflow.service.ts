@@ -44,7 +44,12 @@ export class WorkflowService {
       .pipe(map(rs => {
         resultSet.records = resultSet.records.map((rec, index) => {
           const company = rs[index].record;
-          return Object.assign(rec, { nomeEmpresa: company.razaoSocial, erpEmpresa: company.codigoERP });
+          return Object.assign(rec, {
+            nomeEmpresa: company.razaoSocial,
+            erpEmpresa: company.codigoERP,
+            nomeCompleto: `${(company.codigoERP && company.codigoERP !== 'null') ? company.codigoERP + ' - ' : ''}${company.razaoSocial || ''}`
+              .toUpperCase().trim()
+          });
         });
         return resultSet;
       }));

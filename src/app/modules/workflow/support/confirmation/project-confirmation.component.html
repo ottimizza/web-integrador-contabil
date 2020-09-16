@@ -64,7 +64,7 @@
         <div class="col-md">
           <ott-input
             [id]="'project-confirmation-input-' + q.id"
-            [value]="q.resposta"
+            [value]="checkAnswer(q)"
             [disabled]="true"
             [label]="q.descricao"
           ></ott-input>
