@@ -81,7 +81,7 @@ export class ProjectConfirmationComponent implements OnInit {
       nome: this.name.value,
     }).pipe(catchError(err => {
       this.isSaving = false;
-      if (`${err?.status}` === '500' || `${err?.statusCode}` === '500') {
+      if (`${err?.status}` === '400' || `${err?.statusCode}` === '400') {
         this.error = err.error_description;
         window.scrollTo(0, 0);
       }
