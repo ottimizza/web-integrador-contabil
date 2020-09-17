@@ -5,6 +5,7 @@ import { SigninAsDialogComponent } from './signin-as-dialog.component';
 import { MatPaginatorModule, MatFormFieldModule, MatSnackBarModule, MatDialogModule, MatTableModule, MatChipsModule, MatIconModule } from '@angular/material';
 import { ComplexSearchModule } from '@shared/components/search/complex-search.module';
 import { DesignSystemModule } from '@shared/components/ds.module';
+import { PaginatorModule } from '@shared/components/paginator/paginator.module';
 
 @NgModule({
   declarations: [SigninAsDialogComponent],
@@ -13,7 +14,6 @@ import { DesignSystemModule } from '@shared/components/ds.module';
     CommonModule,
     FormsModule,
 
-    MatPaginatorModule,
     MatFormFieldModule,
     MatSnackBarModule,
     MatDialogModule,
@@ -22,7 +22,8 @@ import { DesignSystemModule } from '@shared/components/ds.module';
     MatIconModule,
 
     ComplexSearchModule,
-    DesignSystemModule
+    DesignSystemModule,
+    PaginatorModule
   ],
   exports: [SigninAsDialogComponent]
 })

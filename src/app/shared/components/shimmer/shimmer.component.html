@@ -1,8 +1,0 @@
-<div class="shimmer-area">
-  <div *ngIf="!isFetching">
-    <ng-content></ng-content>
-  </div>
-  <div class="effect" *ngIf="isFetching">
-    <img [width]="width" [height]="height" [ngClass]="{ 'full-rounded': mode === 'rounded' }" [style.backgroundColor]="color">
-  </div>
-</div>

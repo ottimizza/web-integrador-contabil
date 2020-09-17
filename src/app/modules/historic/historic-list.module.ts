@@ -16,8 +16,6 @@ import { VerticalAlignerModule } from '@shared/components/vertical-aligner/verti
 import { RuleDeleteConfirmDialogComponent } from '@modules/rule-list/rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
 import { HistoricEditDialogModule } from './dialogs/historic-edit-dialog/historic-edit-dialog.module';
 import { HistoricEditDialogComponent } from './dialogs/historic-edit-dialog/historic-edit-dialog.component';
-import { ShimmerModule } from '@shared/components/shimmer/shimmer.module';
-import { FilterModule } from '@shared/components/filter/filter.module';
 import { LazyImgModule } from '@shared/directives/lazy-img/lazy-img.module';
 import { EmptyStateModule } from '@shared/components/empty-state/empty-state.module';
 import { ActionButtonsModule } from '@shared/components/action-buttons/action-buttons.module';
@@ -34,7 +32,6 @@ import { ActionButtonsModule } from '@shared/components/action-buttons/action-bu
     MatTooltipModule,
     MatDialogModule,
     InfoModule,
-    FilterModule,
     MatSnackBarModule,
     MatTabsModule,
     ExportConfirmModalModule,

@@ -68,6 +68,10 @@ export class Rule {
       return Rule.previewOut(this._rules);
     }
 
+    public hasOtherFieldsThan(field: string) {
+      return this.rules.filter(rule => !['tipoMovimento', 'tipoLancamento', 'tipoPlanilha', field].includes(rule.campo)).length > 0;
+    }
+
     public verify() {
       return this.rules.length > 0;
     }

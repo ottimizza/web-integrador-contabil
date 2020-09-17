@@ -1,10 +1,16 @@
 input {
   text-align: left;
   border: 1px solid #ced4da;
-  border-radius: .25rem;
+  border-radius: .25rem 0 0 .25rem;
   transition: 200ms;
   &:focus {
     box-shadow: 0 0 7px 2px rgba(0, 0, 0, .2) !important;
+  }
+  &.right-radius {
+    border-radius: .25rem;
+  }
+  &::-webkit-search-cancel-button{
+    -webkit-appearance: none;
   }
 }
 
@@ -12,4 +18,13 @@ label {
   text-align: left;
   float: left;
   font-size: 90%;
+}
+
+.search-button {
+  color: #495057;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  border: solid 1px #ced4da;
+  border-radius: 0 .25rem .25rem 0;
 }

@@ -29,4 +29,30 @@ export class GenericPageableResponse<T> {
   records: Array<T>;
   pageInfo: PageInfo;
 
+  public static fromDefaultPagination<T>(response: DefaultPagination<T>) {
+    const gpr = new GenericPageableResponse<T>();
+    gpr.records = response.content;
+    gpr.pageInfo = {
+      hasNext: !response.last,
+      hasPrevious: !response.first,
+      pageIndex: response.page,
+      pageSize: response.size,
+      totalElements: response.totalElements,
+      totalPages: response.totalPages
+    };
+    return gpr;
+  }
+
+}
+
+interface DefaultPagination<T> {
+
+  content: T[];
+  size: number;
+  first: boolean;
+  last: boolean;
+  page: number;
+  totalElements: number;
+  totalPages: number;
+
 }

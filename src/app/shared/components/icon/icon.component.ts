@@ -1,7 +1,17 @@
-import { Component, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+export type IconSize = 'xs'
+    | 'sm'
+    | 'lg'
+    | '2x'
+    | '3x'
+    | '5x'
+    | '7x'
+    | '10x'
+    | 'md';
 
 @Component({
-  selector: 'app-icon',
+  selector: 'icon',
   templateUrl: './icon.component.html'
 })
 export class IconComponent {
@@ -9,10 +19,15 @@ export class IconComponent {
   @Input() type: 'default' | 'solid' | 'regular' | 'light' | 'duotone' = 'duotone';
   @Input() color: 'primary' | 'danger' | 'success' | 'info' | 'light' | 'secondary' | 'warning' | 'default' = 'default';
   @Input() name = 'icons-alt';
+  @Input() size: IconSize = 'md';
 
 
   icon() {
-    return `fa-fw ${this.init} fa-${this.name} ${this.textColor}`;
+    let icon = `fa-fw ${this.init} fa-${this.name} ${this.textColor}`;
+    if (this.size && this.size !== 'md') {
+      icon += ` fa-${this.size}`;
+    }
+    return icon;
   }
 
   private get textColor() {

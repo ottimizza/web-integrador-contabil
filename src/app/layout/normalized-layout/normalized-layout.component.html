@@ -1,11 +1,25 @@
 <section class="endless-scroll" appScrollTracker (scrollEnd)="scrollHasEndedMethod($event)">
-  <app-breadcrumb-filter
-      [append]="breadcrumbAppend" 
-      [tutorial]="tutorial"
-      (companySelected)="companySelected.emit($event)">
-  </app-breadcrumb-filter>
-  <div class="buttons-sticky m-0 p-0" *ngIf="buttons">
-    <app-actions [buttons]="buttons" (clicked)="buttonClickedMethod($event)"></app-actions>
+
+  <div class="breadcrumb-area">
+    <app-breadcrumb-filter
+        *ngIf="!overwriteBreadcrumb; else localBreadcrumb"
+        [append]="breadcrumbAppend"
+        [tutorial]="tutorial"
+        (companySelected)="companySelected.emit($event)">
+    </app-breadcrumb-filter>
+    <ng-template #localBreadcrumb>
+      <ng-content select="[breadcrumb]"></ng-content>
+    </ng-template>
+  </div>
+
+  <div class="action-button-area">
+    <div class="buttons-sticky m-0 p-0" [ngClass]="{ 'd-none': !buttons }" *ngIf="!overwriteActionButtons; else localActionButtons">
+      <actions [buttons]="buttons" (clicked)="buttonClickedMethod($event)"></actions>
+    </div>
+    <ng-template #localActionButtons>
+      <ng-content select="[actionButtons]"></ng-content>
+    </ng-template>
+
   </div>
 
   <div class="container">
@@ -18,3 +32,4 @@
     </div>
   </div>
 </section>
+

@@ -4,7 +4,7 @@ const TUTORIAL: GuidedTour = {
   tourId: 'tutorial-ultima-digitacao',
   steps: [
     {
-      title: 'Você pode tomar 3 ações nesta tela principal!',
+      title: 'Você pode tomar 4 ações nesta tela principal!',
       content: ``,
     },
     {
@@ -32,10 +32,20 @@ const TUTORIAL: GuidedTour = {
       title: '',
       content: `
       <h5>
-        3. Verificar históricos já definidas anteriormente.
+        3. Verificar históricos já definidos anteriormente; ou
       </h5>
       `,
       selector: '#sidebar-item-historicos',
+      orientation: Orientation.Right
+    },
+    {
+      title: '',
+      content: `
+      <h5>
+        4. Importar uma planilha para criar um roteiro.
+      </h5>
+      `,
+      selector: '#sidebar-item-fluxo-planilhas',
       orientation: Orientation.Right
     },
     {

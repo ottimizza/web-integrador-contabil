@@ -1,32 +1,30 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Observable, fromEvent, interval, of, from } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { MatTabChangeEvent } from '@angular/material';
-import { MatDialog } from '@angular/material/dialog';
 
+import { HistoricEditDialogComponent } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.component';
+import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
 import { DEFAULT_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DEFAULT_CHIP_PATTERN';
 import { VALUE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/VALUE_CHIP_PATTERN';
 import { DATE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DATE_CHIP_PATTERN';
 import { RuleConfig } from './rule-creator/chips-group/chips-group.component';
-import { GenericPagination } from '@shared/interfaces/GenericPagination';
+import { DialogService, DialogWidth } from '@app/services/dialog.service';
 import { LancamentoService } from '@shared/services/lancamento.service';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { HistoricService } from '@shared/services/historic.service';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { ToastService } from '@shared/services/toast.service';
 import { Rule, RuleCreateFormat } from '@shared/models/Rule';
+import { FormattedHistoric } from '@shared/models/Historic';
 import { RuleService } from '@shared/services/rule.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
-import { Lancamento } from '@shared/models/Lancamento';
-import { Empresa } from '@shared/models/Empresa';
-import { finalize, catchError, switchMap, map } from 'rxjs/operators';
-import { User } from '@shared/models/User';
-import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
-import { DialogService, DialogWidth } from '@app/services/dialog.service';
-import { HistoricEditDialogComponent } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.component';
-import { FormattedHistoric } from '@shared/models/Historic';
+import { Lancamento, TipoLancamento } from '@shared/models/Lancamento';
 import { DateUtils } from '@shared/utils/date-utils';
+import { Empresa } from '@shared/models/Empresa';
 import { FormControl } from '@angular/forms';
+import { User } from '@shared/models/User';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tdetail',
@@ -76,6 +74,14 @@ export class TransactionDetailComponent implements OnInit {
     this.onTab({ tab: null, index: 0 }, true);
   }
 
+
+  /**
+   *
+   */
+  public getLabelContaMovimento(lancamento: Lancamento = this.entry): string {
+    return lancamento.tipoLancamento === TipoLancamento.PAGAMENTOS ? 'Conta Débito' : 'Conta Crédito';
+  }
+
   get tipo() {
     if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'REC') {
       return 'MOVIMENTO';
@@ -89,6 +95,14 @@ export class TransactionDetailComponent implements OnInit {
       return 'Fornecedor';
     } else {
       return 'Cliente';
+    }
+  }
+
+  get accountLabel() {
+    if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'EXDEB') {
+      return 'Conta Débito';
+    } else {
+      return 'Conta Crédito';
     }
   }
 
@@ -109,10 +123,10 @@ export class TransactionDetailComponent implements OnInit {
     const l: any = this.entry || {};
     const a = l.arquivo;
     return !!((l.complemento01 && a.labelComplemento01) ||
-            (l.complemento02 && a.labelComplemento02) ||
-            (l.complemento03 && a.labelComplemento03) ||
-            (l.complemento04 && a.labelComplemento04) ||
-            (l.complemento05 && a.labelComplemento05));
+      (l.complemento02 && a.labelComplemento02) ||
+      (l.complemento03 && a.labelComplemento03) ||
+      (l.complemento04 && a.labelComplemento04) ||
+      (l.complemento05 && a.labelComplemento05));
   }
 
   resetErrors(errors?: string[]) {
@@ -140,9 +154,8 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   regra() {
-    if (this.ruleCreateFormat.regras.length > 7) {
-      console.log(this.ruleCreateFormat);
-      this.errorText = 'Você não pode salvar uma regra com mais de 5 cláusolas!';
+    if (this.ruleCreateFormat.regras.length > 6) {
+      this.errorText = 'Você não pode salvar uma regra com mais de 4 cláusulas!';
       return;
     }
     const regra = this.ruleCreateFormat;
@@ -156,8 +169,8 @@ export class TransactionDetailComponent implements OnInit {
   }
 
   ignorar() {
-    if (this.ruleCreateFormat.regras.length > 7) {
-      this.errorText = 'Você não pode salvar uma regra com mais de 5 cláusolas!';
+    if (this.ruleCreateFormat.regras.length > 6) {
+      this.errorText = 'Você não pode salvar uma regra com mais de 5 cláusulas!';
       return;
     }
     const regra = this.ruleCreateFormat;
@@ -241,7 +254,7 @@ export class TransactionDetailComponent implements OnInit {
 
   openGrid(): void {
     this.dialog.openComplexDialog(RuleGridComponent, DialogWidth.EXTRA_LARGE, { rules: this.conditions.rules, company: this.business })
-    .subscribe();
+      .subscribe();
   }
 
   openHistoric(obs: Observable<Lancamento>): void {
@@ -262,7 +275,7 @@ export class TransactionDetailComponent implements OnInit {
     })
       .subscribe(() => {
         this._subsAndDisable(obs);
-    });
+      });
   }
 
   onTab(event: MatTabChangeEvent, isFirst: boolean) {
@@ -376,6 +389,7 @@ export class TransactionDetailComponent implements OnInit {
       .pipe(finalize(() => {
         this.conditions = new Rule();
         this._toast.hideSnack();
+        this.conditions = new Rule();
       }))
       .toPromise();
   }
@@ -384,7 +398,7 @@ export class TransactionDetailComponent implements OnInit {
     const filter = { cnpjEmpresa: this.business.cnpj, tipoMovimento: this.tipoMovimento };
     this._lancamentoService.calcPercentage(filter).subscribe((result: any) => {
       if (result.totalLancamentos) {
-        this.percentage = +(100 - (result.numeroLancamentosRestantes / result.totalLancamentos) * 100).toFixed(0);
+        this.percentage = Math.floor(100 - (result.numeroLancamentosRestantes / result.totalLancamentos) * 100);
       } else {
         this.percentage = 100;
       }

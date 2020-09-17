@@ -1,4 +1,10 @@
+export const TipoLancamento = {
+  PAGAMENTOS: 1,
+  RECEBIMENTOS: 2
+};
+
 export class Lancamento {
+
   public id: number;
   public dataMovimento: string;
   public documento: string;

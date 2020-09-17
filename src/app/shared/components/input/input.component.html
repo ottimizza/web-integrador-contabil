@@ -1,15 +1,23 @@
 <div class="input-area text-center">
   <label [for]="id" *ngIf="label">{{ label }}:</label>
-  <input
-    class="form-control"
-    autocomplete="off"
-    type="text"
-    [id]="id"
-    [value]="value"
-    [placeholder]="placeholder"
-    [formControl]="control"
-    [style]="deep"
-    [disabled]="disabled"
-    (input)="emitInput($event)"
-    (keyup.enter)="emitSubmit($event)">
+  <div class="row w-100 p-0 m-0">
+    <div class="col p-0">
+      <input
+        class="form-control"
+        [ngClass]="{'right-radius': type === 'text' }"
+        autocomplete="off"
+        [type]="type"
+        [id]="id"
+        [placeholder]="placeholder"
+        [formControl]="control"
+        [style]="deep"
+        (input)="emitInput($event)"
+        (keyup.enter)="emitSubmit($event)">
+    </div>
+    <div class="col-2 p-0 text-left" *ngIf="type === 'search'">
+      <button class="search-button bg-white" [disabled]="control.disabled" (click)="emitSubmit()" matTooltip="Pesquisar">
+        <i class="fal fa-search fa-md"></i>
+      </button>
+    </div>
+  </div>
 </div>

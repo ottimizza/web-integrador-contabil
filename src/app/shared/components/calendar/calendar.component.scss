@@ -1,0 +1,40 @@
+.mat-calendar-body-selected {
+  background-color: var(--primary-color);
+}
+
+.mat-form-field-ripple {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.calendar-component {
+  text-align: left;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  transition: 200ms;
+  padding: 0;
+
+  input {
+    width: 100%;
+    border: none;
+    height: 99%;
+    outline: none;
+    float: left;
+  }
+
+  &.focused {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    text-shadow: 0 0 black;
+    box-shadow: 0 0 7px 2px rgba(0, 0, 0, .2) !important;
+  }
+}
+
+span.label {
+  text-align: left;
+  float: left;
+  font-size: 90%;
+}

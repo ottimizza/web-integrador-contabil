@@ -1,0 +1,54 @@
+<h1 mat-dialog-title><i class="fad fa-industry"></i>&nbsp;&nbsp; Criar Empresa</h1>
+<div mat-dialog-content class="border-top border-bottom p-4">
+
+  <better-info>
+    Clique na lupa para pesquisar empresas com o CNPJ desejado
+  </better-info>
+
+  <form [formGroup]="form">
+
+    <div class="container">
+
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <ott-input type="search" (submit)="import()" label="CPF ou CNPJ *" placeholder="99.999.999/0001-99" [control]="cnpj" id="company-create-cnpj-input"></ott-input>
+        </div>
+        <div class="mt-4 mt-md-0 col-md-6">
+          <ott-input (submit)="save()" label="Apelido *" placeholder="Nome simplificado" (input)="updateNick()" [control]="nick" id="company-create-nick-input"></ott-input>
+          <small class="float-right">{{ (nick.value || '').length }} / 30</small>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8 mt-4">
+          <ott-input (submit)="save()" label="Nome *" placeholder="Nome da Empresa" [control]="name" id="company-create-name-input"></ott-input>
+        </div>
+        <div class="col-md-4 mt-5 mt-md-1">
+          <ott-input (submit)="save()" label="Código no Sistema Contábil *" placeholder="999" [control]="erp" id="company-create-erp-input"></ott-input>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+</div>
+<div mat-dialog-actions class="text-center">
+  <div class="container" *ngIf="errorText">
+    <div class="row">
+      <div class="col-12">
+        <comment type="danger">{{ errorText }}</comment>
+      </div>
+    </div>
+  </div>
+    <div class="container-fluid px-0 py-3 justify-content-between">
+      <button class="btn btn-light text-danger mx-2" mat-dialog-close>
+        <icon name="times-square"></icon>
+        Cancelar
+      </button>
+      <button class="btn btn-primary text-light mx-2" [disabled]="isCreating" (click)="save()">
+        <icon name="save"></icon>
+        Salvar
+      </button>
+    </div>
+</div>

@@ -1,3 +1,8 @@
-<button [class]="'btn w-100 ' + classes + ' mx-2'" mat-raised-button (click)="press($event)">
+<button
+  [class]="'btn ' + classes + ' mx-2'"
+  mat-raised-button
+  (click)="press($event)"
+  [style]="'background-color: ' + color + '; ' + 'color: ' + text + '; ' + deep"
+  [disabled]="disabled">
   <ng-content></ng-content>
 </button>

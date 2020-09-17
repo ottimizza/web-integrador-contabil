@@ -19,7 +19,6 @@ import { ScrollTrackerModule } from '@shared/directives/scroll-tracker.module';
 import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.module';
 import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-layout.module';
 import { RuleDeleteConfirmDialogComponent } from './rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
-import { FilterModule } from '@shared/components/filter/filter.module';
 import { ActionButtonsModule } from '@shared/components/action-buttons/action-buttons.module';
 import { RuleListRoutingModule } from './rule-list.routing';
 
@@ -37,7 +36,6 @@ import { RuleListRoutingModule } from './rule-list.routing';
     RuleCardModule,
     MatDialogModule,
     InfoModule,
-    FilterModule,
     MatSnackBarModule,
     RuleEditModalModule,
     MatTabsModule,

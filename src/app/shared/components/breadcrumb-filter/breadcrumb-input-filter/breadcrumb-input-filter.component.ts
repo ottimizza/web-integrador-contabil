@@ -6,6 +6,8 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { CNPJUtils } from '@shared/utils/docs.utils';
+import { GlobalVariableService } from '@app/services/global-variables.service';
+import { User } from '@shared/models/User';
 
 @Component({
   selector: 'app-breadcrumb-input-filter',
@@ -16,11 +18,12 @@ import { CNPJUtils } from '@shared/utils/docs.utils';
   encapsulation: ViewEncapsulation.None,
 })
 export class BreadcrumbInputFilterComponent implements OnInit, AfterViewInit {
-  public static selected: Empresa = null;
 
   public HELP_MESSAGE = `
     Escreva o nome da empresa selecionada ou escolha dentre as sugeridas.
   `;
+
+  public VARIABLE_KEY = 'company_selected';
 
 
   @Output() empresa = new EventEmitter();
@@ -33,12 +36,9 @@ export class BreadcrumbInputFilterComponent implements OnInit, AfterViewInit {
 
   constructor(
     private _service: BusinessService,
-    private _toast: ToastService
+    private _toast: ToastService,
+    private _variables: GlobalVariableService
   ) { }
-
-  private storeEmpresaSelecionada(empresa: Empresa): void {
-
-  }
 
   @HostListener('input', ['$event.target.value'])
   onInput(value: string) {
@@ -52,7 +52,7 @@ export class BreadcrumbInputFilterComponent implements OnInit, AfterViewInit {
 
 
   public clear() {
-    BreadcrumbInputFilterComponent.selected = null;
+    this._variables.deleteVariable(this.VARIABLE_KEY, true);
     this.companyInput.nativeElement.value = '';
   }
 
@@ -64,7 +64,7 @@ export class BreadcrumbInputFilterComponent implements OnInit, AfterViewInit {
   async confirm(empresa: Empresa): Promise<void> {
     const displayName = `${this.getEmpresaDisplayName(empresa)}`;
     this.companyInput.nativeElement.value = displayName;
-    BreadcrumbInputFilterComponent.selected = empresa;
+    await this._variables.setVariable(this.VARIABLE_KEY, empresa, true);
     this._toast.show(`Empresa ${displayName} selecionada.`, 'primary');
     await new Promise(resolve => setTimeout(resolve, 300));
     this.devolve(empresa);
@@ -82,7 +82,8 @@ export class BreadcrumbInputFilterComponent implements OnInit, AfterViewInit {
   }
 
   public getEmpresaDisplayName(empresa: Empresa): string {
-    return `${empresa.codigoERP} - ${empresa.razaoSocial || ''}`.toUpperCase().trim();
+    const dn = `${(empresa.codigoERP && empresa.codigoERP !== 'null') ? empresa.codigoERP + ' - ' : ''}${empresa.razaoSocial || ''}`.toUpperCase().trim();
+    return dn;
   }
 
   public getEmpresaDisplayCnpj(empresa: Empresa): string {
@@ -100,8 +101,9 @@ export class BreadcrumbInputFilterComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (BreadcrumbInputFilterComponent.selected) {
-      this.confirm(BreadcrumbInputFilterComponent.selected);
+    const empresa = this._variables.getVariable<Empresa>(this.VARIABLE_KEY);
+    if (empresa && empresa.accountingId === User.fromLocalStorage().organization.id) {
+      this.confirm(empresa);
     }
   }
 
