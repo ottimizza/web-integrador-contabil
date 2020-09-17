@@ -1,16 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ChecklistService } from '@app/http/checklist.service';
-import { WorkflowService } from '@app/http/workflow.service';
-import { ChecklistAnswer, ChecklistInputType, ChecklistQuestion } from '@shared/models/Checklist';
-import { Empresa } from '@shared/models/Empresa';
-import { GenericResponse } from '@shared/models/GenericResponse';
-import { LazyLoader } from '@shared/models/LazyLoader';
-import { Script, ScriptStatus } from '@shared/models/Script';
-import { ToastService } from '@shared/services/toast.service';
-import { momentjs } from '@shared/utils/moment';
 import { catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
+
+import { momentjs } from '@shared/utils/moment';
+
+import { ChecklistAnswer, ChecklistInputType, ChecklistQuestion } from '@shared/models/Checklist';
+import { ChecklistService } from '@app/http/checklist.service';
+import { ToastService } from '@shared/services/toast.service';
+import { WorkflowService } from '@app/http/workflow.service';
+import { Script, ScriptStatus } from '@shared/models/Script';
+import { LazyLoader } from '@shared/models/LazyLoader';
+import { Empresa } from '@shared/models/Empresa';
 
 @Component({
   selector: 'script-project-confirmation',
@@ -21,7 +22,7 @@ export class ProjectConfirmationComponent implements OnInit {
   @Input() script: Script;
   @Input() company: Empresa;
 
-  public data = new LazyLoader<GenericResponse<ChecklistAnswer & ChecklistQuestion>>();
+  public data = new LazyLoader<(ChecklistAnswer & ChecklistQuestion)[]>();
   public name = new FormControl('', Validators.required);
 
   public isSaving = false;
@@ -41,7 +42,7 @@ export class ProjectConfirmationComponent implements OnInit {
     } else {
       this.name.setValue(`${this.script.tipoRoteiro === 'REC' ? 'RECEBIMENTOS' : 'PAGAMENTOS'} - ${this.company.razaoSocial.toUpperCase()}`);
     }
-    this.data.call(this.checklistService.getCompletedForm(2, this.script.id));
+    this.data.call(this.checklistService.getCompletedForm(2, this.script.id), 'records');
   }
 
   public checkAnswer(question: ChecklistQuestion & ChecklistAnswer): string {
@@ -83,7 +84,6 @@ export class ProjectConfirmationComponent implements OnInit {
       this.isSaving = false;
       if (`${err?.status}` === '400' || `${err?.statusCode}` === '400') {
         this.error = err.error.error_description;
-        window.scrollTo(0, 0);
       }
       throw err;
     })).subscribe(() => {

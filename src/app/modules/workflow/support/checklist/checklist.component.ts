@@ -45,7 +45,7 @@ export class ChecklistComponent implements OnInit {
   }
 
   public apply(answer: ChecklistAnswer) {
-    const valid = answer.resposta !== null && answer.resposta !== undefined && answer.resposta !== '';
+    const valid = (answer.resposta !== null && answer.resposta !== undefined && answer.resposta !== '');
     const index = this.answers.map(a => a.perguntaId).indexOf(answer.perguntaId);
     if (index < 0 && valid) {
       this.answers.push(answer);

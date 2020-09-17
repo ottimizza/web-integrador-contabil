@@ -51,4 +51,3 @@ export class ChecklistAnswer {
   resposta: any; // Vira string
   observacoes: string;
 }
-

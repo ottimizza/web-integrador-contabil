@@ -5,12 +5,11 @@ import { GenericResponse } from '@shared/models/GenericResponse';
 import { combineLatest, Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { Script } from '@shared/models/Script';
-import { ottPaginate, ottUnpaginate } from '@shared/operators/paginate.operator';
+import { ottUnpaginate } from '@shared/operators/paginate.operator';
 import { SearchCriteria } from '@shared/models/SearchCriteria';
 import { BusinessService } from '@shared/services/business.service';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
 import { User } from '@shared/models/User';
-import { Checklist, ChecklistInputType } from '@shared/models/Checklist';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/roteiros`;
 
@@ -34,7 +33,7 @@ export class WorkflowService {
   }
 
   // E então Deus disse, "haja RxJs", e houve RxJs
-  public fetchWithCompany(searchCriteria: SearchCriteria) {
+  public fetchWithCompany(searchCriteria: any) {
     return this.fetch(searchCriteria)
     .pipe(switchMap(resultSet => {
       if (!resultSet.records.length) {

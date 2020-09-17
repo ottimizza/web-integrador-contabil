@@ -15,6 +15,10 @@ export enum ScriptStatus {
 
 }
 
+export enum ScriptType {
+  PARA_PRE_ENTREGA = 1
+}
+
 export class Script {
 
   public id: number;
@@ -31,6 +35,7 @@ export class Script {
   public tipoRoteiro: 'PAG' | 'REC';
   public mapeamento: Integration;
   public checkList: boolean;
+  public tipoProjeto: ScriptType;
 
   public static firstPart(company: Empresa) {
     const script = new Script();

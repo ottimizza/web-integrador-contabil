@@ -16,6 +16,19 @@ export class LazyLoader<T> {
   private _isCalled = false;
   private _isValid = false;
 
+  private _path: any[];
+  private _origin: Observable<any> | Promise<any>;
+
+  constructor(value?: T) {
+    this._value = value;
+  }
+
+  public train(origin?: Promise<any> | Observable<any>, ...path: (string | number | symbol)[]) {
+    this._path = path;
+    this._origin = origin;
+    return this;
+  }
+
   public get isCalling() {
     return this._isCalling;
   }
@@ -47,7 +60,13 @@ export class LazyLoader<T> {
    * @returns Uma Promise que resolve ao final da chamada
    * @example .call(this.service.fetch(), 'records', 0) retornará o primeiro elemento de um Generic(Pageable)Response
    */
-  public call(origin: Promise<any> | Observable<any>, ...path: (string | number | symbol)[]): Promise<CallResponse<T>> {
+  public call(origin?: Promise<any> | Observable<any>, ...path: (string | number | symbol)[]): Promise<CallResponse<T>> {
+    if (this._path && !path) {
+      path = this._path;
+    }
+    if (this._origin && !origin) {
+      origin = this._origin;
+    }
     const oldValue = this._value;
     this._isCalling = true;
     this._timesCalled++;
