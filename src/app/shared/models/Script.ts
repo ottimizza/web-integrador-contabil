@@ -34,7 +34,7 @@ export class Script {
   public cnpjContabilidade: string;
   public tipoRoteiro: 'PAG' | 'REC';
   public mapeamento: Integration;
-  public checkList: boolean;
+  public checklist: boolean;
   public tipoProjeto: ScriptType;
 
   public static firstPart(company: Empresa) {

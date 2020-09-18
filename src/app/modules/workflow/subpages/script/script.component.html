@@ -1,14 +1,15 @@
 <layout [buttons]="buttons" (buttonClicked)="onClick($event)" [overwriteBreadcrumb]="true">
 
   <div breadcrumb>
-    <app-breadcrumb></app-breadcrumb>
+    <app-breadcrumb [tutorial]="tutorial"></app-breadcrumb>
   </div>
 
   <mat-horizontal-stepper [linear]="true" [selectedIndex]="selectedIndex" (selectionChange)="selectedIndex = $event.selectedIndex">
-    <mat-step label="Empresa" [completed]="company" [editable]="false">
+    <mat-step label="Empresa" [completed]="company" [editable]="false" id="script-stepper-empresa">
 
       <div class="mt-5 mb-3">
         <default-filter
+          [value]="fakeFilter"
           [options]="filterOptions"
           (filterChanged)="onFilterChanged($event)"
         ></default-filter>
@@ -22,7 +23,7 @@
       ></async-table>
 
     </mat-step>
-    <mat-step label="Material" [completed]="currentScript?.urlArquivo" [editable]="false">
+    <mat-step label="Material" [completed]="currentScript?.urlArquivo" [editable]="false" id="script-stepper-material">
 
       <div class="m-4 mb-5 w-100 text-center">
         <ott-title>Subir Arquivo</ott-title>
@@ -31,7 +32,7 @@
       <file-upload (fileChange)="emitFile($event)"></file-upload>
 
     </mat-step>
-    <mat-step label="Tipo" [completed]="currentScript?.tipoRoteiro" [editable]="!currentScript?.nome">
+    <mat-step label="Tipo" [completed]="currentScript?.tipoRoteiro" [editable]="!currentScript?.nome" id="script-stepper-tipo">
 
       <div class="m-4 mb-5 w-100 text-center">
         <ott-title>Tipo da Integração</ott-title>
@@ -51,7 +52,7 @@
       </div>
 
     </mat-step>
-    <mat-step label="Definições" [completed]="currentScript?.checkList" [editable]="!currentScript?.nome">
+    <mat-step label="Definições" [completed]="currentScript?.checklist" [editable]="!currentScript?.nome" id="script-stepper-checklist">
 
       <div class="m-4 mb-5 w-100 text-center">
         <ott-title>Detalhes do Projeto</ott-title>
@@ -65,7 +66,7 @@
       ></script-checklist>
 
     </mat-step>
-    <mat-step label="Confirmação" [completed]="currentScript?.nome">
+    <mat-step label="Confirmação" [completed]="currentScript?.nome" id="script-stepper-confirmacao">
 
       <div class="m-4 mb-5 w-100 text-center">
         <ott-title>Confirmar informações</ott-title>

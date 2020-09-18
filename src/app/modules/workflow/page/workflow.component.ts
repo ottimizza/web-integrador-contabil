@@ -11,6 +11,7 @@ import { WorkflowService } from '@app/http/workflow.service';
 import { Script } from '@shared/models/Script';
 import { User } from '@shared/models/User';
 import { WORKFLOW_COMPLEX_FILTER_OPTIONS } from '../support/complex-filter/workflow-complex-filter';
+import { WORKFLOW_TUTORIAL } from '../tutorials/workflow.tutorial';
 
 @Component({
   templateUrl: './workflow.component.html',
@@ -37,7 +38,7 @@ export class WorkflowComponent implements OnInit {
   ];
   public reload = false;
 
-  currentUser: User;
+  public currentUser: User;
 
   public button: ActionButton = {
     id: 'new-script',
@@ -48,6 +49,8 @@ export class WorkflowComponent implements OnInit {
 
   public options = WORKFLOW_COMPLEX_FILTER_OPTIONS;
   public filters: any = {};
+
+  public tutorial = WORKFLOW_TUTORIAL;
 
   constructor(
     private router: Router,

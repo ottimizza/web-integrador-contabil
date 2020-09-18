@@ -18,6 +18,7 @@ import { CalendarModule } from '@shared/components/calendar/calendar.module';
 import { ProjectConfirmationComponent } from './support/confirmation/project-confirmation.component';
 import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.module';
 import { DefaultFilterModule } from '@shared/components/default-filter/default-filter.module';
+import { NgxGuidedTourModule } from '@gobsio/ngx-guided-tour';
 
 @NgModule({
   imports: [
@@ -39,7 +40,8 @@ import { DefaultFilterModule } from '@shared/components/default-filter/default-f
     BreadcrumbModule,
     DefaultFilterModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    NgxGuidedTourModule.forRoot(),
   ],
   declarations: [
     WorkflowComponent,

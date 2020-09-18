@@ -58,12 +58,12 @@ export class ProjectConfirmationComponent implements OnInit {
         break;
       case type.SELECT:
         const index = question.opcoesResposta.map(or => or.valor).indexOf(value);
-        value = question.opcoesResposta[index].descricao;
+        value = question.opcoesResposta[index]?.descricao;
         break;
       case type.MULT_SELECT:
         const values = value.split(';').map(val => {
           const i = question.opcoesResposta.map(oq => oq.valor).indexOf(val);
-          return question.opcoesResposta[i].descricao;
+          return question.opcoesResposta[i]?.descricao;
         });
         value = values.join(', ');
         break;

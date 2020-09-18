@@ -1,14 +1,16 @@
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
+
 import { MatDialogRef } from '@angular/material';
-import { FormGroup, FormControl, Validators, AbstractControlOptions } from '@angular/forms';
+
 import { OrganizationService } from '@app/http/organizations.service';
-import { Organization } from '@shared/models/Organization';
-import { User } from '@shared/models/User';
+import { BusinessService } from '@shared/services/business.service';
 import { ToastService } from '@shared/services/toast.service';
+import { Organization } from '@shared/models/Organization';
+import { StringUtils } from '@shared/utils/string.utils';
 import { CNPJUtils } from '@shared/utils/docs.utils';
 import { Empresa } from '@shared/models/Empresa';
-import { BusinessService } from '@shared/services/business.service';
-import { StringUtils } from '@shared/utils/string.utils';
+import { User } from '@shared/models/User';
 
 @Component({
   templateUrl: './company-create-dialog.component.html'
@@ -22,7 +24,7 @@ export class CompanyCreateDialogComponent {
     cnpj: new FormControl('', Validators.required),
     name: new FormControl({ value: '', disabled: true }, Validators.required),
     erp: new FormControl({ value: '', disabled: true }, Validators.required),
-    nick: new FormControl({ value: '', disabled: true }, [Validators.required, Validators.maxLength(30), Validators.pattern('[a-zA-Z ]*')])
+    nick: new FormControl({ value: '', disabled: true }, [Validators.required, Validators.maxLength(30), Validators.pattern('[a-zA-Z]*')])
   });
 
   constructor(
@@ -82,7 +84,7 @@ export class CompanyCreateDialogComponent {
       } else if (errors.maxlength) {
         this.errorText = 'Apelido é muito grande!';
       } else if (errors.pattern) {
-        this.errorText = 'Apelido não pode conter números ou caracteres especiais!';
+        this.errorText = 'Apelido não pode conter números, espaços ou caracteres especiais!';
       }
     } else {
       this.errorText = '';
@@ -92,7 +94,7 @@ export class CompanyCreateDialogComponent {
 
   public updateNick() {
     const nomeResumido = (this.nick.value as string)
-      .replace(/ /g, '_')
+      .replace(/ /g, '')
       .toLowerCase()
       .split('');
     nomeResumido[0] = nomeResumido[0].toUpperCase();
@@ -104,7 +106,7 @@ export class CompanyCreateDialogComponent {
     this.isCreating = true;
 
     const nomeResumido = (this.nick.value as string)
-      .replace(/ /g, '_')
+      .replace(/ /g, '')
       .toLowerCase()
       .split('');
     nomeResumido[0] = nomeResumido[0].toUpperCase();
@@ -118,9 +120,9 @@ export class CompanyCreateDialogComponent {
     company.nomeCompleto = `${company.codigoERP} - ${company.razaoSocial}`;
 
     this.toast.showSnack('Criando empresa, aguarde alguns instantes...');
-    this.companyService.create(company).subscribe(() => {
+    this.companyService.create(company).subscribe(newCompany => {
       this.toast.show('Parabéns, empresa criada com sucesso!', 'success');
-      this.dialogRef.close('organization-created');
+      this.dialogRef.close(newCompany.record);
     }, err => {
       this.isCreating = false;
       if (!err?.error?.error_description?.startsWith('{')) {

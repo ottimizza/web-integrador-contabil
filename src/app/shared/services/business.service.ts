@@ -26,7 +26,7 @@ export class BusinessService {
   }
 
   public create(company: Empresa) {
-    return this._http.post(BASE_URL, company, 'Falha ao criar empresa!');
+    return this._http.post<GenericResponse<Empresa>>(BASE_URL, company, 'Falha ao criar empresa!');
   }
 
 }

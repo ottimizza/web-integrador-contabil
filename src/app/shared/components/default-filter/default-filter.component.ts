@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { HackingRule } from '../search/models/HackingRule';
 import { SearchOption } from '../search/models/SearchOption';
 import { SearchRule } from '../search/models/SearchRule';
@@ -14,15 +14,27 @@ export class FilterData {
   selector: 'default-filter',
   templateUrl: './default-filter.component.html',
 })
-export class DefaultFilterComponent implements OnInit {
+export class DefaultFilterComponent implements OnInit, OnChanges {
 
   public filters: SearchOption[] = [];
 
   @Input()
   public options: FilterData;
 
+  @Input()
+  public value: SearchOption[];
+
   @Output()
   public filterChanged = new EventEmitter<any>();
+
+  ngOnChanges(changes: SimpleChanges): void {
+    for (const key in changes) {
+      if (changes.hasOwnProperty(key) && key === 'value' && this.value) {
+        this.filters = this.value;
+        this.emit();
+      }
+    }
+  }
 
   ngOnInit(): void {
     if (this.options.initialFilter) {

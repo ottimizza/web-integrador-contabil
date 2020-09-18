@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params, NavigationEnd, PRIMARY_OUTLET } from '@angular/router';
+import { GuidedTour, GuidedTourService } from '@gobsio/ngx-guided-tour';
 import { filter } from 'rxjs/operators';
 
 export interface BreadCrumb {
@@ -10,7 +11,8 @@ export interface BreadCrumb {
 
 @Component({
   selector: 'app-breadcrumb',
-  templateUrl: './breadcrumb.component.html'
+  templateUrl: './breadcrumb.component.html',
+  styleUrls: ['./breadcrumb.component.scss']
 })
 export class BreadcrumbComponent implements OnInit {
 
@@ -19,8 +21,14 @@ export class BreadcrumbComponent implements OnInit {
   @Input()
   public append: BreadCrumb;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
-  }
+  @Input()
+  public tutorial: GuidedTour;
+
+  constructor(
+    private guidedTourService: GuidedTourService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {}
 
   private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: BreadCrumb[] = []): BreadCrumb[] {
     const ROUTE_DATA_BREADCRUMB = 'breadcrumb';
@@ -84,6 +92,21 @@ export class BreadcrumbComponent implements OnInit {
       .subscribe(event => {
         this.breadcrumbs = this.getBreadcrumbs(this.activatedRoute.root);
       });
+  }
+
+  /**
+   * Method used by the template, to check wheater there's
+   * a tutorial available or not.
+   */
+  public isTutorialAvailable(): boolean {
+    return !!this.tutorial && !!this.tutorial.steps.length;
+  }
+
+  /**
+   * Method used by the template to start/ restart the tutorial.
+   */
+  public startTutorial() {
+    this.guidedTourService.startTour(this.tutorial);
   }
 
 }
