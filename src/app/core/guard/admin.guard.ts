@@ -18,5 +18,4 @@ export class AdminGuard implements CanActivate, CanActivateChild {
     return this.canActivate();
   }
 
-
 }

@@ -30,7 +30,7 @@ export class WorkflowComponent implements OnInit {
       }
     })),
     ColumnDefinition.activeDefault('nome', 'Projeto', val => val || 'Não definido'),
-    ColumnDefinition.activeDefault('status', 'Status', (status => {
+    ColumnDefinition.activeDefault('status', 'Situação', (status => {
       const script = new Script();
       script.status = status;
       return script.statusDescription();

@@ -87,7 +87,6 @@ export class ScriptComponent implements OnInit, AfterViewInit {
 
   openCompanyDialog() {
     this.dialog.open<Empresa>(CompanyCreateDialogComponent).subscribe(async result => {
-      console.log(result);
       await TimeUtils.sleep(500);
       if (result.cnpj) {
         this.fakeFilter = [{ description: `CNPJ igual a: ${result.cnpj}`, id: 'cnpj', value: { cnpj: result.cnpj } }];
