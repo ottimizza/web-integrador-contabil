@@ -37,8 +37,7 @@
               "src/assets/scss/style.css",
               "node_modules/@fortawesome/fontawesome-pro/css/all.min.css"
             ],
-            "scripts": [],
-            "es5BrowserSupport": true
+            "scripts": []
           },
           "configurations": {
             "production": {
