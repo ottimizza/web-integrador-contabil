@@ -13,7 +13,7 @@ import { GuidedTourService, NgxGuidedTourModule } from '@gobsio/ngx-guided-tour'
   ],
   exports: [BreadcrumbComponent],
   providers: [
-    { provide: GuidedTourService }
+    { provide: GuidedTourService, useValue: undefined }
   ]
 })
 export class BreadcrumbModule {
