@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Arquivo } from '@shared/models/Lancamento';
 import { LancamentoService } from '@shared/services/lancamento.service';
 import { finalize } from 'rxjs/operators';

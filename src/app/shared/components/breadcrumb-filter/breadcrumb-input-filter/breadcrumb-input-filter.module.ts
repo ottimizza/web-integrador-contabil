@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 // Material Design
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatAutocompleteModule } from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 // Components
 import { BreadcrumbInputFilterComponent } from './breadcrumb-input-filter.component';

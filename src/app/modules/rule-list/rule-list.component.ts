@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MatTabChangeEvent } from '@angular/material';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { MatDialog } from '@angular/material/dialog';
 
 import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';

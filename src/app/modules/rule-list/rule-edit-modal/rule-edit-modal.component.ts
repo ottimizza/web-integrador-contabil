@@ -5,7 +5,7 @@ import { CompleteRule } from '@shared/models/CompleteRule';
 import { User } from '@shared/models/User';
 import { FormGroup, FormControl } from '@angular/forms';
 import { EntryUtils } from '@shared/utils/entry.utils';
-import { MatSelectChange } from '@angular/material';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   templateUrl: './rule-edit-modal.component.html',

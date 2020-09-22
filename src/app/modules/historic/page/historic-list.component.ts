@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '@shared/models/User';
 import { ExportConfirmModalComponent } from '@modules/rule-list/export-confirm-modal/export-confirm-modal.component';
-import { MatTabChangeEvent } from '@angular/material';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ToastService } from '@shared/services/toast.service';
 import { Empresa } from '@shared/models/Empresa';
 import { ExportService } from '@app/services/export.service';

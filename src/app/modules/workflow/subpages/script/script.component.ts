@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { environment } from '@env';
 
-import { PageEvent } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
 
 import { SCRIPT_COMPLEX_FILTER_OPTIONS } from '@modules/workflow/support/complex-filter/script-complex-filter';
 import { CompanyCreateDialogComponent } from '@modules/workflow/dialogs/company-create-dialog.component';

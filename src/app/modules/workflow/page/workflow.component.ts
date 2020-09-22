@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '@env';
 
-import { PageEvent } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
 
 import { ActionButton, HexColor } from '@shared/components/action-buttons/action-buttons.component';
 import { ColumnDefinition } from '@shared/components/async-table/models/ColumnDefinition';

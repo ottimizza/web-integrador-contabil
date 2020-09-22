@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { PageEvent } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
 
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
 import { ToastService } from '@shared/services/toast.service';

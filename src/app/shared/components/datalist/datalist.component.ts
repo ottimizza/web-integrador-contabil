@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatSelectChange, MatSelect } from '@angular/material';
+import { MatSelectChange, MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'ott-datalist',
