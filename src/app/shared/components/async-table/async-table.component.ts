@@ -44,6 +44,7 @@ export class AsyncTableComponent implements OnInit, OnChanges {
       if (changes.hasOwnProperty(key) && key === 'reload' && this.data) {
         const pi = this.data.pageInfo;
         this.onPageChange({ length: pi.totalElements, pageIndex: pi.pageIndex, pageSize: pi.pageSize, previousPageIndex: pi.pageIndex });
+        this.reset();
       }
     }
   }
@@ -67,6 +68,13 @@ export class AsyncTableComponent implements OnInit, OnChanges {
     if (this.selectable) {
       this.rowSelected.emit(el);
       this.selectedIndex = index;
+    }
+  }
+
+  public reset() {
+    this.selectedIndex = -1;
+    if (this.selectable) {
+      this.rowSelected.emit(null);
     }
   }
 

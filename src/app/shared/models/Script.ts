@@ -16,7 +16,8 @@ export enum ScriptStatus {
 }
 
 export enum ScriptType {
-  PARA_PRE_ENTREGA = 1
+  PAGAMENTOS_PARA_PRE_ENTREGA = 1,
+  RECEBIMENTOS_PARA_PRE_ENTREGA
 }
 
 export class Script {

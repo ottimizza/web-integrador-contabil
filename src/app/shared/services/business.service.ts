@@ -3,7 +3,6 @@ import { environment } from '@env';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
 import { Empresa } from '@shared/models/Empresa';
 import { HttpHandlerService } from '@app/services/http-handler.service';
-import { map } from 'rxjs/operators';
 import { GenericResponse } from '@shared/models/GenericResponse';
 import { ottUnpaginate } from '@shared/operators/paginate.operator';
 

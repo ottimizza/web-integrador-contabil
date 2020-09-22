@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params, NavigationEnd, PRIMARY_OUTLET } from '@angular/router';
+import { TutorialService } from '@app/services/tutorial.service';
 import { GuidedTour, GuidedTourService } from '@gobsio/ngx-guided-tour';
 import { filter } from 'rxjs/operators';
 
@@ -25,6 +26,7 @@ export class BreadcrumbComponent implements OnInit {
   public tutorial: GuidedTour;
 
   constructor(
+    private tutorialService: TutorialService,
     private guidedTourService: GuidedTourService,
     private activatedRoute: ActivatedRoute,
     private router: Router
@@ -106,7 +108,7 @@ export class BreadcrumbComponent implements OnInit {
    * Method used by the template to start/ restart the tutorial.
    */
   public startTutorial() {
-    this.guidedTourService.startTour(this.tutorial);
+    this.tutorialService.startTour(this.guidedTourService, this.tutorial);
   }
 
 }
