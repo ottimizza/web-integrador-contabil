@@ -103,8 +103,8 @@ const getUser = () => {
 
 const FAKE_ENTRY: Lancamento = {
   arquivo: {
-    cnpjContabilidade: getUser().organization.cnpj,
-    cnpjEmpresa: getUser().organization.cnpj,
+    cnpjContabilidade: getUser()?.organization?.cnpj,
+    cnpjEmpresa: getUser()?.organization?.cnpj,
     id: -10,
     labelComplemento01: null,
     labelComplemento02: null,
@@ -115,8 +115,8 @@ const FAKE_ENTRY: Lancamento = {
   },
   ativo: true,
   centroCusto: null,
-  cnpjContabilidade: getUser().organization.cnpj,
-  cnpjEmpresa: getUser().organization.cnpj,
+  cnpjContabilidade: getUser()?.organization?.cnpj,
+  cnpjEmpresa: getUser()?.organization?.cnpj,
   competencia: '09/2020',
   competenciaAnterior: '08/2020',
   complemento01: null,
@@ -131,7 +131,7 @@ const FAKE_ENTRY: Lancamento = {
   descricao: 'Banco',
   documento: null,
   id: -10,
-  idRoteiro: getUser().email,
+  idRoteiro: getUser()?.email,
   nomeArquivo: 'Nome_do_arquivo.xlsx',
   portador: 'EM BRANCO',
   tipoConta: 0,

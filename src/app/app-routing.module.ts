@@ -12,6 +12,7 @@ const routes: Routes = [
   {
     path: 'auth',
     component: AuthLayoutComponent,
+    canActivate: [NoAuthGuard],
     loadChildren: () =>
     import('@modules/auth/auth.module').then(m => m.AuthModule)
   },

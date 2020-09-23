@@ -102,7 +102,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
   }
 
   public startChecklist() {
-    this.checklist.call(this.checklistService.fetch(this.currentScript.tipoProjeto), 'record');
+    this.checklist.call(this.checklistService.fetch(this.currentScript.tipoProjeto || 1), 'record');
   }
 
   load() {
