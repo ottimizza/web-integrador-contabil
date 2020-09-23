@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Observable, Subject, Subscription } from 'rxjs';
 
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
@@ -25,13 +25,16 @@ import { Empresa } from '@shared/models/Empresa';
 import { FormControl } from '@angular/forms';
 import { User } from '@shared/models/User';
 import { finalize } from 'rxjs/operators';
+import { TutorialService } from '@app/services/tutorial.service';
+import { FAKE_ENTRY } from '../transaction-list/tutorial/transaction-list.tutorial';
+import { SnapshotService } from '@app/services/snapshot.service';
 
 @Component({
   selector: 'app-tdetail',
   templateUrl: './transaction-detail.component.html',
   styleUrls: ['./transaction-detail.component.scss']
 })
-export class TransactionDetailComponent implements OnInit {
+export class TransactionDetailComponent implements OnInit, OnDestroy {
 
   @Output() tabSelect = new EventEmitter();
   @Input() business: Empresa;
@@ -60,24 +63,46 @@ export class TransactionDetailComponent implements OnInit {
 
   currentUser: User;
 
+  public tutorialInitSub: Subscription;
+  public tutorialEndedSub: Subscription;
+  public recoverState: any;
+
   constructor(
     // tslint:disable
     private _lancamentoService: LancamentoService,
     private _historicService: HistoricService,
     private _ruleService: RuleService,
     private _toast: ToastService,
+    private _tutorialService: TutorialService,
+    private _snapshotService: SnapshotService,
     public dialog: DialogService
   ) { }
+
+  ngOnDestroy(): void {
+    this.tutorialInitSub.unsubscribe();
+    this.tutorialEndedSub.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.currentUser = User.fromLocalStorage();
     this.onTab({ tab: null, index: 0 }, true);
+    this.setTutorials();
   }
 
+  setTutorials() {
+    this.tutorialInitSub = this._tutorialService.afterTutorialStarted.subscribe(() => {
+      this.recoverState = this._snapshotService.recycle(this, ['entry', 'errorText', 'errorText2', 'total', 'conditions'])
+      this.entry = FAKE_ENTRY;
+      this.errorText = null;
+      this.errorText2 = null;
+      this.total = '1'
+      Object.assign(this.conditions, { verify: () => true });
+    })
+    this.tutorialEndedSub = this._tutorialService.afterTutorialClosed.subscribe(() => {
+      this.recoverState.next(this);
+    })
+  }
 
-  /**
-   *
-   */
   public getLabelContaMovimento(lancamento: Lancamento = this.entry): string {
     return lancamento.tipoLancamento === TipoLancamento.PAGAMENTOS ? 'Conta Débito' : 'Conta Crédito';
   }
