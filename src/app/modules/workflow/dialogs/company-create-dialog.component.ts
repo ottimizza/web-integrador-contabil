@@ -2,6 +2,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
 
 import { MatDialogRef } from '@angular/material/dialog';
+import { capitalize } from 'lodash';
 
 import { OrganizationService } from '@app/http/organizations.service';
 import { BusinessService } from '@shared/services/business.service';
@@ -34,7 +35,7 @@ export class CompanyCreateDialogComponent {
     public toast: ToastService
   ) {}
 
-  get erp()  { return this.form.get('erp'); }
+  get erp()  { return this.form.get('erp');  }
   get cnpj() { return this.form.get('cnpj'); }
   get name() { return this.form.get('name'); }
   get nick() { return this.form.get('nick'); }
@@ -94,11 +95,8 @@ export class CompanyCreateDialogComponent {
 
   public updateNick() {
     const nomeResumido = (this.nick.value as string)
-      .replace(/ /g, '')
-      .toLowerCase()
-      .split('');
-    nomeResumido[0] = nomeResumido[0].toUpperCase();
-    const nickname = StringUtils.normalize(nomeResumido.join(''));
+      .replace(/ /g, '');
+    const nickname = StringUtils.normalize(capitalize(nomeResumido));
     this.nick.setValue(nickname);
   }
 
@@ -106,14 +104,11 @@ export class CompanyCreateDialogComponent {
     this.isCreating = true;
 
     const nomeResumido = (this.nick.value as string)
-      .replace(/ /g, '')
-      .toLowerCase()
-      .split('');
-    nomeResumido[0] = nomeResumido[0].toUpperCase();
+      .replace(/ /g, '');
 
     const company = new Empresa();
     company.cnpj = CNPJUtils.cleanMask(this.cnpj.value);
-    company.nomeResumido = nomeResumido.join('');
+    company.nomeResumido = StringUtils.normalize(capitalize(nomeResumido));
     company.razaoSocial = this.name.value;
     company.codigoERP = this.erp.value;
     company.accountingId = User.fromLocalStorage().organization.id;

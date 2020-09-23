@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { User } from '@shared/models/User';
 import { ExportConfirmModalComponent } from '@modules/rule-list/export-confirm-modal/export-confirm-modal.component';
 import { MatTabChangeEvent } from '@angular/material/tabs';
@@ -11,12 +11,15 @@ import { HistoricService } from '@shared/services/historic.service';
 import { BreadCrumb } from '@shared/components/breadcrumb/breadcrumb.component';
 import { DialogService } from '@app/services/dialog.service';
 import { ActionButton } from '@shared/components/action-buttons/action-buttons.component';
+import getTutorial from '../tutorials/historic-list.tutorial';
+import { Subscription } from 'rxjs';
+import { TutorialService } from '@app/services/tutorial.service';
 
 @Component({
   templateUrl: './historic-list.component.html',
   styleUrls: ['./historic-list.component.scss']
 })
-export class HistoricListComponent implements OnInit {
+export class HistoricListComponent implements OnInit, OnDestroy {
 
   currentUser: User;
   company: Empresa;
@@ -32,15 +35,26 @@ export class HistoricListComponent implements OnInit {
 
   append: BreadCrumb;
 
+  public tutorial = getTutorial(User.fromLocalStorage().type === 0);
+  public tutorialInitSub: Subscription;
+  public tutorialEndedSub: Subscription;
+
   constructor(
     private toast: ToastService,
     private dialog: DialogService,
     private service: HistoricService,
-    private exportService: ExportService
+    private exportService: ExportService,
+    private tutorialService: TutorialService
   ) {}
 
   ngOnInit(): void {
     this.currentUser = User.fromLocalStorage();
+    this.onTutorial();
+  }
+
+  ngOnDestroy(): void {
+    this.tutorialInitSub.unsubscribe();
+    this.tutorialEndedSub.unsubscribe();
   }
 
   public onChangeDetected(id: number) {
@@ -122,6 +136,25 @@ export class HistoricListComponent implements OnInit {
     this.service.fetch(filter).subscribe(result => {
       this.records = this.records.concat(result.records);
       this.pageInfo = result.pageInfo;
+    });
+  }
+
+  public onTutorial() {
+    this.tutorialInitSub = this.tutorialService.afterTutorialStarted.subscribe(() => {
+      this.records.unshift({
+        cnpjContabilidade: this.currentUser.organization.cnpj,
+        cnpjEmpresa: this.currentUser.organization.cnpj,
+        contaMovimento: '6733',
+        dataAtualizacao: null,
+        dataCriacao: null,
+        id: -10,
+        idRoteiro: this.currentUser.email,
+        tipoLancamento: 3,
+        historico: 'CodigoHistorico:247$ 13221 ${descricao} 312312 ${portador} 63443 ${complemento03} 1264 ${competenciaAnterior} 1265325 ${documento} '
+      });
+    });
+    this.tutorialEndedSub = this.tutorialService.afterTutorialClosed.subscribe(() => {
+      this.records = this.records.filter(rec => rec.id > 0);
     });
   }
 

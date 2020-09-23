@@ -96,14 +96,13 @@ export class ScriptComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.currentUser = User.fromLocalStorage();
-    this.startChecklist();
     if (this.routes.snapshot.params.id) {
       this.load();
     }
   }
 
   public startChecklist() {
-    this.checklist.call(this.checklistService.fetch(2), 'record');
+    this.checklist.call(this.checklistService.fetch(this.currentScript.tipoProjeto), 'record');
   }
 
   load() {
@@ -118,6 +117,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
       let page = 1;
       if (this.currentScript.urlArquivo) {
         page = 2;
+        this.startChecklist();
       }
       if (this.currentScript.tipoRoteiro) {
         page = 3;

@@ -38,15 +38,12 @@ export class TutorialService {
   }
 
   public startTour(guidedTourService: GuidedTourService, tour: GuidedTour) {
-    console.log('startTour');
     const subscription = this.afterTutorialClosed.subscribe(() => {
       this.observer.disconnect();
       subscription.unsubscribe();
     });
     this.observe();
-    console.log(1);
     guidedTourService.startTour(tour);
-    console.log(2);
   }
 
   private observe() {
