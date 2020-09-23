@@ -117,9 +117,9 @@ export class ScriptComponent implements OnInit, AfterViewInit {
       let page = 1;
       if (this.currentScript.urlArquivo) {
         page = 2;
-        this.startChecklist();
       }
       if (this.currentScript.tipoRoteiro) {
+        this.startChecklist();
         page = 3;
       }
       if (this.currentScript.checklist) {
@@ -172,6 +172,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     this.toast.showSnack('Definindo tipo...');
     const rs = await this.service.patch(this.currentScript.id, { tipoRoteiro: this.type, status: 5 }).toPromise();
     this.currentScript = rs.record;
+    this.startChecklist();
     this.toast.hideSnack();
     await refresh();
     this.selectedIndex = 3;
