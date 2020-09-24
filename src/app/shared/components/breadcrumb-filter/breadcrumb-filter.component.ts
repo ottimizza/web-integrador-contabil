@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, Params, NavigationEnd, PRIMARY_OUTLET } from '@
 import { filter } from 'rxjs/operators';
 
 import { GuidedTour, GuidedTourService } from '@gobsio/ngx-guided-tour';
+import { TutorialService } from '@app/services/tutorial.service';
 
 
 export interface BreadCrumb {
@@ -37,6 +38,7 @@ export class BreadcrumbFilterComponent implements OnInit {
   public tutorial: GuidedTour;
 
   constructor(
+    private tutorialService: TutorialService,
     private guidedTourService: GuidedTourService,
     private activatedRoute: ActivatedRoute,
     private router: Router
@@ -54,7 +56,7 @@ export class BreadcrumbFilterComponent implements OnInit {
    * Method used by the template to start/ restart the tutorial.
    */
   public startTutorial() {
-    this.guidedTourService.startTour(this.tutorial);
+    this.tutorialService.startTour(this.guidedTourService, this.tutorial);
   }
 
   private getBreadcrumbs(

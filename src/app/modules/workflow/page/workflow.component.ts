@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '@env';
 
-import { PageEvent } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
 
 import { ActionButton, HexColor } from '@shared/components/action-buttons/action-buttons.component';
 import { ColumnDefinition } from '@shared/components/async-table/models/ColumnDefinition';
@@ -11,6 +11,8 @@ import { WorkflowService } from '@app/http/workflow.service';
 import { Script } from '@shared/models/Script';
 import { User } from '@shared/models/User';
 import { WORKFLOW_COMPLEX_FILTER_OPTIONS } from '../support/complex-filter/workflow-complex-filter';
+import { WORKFLOW_TUTORIAL } from '../tutorials/workflow.tutorial';
+import { TutorialService } from '@app/services/tutorial.service';
 
 @Component({
   templateUrl: './workflow.component.html',
@@ -29,7 +31,7 @@ export class WorkflowComponent implements OnInit {
       }
     })),
     ColumnDefinition.activeDefault('nome', 'Projeto', val => val || 'Não definido'),
-    ColumnDefinition.activeDefault('status', 'Status', (status => {
+    ColumnDefinition.activeDefault('status', 'Situação', (status => {
       const script = new Script();
       script.status = status;
       return script.statusDescription();
@@ -37,7 +39,7 @@ export class WorkflowComponent implements OnInit {
   ];
   public reload = false;
 
-  currentUser: User;
+  public currentUser: User;
 
   public button: ActionButton = {
     id: 'new-script',
@@ -49,9 +51,12 @@ export class WorkflowComponent implements OnInit {
   public options = WORKFLOW_COMPLEX_FILTER_OPTIONS;
   public filters: any = {};
 
+  public tutorial = WORKFLOW_TUTORIAL;
+
   constructor(
     private router: Router,
-    private service: WorkflowService
+    private service: WorkflowService,
+    private test: TutorialService
   ) {}
 
   ngOnInit() {

@@ -1,5 +1,5 @@
 import { PageInfo } from './GenericPageableResponse';
-import { PageEvent } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
 
 export class SearchCriteria {
 

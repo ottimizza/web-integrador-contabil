@@ -1,6 +1,6 @@
 <layout [buttons]="[button]" (buttonClicked)="create()" [overwriteBreadcrumb]="true">
   <div breadcrumb>
-    <app-breadcrumb></app-breadcrumb>
+    <app-breadcrumb [tutorial]="tutorial"></app-breadcrumb>
   </div>
 
   <div class="w-100 text-center">
@@ -15,6 +15,7 @@
   </div>
 
   <async-table
+    id="project-list-table"
     [origin]="getData"
     [definition]="columnDefinition"
     [reload]="reload"

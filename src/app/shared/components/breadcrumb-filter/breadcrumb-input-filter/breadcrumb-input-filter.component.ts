@@ -4,7 +4,7 @@ import { Empresa } from '@shared/models/Empresa';
 import { ToastService } from '@shared/services/toast.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { CNPJUtils } from '@shared/utils/docs.utils';
 import { GlobalVariableService } from '@app/services/global-variables.service';
 import { User } from '@shared/models/User';

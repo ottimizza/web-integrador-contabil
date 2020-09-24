@@ -1,11 +1,11 @@
 export const CALENDAR_COMPONENT_FORMATS = {
   parse: {
-    dateInput: 'L'
+    dateInput: 'MM/YYYY',
   },
   display: {
-    dateInput: 'L',
+    dateInput: 'MM/YYYY',
     monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'L',
-    monthYearA11yLabel: 'MMMM YYYY'
-  }
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
 };

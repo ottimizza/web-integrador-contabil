@@ -1,33 +1,35 @@
+import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
 import { switchMap } from 'rxjs/operators';
 import { environment } from '@env';
 
-import { PageEvent } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
 
+import { SCRIPT_COMPLEX_FILTER_OPTIONS } from '@modules/workflow/support/complex-filter/script-complex-filter';
 import { CompanyCreateDialogComponent } from '@modules/workflow/dialogs/company-create-dialog.component';
 import { ActionButton, HexColor } from '@shared/components/action-buttons/action-buttons.component';
 import { ColumnDefinition } from '@shared/components/async-table/models/ColumnDefinition';
+import { SCRIPT_TUTORIAL, setIds } from '@modules/workflow/tutorials/script.tutorial';
+import { SearchOption } from '@shared/components/search/models/SearchOption';
 import { BusinessService } from '@shared/services/business.service';
 import { SearchCriteria } from '@shared/models/SearchCriteria';
+import { ChecklistService } from '@app/http/checklist.service';
 import { refresh, TimeUtils } from '@shared/utils/time.utils';
 import { ToastService } from '@shared/services/toast.service';
 import { WorkflowService } from '@app/http/workflow.service';
 import { DialogService } from '@app/services/dialog.service';
-import { Script, ScriptStatus } from '@shared/models/Script';
 import { LazyLoader } from '@shared/models/LazyLoader';
-import { Checklist, ChecklistInputType } from '@shared/models/Checklist';
+import { Checklist } from '@shared/models/Checklist';
 import { Empresa } from '@shared/models/Empresa';
+import { Script } from '@shared/models/Script';
 import { User } from '@shared/models/User';
-import { ChecklistService } from '@app/http/checklist.service';
-import { combineLatest } from 'rxjs';
-import { SCRIPT_COMPLEX_FILTER_OPTIONS } from '@modules/workflow/support/complex-filter/script-complex-filter';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   templateUrl: './script.component.html',
   styleUrls: ['./script.component.scss'],
 })
-export class ScriptComponent implements OnInit {
+export class ScriptComponent implements OnInit, AfterViewInit {
 
   public columns: ColumnDefinition<Empresa>[] = [
     ColumnDefinition.defaultWithoutProperty('name', 'Nome', company => {
@@ -55,7 +57,10 @@ export class ScriptComponent implements OnInit {
   public checklist = new LazyLoader<Checklist>();
 
   public filterOptions = SCRIPT_COMPLEX_FILTER_OPTIONS;
-  filter: any = {};
+  public filter: any = {};
+  public fakeFilter: SearchOption[];
+
+  public tutorial = SCRIPT_TUTORIAL;
 
   constructor(
     private router: Router,
@@ -64,8 +69,13 @@ export class ScriptComponent implements OnInit {
     private checklistService: ChecklistService,
     private dialog: DialogService,
     private toast: ToastService,
-    private companyService: BusinessService
+    private companyService: BusinessService,
+    @Inject(DOCUMENT) private doc: Document
   ) {}
+
+  ngAfterViewInit(): void {
+    setIds(this.doc);
+  }
 
   onClick(id: string) {
     if (id === 'cancel') {
@@ -76,24 +86,23 @@ export class ScriptComponent implements OnInit {
   }
 
   openCompanyDialog() {
-    this.dialog.open(CompanyCreateDialogComponent).subscribe(async result => {
+    this.dialog.open<Empresa>(CompanyCreateDialogComponent).subscribe(async result => {
       await TimeUtils.sleep(500);
-      if (result === 'organization-created') {
-        this.reload = !this.reload;
+      if (result.cnpj) {
+        this.fakeFilter = [{ description: `CNPJ igual a: ${result.cnpj}`, id: 'cnpj', value: { cnpj: result.cnpj } }];
       }
     });
   }
 
   ngOnInit(): void {
     this.currentUser = User.fromLocalStorage();
-    this.startChecklist();
     if (this.routes.snapshot.params.id) {
       this.load();
     }
   }
 
   public startChecklist() {
-    this.checklist.call(this.checklistService.fetch(2), 'record');
+    this.checklist.call(this.checklistService.fetch(this.currentScript.tipoProjeto || 1), 'record');
   }
 
   load() {
@@ -110,9 +119,10 @@ export class ScriptComponent implements OnInit {
         page = 2;
       }
       if (this.currentScript.tipoRoteiro) {
+        this.startChecklist();
         page = 3;
       }
-      if (this.currentScript.checkList) {
+      if (this.currentScript.checklist) {
         page = 4;
       }
       await refresh();
@@ -123,7 +133,7 @@ export class ScriptComponent implements OnInit {
 
   async onChecklistCompleted(event: Script) {
     this.currentScript = event;
-    this.currentScript.checkList = true;
+    this.currentScript.checklist = true;
     await refresh();
     this.navigate(4);
   }
@@ -162,6 +172,7 @@ export class ScriptComponent implements OnInit {
     this.toast.showSnack('Definindo tipo...');
     const rs = await this.service.patch(this.currentScript.id, { tipoRoteiro: this.type, status: 5 }).toPromise();
     this.currentScript = rs.record;
+    this.startChecklist();
     this.toast.hideSnack();
     await refresh();
     this.selectedIndex = 3;

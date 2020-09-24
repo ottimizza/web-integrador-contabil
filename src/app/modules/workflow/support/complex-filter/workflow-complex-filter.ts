@@ -67,23 +67,17 @@ export const WORKFLOW_COMPLEX_FILTER_OPTIONS = {
   ],
 
   defaultRule: SearchRule.builder()
-    .id('name')
-    .value({ name: '' })
-    .description('Nome contém: {0}')
+    .id('company')
+    .value({ nomeCompleto: '' })
+    .description('Empresa: {0}')
     .build(),
 
   hackings: [
     HackingRule.builder()
     .id('name')
     .value({ nome: '' })
-    .description('Nome contém: {0}')
-    .regex(/(nome)\:\s(?<value>.+)/ig)
-    .build(),
-    HackingRule.builder()
-    .id('cnpj')
-    .value({ cnpjEmpresa: '' })
-    .description('CNPJ da Empresa igual a: {0}')
-    .regex(/(cnpj)\:\s(?<value>.+)/ig)
+    .description('Projeto: {0}')
+    .regex(/(projeto)\:\s(?<value>.+)/ig)
     .build()
   ]
 };

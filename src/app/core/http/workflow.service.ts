@@ -1,22 +1,20 @@
-import { Injectable } from '@angular/core';
-import { HttpHandlerService } from '@app/services/http-handler.service';
-import { environment } from '@env';
-import { GenericResponse } from '@shared/models/GenericResponse';
-import { combineLatest, Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { Script } from '@shared/models/Script';
-import { ottPaginate, ottUnpaginate } from '@shared/operators/paginate.operator';
-import { SearchCriteria } from '@shared/models/SearchCriteria';
-import { BusinessService } from '@shared/services/business.service';
+import { Injectable } from '@angular/core';
+import { combineLatest, of } from 'rxjs';
+import { environment } from '@env';
+
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
+import { HttpHandlerService } from '@app/services/http-handler.service';
+import { ottUnpaginate } from '@shared/operators/paginate.operator';
+import { BusinessService } from '@shared/services/business.service';
+import { GenericResponse } from '@shared/models/GenericResponse';
+import { Script } from '@shared/models/Script';
 import { User } from '@shared/models/User';
-import { Checklist, ChecklistInputType } from '@shared/models/Checklist';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/roteiros`;
 
 @Injectable({ providedIn: 'root' })
 export class WorkflowService {
-
 
   constructor(
     private http: HttpHandlerService,
@@ -34,21 +32,18 @@ export class WorkflowService {
   }
 
   // E então Deus disse, "haja RxJs", e houve RxJs
-  public fetchWithCompany(searchCriteria: SearchCriteria) {
+  public fetchWithCompany(searchCriteria: any) {
     return this.fetch(searchCriteria)
     .pipe(switchMap(resultSet => {
-      if (!resultSet.records.length) {
-        return of(resultSet);
-      }
-      return combineLatest(resultSet.records.map(rec => this.companyService.getById(rec.empresaId)))
+      return !resultSet.records.length ? of(resultSet) :
+      combineLatest(resultSet.records.map(rec => this.companyService.getById(rec.empresaId)))
       .pipe(map(rs => {
         resultSet.records = resultSet.records.map((rec, index) => {
           const company = rs[index].record;
           return Object.assign(rec, company ? {
             nomeEmpresa: company.razaoSocial,
             erpEmpresa: company.codigoERP,
-            nomeCompleto: `${(company.codigoERP && company.codigoERP !== 'null') ? company.codigoERP + ' - ' : ''}${company.razaoSocial || ''}`
-              .toUpperCase().trim()
+            nomeCompleto: `${company.codigoERP} - ${company.razaoSocial || ''}`.toUpperCase().replace('NULL - ', '')
           } : {});
         });
         return resultSet;

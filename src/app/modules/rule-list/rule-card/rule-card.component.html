@@ -1,13 +1,13 @@
 <div class="cont row m-0 w-100 mb-4 shadow-sm" *ngIf="rules && rules.regras && rules.regras.length">
 
   <div class="col-md-2 col-lg-2 col-xl-2 p-0 desktop" *ngIf="mustBeShown()">
-      <button class="red" (click)="close()" [matTooltip]="info.trash">
+      <button class="red" [id]="'delete-rule-button-' + rules.id" (click)="close()" [matTooltip]="info.trash">
         <i class="fad fa-trash-alt"></i>
       </button>
-      <button class="gray" (click)="cloning()" [matTooltip]="info.clone">
+      <button class="gray" [id]="'clone-rule-button-' + rules.id" (click)="cloning()" [matTooltip]="info.clone">
         <i class="fad fa-clone"></i>
       </button>
-      <button class="purple" (click)="openModal()" [matTooltip]="info.edit">
+      <button class="purple" [id]="'edit-rule-button-' + rules.id" (click)="openModal()" [matTooltip]="info.edit">
         <i class="fad fa-edit"></i>
       </button>
   </div>
@@ -22,7 +22,7 @@
       </button>
   </div>
 
-  <div class="col-lg-7 col-xl-7 col-sm-10 col-xs-10 col-md-10 p-0 pt-3 pb-3">
+  <div class="col-lg-7 col-xl-7 col-sm-10 col-xs-10 col-md-10 p-0 pt-3 pb-3" [id]="'rule-description-' + rules.id">
     <div *ngFor="let rule of rules.regras" class="text-center" [ngClass]="{ 'd-none': rule.campo ===  'tipoMovimento' }">
       <strong>{{ getText(rule).field }}</strong>
       <span>{{ getText(rule).text }}</span>
@@ -38,7 +38,7 @@
 
   <div class="col-xl-1 col-lg-1 p-0">
     <div class="row w-100 m-0 h-100">
-      <div class="col-12 p-0 h-100">
+      <div class="col-12 p-0 h-100" [id]="'move-rule-buttons-' + rules.id">
       <button class="w-50 h-10 text-primary border-left" (click)="down()" [matTooltip]="info.upDown"><i class="fal fa-chevron-down"></i></button>
       <button class="w-50 h-10 text-primary border-left" (click)="up()" [matTooltip]="info.upAll"><i class="fal fa-chevron-up"></i></button>
       </div>

@@ -16,7 +16,7 @@ export class ChecklistQuestion {
   id?: number;
   descricao: string;
   tipoInput: ChecklistInputType;
-  tipo: number;
+  tipo: string;
   grupo: string;
   opcoesResposta?: { descricao: string, valor: unknown }[];
   sugestao?: any;
@@ -51,4 +51,3 @@ export class ChecklistAnswer {
   resposta: any; // Vira string
   observacoes: string;
 }
-

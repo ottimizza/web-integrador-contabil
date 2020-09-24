@@ -1,11 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { RuleCreateFormat, PostFormatRule, Condicao } from '@shared/models/Rule';
+import { MatSelectChange } from '@angular/material/select';
+import _ from 'lodash';
+
 import { CompleteRule } from '@shared/models/CompleteRule';
-import { User } from '@shared/models/User';
-import { FormGroup, FormControl } from '@angular/forms';
 import { EntryUtils } from '@shared/utils/entry.utils';
-import { MatSelectChange } from '@angular/material';
+import { Condicao } from '@shared/models/Rule';
+import { User } from '@shared/models/User';
 
 @Component({
   templateUrl: './rule-edit-modal.component.html',
@@ -38,7 +41,7 @@ export class RuleEditModalComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = User.fromLocalStorage();
     const rule = this.data.rule;
-    const localArray = rule.regras.filter(() => true);
+    const localArray = _.clone(rule.regras);
     this.ruleDefault = new CompleteRule(
       rule.id,
       rule.posicao,

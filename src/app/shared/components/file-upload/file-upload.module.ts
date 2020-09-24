@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { FileUploadComponent } from './file-upload.component';
 import { CommonModule } from '@angular/common';
-import { MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { DragDropDirective } from '@shared/directives/drag-drop.directive';
 
 @NgModule({

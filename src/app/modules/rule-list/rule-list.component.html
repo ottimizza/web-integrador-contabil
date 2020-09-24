@@ -1,4 +1,10 @@
-<layout [buttons]="buttons()" (buttonClicked)="onButton($event)" (scrollHasEnded)="onScroll()" [breadcrumbAppend]="append" (companySelected)="onFilter($event)">
+<layout
+  [buttons]="buttons()"
+  (buttonClicked)="onButton($event)"
+  (scrollHasEnded)="onScroll()"
+  [breadcrumbAppend]="append"
+  (companySelected)="onFilter($event)"
+  [tutorial]="tutorial">
 
   <div
     class="text-center">

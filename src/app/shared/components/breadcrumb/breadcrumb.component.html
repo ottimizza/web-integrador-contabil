@@ -1,32 +1,34 @@
-<nav aria-label="breadcrumb" class="breadcrumb m-0">
-  <div class="content-wrapper m-0 w-100">
-    <div class="container">
-      <ol class="breadcrumb m-0 p-0 d-none d-md-flex">
-        <li *ngFor="let breadcrumb of breadcrumbs" class="breadcrumb-item">
-          <a [routerLink]="[breadcrumb.url, breadcrumb.params]">
+<ngx-guided-tour></ngx-guided-tour>
+<nav aria-label="breadcrumb">
+  <div class="content m-0 w-100 mt-0 mb-0">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <ol class="bc d-flex d-flex align-items-center row w-100 m-0">
+
+        <li *ngFor="let breadcrumb of breadcrumbs; let i = index" class="p-2 mt-1 d-none d-md-block breadcrumb-item">
+          <a [routerLink]="[breadcrumb.url, breadcrumb.params]" [ngClass]="{ 'ml-2': i > 0 }">
             <span class="d-md-inline-block">
               {{ breadcrumb.label }}
             </span>
           </a>
         </li>
-        <li *ngIf="append" class="breadcrumb-item">
-          <a [routerLink]="append.params ? [append.url, append.params] : [append.url]" class="">
+
+        <!-- <li class="col-md-6 p-2 mt-1">
+          <app-breadcrumb-input-filter (empresa)="companySelected.emit($event)"></app-breadcrumb-input-filter>
+        </li> -->
+
+        <li *ngIf="append" class="p-2 mt-1 text-left d-none d-md-block">
+          <a [routerLink]="append?.url">
             <span class="d-md-inline-block">
-              {{ append.label }}
+              / {{ append.label }}
             </span>
           </a>
         </li>
       </ol>
 
-      <ol class="breadcrumb m-0 p-0 d-flex d-md-none">
-        <li class="breadcrumb-item">
-            <a>
-              <span>
-                Início
-              </span>
-            </a>
-        </li>
-      </ol>
+      <button id="btn-tutorial-toggle" class="btn btn-link" *ngIf="isTutorialAvailable()" (click)="startTutorial()">
+        <i class="far fa-question-circle"></i>
+      </button>
     </div>
   </div>
 </nav>

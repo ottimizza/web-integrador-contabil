@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from '@shared/components/card/card.module';
-import { MatTooltipModule, MatDialogModule, MatSnackBarModule, MatTabsModule, MatButtonModule, MatProgressBarModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { InfoModule } from '@shared/components/info/info.module';
 import { RuleEditModalModule } from '@modules/rule-list/rule-edit-modal/rule-edit-modal.module';
 import { ExportConfirmModalModule } from '@modules/rule-list/export-confirm-modal/export-confirm-modal.module';

@@ -3,7 +3,7 @@ import { ComponentType } from '@angular/cdk/portal';
 import { finalize } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 
 export class DialogWidth {
 

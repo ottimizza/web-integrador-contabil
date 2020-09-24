@@ -6,11 +6,13 @@ import { ContentLayoutComponent } from './layout/content-layout/content-layout.c
 
 import { AuthGuard } from '@app/guard/auth.guard';
 import { NoAuthGuard } from '@app/guard/no-auth.guard';
+import { AdminGuard } from '@app/guard/admin.guard';
 
 const routes: Routes = [
   {
     path: 'auth',
     component: AuthLayoutComponent,
+    canActivate: [NoAuthGuard],
     loadChildren: () =>
     import('@modules/auth/auth.module').then(m => m.AuthModule)
   },
@@ -34,6 +36,7 @@ const routes: Routes = [
       },
       {
         path: 'workflow',
+        canActivate: [AdminGuard],
         data: {
           breadcrumb: 'Projetos'
         },
@@ -55,12 +58,12 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'workflow',
+        redirectTo: 'entrys',
         pathMatch: 'full'
       },
       {
         path: '**',
-        redirectTo: 'workflow',
+        redirectTo: 'entrys',
         pathMatch: 'full'
       }
 

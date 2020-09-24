@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NgxGuidedTourModule } from '@gobsio/ngx-guided-tour';
 import { BreadcrumbInputFilterModule } from './breadcrumb-input-filter/breadcrumb-input-filter.module';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({

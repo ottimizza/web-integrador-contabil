@@ -40,6 +40,7 @@
                 *ngIf="entry?.descricao && rebuild !== 1"
                 [config]="descricao()"
                 (clicked)="onDevolve($event)"
+                id="detail-descricao-input"
                 class="col-md"
               ></app-chips-group>
               <app-chips-group
@@ -125,11 +126,13 @@
               (click)="regra()"
               value="Não é fornecedor"
               [matTooltip]="info.rule"
+              id="button-rule"
             />
             <input
               [disabled]="conditions.hasOtherFieldsThan('descricao')"
               type="button"
               class="btn btn-primary col mx-2"
+              id="button-provider"
               [value]="buttonLabel"
               (click)="fornecedor()"
               [matTooltip]="info.provider"
@@ -141,6 +144,7 @@
               value="Ignorar"
               (click)="ignorar()"
               [matTooltip]="info.ignore"
+              id="ignore-button"
             />
             <div class="button-area col mx-2">
               <div class="row w-100 m-0">

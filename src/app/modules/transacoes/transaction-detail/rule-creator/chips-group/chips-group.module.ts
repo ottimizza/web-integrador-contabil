@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RuleChipGroupComponent } from './chips-group.component';
 import { CommonModule } from '@angular/common';
-import { MatTooltipModule, MatChipsModule } from '@angular/material';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RuleChipComponent } from './rule-chip/rule-chip.component';
 
 @NgModule({

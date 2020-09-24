@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import { environment } from '@env';
 
-import { Lancamento } from '@shared/models/Lancamento';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
-import { Empresa } from '@shared/models/Empresa';
-import { PostFormatRule } from '@shared/models/Rule';
 import { HttpHandlerService } from '@app/services/http-handler.service';
-import { map, switchMap } from 'rxjs/operators';
 import { GenericResponse } from '@shared/models/GenericResponse';
+import { Lancamento } from '@shared/models/Lancamento';
+import { PostFormatRule } from '@shared/models/Rule';
+import { Empresa } from '@shared/models/Empresa';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/lancamentos`;
 
@@ -67,19 +66,25 @@ export class LancamentoService {
     return this.http.post<Lancamento>(url, {}, 'Falha ao vincular lançamento a uma conta de fornecedor!');
   }
 
-  // @Deprecated('Prefer to use fetchByRule directly')
+  /**
+   * @deprecated
+   */
   public getByRulePaginated(rules: PostFormatRule[], e: Empresa, page: number, pageSize: number) {
     const searchCriteria = { cnpjEmpresa: e.cnpj, pageIndex: page, pageSize, tipoConta: 0, ativo: true };
     return this.fetchByRule(rules, searchCriteria);
   }
 
-  // @Deprecated('Prefer to use fetchByRule directly')
+  /**
+   * @deprecated
+   */
   public getByRule(rules: PostFormatRule[], e: Empresa) {
     const searchCriteria = { cnpjEmpresa: e.cnpj, pageSize: 1, ativo: true };
     return this.fetchByRule(rules, searchCriteria);
   }
 
-  // @Deprecated('Prefer to use calcPercentage directly')
+  /**
+   * @deprecated
+   */
   public getPercentage(cnpjEmpresa: string, tipoMovimento: string) {
     return this.calcPercentage({ cnpjEmpresa, tipoMovimento });
   }
