@@ -8,26 +8,26 @@ import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-
 import { DEFAULT_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DEFAULT_CHIP_PATTERN';
 import { VALUE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/VALUE_CHIP_PATTERN';
 import { DATE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DATE_CHIP_PATTERN';
+import { FAKE_ENTRY } from '../transaction-list/tutorial/transaction-list.tutorial';
 import { RuleConfig } from './rule-creator/chips-group/chips-group.component';
 import { DialogService, DialogWidth } from '@app/services/dialog.service';
 import { LancamentoService } from '@shared/services/lancamento.service';
+import { Lancamento, TipoLancamento } from '@shared/models/Lancamento';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { HistoricService } from '@shared/services/historic.service';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
+import { TutorialService } from '@app/services/tutorial.service';
+import { SnapshotService } from '@app/services/snapshot.service';
 import { ToastService } from '@shared/services/toast.service';
 import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { FormattedHistoric } from '@shared/models/Historic';
 import { RuleService } from '@shared/services/rule.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
-import { Lancamento, TipoLancamento } from '@shared/models/Lancamento';
 import { DateUtils } from '@shared/utils/date-utils';
 import { Empresa } from '@shared/models/Empresa';
 import { FormControl } from '@angular/forms';
 import { User } from '@shared/models/User';
 import { finalize } from 'rxjs/operators';
-import { TutorialService } from '@app/services/tutorial.service';
-import { FAKE_ENTRY } from '../transaction-list/tutorial/transaction-list.tutorial';
-import { SnapshotService } from '@app/services/snapshot.service';
 
 @Component({
   selector: 'app-tdetail',
@@ -65,7 +65,7 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
 
   public tutorialInitSub: Subscription;
   public tutorialEndedSub: Subscription;
-  public recoverState: any;
+  public recoverState: Subject<any>;
 
   constructor(
     // tslint:disable
@@ -99,7 +99,7 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
       Object.assign(this.conditions, { verify: () => true });
     })
     this.tutorialEndedSub = this._tutorialService.afterTutorialClosed.subscribe(() => {
-      this.recoverState.next(this);
+      this.recoverState.next();
     })
   }
 
@@ -417,6 +417,12 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
         this.conditions = new Rule();
       }))
       .toPromise();
+  }
+
+  public ruleLabel() {
+    return this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE' ?
+    'Não é cliente' :
+    'Não é fornecedor'
   }
 
   public calcPercentage() {
