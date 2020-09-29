@@ -13,7 +13,7 @@ export class EntryUtils {
     const labels = {
       DATAMOVIMENTO:       'Data',
       DOCUMENTO:           'Documento',
-      DESCRICAO:           'Fornecedor / Cliente',
+      DESCRICAO:           'Descrição',
       PORTADOR:            'Banco',
       TIPOPLANILHA:        'Tipo da Planilha',
       CONTAMOVIMENTO:      'Conta',
@@ -37,11 +37,6 @@ export class EntryUtils {
       NENHUM:              '*'
     };
 
-    if (reference.tipoLancamento === 1) {
-      labels.DESCRICAO = 'Fornecedor';
-    } else if (reference.tipoLancamento === 2) {
-      labels.DESCRICAO = 'Cliente';
-    }
     if (reference.labelComplemento01) {
       labels.COMPLEMENTO01 = reference.labelComplemento01;
     }
