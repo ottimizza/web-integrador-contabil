@@ -440,11 +440,11 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   descricao(): RuleConfig {
     return {
       selectable: true,
-      title: this.buttonLabel,
+      title: 'Descrição',
       values: [
         {
           key: 'descricao',
-          label: this.buttonLabel,
+          label: 'Descrição',
           pattern: DEFAULT_CHIP_PATTERN,
           value: this.entry.descricao
         }
