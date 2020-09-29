@@ -140,8 +140,10 @@ export class ScriptComponent implements OnInit, AfterViewInit {
 
   async onCompanySelect(event: Empresa) {
     this.company = event;
-    await refresh();
-    this.selectedIndex = 1;
+    if (this.company) {
+      await refresh();
+      this.selectedIndex = 1;
+    }
   }
 
   navigate(page: number) {
