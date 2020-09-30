@@ -36,7 +36,6 @@ export class RuleGridComponent implements OnInit, GenericPagination {
   }
 
   nextPage(pageSize = 5): void {
-    if (this.hasNext()) {
       this.isFetching = true;
       this._toast.showSnack('Aguardando resposta');
       const searchCriteria = { cnpjEmpresa: this.data.company.cnpj, pageIndex: this.page, pageSize, tipoConta: 0, ativo: true };
@@ -49,7 +48,6 @@ export class RuleGridComponent implements OnInit, GenericPagination {
           // this.page++;
           this._toast.hideSnack();
         });
-    }
   }
 
   hasNext() {
