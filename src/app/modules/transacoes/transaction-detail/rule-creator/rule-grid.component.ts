@@ -45,7 +45,6 @@ export class RuleGridComponent implements OnInit, GenericPagination {
         .subscribe(imports => {
           this.info = imports.records;
           this.pageInfo = imports.pageInfo;
-          // this.page++;
           this._toast.hideSnack();
         });
   }
@@ -55,7 +54,6 @@ export class RuleGridComponent implements OnInit, GenericPagination {
   }
 
   onPageChange(event: PageEvent) {
-    console.log(event);
     this.page = event.pageIndex;
     this.nextPage(event.pageSize);
   }
