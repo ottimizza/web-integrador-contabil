@@ -39,11 +39,12 @@ export class RuleGridComponent implements OnInit, GenericPagination {
     if (this.hasNext()) {
       this.isFetching = true;
       this._toast.showSnack('Aguardando resposta');
+      const searchCriteria = { cnpjEmpresa: this.data.company.cnpj, pageIndex: this.page, pageSize, tipoConta: 0, ativo: true };
       this._service
-        .getByRulePaginated(this.data.rules, this.data.company, this.page, pageSize)
+        .fetchByRule(this.data.rules, searchCriteria)
         .pipe(finalize(() => this.isFetching = false))
         .subscribe(imports => {
-          this.info = imports.records
+          this.info = imports.records;
           this.pageInfo = imports.pageInfo;
           this.page++;
           this._toast.hideSnack();

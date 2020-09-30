@@ -59,7 +59,9 @@ export class LancamentoService {
     return this.http.post<Lancamento>(url, {}, 'Falha ao vincular lançamento a uma conta de fornecedor!');
   }
 
-  // @Deprecated('Prefer to use fetchByRule directly')
+  /**
+   * @deprecated
+   */
   public getByRulePaginated(rules: PostFormatRule[], e: Empresa, page: number, pageSize: number) {
     const searchCriteria = { cnpjEmpresa: e.cnpj, pageIndex: page, pageSize, tipoConta: 0, ativo: true };
     return this.fetchByRule(rules, searchCriteria);
