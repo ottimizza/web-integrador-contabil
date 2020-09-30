@@ -10,7 +10,7 @@ import { Lancamento } from '@shared/models/Lancamento';
 import { PostFormatRule } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
 import { finalize } from 'rxjs/operators';
-import { MatPaginator } from '@angular/material';
+import { MatPaginator, PageEvent } from '@angular/material';
 
 @Component({
   templateUrl: './rule-grid.component.html'
@@ -36,26 +36,24 @@ export class RuleGridComponent implements OnInit, GenericPagination {
   }
 
   nextPage(pageSize = 5): void {
-    if (this.hasNext()) {
       this.isFetching = true;
       this._toast.showSnack('Aguardando resposta');
+      const searchCriteria = { cnpjEmpresa: this.data.company.cnpj, pageIndex: this.page, pageSize, tipoConta: 0, ativo: true };
       this._service
-        .getByRulePaginated(this.data.rules, this.data.company, this.page, pageSize)
+        .fetchByRule(this.data.rules, searchCriteria)
         .pipe(finalize(() => this.isFetching = false))
         .subscribe(imports => {
-          this.info = imports.records
+          this.info = imports.records;
           this.pageInfo = imports.pageInfo;
-          this.page++;
           this._toast.hideSnack();
         });
-    }
   }
 
   hasNext() {
     return !this.pageInfo || this.pageInfo.hasNext;
   }
 
-  onScroll(event: MatPaginator) {
+  onPageChange(event: PageEvent) {
     this.page = event.pageIndex;
     this.nextPage(event.pageSize);
   }

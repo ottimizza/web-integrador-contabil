@@ -87,7 +87,7 @@
     <tr mat-row class="w-100" *matRowDef="let row; columns: displayedColumns();">
     </tr>
   </table>
-  <mat-paginator [length]="pageInfo.totalElements" [pageSize]="pageInfo.pageSize" [pageSizeOptions]="[5, 10, 20]" (page)="onScroll($event)" *ngIf="info?.length">
+  <mat-paginator [length]="pageInfo.totalElements" [pageSize]="pageInfo.pageSize" [pageSizeOptions]="[5, 10, 20]" (page)="onPageChange($event)" *ngIf="info?.length">
   </mat-paginator>
 
 </div>
