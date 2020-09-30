@@ -10,7 +10,7 @@ import { Lancamento } from '@shared/models/Lancamento';
 import { PostFormatRule } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
 import { finalize } from 'rxjs/operators';
-import { MatPaginator } from '@angular/material';
+import { MatPaginator, PageEvent } from '@angular/material';
 
 @Component({
   templateUrl: './rule-grid.component.html'
@@ -56,7 +56,8 @@ export class RuleGridComponent implements OnInit, GenericPagination {
     return !this.pageInfo || this.pageInfo.hasNext;
   }
 
-  onScroll(event: MatPaginator) {
+  onPageChange(event: PageEvent) {
+    console.log(event);
     this.page = event.pageIndex;
     this.nextPage(event.pageSize);
   }
