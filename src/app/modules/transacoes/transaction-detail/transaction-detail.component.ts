@@ -28,6 +28,7 @@ import { Empresa } from '@shared/models/Empresa';
 import { FormControl } from '@angular/forms';
 import { User } from '@shared/models/User';
 import { finalize } from 'rxjs/operators';
+import { GuidedTourService } from '@gobsio/ngx-guided-tour';
 
 @Component({
   selector: 'app-tdetail',
@@ -92,15 +93,15 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   setTutorials() {
     this.tutorialInitSub = this._tutorialService.afterTutorialStarted.subscribe(() => {
       this.recoverState = this._snapshotService.recycle(this, ['entry', 'errorText', 'errorText2', 'total', 'conditions'])
-      this.entry = FAKE_ENTRY;
       this.errorText = null;
       this.errorText2 = null;
-      this.total = '1'
+      this.total = '1';
+      this.entry = FAKE_ENTRY;
       Object.assign(this.conditions, { verify: () => true });
-    })
+    });
     this.tutorialEndedSub = this._tutorialService.afterTutorialClosed.subscribe(() => {
       this.recoverState.next();
-    })
+    });
   }
 
   public getLabelContaMovimento(lancamento: Lancamento = this.entry): string {
