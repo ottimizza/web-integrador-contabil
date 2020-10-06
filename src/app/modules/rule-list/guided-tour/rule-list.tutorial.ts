@@ -82,7 +82,7 @@ const getTutorial = (isAdministrator: boolean) => {
       title: '',
       content: `
         <h5>
-          7. Exportar regrs e históricos para o CRM.
+          7. Exportar regras e históricos para o CRM.
         </h5>
       `,
       orientation: Orientation.Left,

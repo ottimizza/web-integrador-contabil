@@ -24,10 +24,10 @@ const TUTORIAL: GuidedTour = {
       title: '',
       content: `
       <h5>
-        2. Parametrizar os lançamentos clicando nos termos desejados;
+        2. Caso o pagamento seja para uma conta de Despesa, clique nas palavras-chaves necessárias.
       </h5>
       `,
-      selector: '#detail-descricao-input',
+      selector: '.main-card',
       orientation: Orientation.Top,
       highlightPadding: 12
     },
@@ -35,10 +35,10 @@ const TUTORIAL: GuidedTour = {
       title: '',
       content: `
       <h5>
-        3. Informar se este lançamento possui uma conta Fornecedo/Cliente;
+        3. Definidas as palavras-chaves, indique a conta da Despesa;
       </h5>
       `,
-      selector: '#button-provider',
+      selector: '.form-group.col-md-3.mt-1',
       orientation: Orientation.Top,
       highlightPadding: 5
     },
@@ -46,7 +46,7 @@ const TUTORIAL: GuidedTour = {
       title: '',
       content: `
       <h5>
-        4. Ou se você deseja criar uma regra com ele;
+        4. Sendo então uma Despesa, clique no botão abaixo:
       </h5>
       `,
       selector: '#button-rule',
@@ -57,7 +57,18 @@ const TUTORIAL: GuidedTour = {
       title: '',
       content: `
       <h5>
-        5. Ou se ele deve ser ignorado;
+        5. Caso seja uma conta de Fornecedor ou de Cliente, você apenas precisa informar a conta e clicar no botão abaixo:
+      </h5>
+      `,
+      selector: '#button-provider',
+      orientation: Orientation.Top,
+      highlightPadding: 5
+    },
+    {
+      title: '',
+      content: `
+      <h5>
+        6. E para ignorar um lançamento, selecione as palavras-chaves que informam o porquê do lançamento estar sendo ignorado, e clique em "Ignorar";
       </h5>
       `,
       selector: '#ignore-button',
@@ -68,21 +79,10 @@ const TUTORIAL: GuidedTour = {
       title: '',
       content: `
       <h5>
-        6. Ou até mesmo se você não deseja fazer nada com ele no momento e só quer visualizar os demais lançamentos;
+        7. Caso você não saiba o que fazer com este lançamento, você pode simplesmente navegar entre os demais.
       </h5>
       `,
       selector: '.button-area.col.mx-2',
-      orientation: Orientation.Top,
-      highlightPadding: 5
-    },
-    {
-      title: '',
-      content: `
-      <h5>
-        7. Caso você queira criar uma regra ou definir uma conta de Fornecedor/Cliente, será necessário informar uma Conta Movimento.
-      </h5>
-      `,
-      selector: '.form-group.col-md-3.mt-1',
       orientation: Orientation.Top,
       highlightPadding: 5
     },
@@ -106,11 +106,11 @@ const FAKE_ENTRY: Lancamento = {
     cnpjContabilidade: getUser()?.organization?.cnpj,
     cnpjEmpresa: getUser()?.organization?.cnpj,
     id: -10,
-    labelComplemento01: null,
-    labelComplemento02: null,
-    labelComplemento03: null,
-    labelComplemento04: null,
-    labelComplemento05: null,
+    labelComplemento01: 'DETALHE',
+    labelComplemento02: 'DETALHE',
+    labelComplemento03: 'DETALHE',
+    labelComplemento04: 'DETALHE',
+    labelComplemento05: 'DETALHE',
     nome: 'Nome_do_arquivo.xlsx'
   },
   ativo: true,
@@ -119,16 +119,16 @@ const FAKE_ENTRY: Lancamento = {
   cnpjEmpresa: getUser()?.organization?.cnpj,
   competencia: '09/2020',
   competenciaAnterior: '08/2020',
-  complemento01: null,
-  complemento02: null,
-  complemento03: null,
-  complemento04: null,
-  complemento05: null,
+  complemento01: 'RECISÓRIO',
+  complemento02: '',
+  complemento03: '',
+  complemento04: '',
+  complemento05: '',
   contaContraPartida: null,
   contaMovimento: null,
   contaSugerida: null,
-  dataMovimento: '2020-09-23',
-  descricao: 'Banco',
+  dataMovimento: null,
+  descricao: 'PAGAMENTO FGTS',
   documento: null,
   id: -10,
   idRoteiro: getUser()?.email,
@@ -141,7 +141,7 @@ const FAKE_ENTRY: Lancamento = {
   valorDesconto: null,
   valorJuros: null,
   valorMulta: null,
-  valorOriginal: 1822.09,
+  valorOriginal: null,
   valorPago: 1822.09
 };
 
