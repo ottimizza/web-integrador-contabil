@@ -35,7 +35,6 @@ export class RuleGridComponent implements OnInit {
   }
 
   nextPage(pageSize = 5): void {
-    if (this.hasNext()) {
       this.isFetching = true;
       this._toast.showSnack('Aguardando resposta');
       const searchCriteria = { cnpjEmpresa: this.data.company.cnpj, pageIndex: this.page, pageSize, tipoConta: 0, ativo: true };
@@ -45,17 +44,15 @@ export class RuleGridComponent implements OnInit {
         .subscribe(imports => {
           this.info = imports.records;
           this.pageInfo = imports.pageInfo;
-          // this.page++;
           this._toast.hideSnack();
         });
-    }
   }
 
   hasNext() {
     return !this.pageInfo || this.pageInfo.hasNext;
   }
 
-  onScroll(event: PageEvent) {
+  onPageChange(event: PageEvent) {
     this.page = event.pageIndex;
     this.nextPage(event.pageSize);
   }
