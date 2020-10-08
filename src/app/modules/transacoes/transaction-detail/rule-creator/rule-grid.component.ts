@@ -44,7 +44,6 @@ export class RuleGridComponent implements OnInit {
         .subscribe(imports => {
           this.info = imports.records;
           this.pageInfo = imports.pageInfo;
-          // this.page++;
           this._toast.hideSnack();
         });
   }
@@ -53,7 +52,7 @@ export class RuleGridComponent implements OnInit {
     return !this.pageInfo || this.pageInfo.hasNext;
   }
 
-  onScroll(event: PageEvent) {
+  onPageChange(event: PageEvent) {
     this.page = event.pageIndex;
     this.nextPage(event.pageSize);
   }
