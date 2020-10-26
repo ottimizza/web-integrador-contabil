@@ -126,9 +126,12 @@ export class AuthenticationService {
   }
 
   public refresh(refreshToken: string) {
+    const headers = new HttpHeaders({
+      'X-Skip-Interceptor': ''
+    });
     const clientId = `${environment.oauthClientId}`;
     const url = `${environment.serviceUrl}/auth/refresh?refresh_token=${refreshToken}&client_id=${clientId}`;
-    return this.http.post(url, {}, {});
+    return this.http.post(url, {}, { headers });
   }
 
   public revokeToken() {
