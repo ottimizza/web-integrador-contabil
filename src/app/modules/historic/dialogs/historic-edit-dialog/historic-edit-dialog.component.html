@@ -1,24 +1,24 @@
 <h1 mat-dialog-title>
-  <app-icon color="info" name="history"></app-icon>
+  <icon color="info" name="history"></icon>
   &nbsp;&nbsp; Histórico
 </h1>
 <div mat-dialog-content class="border-top border-bottom p-3 text-center">
 
   <form class="w-75 m-auto" [formGroup]="form">
 
-    <app-fieldset legend="Código">
-      <app-comment type="danger">Caso sua contabilidade não utilize código de histórico, desconsidere este campo.</app-comment>
+    <ott-fieldset legend="Código">
+      <comment type="danger">Caso sua contabilidade não utilize código de histórico, desconsidere este campo.</comment>
         <div class="row w-100 m-0 mt-2">
-          <app-input (submit)="submit()" (input)="updateCode()" [control]="form.get('code')" class="col-12" placeholder="Ex. 247"></app-input>
+          <ott-input (submit)="submit()" (input)="updateCode()" [control]="form.get('code')" class="col-12" placeholder="Ex. 247"></ott-input>
         </div>
-    </app-fieldset>
+    </ott-fieldset>
 
-    <app-fieldset legend="Descrição" *ngIf="details?.length && data">
+    <ott-fieldset legend="Descrição" *ngIf="details?.length && data">
       <div class="row w-100 m-0 mt-3" *ngFor="let row of details">
-        <app-input class="col-md" (submit)="submit()" [id]="row.id1" [control]="form.get(row.id1)" [label]="row.label1" (input)="update()" [placeholder]="row.ex"></app-input>
-        <app-datalist class="col-md" [id]="row.id2" [label]="row.label2" [control]="form.get(row.id2)" (selectionChange)="update()" [parse]="parse(data)" [source]="options"></app-datalist>
+        <ott-input class="col-md" (submit)="submit()" [id]="row.id1" [control]="form.get(row.id1)" [label]="row.label1" (input)="update()" [placeholder]="row.ex"></ott-input>
+        <ott-datalist class="col-md" [id]="row.id2" [label]="row.label2" [control]="form.get(row.id2)" (selectionChange)="update()" [parse]="parse(data)" [source]="options"></ott-datalist>
       </div>
-    </app-fieldset>
+    </ott-fieldset>
 
   </form>
 
@@ -26,8 +26,8 @@
 </div>
 <div mat-dialog-actions class="text-center">
   <div class="text-left" *ngIf="data.type === 'post' && (historic?.preview || historic?.id)">
-    <app-text [bold]="true">Resultado:&nbsp;&nbsp;</app-text>
-    <app-text>{{ getPreview() }}</app-text>
+    <text [bold]="true">Resultado:&nbsp;&nbsp;</text>
+    <text>{{ getPreview() }}</text>
   </div>
   <div class="container-fluid px-0 py-3 justify-content-between">
     <button class="btn btn-light text-danger mx-2" [mat-dialog-close]>Cancelar</button>

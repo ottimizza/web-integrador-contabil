@@ -1,7 +1,3 @@
-<div class="mt-2 mb-4" *ngIf="tabIsClicked">
-  <app-info [description]="info.info"></app-info>
-</div>
-
 <form autocomplete="off">
   <div class="card">
     <mat-progress-bar [value]="percentage" class="progress-bar"  [matTooltip]="percentage + '%'"></mat-progress-bar>
@@ -15,20 +11,24 @@
 
     <div class="p-5 pt-0">
       <div class="row m-0 w-100">
-        <app-text class="col">Total de lançamentos: {{ total }}</app-text>
+        <text class="col">Total de lançamentos: {{ total }}</text>
       </div>
       <div class="row m-0 w-100 mb-4">
         <div class="col" *ngIf="impact > 0">
-          <app-text class="mt-3">Impacto: </app-text>
-          <app-text class="ml-1 cursor-pointer"(click)="openGrid()" color="danger" [matTooltip]="info.affecteds" bold="true" >{{ impact }}</app-text>
-          <app-text class="ml-1"(click)="openGrid()"> lançamentos.</app-text>
-          <app-icon class="ml-2" [matTooltip]="info.affectedsOrientation" name="question-circle"></app-icon>
+          <text class="mt-3">Impacto: </text>
+          <text class="ml-1 cursor-pointer"(click)="openGrid()" color="danger" [matTooltip]="info.affecteds" bold="true" >{{ impact }}</text>
+          <text class="ml-1"(click)="openGrid()"> lançamentos.</text>
+          <icon class="ml-2" [matTooltip]="info.affectedsOrientation" name="question-circle"></icon>
         </div>
 
+
+
+
+
       </div>
-      <app-card *ngIf="entry || isFetching" [main]="false">
-        <app-card [main]="false">
-          <app-card>
+      <card *ngIf="entry || isFetching" [main]="false">
+        <card [main]="false">
+          <card class="main-card">
 
             <div *ngIf="isFetching && !entry"><br><br><br><br><br><br><br><br></div>
 
@@ -40,13 +40,14 @@
                 *ngIf="entry?.descricao && rebuild !== 1"
                 [config]="descricao()"
                 (clicked)="onDevolve($event)"
-                class="col"
+                id="detail-descricao-input"
+                class="col-md"
               ></app-chips-group>
               <app-chips-group
                 *ngIf="entry?.portador && rebuild !== 2"
                 [config]="portador()"
                 (clicked)="onDevolve($event)"
-                class="col"
+                class="col-md"
               ></app-chips-group>
             </div>
 
@@ -61,19 +62,19 @@
                 *ngIf="entry?.dataMovimento && rebuild !== 3"
                 [config]="dataMovimento()"
                 (clicked)="onDevolve($event)"
-                class="col"
+                class="col-md"
               ></app-chips-group>
               <app-chips-group
                 *ngIf="entry?.valorOriginal && rebuild !== 4"
                 [config]="valorOriginal()"
                 (clicked)="onDevolve($event)"
-                class="col"
+                class="col-md"
               ></app-chips-group>
               <app-chips-group
                 *ngIf="entry?.documento && rebuild !== 5"
                 [config]="documento()"
                 (clicked)="onDevolve($event)"
-                class="col"
+                class="col-md"
               ></app-chips-group>
             </div>
 
@@ -82,7 +83,7 @@
                 *ngIf="hasComplements"
                 [config]="complementos()"
                 (clicked)="onDevolve($event)"
-                class="col"
+                class="col-md"
               ></app-chips-group>
             </div>
 
@@ -90,17 +91,23 @@
               <app-chips-group
                 [config]="complemento02()"
                 (clicked)="onDevolve($event)"
-                class="col"
+                class="col-md"
               ></app-chips-group>
             </div>
 
-          </app-card>
-        </app-card>
-      </app-card>
+
+
+
+
+
+
+          </card>
+        </card>
+      </card>
 
       <div class="row mt-4 ml-3 d-block">
-        <app-comment type="danger" *ngIf="errorText">{{ errorText }}</app-comment>
-        <app-comment type="danger" *ngIf="errorText2">{{ errorText2 }}</app-comment>
+        <comment type="danger" *ngIf="errorText">{{ errorText }}</comment>
+        <comment type="danger" *ngIf="errorText2">{{ errorText2 }}</comment>
       </div>
 
       <div
@@ -108,7 +115,7 @@
         *ngIf="entry"
       >
         <div class="form-group col-md-3 mt-1">
-          <app-input [control]="account" [matTooltip]="info.account" [label]="getLabelContaMovimento()" (submit)="regra()"></app-input>
+          <ott-input [control]="account" [matTooltip]="info.account" [label]="getLabelContaMovimento()" (submit)="regra()"></ott-input>
         </div>
 
         <div class="col-md-9">
@@ -119,11 +126,13 @@
               (click)="regra()"
               [value]="getRuleButtonDescription()"
               [matTooltip]="info.rule"
+              id="button-rule"
             />
             <input
               [disabled]="conditions.hasOtherFieldsThan('descricao')"
               type="button"
               class="btn btn-primary col mx-2"
+              id="button-provider"
               [value]="buttonLabel"
               (click)="fornecedor()"
               [matTooltip]="info.provider"
@@ -135,6 +144,7 @@
               value="Ignorar"
               (click)="ignorar()"
               [matTooltip]="info.ignore"
+              id="ignore-button"
             />
             <div class="button-area col mx-2">
               <div class="row w-100 m-0">

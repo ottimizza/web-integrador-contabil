@@ -5,7 +5,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTabsModule, MatButtonModule, MatProgressBarModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { RuleListComponent } from './rule-list.component';
 import { CardModule } from '@shared/components/card/card.module';
@@ -19,7 +21,6 @@ import { ScrollTrackerModule } from '@shared/directives/scroll-tracker.module';
 import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.module';
 import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-layout.module';
 import { RuleDeleteConfirmDialogComponent } from './rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
-import { FilterModule } from '@shared/components/filter/filter.module';
 import { ActionButtonsModule } from '@shared/components/action-buttons/action-buttons.module';
 import { RuleListRoutingModule } from './rule-list.routing';
 
@@ -37,7 +38,6 @@ import { RuleListRoutingModule } from './rule-list.routing';
     RuleCardModule,
     MatDialogModule,
     InfoModule,
-    FilterModule,
     MatSnackBarModule,
     RuleEditModalModule,
     MatTabsModule,

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatSelectModule } from '@angular/material';
+import { MatSelectModule } from '@angular/material/select';
 import { DatalistComponent } from './datalist.component';
 
 @NgModule({

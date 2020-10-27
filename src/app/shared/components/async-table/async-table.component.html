@@ -1,0 +1,64 @@
+<div class="async-table" *ngIf="data?.records">
+  <table
+    mat-table
+    [dataSource]="data.records"
+    class="mat-elevation-z0 w-100"
+    [ngClass]="{ 'table-hover': selectable }"
+  >
+
+
+
+    <ng-container *ngFor="let col of definition; let ind = index" [matColumnDef]="col.id">
+      <th mat-header-cell *matHeaderCellDef class="px-1">
+        <strong>{{ col.header }}</strong>
+      </th>
+
+      <td mat-cell *matCellDef="let element" class="px-1">
+
+        <span *ngIf="!col.data">
+          {{ col.key ? col.transform(element[col.key]) : col.transform(element) }}
+        </span>
+        <div *ngIf="col.data">
+        <div *ngIf="col.data.buttons">
+            <icon
+              *ngFor="let button of col.data.buttons"
+              class="cursor-pointer col"
+              [type]="button.icon.type"
+              [color]="button.icon.color"
+              [name]="button.icon.name"
+              [matTooltip]="button.label"
+              (click)="col.data.clicked(button.selector, element)"
+            ></icon>
+          </div>
+          <icon
+            *ngIf="col.data.type === 'reactive-icon'"
+            [type]="col.data.getIcon(element).type"
+            [size]="col.data.getIcon(element).size"
+            [color]="col.data.getIcon(element).color"
+            [name]="col.data.getIcon(element).name"
+            [matTooltip]="col.data.getIcon(element).tooltip"
+          ></icon>
+
+        </div>
+      </td>
+    </ng-container>
+
+
+
+    <tr mat-header-row *matHeaderRowDef="columns()"></tr>
+    <tr
+      mat-row
+      [class]="selectable ? 'cursor-pointer' : ''"
+      [ngClass]="{ 'text-bold': i === selectedIndex }"
+      *matRowDef="let row; columns: columns(); let i = index"
+      (click)="onSelect(row, i)"
+    ></tr>
+  </table>
+  <paginator
+    [length]="data.pageInfo.totalElements"
+    [pageSize]="data.pageInfo.pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange($event)"
+  >
+  </paginator>
+</div>

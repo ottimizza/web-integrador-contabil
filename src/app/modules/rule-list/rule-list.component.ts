@@ -1,36 +1,36 @@
-import { Component, OnInit, Inject, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { finalize, catchError } from 'rxjs/operators';
+import { DOCUMENT } from '@angular/common';
 
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { MatTabChangeEvent } from '@angular/material';
-import { MatDialog } from '@angular/material/dialog';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
+import { RuleDeleteConfirmDialogComponent } from './rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
 import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
+import { ActionButton } from '@shared/components/action-buttons/action-buttons.component';
 import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
-import { GenericDragDropList } from '@shared/interfaces/GenericDragDropList';
-import { GenericPagination } from '@shared/interfaces/GenericPagination';
+import { BreadCrumb } from '@shared/components/breadcrumb/breadcrumb.component';
+import { DialogService, DialogWidth } from '@app/services/dialog.service';
+import { RuleLogicService } from '@app/services/logic/rule-logic.service';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
+import { RuleCreateFormat, RuleType } from '@shared/models/Rule';
 import { ToastService } from '@shared/services/toast.service';
+import { ExportService } from '@app/services/export.service';
 import { RuleService } from '@shared/services/rule.service';
 import { CompleteRule } from '@shared/models/CompleteRule';
-import { LoggerUtils } from '@shared/utils/logger.utills';
-import { RuleCreateFormat, RuleType } from '@shared/models/Rule';
+import { ArrayUtils } from '@shared/utils/array.utils';
 import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
-import { DOCUMENT } from '@angular/common';
-import { finalize, catchError } from 'rxjs/operators';
-import { ExportService } from '@app/services/export.service';
-import { RuleLogicService } from '@app/services/logic/rule-logic.service';
-import { ArrayUtils } from '@shared/utils/array.utils';
-import { RuleDeleteConfirmDialogComponent } from './rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
-import { BreadCrumb } from '@shared/components/breadcrumb/breadcrumb.component';
-import { ActionButton } from '@shared/components/action-buttons/action-buttons.component';
+import { TutorialService } from '@app/services/tutorial.service';
+import { momentjs } from '@shared/utils/moment';
+import getTutorial from './guided-tour/rule-list.tutorial';
+import { Subscription } from 'rxjs';
 
 @Component({
   templateUrl: './rule-list.component.html',
   styleUrls: ['./rule-list.component.scss']
 })
-export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRule>, GenericPagination {
+export class RuleListComponent implements OnInit, OnDestroy {
 
   rows: CompleteRule[] = [];
   business: Empresa;
@@ -45,18 +45,31 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
   percentage: number;
 
   append: BreadCrumb;
+  tutorial = getTutorial(User.fromLocalStorage().type === 0);
+  tabWasSelected: boolean;
+  oldCompany: Empresa;
+
+  onTutorialInit: Subscription;
+  onTutorialEnd: Subscription;
 
   constructor(
     @Inject(DOCUMENT) public doc: Document,
-    public dialog: MatDialog,
+    public dialog: DialogService,
     private service: RuleService,
     private toast: ToastService,
     public exportService: ExportService,
     public logicService: RuleLogicService,
+    private tutorialService: TutorialService
   ) {}
 
   ngOnInit(): void {
     this.currentUser = User.fromLocalStorage();
+    this.prepareTutorial();
+  }
+
+  ngOnDestroy(): void {
+    this.onTutorialEnd.unsubscribe();
+    this.onTutorialInit.unsubscribe();
   }
 
   async onButton(id: string) {
@@ -107,14 +120,10 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
 
   onDelete(event: number) {
     const rule = this.rows[event];
-    const dialogRef = this.dialog.open(RuleDeleteConfirmDialogComponent, {
-      width: '596px',
-      data: {
-        id: rule.id,
-        type: RuleType.RULE
-      }
-    });
-    dialogRef.afterClosed().subscribe(result => {
+    this.dialog.open(RuleDeleteConfirmDialogComponent, {
+      id: rule.id,
+      type: RuleType.RULE
+    }).subscribe(result => {
       if (result === true) {
         this.rows = this.logicService.delete(this.rows, event);
         this.toast.show('Regra alterada com sucesso, recomendamos clicar em "Atualizar"', 'success');
@@ -124,15 +133,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
 
   async onUpdate(event: string) {
     const rule = JSON.parse(event) as CompleteRule;
-    const dialogRef = this.dialog.open(RuleEditModalComponent, {
-      width: '84%',
-      maxWidth: '1300px',
-      data: {
-        rule
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(async (result: CompleteRule) => {
+    this.dialog.openComplexDialog(RuleEditModalComponent, DialogWidth.EXTRA_LARGE, { rule })
+    .subscribe(async (result: CompleteRule) => {
       if (result && result.regras && result.contaMovimento) {
         const rs = await this.service.update(result.id, { regras: result.regras, contaMovimento: result.contaMovimento }).toPromise();
         this.rows[this.rows.indexOf(rule)] = rs.record;
@@ -151,12 +153,8 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
     if (this.currentUser.type !== 0) {
       return;
     }
-    const dialogRef = this.dialog.open(ExportConfirmModalComponent, {
-      data: this.business || {},
-      maxWidth: '596px'
-    });
-
-    dialogRef.afterClosed().subscribe(results => {
+    this.dialog.open(ExportConfirmModalComponent, this.business || {})
+    .subscribe(results => {
       if (results) {
         this.export();
       } else {
@@ -257,6 +255,35 @@ export class RuleListComponent implements OnInit, GenericDragDropList<CompleteRu
   smallSize() {
     const width = window.innerWidth ?? this.doc.documentElement.clientWidth ?? this.doc.body.clientWidth;
     return width < 968;
+  }
+
+  private prepareTutorial() {
+    this.onTutorialInit = this.tutorialService.afterTutorialStarted.subscribe(() => {
+      this.tabWasSelected = this.tabIsSelected;
+      this.tabIsSelected = true;
+      this.rows.unshift({
+        cnpjContabilidade: this.currentUser.organization.cnpj,
+        cnpjEmpresa: this.currentUser.organization.cnpj,
+        contaMovimento: '4632',
+        dataAtualizacao: new Date().toString(),
+        dataCriacao: new Date().toString(),
+        id: -10,
+        idRoteiro: this.currentUser.email,
+        posicao: -1,
+        tipoLancamento: 3,
+        regras: [
+          { campo: 'fornecedor', condicao: 1, valor: 'Ferramentas e Autopeças' } as any
+        ]
+      });
+      this.oldCompany = this.business;
+      this.business = {} as any;
+    });
+
+    this.onTutorialEnd = this.tutorialService.afterTutorialClosed.subscribe(() => {
+      this.rows = this.rows.filter(rule => rule.id > 0);
+      this.tabIsSelected = this.tabWasSelected;
+      this.business = this.oldCompany;
+    });
   }
 
 }

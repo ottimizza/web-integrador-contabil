@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RuleService } from '@shared/services/rule.service';
 import { RuleType } from '@shared/models/Rule';
 import { HistoricService } from '@shared/services/historic.service';

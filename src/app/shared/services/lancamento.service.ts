@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import { environment } from '@env';
 
-import { Lancamento } from '@shared/models/Lancamento';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
-import { Empresa } from '@shared/models/Empresa';
-import { PostFormatRule } from '@shared/models/Rule';
 import { HttpHandlerService } from '@app/services/http-handler.service';
-import { map, switchMap } from 'rxjs/operators';
+import { GenericResponse } from '@shared/models/GenericResponse';
+import { Lancamento } from '@shared/models/Lancamento';
+import { PostFormatRule } from '@shared/models/Rule';
+import { Empresa } from '@shared/models/Empresa';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/lancamentos`;
 
@@ -33,6 +33,13 @@ export class LancamentoService {
   public calcPercentage(searchCriteria: any) {
     const url = `${BASE_URL}/porcentagem`;
     return this.http.get([url, searchCriteria], 'Falha ao obter porcentagem de lançamentos concluídos!');
+  }
+
+  public totalPerFile(tipoMovimento: string, cnpjEmpresa: string, cnpjContabilidade: string) {
+    const searchCriteria = { tipoMovimento, cnpjEmpresa, cnpjContabilidade };
+    const url = `${BASE_URL}/total_arquivos`;
+    return this.http.get<GenericResponse<{ numeroLancamentos: number, nomeArquivo: string }>>
+      ([url, searchCriteria], 'Falha ao obter o total de lançamentos agrupado por arquivo!');
   }
 
   public skip(id: number): Observable<Lancamento> {
@@ -67,13 +74,17 @@ export class LancamentoService {
     return this.fetchByRule(rules, searchCriteria);
   }
 
-  // @Deprecated('Prefer to use fetchByRule directly')
+  /**
+   * @deprecated
+   */
   public getByRule(rules: PostFormatRule[], e: Empresa) {
     const searchCriteria = { cnpjEmpresa: e.cnpj, pageSize: 1, ativo: true };
     return this.fetchByRule(rules, searchCriteria);
   }
 
-  // @Deprecated('Prefer to use calcPercentage directly')
+  /**
+   * @deprecated
+   */
   public getPercentage(cnpjEmpresa: string, tipoMovimento: string) {
     return this.calcPercentage({ cnpjEmpresa, tipoMovimento });
   }

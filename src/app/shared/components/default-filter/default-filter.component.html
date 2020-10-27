@@ -1,0 +1,13 @@
+<app-complex-search-input
+  [hackings]="options.hackings || []"
+  [defaultRule]="options.defaultRule"
+  [rules]="options.rules || []"
+  (filterApplied)="apply($event)"
+></app-complex-search-input>
+<mat-chip-list #chipList>
+  <mat-chip *ngFor="let filter of filters" [selectable]="false" [removable]="true"
+    (removed)="remove(filter.id)">
+    {{ filter.description }}
+    <mat-icon matChipRemove>cancel</mat-icon>
+  </mat-chip>
+</mat-chip-list>

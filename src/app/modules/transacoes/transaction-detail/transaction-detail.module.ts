@@ -5,7 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTabsModule, MatProgressSpinnerModule, MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { TransactionDetailComponent } from './transaction-detail.component';
 import { RuleGridModule } from './rule-creator/rule-grid.module';
@@ -16,7 +18,6 @@ import { RuleChipGroupModule } from './rule-creator/chips-group/chips-group.modu
 import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
 import { HistoricEditDialogModule } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.module';
 import { DesignSystemModule } from '@shared/components/ds.module';
-import { ShimmerModule } from '@shared/components/shimmer/shimmer.module';
 
 @NgModule({
     declarations: [TransactionDetailComponent, ConfirmDeleteDialogComponent],
@@ -36,7 +37,6 @@ import { ShimmerModule } from '@shared/components/shimmer/shimmer.module';
       HistoricEditDialogModule,
       DesignSystemModule,
       MatButtonModule,
-      ShimmerModule
     ],
     entryComponents: [
       RuleGridComponent,

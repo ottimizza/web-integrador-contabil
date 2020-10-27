@@ -1,10 +1,25 @@
-<app-layout [buttons]="[button]" (buttonClicked)="create()">
+<layout [buttons]="[button]" (buttonClicked)="create()" [overwriteBreadcrumb]="true">
+  <div breadcrumb>
+    <app-breadcrumb [tutorial]="tutorial"></app-breadcrumb>
+  </div>
 
-  <app-empty-state
-    firstTitle="Sua contabilidade ainda não possue nenhum roteiro :("
-    subtitle="Clique no {icon} para criar seu primeiro"
-    icon="file-spreadsheet"
-    (iconPressed)="create()"
-  ></app-empty-state>
+  <div class="w-100 text-center">
+    <ott-title>Projetos</ott-title>
+  </div>
 
-</app-layout>
+  <div class="mt-5 mb-3">
+    <default-filter
+      [options]="options"
+      (filterChanged)="onFilterChanged($event)"
+    ></default-filter>
+  </div>
+
+  <async-table
+    id="project-list-table"
+    [origin]="getData"
+    [definition]="columnDefinition"
+    [reload]="reload"
+    (rowSelected)="onRowSelected($event)"
+  ></async-table>
+
+</layout>

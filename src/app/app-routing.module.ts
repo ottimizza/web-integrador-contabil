@@ -6,11 +6,13 @@ import { ContentLayoutComponent } from './layout/content-layout/content-layout.c
 
 import { AuthGuard } from '@app/guard/auth.guard';
 import { NoAuthGuard } from '@app/guard/no-auth.guard';
+import { AdminGuard } from '@app/guard/admin.guard';
 
 const routes: Routes = [
   {
     path: 'auth',
     component: AuthLayoutComponent,
+    canActivate: [NoAuthGuard],
     loadChildren: () =>
     import('@modules/auth/auth.module').then(m => m.AuthModule)
   },
@@ -32,13 +34,14 @@ const routes: Routes = [
         },
         loadChildren: () => import('@modules/historic/historic-list.module').then(m => m.HistoricListModule)
       },
-      // {
-      //   path: 'workflow',
-      //   data: {
-      //     breadcrumb: 'Fluxo de Planilhas'
-      //   },
-      //   loadChildren: () => import('@modules/workflow/workflow.module').then(m => m.WorkflowModule)
-      // },
+      {
+        path: 'workflow',
+        canActivate: [AdminGuard],
+        data: {
+          breadcrumb: 'Projetos'
+        },
+        loadChildren: () => import('@modules/workflow/workflow.module').then(m => m.WorkflowModule)
+      },
       {
         path: 'rules',
         data: {
@@ -69,6 +72,26 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'dashboard',
+    pathMatch: 'full'
+  },
+  {
+    path: 'entrys',
+    redirectTo: 'dashboard/entrys',
+    pathMatch: 'full'
+  },
+  {
+    path: 'rules',
+    redirectTo: 'dashboard/rules',
+    pathMatch: 'full'
+  },
+  {
+    path: 'historics',
+    redirectTo: 'dashboard/historics',
+    pathMatch: 'full'
+  },
+  {
+    path: 'workflow',
+    redirectTo: 'dashboard/workflow',
     pathMatch: 'full'
   },
   {

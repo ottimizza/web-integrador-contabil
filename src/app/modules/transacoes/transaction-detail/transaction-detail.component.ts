@@ -1,39 +1,41 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Observable, fromEvent, interval, of, from } from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Observable, Subject, Subscription } from 'rxjs';
 
-import { MatTabChangeEvent } from '@angular/material';
-import { MatDialog } from '@angular/material/dialog';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
+import { HistoricEditDialogComponent } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.component';
+import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
 import { DEFAULT_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DEFAULT_CHIP_PATTERN';
 import { VALUE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/VALUE_CHIP_PATTERN';
 import { DATE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DATE_CHIP_PATTERN';
+import { FAKE_ENTRY } from '../transaction-list/tutorial/transaction-list.tutorial';
 import { RuleConfig } from './rule-creator/chips-group/chips-group.component';
-import { GenericPagination } from '@shared/interfaces/GenericPagination';
+import { DialogService, DialogWidth } from '@app/services/dialog.service';
 import { LancamentoService } from '@shared/services/lancamento.service';
+import { Lancamento, TipoLancamento } from '@shared/models/Lancamento';
 import { RuleGridComponent } from './rule-creator/rule-grid.component';
 import { HistoricService } from '@shared/services/historic.service';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
+import { TutorialService } from '@app/services/tutorial.service';
+import { SnapshotService } from '@app/services/snapshot.service';
 import { ToastService } from '@shared/services/toast.service';
 import { Rule, RuleCreateFormat } from '@shared/models/Rule';
+import { FormattedHistoric } from '@shared/models/Historic';
 import { RuleService } from '@shared/services/rule.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
-import { Lancamento, TipoLancamento } from '@shared/models/Lancamento';
-import { Empresa } from '@shared/models/Empresa';
-import { finalize, catchError, switchMap, map } from 'rxjs/operators';
-import { User } from '@shared/models/User';
-import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
-import { DialogService, DialogWidth } from '@app/services/dialog.service';
-import { HistoricEditDialogComponent } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.component';
-import { FormattedHistoric } from '@shared/models/Historic';
 import { DateUtils } from '@shared/utils/date-utils';
+import { Empresa } from '@shared/models/Empresa';
 import { FormControl } from '@angular/forms';
+import { User } from '@shared/models/User';
+import { finalize } from 'rxjs/operators';
+import { GuidedTourService } from '@gobsio/ngx-guided-tour';
 
 @Component({
   selector: 'app-tdetail',
   templateUrl: './transaction-detail.component.html',
   styleUrls: ['./transaction-detail.component.scss']
 })
-export class TransactionDetailComponent implements OnInit {
+export class TransactionDetailComponent implements OnInit, OnDestroy {
 
   @Output() tabSelect = new EventEmitter();
   @Input() business: Empresa;
@@ -62,24 +64,46 @@ export class TransactionDetailComponent implements OnInit {
 
   currentUser: User;
 
+  public tutorialInitSub: Subscription;
+  public tutorialEndedSub: Subscription;
+  public recoverState: Subject<any>;
+
   constructor(
     // tslint:disable
     private _lancamentoService: LancamentoService,
     private _historicService: HistoricService,
     private _ruleService: RuleService,
     private _toast: ToastService,
+    private _tutorialService: TutorialService,
+    private _snapshotService: SnapshotService,
     public dialog: DialogService
   ) { }
+
+  ngOnDestroy(): void {
+    this.tutorialInitSub.unsubscribe();
+    this.tutorialEndedSub.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.currentUser = User.fromLocalStorage();
     this.onTab({ tab: null, index: 0 }, true);
+    this.setTutorials();
   }
 
+  setTutorials() {
+    this.tutorialInitSub = this._tutorialService.afterTutorialStarted.subscribe(() => {
+      this.recoverState = this._snapshotService.recycle(this, ['entry', 'errorText', 'errorText2', 'total', 'conditions'])
+      this.errorText = null;
+      this.errorText2 = null;
+      this.total = '1';
+      this.entry = FAKE_ENTRY;
+      Object.assign(this.conditions, { verify: () => true });
+    });
+    this.tutorialEndedSub = this._tutorialService.afterTutorialClosed.subscribe(() => {
+      this.recoverState.next();
+    });
+  }
 
-  /**
-   *
-   */
   public getLabelContaMovimento(lancamento: Lancamento = this.entry): string {
     return lancamento.tipoLancamento === TipoLancamento.PAGAMENTOS ? 'Conta Débito' : 'Conta Crédito';
   }
@@ -97,6 +121,14 @@ export class TransactionDetailComponent implements OnInit {
       return 'Fornecedor';
     } else {
       return 'Cliente';
+    }
+  }
+
+  get accountLabel() {
+    if (this.tipoMovimento === 'PAG' || this.tipoMovimento === 'EXDEB') {
+      return 'Conta Débito';
+    } else {
+      return 'Conta Crédito';
     }
   }
 
@@ -388,11 +420,17 @@ export class TransactionDetailComponent implements OnInit {
       .toPromise();
   }
 
+  public ruleLabel() {
+    return this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE' ?
+    'Não é cliente' :
+    'Não é fornecedor'
+  }
+
   public calcPercentage() {
     const filter = { cnpjEmpresa: this.business.cnpj, tipoMovimento: this.tipoMovimento };
     this._lancamentoService.calcPercentage(filter).subscribe((result: any) => {
       if (result.totalLancamentos) {
-        this.percentage = +(100 - (result.numeroLancamentosRestantes / result.totalLancamentos) * 100).toFixed(0);
+        this.percentage = Math.floor(100 - (result.numeroLancamentosRestantes / result.totalLancamentos) * 100);
       } else {
         this.percentage = 100;
       }
@@ -415,11 +453,11 @@ export class TransactionDetailComponent implements OnInit {
   descricao(): RuleConfig {
     return {
       selectable: true,
-      title: this.buttonLabel,
+      title: 'Descrição',
       values: [
         {
           key: 'descricao',
-          label: this.buttonLabel,
+          label: 'Descrição',
           pattern: DEFAULT_CHIP_PATTERN,
           value: this.entry.descricao
         }

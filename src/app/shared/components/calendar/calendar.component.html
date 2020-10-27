@@ -1,0 +1,7 @@
+<span *ngIf="label" class="label">{{ label }}:</span>
+<br>
+<div class="form-control calendar-component row m-0 text-left" #calendar>
+  <input [matDatepicker]="datePicker" [(ngModel)]="value" (ngModelChange)="emit()" [placeholder]="placeholder" class="col-10 col-md-11" [formControl]="control">
+  <mat-datepicker-toggle matSuffix [for]="datePicker" class="text-primary float-right m-0 mr-1"></mat-datepicker-toggle>
+  <mat-datepicker #datePicker [touchUi]="getScreenSize()"></mat-datepicker>
+</div>

@@ -1,6 +1,6 @@
-<div class="datalist-area">
-  <label [for]="id" *ngIf="label">{{ label }}</label>
-  <mat-select [id]="id" [formControl]="control" (selectionChange)="emit($event)" [style]="deep" class="form-control">
+<div class="datalist-area d-block">
+  <label [for]="id" *ngIf="label">{{ label }}:</label>
+  <mat-select [id]="id" [formControl]="control" (selectionChange)="emit($event)" [style]="deep" class="form-control" [multiple]="multiple">
     <mat-option *ngFor="let opt of source" [value]="opt">{{ parse ? parse(opt) : opt }}</mat-option>
   </mat-select>
 </div>

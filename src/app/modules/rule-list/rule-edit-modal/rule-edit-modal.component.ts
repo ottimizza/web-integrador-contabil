@@ -1,7 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { RuleCreateFormat, PostFormatRule, Condicao } from '@shared/models/Rule';
+import { MatSelectChange } from '@angular/material/select';
+import _ from 'lodash';
+
 import { CompleteRule } from '@shared/models/CompleteRule';
+import { EntryUtils } from '@shared/utils/entry.utils';
+import { Condicao } from '@shared/models/Rule';
 import { User } from '@shared/models/User';
 
 @Component({
@@ -14,6 +20,19 @@ export class RuleEditModalComponent implements OnInit {
   errorText: string;
   currentUser: User;
 
+  source = [
+    'descricao',
+    'documento',
+    'portador',
+    'complemento01',
+    'complemento02',
+    'complemento03',
+    'complemento04',
+    'complemento05',
+    'tipoPlanilha',
+    'nomeArquivo',
+  ];
+
   constructor(
     public dialogRef: MatDialogRef<RuleEditModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { rule: CompleteRule }
@@ -22,7 +41,7 @@ export class RuleEditModalComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = User.fromLocalStorage();
     const rule = this.data.rule;
-    const localArray = rule.regras.filter(() => true);
+    const localArray = _.clone(rule.regras);
     this.ruleDefault = new CompleteRule(
       rule.id,
       rule.posicao,
@@ -37,10 +56,20 @@ export class RuleEditModalComponent implements OnInit {
     );
   }
 
+  parseDataSource = (val: string) => EntryUtils.fromTo(val, { tipoLancamento: this.ruleDefault.tipoLancamento });
+  parseConditionSource = (val: Condicao) => {
+    switch (val) {
+      case Condicao.COMECAO_COM: return 'Começa com';
+      case Condicao.CONTEM:      return 'Contém';
+      case Condicao.IGUAL:       return 'Igual a';
+      case Condicao.NAO_CONTEM:  return 'Não contém';
+    }
+  }
+
   get info() {
     return {
-      remove: 'Remover esta linha da regra',
-      add: 'Adicionar uma nova linha à regra'
+      remove: 'Remover esta cláusula da regra',
+      add: 'Adicionar uma nova cláusula à regra'
     };
   }
 
@@ -48,24 +77,24 @@ export class RuleEditModalComponent implements OnInit {
     this.ruleDefault.regras.push({ campo: null, condicao: null, grupoRegra: null, id: null, valor: null });
   }
 
-  fieldChange(event: any, index: number) {
-    this.ruleDefault.regras[index].campo = event.target.value;
+  fieldChange(event: MatSelectChange, index: number) {
+    this.ruleDefault.regras[index].campo = event.value;
   }
 
-  conditionChange(event: any, index: number) {
-    this.ruleDefault.regras[index].condicao = event.target.value;
+  conditionChange(event: MatSelectChange, index: number) {
+    this.ruleDefault.regras[index].condicao = event.value;
   }
 
   valueChange(event: any, index: number) {
     this.ruleDefault.regras[index].valor = event.target.value;
   }
 
-  onNoClick() {
-    this.dialogRef.close();
-  }
-
   remove(id: number) {
     this.ruleDefault.regras.splice(id, 1);
+  }
+
+  controlBuilder(defaultValue: any) {
+    return new FormControl(defaultValue);
   }
 
   save() {
@@ -92,26 +121,6 @@ export class RuleEditModalComponent implements OnInit {
     } else {
       this.errorText = 'Insira uma conta movimento';
     }
-  }
-
-  get conditon() {
-    return Condicao;
-  }
-
-  get itens(): { value: string, label: string }[] {
-    return [
-      { value: 'descricao', label: 'Fornecedor' },
-      { value: 'documento', label: 'Documento' },
-      { value: 'portador', label: 'Banco' },
-      { value: 'complemento01', label: 'Complemento 01' },
-      { value: 'complemento02', label: 'Complemento 02' },
-      { value: 'complemento03', label: 'Complemento 03' },
-      { value: 'complemento04', label: 'Complemento 04' },
-      { value: 'complemento05', label: 'Complemento 05' },
-      { value: 'tipoPlanilha', label: 'Tipo da Planilha' },
-      { value: 'nomeArquivo', label: 'Nome do Arquivo' },
-      { value: 'tipoMovimento', label: 'Tipo do Movimento' }
-    ];
   }
 
 }

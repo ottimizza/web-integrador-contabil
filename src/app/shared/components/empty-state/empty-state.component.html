@@ -1,9 +1,9 @@
 <div class="empty-state-area w-100 text-center mt-5 pt-5">
-  <app-title>{{ firstTitle }}</app-title>
+  <ott-title>{{ firstTitle }}</ott-title>
   <div class="subtitle" *ngIf="subtitles">
     <h3>
       {{ subtitles[0] }}
-      <app-icon (click)="emit()" class="cursor-pointer" [name]="icon"></app-icon>
+      <icon (click)="emit()" class="cursor-pointer" [name]="icon"></icon>
       {{ subtitles[1] }}
     </h3>
   </div>

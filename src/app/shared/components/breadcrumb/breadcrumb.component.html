@@ -1,32 +1,34 @@
+<ngx-guided-tour></ngx-guided-tour>
 <nav aria-label="breadcrumb">
   <div class="content m-0 w-100 mt-0 mb-0">
-    <div class="container p-0">
+    <div class="container d-flex align-items-center justify-content-between">
 
-      <ol class="bc d-flex row w-100 m-0">
+      <ol class="bc d-flex d-flex align-items-center row w-100 m-0">
 
-        <li *ngFor="let breadcrumb of breadcrumbs" class="p-4 mt-1 col-3 text-right d-none d-md-block">
-          <a [routerLink]="[breadcrumb.url, breadcrumb.params]">
+        <li *ngFor="let breadcrumb of breadcrumbs; let i = index" class="p-2 mt-1 d-none d-md-block breadcrumb-item">
+          <a [routerLink]="[breadcrumb.url, breadcrumb.params]" [ngClass]="{ 'ml-2': i > 0 }">
             <span class="d-md-inline-block">
-              {{ breadcrumb.label }} /
+              {{ breadcrumb.label }}
             </span>
           </a>
         </li>
 
-        <li class="col-md-6 text-center">
-          <app-tfilter (empresa)="companySelected.emit($event)"></app-tfilter>
-        </li>
+        <!-- <li class="col-md-6 p-2 mt-1">
+          <app-breadcrumb-input-filter (empresa)="companySelected.emit($event)"></app-breadcrumb-input-filter>
+        </li> -->
 
-        <li *ngIf="append" class="p-4 mt-1 col-3 text-left d-none d-md-block">
+        <li *ngIf="append" class="p-2 mt-1 text-left d-none d-md-block">
           <a [routerLink]="append?.url">
             <span class="d-md-inline-block">
               / {{ append.label }}
             </span>
           </a>
         </li>
-
       </ol>
 
-
+      <button id="btn-tutorial-toggle" class="btn btn-link" *ngIf="isTutorialAvailable()" (click)="startTutorial()">
+        <i class="far fa-question-circle"></i>
+      </button>
     </div>
   </div>
 </nav>

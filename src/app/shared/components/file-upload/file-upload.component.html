@@ -1,0 +1,10 @@
+<input type="file"
+       class="d-none"
+       (change)="handleFileInput($event.target.files)"
+       #fileInput>
+
+
+<div (click)="trigger()" class="drag-box cursor-pointer p-3" appDragDrop (fileDropped)="handleFileInput($event.target.files)">
+  <h4 *ngIf="!hasFileName"><i class="fad fa-file-upload"></i>&nbsp;&nbsp; <strong>Clique</strong> ou arraste seu arquivo para cá</h4>
+  <h4 *ngIf="hasFileName"><i class="fad fa-file-upload"></i>&nbsp;&nbsp; {{ getFileName() }}</h4>
+</div>

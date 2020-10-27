@@ -1,57 +1,76 @@
+import { switchMap, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpHandlerService } from '@app/services/http-handler.service';
+import { combineLatest, of } from 'rxjs';
 import { environment } from '@env';
-import { GenericResponse } from '@shared/models/GenericResponse';
-import { interval, Subject } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 
-const BASE_URL = `${environment.serviceUrl}/api/v1/workflow`;
+import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
+import { HttpHandlerService } from '@app/services/http-handler.service';
+import { ottUnpaginate } from '@shared/operators/paginate.operator';
+import { BusinessService } from '@shared/services/business.service';
+import { GenericResponse } from '@shared/models/GenericResponse';
+import { Script } from '@shared/models/Script';
+import { User } from '@shared/models/User';
+
+const BASE_URL = `${environment.serviceUrl}/api/v1/roteiros`;
 
 @Injectable({ providedIn: 'root' })
 export class WorkflowService {
 
-  private intervals: any = {};
-
   constructor(
-    private http: HttpHandlerService
+    private http: HttpHandlerService,
+    private companyService: BusinessService
   ) { }
 
   public fetch(searchCriteria: any) {
-    return this.http.get([BASE_URL, searchCriteria], 'Falha ao buscar roteiros!');
+    Object.assign(searchCriteria, { contabilidadeId: User.fromLocalStorage().organization.id });
+    return this.http.get<GenericPageableResponse<Script>>([BASE_URL, searchCriteria], 'Falha ao buscar roteiros!');
+  }
+
+  public getById(id: number) {
+    return this.fetch({ id })
+    .pipe(ottUnpaginate());
+  }
+
+  // E então Deus disse, "haja RxJs", e houve RxJs
+  public fetchWithCompany(searchCriteria: any) {
+    return this.fetch(searchCriteria)
+    .pipe(switchMap(resultSet => {
+      return !resultSet.records.length ? of(resultSet) :
+      combineLatest(resultSet.records.map(rec => this.companyService.getById(rec.empresaId)))
+      .pipe(map(rs => {
+        resultSet.records = resultSet.records.map((rec, index) => {
+          const company = rs[index].record;
+          return Object.assign(rec, company ? {
+            nomeEmpresa: company.razaoSocial,
+            erpEmpresa: company.codigoERP,
+            nomeCompleto: `${company.codigoERP} - ${company.razaoSocial || ''}`.toUpperCase().replace('NULL - ', '')
+          } : {});
+        });
+        return resultSet;
+      }));
+    }));
+  }
+
+  public start(partialScript: Script) {
+    return this.http.post<GenericResponse<Script>>(BASE_URL, partialScript, 'Falha ao iniciar roteiro!');
+  }
+
+  public patch(id: number, script: any) {
+    const url = `${BASE_URL}/${id}`;
+    return this.http.patch<GenericResponse<Script>>(url, script, 'Falha ao alterar roteiro!');
+  }
+
+  public upload(scriptId: number, file: File, cnpjEmpresa: string, cnpjContabilidade: string, storageBucket: string) {
+    const url = `${BASE_URL}/${scriptId}`;
+    const searchCriteria = { cnpjEmpresa, cnpjContabilidade, applicationId: storageBucket };
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<GenericResponse<Script>>([url, searchCriteria], formData, 'Falha ao enviar arquivo!');
   }
 
   public delete(id: number) {
     const url = `${BASE_URL}/${id}`;
-    return this.http.delete(url, 'Falha ao excluir roteiro!');
-  }
-
-  public register(mappingId: number) {
-    if (this.intervals[mappingId]) {
-      this.intervals[mappingId].unsubscribe();
-    }
-    const fiveMinutes = 300000; // ms
-    return this._register(mappingId, fiveMinutes);
-  }
-
-  private _register(mappingId: number, period: number) {
-    const sub$ = new Subject<boolean>();
-    this.intervals[mappingId] = interval(period)
-    .pipe(switchMap(() => this._verifyState(mappingId)))
-    .subscribe(rs => {
-
-      if (rs.record === true) {
-        this.intervals[mappingId].unsubscribe();
-        this.intervals[mappingId] = undefined;
-        sub$.next(true);
-      }
-
-    });
-    return sub$;
-  }
-
-  private _verifyState(mappingId: number) {
-    const url = `${BASE_URL}/planilha/status/${mappingId}`;
-    return this.http.get<GenericResponse<boolean>>(url, 'Falha ao validar status do processamento de planilha!');
+    return this.http.delete(url, 'Falha ao excluir projeto!');
   }
 
 }

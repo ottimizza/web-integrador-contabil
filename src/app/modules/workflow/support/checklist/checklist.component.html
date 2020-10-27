@@ -1,0 +1,24 @@
+<div *ngIf="checklist">
+  <better-info type="warning" *ngIf="importantInfos">{{ importantInfos }}</better-info>
+
+  <div class="mt-4 mb-4" *ngIf="notImportantInfos; else emptySpaces">
+    <better-info *ngIf="notImportantInfos">{{ notImportantInfos }}</better-info>
+  </div>
+
+  <ng-template #emptySpaces>
+    <br><br>
+  </ng-template>
+
+  <form>
+
+    <ott-fieldset *ngFor="let group of checklist.grupos; let i = index" [legend]="group.titulo">
+      <checklist-item *ngFor="let question of group.perguntas" [scriptId]="scriptId" [question]="question" (ok)="onQuestionOk($event)"></checklist-item>
+    </ott-fieldset>
+
+    <div class="w-100 text-center">
+      <ott-button [disabled]="!isFinished" (pressed)="submit()">Enviar</ott-button>
+    </div>
+
+  </form>
+
+</div>

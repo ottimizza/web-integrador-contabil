@@ -1,4 +1,4 @@
-<app-layout [buttons]="buttons()" (buttonClicked)="openDialog()" (companySelected)="onFilter($event)" [breadcrumbAppend]="append">
+<layout [buttons]="buttons()" (buttonClicked)="openDialog()" (companySelected)="onFilter($event)" [breadcrumbAppend]="append" [tutorial]="tutorial">
 
   <div *ngIf="company">
     <div class="card">
@@ -30,4 +30,4 @@
       </div>
     </div>
   </div>
-</app-layout>
+</layout>

@@ -1,5 +1,4 @@
 export class Empresa {
-
   public id: number;
   public cnpj: string;
   public razaoSocial: string;
@@ -7,5 +6,5 @@ export class Empresa {
   public organizationId: number;
   public accountingId: number;
   public nomeCompleto: string;
-
+  public nomeResumido: string;
 }

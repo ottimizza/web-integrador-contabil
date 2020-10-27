@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormattedHistoric, Historic } from '@shared/models/Historic';
 import { HistoricService } from '@shared/services/historic.service';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -96,7 +96,6 @@ export class HistoricEditDialogComponent implements OnInit {
 
   public updateCode() {
     const formattedCode = CNPJUtils.cleanMask(this.form.get('code').value || '');
-    console.log(formattedCode);
     this.form.get('code').setValue(formattedCode);
     this.update();
   }

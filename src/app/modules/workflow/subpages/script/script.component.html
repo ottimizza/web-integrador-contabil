@@ -1,0 +1,84 @@
+<layout [buttons]="buttons" (buttonClicked)="onClick($event)" [overwriteBreadcrumb]="true">
+
+  <div breadcrumb>
+    <app-breadcrumb [tutorial]="tutorial"></app-breadcrumb>
+  </div>
+
+  <mat-horizontal-stepper [linear]="true" [selectedIndex]="selectedIndex" (selectionChange)="selectedIndex = $event.selectedIndex">
+    <mat-step label="Empresa" [completed]="company" [editable]="false" id="script-stepper-empresa">
+
+      <div class="mt-5 mb-3">
+        <default-filter
+          [value]="fakeFilter"
+          [options]="filterOptions"
+          (filterChanged)="onFilterChanged($event)"
+        ></default-filter>
+      </div>
+
+      <async-table
+        [reload]="reload"
+        [origin]="getCompanies"
+        [definition]="columns"
+        (rowSelected)="onCompanySelect($event)"
+      ></async-table>
+
+    </mat-step>
+    <mat-step label="Material" [completed]="currentScript?.urlArquivo" [editable]="false" id="script-stepper-material">
+
+      <div class="m-4 mb-5 w-100 text-center">
+        <ott-title>Subir Arquivo</ott-title>
+      </div>
+
+      <file-upload (fileChange)="emitFile($event)"></file-upload>
+
+    </mat-step>
+    <mat-step label="Tipo" [completed]="currentScript?.tipoRoteiro" [editable]="!currentScript?.nome" id="script-stepper-tipo">
+
+      <div class="m-4 mb-5 w-100 text-center">
+        <ott-title>Tipo da Integração</ott-title>
+      </div>
+
+      <div class="row type-buttons m-auto text-center">
+        <div class="col-md p-5 cursor-pointer pag" [ngClass]="{ 'selected-type': type === 'PAG' }" (click)="type = 'PAG'">
+          <text [bold]="true">PAGAMENTOS</text>
+        </div>
+        <div class="col-md p-5 cursor-pointer rec" [ngClass]="{ 'selected-type': type === 'REC' }" (click)="type = 'REC'">
+          <text [bold]="true">RECEBIMENTOS</text>
+        </div>
+      </div>
+
+      <div class="w-100 text-center mt-3" *ngIf="type">
+        <ott-button (pressed)="confirmType()">Confirmar Tipo</ott-button>
+      </div>
+
+    </mat-step>
+    <mat-step label="Definições" [completed]="currentScript?.checklist" [editable]="!currentScript?.nome" id="script-stepper-checklist">
+
+      <div class="m-4 mb-5 w-100 text-center">
+        <ott-title>Detalhes do Projeto</ott-title>
+      </div>
+
+      <script-checklist
+        *ngIf="checklist.isValid && currentScript"
+        [checklist]="checklist.value"
+        [scriptId]="currentScript.id"
+        (completed)="onChecklistCompleted($event)"
+      ></script-checklist>
+
+    </mat-step>
+    <mat-step label="Confirmação" [completed]="currentScript?.nome" id="script-stepper-confirmacao">
+
+      <div class="m-4 mb-5 w-100 text-center">
+        <ott-title>Confirmar informações</ott-title>
+      </div>
+
+      <script-project-confirmation
+        *ngIf="selectedIndex === 4"
+        [script]="currentScript"
+        [company]="company"
+      ></script-project-confirmation>
+
+    </mat-step>
+  </mat-horizontal-stepper>
+
+</layout>

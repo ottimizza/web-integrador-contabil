@@ -1,17 +1,16 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { RxEvent } from '@app/services/rx-event.service';
 import { DOCUMENT } from '@angular/common';
 import { UpdateSerive } from '@app/services/update.service';
 import { MessagingService } from '@app/services/messaging.service';
 import { LoggerUtils } from '@shared/utils/logger.utills';
-import { User } from '@shared/models/User';
-import { Historic } from '@shared/models/Historic';
 import { environment } from '@env';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
 
@@ -21,7 +20,7 @@ export class AppComponent implements OnInit {
     @Inject(DOCUMENT) public document: Document,
     public events: RxEvent,
     public updateService: UpdateSerive,
-    public messagingService: MessagingService
+    public messagingService: MessagingService,
   ) {
     this.updateService.checkForUpdates();
     this.events.subscribe('sw::update', () => {

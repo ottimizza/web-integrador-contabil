@@ -22,6 +22,8 @@ import { TitleModule } from './title/title.module';
 import { TitleComponent } from './title/title.component';
 import { ButtonModule } from './button/button.module';
 import { ButtonComponent } from './button/button.component';
+import { BetterInfoModule } from './better-info/better-info.module';
+import { BetterInfoComponent } from './better-info/better-info.component';
 
 @NgModule({
   imports: [
@@ -36,7 +38,8 @@ import { ButtonComponent } from './button/button.component';
     TextModule,
     IconModule,
     TitleModule,
-    ButtonModule
+    ButtonModule,
+    BetterInfoModule
   ],
   exports: [
     VerticalAlignerComponent,
@@ -49,7 +52,8 @@ import { ButtonComponent } from './button/button.component';
     TextComponent,
     IconComponent,
     TitleComponent,
-    ButtonComponent
+    ButtonComponent,
+    BetterInfoComponent
   ]
 })
 export class DesignSystemModule {}

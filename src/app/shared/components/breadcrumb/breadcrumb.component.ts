@@ -1,5 +1,7 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params, NavigationEnd, PRIMARY_OUTLET } from '@angular/router';
+import { TutorialService } from '@app/services/tutorial.service';
+import { GuidedTour, GuidedTourService } from '@gobsio/ngx-guided-tour';
 import { filter } from 'rxjs/operators';
 
 export interface BreadCrumb {
@@ -11,23 +13,26 @@ export interface BreadCrumb {
 @Component({
   selector: 'app-breadcrumb',
   templateUrl: './breadcrumb.component.html',
-  styleUrls: ['./breadcrumb.scss']
+  styleUrls: ['./breadcrumb.component.scss']
 })
 export class BreadcrumbComponent implements OnInit {
+
   public breadcrumbs: BreadCrumb[] = [];
 
   @Input()
   public append: BreadCrumb;
 
-  @Output() companySelected = new EventEmitter<string>();
+  @Input()
+  public tutorial: GuidedTour;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
+  constructor(
+    private tutorialService: TutorialService,
+    private guidedTourService: GuidedTourService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {}
 
-  private getBreadcrumbs(
-    route: ActivatedRoute,
-    url: string = '',
-    breadcrumbs: BreadCrumb[] = []
-  ): BreadCrumb[] {
+  private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: BreadCrumb[] = []): BreadCrumb[] {
     const ROUTE_DATA_BREADCRUMB = 'breadcrumb';
     const ROUTE_DATA_PATH = 'path';
     const children: ActivatedRoute[] = route.children;
@@ -64,8 +69,6 @@ export class BreadcrumbComponent implements OnInit {
   }
 
   get route(): string {
-    // console.log(this.breadcrumbs);
-    // return this.breadcrumbs[this.breadcrumbs.length - 1].url;
     if (this.append) {
       return this.breadcrumbs[this.breadcrumbs.length - 1].url;
     } else {
@@ -87,8 +90,25 @@ export class BreadcrumbComponent implements OnInit {
     const ROUTE_DATA_BREADCRUMB = 'breadcrumb';
     const root: ActivatedRoute = this.activatedRoute.root;
     this.breadcrumbs = this.getBreadcrumbs(root);
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(event => {
-      this.breadcrumbs = this.getBreadcrumbs(this.activatedRoute.root);
-    });
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(event => {
+        this.breadcrumbs = this.getBreadcrumbs(this.activatedRoute.root);
+      });
   }
+
+  /**
+   * Method used by the template, to check wheater there's
+   * a tutorial available or not.
+   */
+  public isTutorialAvailable(): boolean {
+    return !!this.tutorial && !!this.tutorial.steps.length;
+  }
+
+  /**
+   * Method used by the template to start/ restart the tutorial.
+   */
+  public startTutorial() {
+    this.tutorialService.startTour(this.guidedTourService, this.tutorial);
+  }
+
 }

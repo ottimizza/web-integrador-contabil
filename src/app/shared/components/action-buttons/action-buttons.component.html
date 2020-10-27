@@ -2,7 +2,7 @@
   <div class="container">
     <ul class="nav nav-pills flex-row-reverse row justify-content-between justify-content-md-start">
       <li class="nav-item notification-sidebar-toggle col-xl-2 col-lg-3 col-md-3 col-sm col" *ngFor="let btn of buttons;">
-        <button *ngIf="btn.verification !== false && typeof(getColor(btn.color)) === 'string'" class="btn nav-link py-1 px-2 active text-center m-auto" [class]="btn.color ? btn.color : 'btn-primary'"
+        <button *ngIf="btn.verification !== false && typeof(getColor(btn.color)) === 'string'" class="btn nav-link py-1 px-2 active text-center m-auto" [id]="'action-button-' + btn.id" [class]="btn.color ? btn.color : 'btn-primary'"
           (click)="select(btn.id)"
           >
           <i aria-hidden="true" [class]="btn.icon"></i>
@@ -10,6 +10,7 @@
         </button>
         <button *ngIf="btn.verification !== false && typeof(btn.color) === 'object'" class="btn nav-link py-1 px-2 active b-none text-center m-auto" [style]="color(btn)"
           (click)="select(btn.id)"
+           [id]="'action-button-' + btn.id"
           >
           <i aria-hidden="true" [class]="btn.icon"></i>
           <span class="ml-2"> {{ btn.label.toUpperCase() }} </span>

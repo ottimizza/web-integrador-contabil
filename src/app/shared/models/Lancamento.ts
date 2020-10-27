@@ -1,4 +1,3 @@
-
 export const TipoLancamento = {
   PAGAMENTOS: 1,
   RECEBIMENTOS: 2

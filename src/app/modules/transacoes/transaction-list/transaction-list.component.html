@@ -1,11 +1,11 @@
-<app-layout (companySelected)="onDevolve($event)" [breadcrumbAppend]="append" [tutorial]="tutorial">
+<layout (companySelected)="onDevolve($event)" [breadcrumbAppend]="append" [tutorial]="tutorial">
   <div class="pt-1">
     <div *ngIf="!business">
-      <app-info [description]="info.first" class="d-none"></app-info>
+      <info [description]="info.first" class="d-none"></info>
     </div>
     <div class="mb-4" *ngIf="business && !append">
-      <app-info [description]="info.second"></app-info>
+      <info [description]="info.second"></info>
     </div>
     <app-tdetail *ngIf="business" [business]="business" (tabSelect)="onSelect($event)"></app-tdetail>
   </div>
-</app-layout>
+</layout>

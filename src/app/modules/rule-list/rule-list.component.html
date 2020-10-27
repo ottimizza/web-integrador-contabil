@@ -1,14 +1,19 @@
-<app-layout [buttons]="buttons()" (buttonClicked)="onButton($event)" (scrollHasEnded)="onScroll()" [breadcrumbAppend]="append" (companySelected)="onFilter($event)">
-  <!-- <app-actions *ngIf="business && rows.length" [buttons]="buttons" (clicked)="openConfirmation()"></app-actions> -->
+<layout
+  [buttons]="buttons()"
+  (buttonClicked)="onButton($event)"
+  (scrollHasEnded)="onScroll()"
+  [breadcrumbAppend]="append"
+  (companySelected)="onFilter($event)"
+  [tutorial]="tutorial">
 
   <div
     class="text-center">
     <div *ngIf="!business">
-      <app-info [description]="info.text1"></app-info>
+      <info [description]="info.text1"></info>
     </div>
 
     <div *ngIf="business">
-      <app-info [description]="info.text2"></app-info>
+      <info [description]="info.text2"></info>
       <br />
     </div>
 
@@ -55,4 +60,4 @@
 
   </div>
 
-</app-layout>
+</layout>

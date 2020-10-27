@@ -5,7 +5,7 @@ import { Empresa } from '@shared/models/Empresa';
 import { GuidedTour } from '@gobsio/ngx-guided-tour';
 
 @Component({
-  selector: 'app-layout',
+  selector: 'layout',
   templateUrl: './normalized-layout.component.html',
   styleUrls: ['./normalized-layout.component.scss']
 })
@@ -24,6 +24,14 @@ export class NormalizedLayoutComponent {
    */
   @Input()
   public tutorial: GuidedTour;
+
+  /**
+   * Para sobrescrever o breadcrumb ou a barra de ações:
+   *    Marque como true a opção desejada
+   *    E forneça o template com o slot "breadcrumb" ou "actionButtons"
+   */
+  @Input() public overwriteBreadcrumb = false;
+  @Input() public overwriteActionButtons = false;
 
   scrollHasEndedMethod(event: boolean) {
     this.scrollHasEnded.emit(event);
