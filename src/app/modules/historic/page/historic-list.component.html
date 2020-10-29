@@ -1,4 +1,10 @@
-<layout [buttons]="buttons()" (buttonClicked)="openDialog()" (companySelected)="onFilter($event)" [breadcrumbAppend]="append" [tutorial]="tutorial">
+<layout
+  [buttons]="buttons()"
+  (buttonClicked)="openDialog()"
+  (companySelected)="onFilter($event)"
+  [breadcrumbAppend]="append"
+  [tutorial]="tutorial"
+  (scrollHasEnded)="fetch()">
 
   <div *ngIf="company">
     <div class="card">
@@ -28,6 +34,9 @@
           <app-historic-card [historic]="rec" (changeDetected)="onChangeDetected($event)"></app-historic-card>
         </div>
       </div>
+
+      <button class="btn btn-secondary m-auto mb-3" mat-stroked-button *ngIf="pageInfo?.hasNext" [disabled]="isFetching" (click)="fetch()">Próxima Página</button>
+
     </div>
   </div>
 </layout>

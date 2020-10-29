@@ -29,6 +29,7 @@ export class HistoricListComponent implements OnInit, OnDestroy {
   entryType = 1;
 
   isExporting = false;
+  isFetching = false;
 
   records: FormattedHistoric[] = [];
   pageInfo = new PageInfo({ pageIndex: -1, hasNext: true });
@@ -129,6 +130,7 @@ export class HistoricListComponent implements OnInit, OnDestroy {
   }
 
   public fetch() {
+    this.isFetching = true;
     const filter = { cnpjEmpresa: this.company.cnpj, cnpjContabilidade: this.currentUser.organization.cnpj, tipoLancamento: this.entryType };
     const pageCriteria = { pageIndex: this.pageInfo.pageIndex + 1 };
     Object.assign(filter, pageCriteria);
@@ -136,6 +138,7 @@ export class HistoricListComponent implements OnInit, OnDestroy {
     this.service.fetch(filter).subscribe(result => {
       this.records = this.records.concat(result.records);
       this.pageInfo = result.pageInfo;
+      this.isFetching = false;
     });
   }
 
