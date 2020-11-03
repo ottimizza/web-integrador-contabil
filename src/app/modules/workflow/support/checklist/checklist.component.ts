@@ -5,6 +5,7 @@ import { ChecklistService } from '@app/http/checklist.service';
 import { ToastService } from '@shared/services/toast.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { Script } from '@shared/models/Script';
+import { ChecklistLogicService } from '@app/services/checklist-logic/checklist-logic.service';
 
 @Component({
   selector: 'script-checklist',
@@ -13,20 +14,25 @@ import { Script } from '@shared/models/Script';
 })
 export class ChecklistComponent implements OnInit {
 
-  @Input() checklist: Checklist;
-  @Input() scriptId: number;
+  @Input()
+  public checklist: Checklist;
 
-  @Output() completed = new EventEmitter<Script>();
+  @Input()
+  public scriptId: number;
 
-  importantInfos: string;
-  notImportantInfos: string;
+  @Output()
+  public completed = new EventEmitter<Script>();
 
-  isFinished = false;
+  public importantInfos: string;
+  public notImportantInfos: string;
 
-  answers: ChecklistAnswer[] = [];
+  public isFinished = false;
+
+  public answers: ChecklistAnswer[] = [];
 
   constructor(
     private service: ChecklistService,
+    private logic: ChecklistLogicService,
     private toast: ToastService
   ) {}
 
@@ -40,24 +46,17 @@ export class ChecklistComponent implements OnInit {
   }
 
   public onQuestionOk(event: ChecklistAnswer) {
-    this.apply(event);
+    this.answers = this.logic.answer(this.checklist, event, this.answers);
     this.isFinished = this.finished();
   }
 
-  public apply(answer: ChecklistAnswer) {
-    const valid = (answer.resposta !== null && answer.resposta !== undefined && answer.resposta !== '');
-    const index = this.answers.map(a => a.perguntaId).indexOf(answer.perguntaId);
-    if (index < 0 && valid) {
-      this.answers.push(answer);
-    } else if (index >= 0 && !valid) {
-      this.answers.splice(index, 1);
-    } else if (valid) {
-      this.answers[index] = answer;
-    }
+  public findAnswer(questionId: number) {
+    const answer = this.answers.filter(a => a.perguntaId === questionId)[0];
+    return answer?.resposta;
   }
 
   public finished() {
-    const want = ArrayUtils.reduce(this.checklist.grupos.map(group => group.perguntas.map(question => question.id)));
+    const want = ArrayUtils.flat(this.checklist.grupos.map(group => group.perguntas.map(question => question.id)));
     const have = this.answers.map(answer => answer.perguntaId);
 
     let ok = true;
@@ -83,7 +82,6 @@ export class ChecklistComponent implements OnInit {
       this.toast.showSnack('Registrando respostas...');
       this.service.sendAnswers(this.scriptId, this.answers).subscribe(result => {
         this.toast.show('Respostas registradas com sucesso!', 'success');
-        this.completed.emit(result.record);
       });
     }
   }

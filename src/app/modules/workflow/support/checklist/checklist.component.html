@@ -12,7 +12,7 @@
   <form>
 
     <ott-fieldset *ngFor="let group of checklist.grupos; let i = index" [legend]="group.titulo">
-      <checklist-item *ngFor="let question of group.perguntas" [scriptId]="scriptId" [question]="question" (ok)="onQuestionOk($event)"></checklist-item>
+      <checklist-item *ngFor="let question of group.perguntas" [scriptId]="scriptId" [question]="question" [answer]="findAnswer(question.id)" (ok)="onQuestionOk($event)"></checklist-item>
     </ott-fieldset>
 
     <div class="w-100 text-center">

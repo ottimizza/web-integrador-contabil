@@ -1,3 +1,5 @@
+export type PrimitiveArray = Array<number | string | boolean>;
+
 export class ArrayUtils {
 
   public static sum(array: any[], arr: any[]) {
@@ -142,10 +144,31 @@ export class ArrayUtils {
    * @param arrays array bidimensional a ser planificado
    * @returns um array plano
    */
-  public static reduce<T>(arrays: T[][]) {
+  public static flat<T>(arrays: T[][]) {
     const result: T[] = [];
     arrays.forEach(arr => arr.forEach(item => result.push(item)));
     return result;
   }
 
+  /**
+   * Compara dois arrays e informar se algum item de um array está presente em outro
+   */
+  public static includes2d(array1: PrimitiveArray, array2: PrimitiveArray) {
+    let includes = false;
+
+    array1.forEach(arr => {
+      if (array2.includes(arr)) {
+        includes = true;
+      }
+    });
+    array2.forEach(arr => {
+      if (array1.includes(arr)) {
+        includes = true;
+      }
+    });
+
+    return includes;
+  }
+
 }
+
