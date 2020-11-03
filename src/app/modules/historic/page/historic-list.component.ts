@@ -14,6 +14,7 @@ import { ActionButton } from '@shared/components/action-buttons/action-buttons.c
 import getTutorial from '../tutorials/historic-list.tutorial';
 import { Subscription } from 'rxjs';
 import { TutorialService } from '@app/services/tutorial.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   templateUrl: './historic-list.component.html',
@@ -135,10 +136,11 @@ export class HistoricListComponent implements OnInit, OnDestroy {
     const pageCriteria = { pageIndex: this.pageInfo.pageIndex + 1 };
     Object.assign(filter, pageCriteria);
 
-    this.service.fetch(filter).subscribe(result => {
+    this.service.fetch(filter)
+    .pipe(finalize(() => this.isFetching = false))
+    .subscribe(result => {
       this.records = this.records.concat(result.records);
       this.pageInfo = result.pageInfo;
-      this.isFetching = false;
     });
   }
 
