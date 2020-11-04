@@ -19,6 +19,7 @@ export class ChecklistQuestion {
   tipo: string;
   grupo: string;
   opcoesResposta?: { descricao: string, valor: unknown }[];
+  perguntasRelacionadas: number[];
   sugestao?: any;
 }
 

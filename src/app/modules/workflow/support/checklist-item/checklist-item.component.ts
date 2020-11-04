@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { ChecklistAnswer, ChecklistInputType, ChecklistQuestion } from '@shared/models/Checklist';
 import { momentjs } from '@shared/utils/moment';
 
@@ -8,12 +8,16 @@ import { momentjs } from '@shared/utils/moment';
   templateUrl: './checklist-item.component.html',
   styleUrls: ['./checklist-item.component.scss']
 })
-export class ChecklistItemComponent implements AfterViewInit {
+export class ChecklistItemComponent implements AfterViewInit, OnChanges {
 
   @Input()
   public question: ChecklistQuestion;
+
   @Input()
   public scriptId: number;
+
+  @Input()
+  public answer: string;
 
   @Output()
   public ok = new EventEmitter<ChecklistAnswer>();
@@ -47,4 +51,18 @@ export class ChecklistItemComponent implements AfterViewInit {
       this.submit();
     }
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    for (const key in changes) {
+      if (changes.hasOwnProperty(key) && key === 'answer' && this.answer) {
+        if (this.question.tipoInput === ChecklistInputType.SELECT || this.question.tipoInput === ChecklistInputType.MULT_SELECT) {
+          const value = this.question.opcoesResposta.filter(opt => opt.valor === this.answer)[0];
+          this.ctrl.setValue(value);
+        } else {
+          this.ctrl.setValue(this.answer);
+        }
+      }
+    }
+  }
+
 }
