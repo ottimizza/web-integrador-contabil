@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ChecklistService } from '@app/http/checklist.service';
 import { Checklist, ChecklistAnswer } from '@shared/models/Checklist';
+import { ArrayUtils } from '@shared/utils/array.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -32,10 +33,14 @@ export class ChecklistLogicService {
 
   private _answer(checklist: Checklist, answer: ChecklistAnswer) {
     let answers = [answer];
+    const questions = ArrayUtils.flat(checklist.grupos.map(g => g.perguntas));
     const group = checklist.grupos.filter(grupo => grupo.perguntas.map(pergunta => pergunta.id).includes(answer.perguntaId))[0];
     const question = group.perguntas.filter(pergunta => pergunta.id === answer.perguntaId)[0];
+    // const children = !!question.perguntasRelacionadas
+    //                  ? group.perguntas.filter(pergunta => question.perguntasRelacionadas.includes(pergunta.id))
+    //                  : [];
     const children = !!question.perguntasRelacionadas
-                     ? group.perguntas.filter(pergunta => question.perguntasRelacionadas.includes(pergunta.id))
+                     ? questions.filter(q => question.perguntasRelacionadas.includes(q.id))
                      : [];
 
     if (children.length && question.opcoesResposta?.length && answer.resposta === question.opcoesResposta[0].valor) {

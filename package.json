@@ -41,12 +41,13 @@
     "gulp-gzip": "^1.4.2",
     "lodash": "^4.17.20",
     "moment": "^2.27.0",
+    "ngx-socket-io": "^3.2.0",
     "rxjs": "^6.5.4",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1001.2",
+    "@angular-devkit/build-angular": "^0.1002.0",
     "@angular/cli": "^10.1.2",
     "@angular/compiler-cli": "^11.0.0-next.2",
     "@angular/fire": "^5.4.2",

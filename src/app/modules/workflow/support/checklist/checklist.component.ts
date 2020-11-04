@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
+import { ChecklistLogicService } from '@app/services/checklist-logic/checklist-logic.service';
 import { Checklist, ChecklistAnswer } from '@shared/models/Checklist';
 import { ChecklistService } from '@app/http/checklist.service';
 import { ToastService } from '@shared/services/toast.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { Script } from '@shared/models/Script';
-import { ChecklistLogicService } from '@app/services/checklist-logic/checklist-logic.service';
 
 @Component({
   selector: 'script-checklist',
