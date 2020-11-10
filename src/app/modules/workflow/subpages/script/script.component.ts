@@ -24,6 +24,7 @@ import { Checklist } from '@shared/models/Checklist';
 import { Empresa } from '@shared/models/Empresa';
 import { Script } from '@shared/models/Script';
 import { User } from '@shared/models/User';
+import { GlobalVariableService } from '@app/services/global-variables.service';
 
 @Component({
   templateUrl: './script.component.html',
@@ -71,6 +72,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     private dialog: DialogService,
     private toast: ToastService,
     private companyService: BusinessService,
+    private vars: GlobalVariableService,
     @Inject(DOCUMENT) private doc: Document
   ) {}
 
@@ -99,6 +101,8 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     this.currentUser = User.fromLocalStorage();
     if (this.routes.snapshot.params.id) {
       this.load();
+    } else {
+      this.company = this.vars.getVariable('company-to-create-project');
     }
   }
 
@@ -115,16 +119,16 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     }))
     .subscribe(async result => {
       this.company = result.record;
-      let page = 1;
+      let page = 0;
       if (this.currentScript.urlArquivo) {
-        page = 2;
+        page = 1;
       }
       if (this.currentScript.tipoRoteiro) {
         this.startChecklist();
-        page = 3;
+        page = 2;
       }
       if (this.currentScript.checklist) {
-        page = 4;
+        page = 3;
       }
       await refresh();
       this.navigate(page);
@@ -137,14 +141,6 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     this.currentScript.checklist = true;
     await refresh();
     this.navigate(4);
-  }
-
-  async onCompanySelect(event: Empresa) {
-    this.company = event;
-    if (this.company) {
-      await refresh();
-      this.selectedIndex = 1;
-    }
   }
 
   navigate(page: number) {

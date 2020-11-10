@@ -18,6 +18,7 @@ import { DocUtils } from '@shared/utils/docs.utils';
 import { Empresa } from '@shared/models/Empresa';
 import { Script } from '@shared/models/Script';
 import { User } from '@shared/models/User';
+import { GlobalVariableService } from '@app/services/global-variables.service';
 
 @Component({
   templateUrl: './workflow.component.html',
@@ -85,6 +86,7 @@ export class WorkflowComponent implements OnInit {
     private router: Router,
     private companyService: BusinessService,
     private workflowService: WorkflowService,
+    private vars: GlobalVariableService,
     private dialog: DialogService
   ) {}
 
@@ -118,10 +120,12 @@ export class WorkflowComponent implements OnInit {
     if (id === 'new-company') {
       this.openCompanyDialog();
     } else if (id === 'new-project') {
-      this.router.navigate(['/dashboard', 'workflow', 'new']);
+      this.vars.setUniqueVariable('company-to-create-project', this.company)
+      .then(() => this.router.navigate(['/dashboard', 'workflow', 'new']));
     } else if (id === 'cancel') {
       this.timesCalled = 0;
       this.company = null;
+      this.theresNoProjects = false;
     }
   }
 
