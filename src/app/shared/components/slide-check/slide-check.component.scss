@@ -1,0 +1,62 @@
+.slide-check {
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  flex-direction: row;
+  background: white;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.slide-check-content {
+  padding: 15px 8px;
+  border: solid 1px #ccc;
+  color: rgba(0, 0, 0, 0.87);
+  cursor: move;
+  background: white;
+  font-size: 14px;
+  width: 50%;
+  transition: background-color 300ms;
+}
+
+.slide-check-content, .true, .false {
+  text-align: center;
+  box-sizing: border-box;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.true, .false {
+  color: white;
+  border: none;
+  outline: none;
+  flex-basis: 0;
+}
+
+.true {
+  background-color: var(--success);
+}
+
+.false {
+  background-color: var(--danger);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-box:last-child {
+  border: none;
+}
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.b-none {
+  border: none;
+}

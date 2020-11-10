@@ -19,12 +19,13 @@ export class SidebarLayoutComponent implements OnInit {
 
   ngOnInit() {
     this.items = [
+      { id: 'sidebar-item-regras-sugeridas', icon: 'fad fa-question', label: 'Regras Sugeridas', url: '/dashboard/suggestions' },
       { id: 'sidebar-item-ultima-digitacao', icon: 'fad fa-typewriter', label: 'Última Digitação', url: '/dashboard/entrys' },
       { id: 'sidebar-item-regras', icon: 'fad fa-list-ol', label: 'Regras', url: '/dashboard/rules' },
       { id: 'sidebar-item-historicos', icon: 'fad fa-history', label: 'Históricos', url: '/dashboard/historics'},
     ];
     if (User.fromLocalStorage().type === User.Type.ADMINISTRATOR) {
-      this.items.unshift({ id: 'sidebar-item-fluxo-planilhas', icon: 'fad fa-file-spreadsheet', label: 'Projetos', url: '/dashboard/workflow' });
+      this.items.unshift({ id: 'sidebar-item-fluxo-planilhas', icon: 'fad fa-industry-alt', label: 'Empresas', url: '/dashboard/workflow' });
     }
   }
 }

@@ -1,0 +1,37 @@
+<div
+  cdkDropList
+  cdkDropListOrientation="horizontal"
+  (cdkDropListDropped)="drop($event)"
+  class="slide-check">
+  <button
+    #reject
+    matRipple
+    matRippleColor="rgba(255, 255, 255, .2)"
+    class="false"
+    cdkDrag
+    [cdkDragDisabled]="true"
+    (click)="onKeyCancel()"
+    [matTooltip]="leftLabel">
+    <i class="fad fa-times-circle" [ngClass]="{ 'fa-2x': !isMobile }"></i>
+  </button>
+  <div
+    class="slide-check-content"
+    cdkDrag
+    [matTooltip]="orientationText"
+    [matTooltipShowDelay]="400"
+    [style.backgroundColor]="backgroundColor"
+    [ngClass]="{ 'b-none': backgroundColor !== 'white' }"
+    cdkDragBoundary=".slide-check">
+    <ng-content></ng-content>
+  </div>
+  <button
+    matRipple
+    matRippleColor="rgba(255, 255, 255, .2)"
+    class="true"
+    cdkDrag
+    [cdkDragDisabled]="true"
+    (click)="onKeyConfirm()"
+    [matTooltip]="rightLabel">
+    <i class="fad fa-check-circle" [ngClass]="{ 'fa-2x': !isMobile }"></i>
+  </button>
+</div>

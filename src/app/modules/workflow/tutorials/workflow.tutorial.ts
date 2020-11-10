@@ -11,10 +11,10 @@ export const WORKFLOW_TUTORIAL: GuidedTour = {
       title: '',
       content: `
       <h5>
-        1. Criar um projeto; ou
+        1. Criar uma empresa; ou
       </h5>
       `,
-      selector: '#action-button-new-script',
+      selector: '#action-button-new-company',
       orientation: Orientation.Left,
       highlightPadding: 5
     },
@@ -22,7 +22,7 @@ export const WORKFLOW_TUTORIAL: GuidedTour = {
       title: '',
       content: `
       <h5>
-        2. Verificar projetos já criados.
+        2. Verificar empresas já criadas.
       </h5>
       `,
       selector: '#project-list-table',

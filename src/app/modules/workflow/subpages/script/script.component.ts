@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
 import { switchMap } from 'rxjs/operators';
 import { environment } from '@env';
 
@@ -23,7 +24,6 @@ import { Checklist } from '@shared/models/Checklist';
 import { Empresa } from '@shared/models/Empresa';
 import { Script } from '@shared/models/Script';
 import { User } from '@shared/models/User';
-import { DOCUMENT } from '@angular/common';
 
 @Component({
   templateUrl: './script.component.html',
@@ -49,10 +49,11 @@ export class ScriptComponent implements OnInit, AfterViewInit {
   public reload = false;
 
   public company: Empresa;
-  public type: 'REC' | 'PAG';
 
   public selectedIndex = 0;
   public currentScript: Script;
+
+  public type: 'PAG' | 'REC';
 
   public checklist = new LazyLoader<Checklist>();
 
@@ -158,10 +159,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     }
     this.service.upload(this.currentScript.id, file, this.company.cnpj, this.currentUser.organization.cnpj, environment.storageApplicationId)
     .subscribe(async resultSet => {
-      this.currentScript = resultSet.record;
-      this.toast.hideSnack();
-      await refresh();
-      this.selectedIndex = 2;
+      this.router.navigate(['/dashboard', 'workflow', this.currentScript.id]);
     });
   }
 

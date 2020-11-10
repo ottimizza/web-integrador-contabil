@@ -38,7 +38,7 @@ const routes: Routes = [
         path: 'workflow',
         canActivate: [AdminGuard],
         data: {
-          breadcrumb: 'Projetos'
+          breadcrumb: 'Empresas'
         },
         loadChildren: () => import('@modules/workflow/workflow.module').then(m => m.WorkflowModule)
       },

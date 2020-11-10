@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ChecklistService } from '@app/http/checklist.service';
 import { Checklist, ChecklistAnswer } from '@shared/models/Checklist';
 import { ArrayUtils } from '@shared/utils/array.utils';
 
@@ -53,7 +52,6 @@ export class ChecklistLogicService {
           observacoes: null
       })));
     }
-
     return answers;
   }
 

@@ -6,7 +6,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { EntryUtils } from '@shared/utils/entry.utils';
 import { FormUtils } from '@shared/utils/form.utils';
 import { Lancamento } from '@shared/models/Lancamento';
-import { CNPJUtils } from '@shared/utils/docs.utils';
+import { DocUtils } from '@shared/utils/docs.utils';
 
 export class HistoricEditDialogData {
   type: 'post' | 'edit';
@@ -95,7 +95,7 @@ export class HistoricEditDialogComponent implements OnInit {
   }
 
   public updateCode() {
-    const formattedCode = CNPJUtils.cleanMask(this.form.get('code').value || '');
+    const formattedCode = DocUtils.cleanMask(this.form.get('code').value || '');
     this.form.get('code').setValue(formattedCode);
     this.update();
   }
