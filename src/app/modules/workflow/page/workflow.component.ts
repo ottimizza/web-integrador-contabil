@@ -120,8 +120,7 @@ export class WorkflowComponent implements OnInit {
     if (id === 'new-company') {
       this.openCompanyDialog();
     } else if (id === 'new-project') {
-      this.vars.setUniqueVariable('company-to-create-project', this.company)
-      .then(() => this.router.navigate(['/dashboard', 'workflow', 'new']));
+      this.vars.navigateWithData(['/dashboard', 'workflow', 'new'], this.company);
     } else if (id === 'cancel') {
       this.timesCalled = 0;
       this.company = null;

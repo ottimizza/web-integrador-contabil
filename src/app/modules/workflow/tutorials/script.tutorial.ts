@@ -94,9 +94,8 @@ export const SCRIPT_TUTORIAL: GuidedTour = {
 };
 
 export const setIds = (doc: Document) => {
-    doc.getElementsByClassName('mat-step-header')[0].id = 'script-stepper-company';
-    doc.getElementsByClassName('mat-step-header')[1].id = 'script-stepper-material';
-    doc.getElementsByClassName('mat-step-header')[2].id = 'script-stepper-type';
-    doc.getElementsByClassName('mat-step-header')[3].id = 'script-stepper-definitions';
-    doc.getElementsByClassName('mat-step-header')[4].id = 'script-stepper-confirm';
+    doc.getElementsByClassName('mat-step-header')[0].id = 'script-stepper-material';
+    doc.getElementsByClassName('mat-step-header')[1].id = 'script-stepper-type';
+    doc.getElementsByClassName('mat-step-header')[2].id = 'script-stepper-definitions';
+    doc.getElementsByClassName('mat-step-header')[3].id = 'script-stepper-confirm';
 };

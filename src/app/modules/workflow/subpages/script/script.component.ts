@@ -41,7 +41,6 @@ export class ScriptComponent implements OnInit, AfterViewInit {
 
   public breadcrumbAppend = { label: 'Roteiro' };
   public buttons: ActionButton[] = [
-    { icon: 'fad fa-plus-square', id: 'new-company', label: 'Nova Empresa', color: new HexColor(environment.theme.primaryColor) },
     { icon: 'fad fa-times-square', id: 'cancel', label: 'Cancelar', color: 'btn-light' }
   ];
 
@@ -102,7 +101,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     if (this.routes.snapshot.params.id) {
       this.load();
     } else {
-      this.company = this.vars.getVariable('company-to-create-project');
+      this.company = this.vars.routeData as any;
     }
   }
 
