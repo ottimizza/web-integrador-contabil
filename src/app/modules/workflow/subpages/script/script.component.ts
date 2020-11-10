@@ -127,7 +127,8 @@ export class ScriptComponent implements OnInit, AfterViewInit {
         page = 2;
       }
       if (this.currentScript.checklist) {
-        page = 3;
+        // page = 3;
+        this.onChecklistCompleted(this.currentScript);
       }
       await refresh();
       this.navigate(page);
