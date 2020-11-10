@@ -9,6 +9,7 @@ import { ActionButton } from '@shared/components/action-buttons/action-buttons.c
 import { ColumnDefinition } from '@shared/components/async-table/models/ColumnDefinition';
 import { CompanyCreateDialogComponent } from '../dialogs/company-create-dialog.component';
 import { BreadCrumb } from '@shared/components/breadcrumb/breadcrumb.component';
+import { GlobalVariableService } from '@app/services/global-variables.service';
 import { BusinessService } from '@shared/services/business.service';
 import { WORKFLOW_TUTORIAL } from '../tutorials/workflow.tutorial';
 import { SearchCriteria } from '@shared/models/SearchCriteria';
@@ -18,7 +19,6 @@ import { DocUtils } from '@shared/utils/docs.utils';
 import { Empresa } from '@shared/models/Empresa';
 import { Script } from '@shared/models/Script';
 import { User } from '@shared/models/User';
-import { GlobalVariableService } from '@app/services/global-variables.service';
 
 @Component({
   templateUrl: './workflow.component.html',
@@ -47,7 +47,7 @@ export class WorkflowComponent implements OnInit {
       script.status = status;
       return script.statusDescription();
     }),
-    ColumnDefinition.activeDefault('dataAtualizacao', 'Última alteração', val => momentjs(val).format('DD/MM/YYYY - hh:mm'))
+    ColumnDefinition.activeDefault('dataAtualizacao', 'Última alteração', val => momentjs(val).format('DD/MM/YYYY'))
   ];
 
   public timesCalled = 0;
@@ -144,7 +144,7 @@ export class WorkflowComponent implements OnInit {
   }
 
   public openCompanyDialog() {
-    this.dialog.open<Empresa>(CompanyCreateDialogComponent).subscribe(async result => {
+    this.dialog.open<Empresa>(CompanyCreateDialogComponent).subscribe(result => {
       if (result.cnpj) {
         this.onRowSelected(result);
       }
