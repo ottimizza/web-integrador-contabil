@@ -139,7 +139,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     this.currentScript = event;
     this.currentScript.checklist = true;
     await refresh();
-    this.navigate(4);
+    this.navigate(3);
   }
 
   navigate(page: number) {
@@ -170,7 +170,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     this.startChecklist();
     this.toast.hideSnack();
     await refresh();
-    this.selectedIndex = 3;
+    this.selectedIndex = 2;
   }
 
   public onFilterChanged(event: any) {
