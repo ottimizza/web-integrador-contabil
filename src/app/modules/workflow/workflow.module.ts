@@ -25,6 +25,7 @@ import { ProjectConfirmationComponent } from './support/confirmation/project-con
 import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.module';
 import { DefaultFilterModule } from '@shared/components/default-filter/default-filter.module';
 import { NgxGuidedTourModule } from '@gobsio/ngx-guided-tour';
+import { SlideCheckModule } from '@shared/components/slide-check/slide-check.module';
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ import { NgxGuidedTourModule } from '@gobsio/ngx-guided-tour';
     MatIconModule,
     MatButtonModule,
     NgxGuidedTourModule.forRoot(),
+    SlideCheckModule
   ],
   declarations: [
     WorkflowComponent,

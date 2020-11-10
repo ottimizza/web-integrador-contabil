@@ -5,7 +5,7 @@
   </div>
 
   <mat-horizontal-stepper [linear]="true" [selectedIndex]="selectedIndex" (selectionChange)="selectedIndex = $event.selectedIndex">
-    <mat-step label="Empresa" [completed]="company" [editable]="false" id="script-stepper-empresa">
+    <!-- <mat-step label="Empresa" [completed]="company" [editable]="false" id="script-stepper-empresa">
 
       <div class="mt-5 mb-3">
         <default-filter
@@ -22,7 +22,7 @@
         (rowSelected)="onCompanySelect($event)"
       ></async-table>
 
-    </mat-step>
+    </mat-step> -->
     <mat-step label="Material" [completed]="currentScript?.urlArquivo" [editable]="false" id="script-stepper-material">
 
       <div class="m-4 mb-5 w-100 text-center">

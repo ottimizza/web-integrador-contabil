@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
 import { switchMap } from 'rxjs/operators';
 import { environment } from '@env';
 
@@ -23,7 +24,7 @@ import { Checklist } from '@shared/models/Checklist';
 import { Empresa } from '@shared/models/Empresa';
 import { Script } from '@shared/models/Script';
 import { User } from '@shared/models/User';
-import { DOCUMENT } from '@angular/common';
+import { GlobalVariableService } from '@app/services/global-variables.service';
 
 @Component({
   templateUrl: './script.component.html',
@@ -40,7 +41,6 @@ export class ScriptComponent implements OnInit, AfterViewInit {
 
   public breadcrumbAppend = { label: 'Roteiro' };
   public buttons: ActionButton[] = [
-    { icon: 'fad fa-plus-square', id: 'new-company', label: 'Nova Empresa', color: new HexColor(environment.theme.primaryColor) },
     { icon: 'fad fa-times-square', id: 'cancel', label: 'Cancelar', color: 'btn-light' }
   ];
 
@@ -49,10 +49,11 @@ export class ScriptComponent implements OnInit, AfterViewInit {
   public reload = false;
 
   public company: Empresa;
-  public type: 'REC' | 'PAG';
 
   public selectedIndex = 0;
   public currentScript: Script;
+
+  public type: 'PAG' | 'REC';
 
   public checklist = new LazyLoader<Checklist>();
 
@@ -70,6 +71,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     private dialog: DialogService,
     private toast: ToastService,
     private companyService: BusinessService,
+    private vars: GlobalVariableService,
     @Inject(DOCUMENT) private doc: Document
   ) {}
 
@@ -98,6 +100,8 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     this.currentUser = User.fromLocalStorage();
     if (this.routes.snapshot.params.id) {
       this.load();
+    } else {
+      this.company = this.vars.routeData as any;
     }
   }
 
@@ -114,16 +118,16 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     }))
     .subscribe(async result => {
       this.company = result.record;
-      let page = 1;
+      let page = 0;
       if (this.currentScript.urlArquivo) {
-        page = 2;
+        page = 1;
       }
       if (this.currentScript.tipoRoteiro) {
         this.startChecklist();
-        page = 3;
+        page = 2;
       }
       if (this.currentScript.checklist) {
-        page = 4;
+        page = 3;
       }
       await refresh();
       this.navigate(page);
@@ -135,15 +139,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     this.currentScript = event;
     this.currentScript.checklist = true;
     await refresh();
-    this.navigate(4);
-  }
-
-  async onCompanySelect(event: Empresa) {
-    this.company = event;
-    if (this.company) {
-      await refresh();
-      this.selectedIndex = 1;
-    }
+    this.navigate(3);
   }
 
   navigate(page: number) {
@@ -158,10 +154,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     }
     this.service.upload(this.currentScript.id, file, this.company.cnpj, this.currentUser.organization.cnpj, environment.storageApplicationId)
     .subscribe(async resultSet => {
-      this.currentScript = resultSet.record;
-      this.toast.hideSnack();
-      await refresh();
-      this.selectedIndex = 2;
+      this.router.navigate(['/dashboard', 'workflow', this.currentScript.id]);
     });
   }
 
@@ -177,7 +170,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     this.startChecklist();
     this.toast.hideSnack();
     await refresh();
-    this.selectedIndex = 3;
+    this.selectedIndex = 2;
   }
 
   public onFilterChanged(event: any) {
