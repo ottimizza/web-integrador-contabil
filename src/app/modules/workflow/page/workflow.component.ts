@@ -46,7 +46,7 @@ export class WorkflowComponent implements OnInit {
       script.status = status;
       return script.statusDescription();
     }),
-    ColumnDefinition.activeDefault('dataAtualizacao', 'Última alteração', val => momentjs(val).format('DD/MM/YYYY - HH:mm'))
+    ColumnDefinition.activeDefault('dataAtualizacao', 'Última alteração', val => momentjs(val).format('DD/MM/YYYY - hh:mm'))
   ];
 
   public timesCalled = 0;
