@@ -19,7 +19,6 @@ import { DocUtils } from '@shared/utils/docs.utils';
 import { Empresa } from '@shared/models/Empresa';
 import { Script } from '@shared/models/Script';
 import { User } from '@shared/models/User';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   templateUrl: './workflow.component.html',
@@ -89,15 +88,11 @@ export class WorkflowComponent implements OnInit {
     private workflowService: WorkflowService,
     private vars: GlobalVariableService,
     private dialog: DialogService,
-    private sanitizer: DomSanitizer
   ) {}
-
-  public url: SafeResourceUrl;
 
 
   ngOnInit() {
     this.currentUser = User.fromLocalStorage();
-    this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/forms/d/e/1FAIpQLSfCwaARv0Dkazdct92kRIPwPLvUcI9Kep8LVFemb42TW2ap8w/viewform?embedded=true');
   }
 
   create() {
