@@ -29,7 +29,6 @@ export class ChecklistService {
   public fetch(type: number) {
     return this._fetchDefault(type)
     .pipe(map((result: any) => {
-      result.record.perguntas.push(JSON.parse('{"id":33,"descricao":"Selecione todos os arquivos que você enviará junto ao processo de integração","tipo":"1 ; 2","tipoInput":5,"opcoesResposta":[{"descricao":"PLANO DE CONTAS ESPECIFICO DO CLIENTE SEM SALDO (EM EXCEL)","valor":"PLANO DE CONTAS ESPECIFICO DO CLIENTE SEM SALDO (EM EXCEL)"},{"descricao":"RELATORIOS FINANCEIROS","valor":"RELATORIOS FINANCEIROS"},{"descricao":"EXTRATOS BANCARIOS","valor":"EXTRATOS BANCARIOS"},{"descricao":"EXTRATOS CARTÃO DE CREDITO/DEBITO","valor":"EXTRATOS CARTÃO DE CREDITO/DEBITO"},{"descricao":"RELATORIOS COMPLEMENTARES","valor":"RELATORIOS COMPLEMENTARES"},{"descricao":"RELATÓRIO DUPLICATAS EM ABERTO (SOMENTE SE UTILIZAR BAIXA NO FISCAL)","valor":"RELATÓRIO DUPLICATAS EM ABERTO (SOMENTE SE UTILIZAR BAIXA NO FISCAL)"}],"sugestao":null,"grupo":"Check-list Homologado"}'));
       result.record = Checklist.fromRequest(result.record);
       return result as GenericResponse<Checklist>;
     }));
