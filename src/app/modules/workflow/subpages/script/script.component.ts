@@ -11,6 +11,7 @@ import { CompanyCreateDialogComponent } from '@modules/workflow/dialogs/company-
 import { ActionButton, HexColor } from '@shared/components/action-buttons/action-buttons.component';
 import { ColumnDefinition } from '@shared/components/async-table/models/ColumnDefinition';
 import { SCRIPT_TUTORIAL, setIds } from '@modules/workflow/tutorials/script.tutorial';
+import { GlobalVariableService } from '@app/services/global-variables.service';
 import { SearchOption } from '@shared/components/search/models/SearchOption';
 import { BusinessService } from '@shared/services/business.service';
 import { SearchCriteria } from '@shared/models/SearchCriteria';
@@ -22,9 +23,8 @@ import { DialogService } from '@app/services/dialog.service';
 import { LazyLoader } from '@shared/models/LazyLoader';
 import { Checklist } from '@shared/models/Checklist';
 import { Empresa } from '@shared/models/Empresa';
-import { Script } from '@shared/models/Script';
+import { Script, ScriptStatus } from '@shared/models/Script';
 import { User } from '@shared/models/User';
-import { GlobalVariableService } from '@app/services/global-variables.service';
 
 @Component({
   templateUrl: './script.component.html',
@@ -119,15 +119,16 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     .subscribe(async result => {
       this.company = result.record;
       let page = 0;
-      if (this.currentScript.urlArquivo) {
+      if (this.currentScript.tipoRoteiro) {
         page = 1;
       }
-      if (this.currentScript.tipoRoteiro) {
+      if (this.currentScript.urlArquivo) {
         this.startChecklist();
         page = 2;
       }
       if (this.currentScript.checklist) {
-        page = 3;
+        // page = 3;
+        this.onChecklistCompleted(this.currentScript);
       }
       await refresh();
       this.navigate(page);
@@ -148,12 +149,9 @@ export class ScriptComponent implements OnInit, AfterViewInit {
 
   async emitFile(file: File) {
     this.toast.showSnack('Enviando arquivo...');
-    if (!this.currentScript) {
-      const rs = await this.create();
-      this.currentScript = rs.record;
-    }
     this.service.upload(this.currentScript.id, file, this.company.cnpj, this.currentUser.organization.cnpj, environment.storageApplicationId)
     .subscribe(async resultSet => {
+      this.toast.hideSnack();
       this.router.navigate(['/dashboard', 'workflow', this.currentScript.id]);
     });
   }
@@ -165,12 +163,16 @@ export class ScriptComponent implements OnInit, AfterViewInit {
 
   async confirmType() {
     this.toast.showSnack('Definindo tipo...');
-    const rs = await this.service.patch(this.currentScript.id, { tipoRoteiro: this.type, status: 5 }).toPromise();
+    if (!this.currentScript) {
+      const response = await this.create();
+      this.currentScript = response.record;
+    }
+    const rs = await this.service.patch(this.currentScript.id, { tipoRoteiro: this.type, status: ScriptStatus.TIPO_DEFINIDO }).toPromise();
     this.currentScript = rs.record;
     this.startChecklist();
     this.toast.hideSnack();
     await refresh();
-    this.selectedIndex = 2;
+    this.selectedIndex = 1;
   }
 
   public onFilterChanged(event: any) {

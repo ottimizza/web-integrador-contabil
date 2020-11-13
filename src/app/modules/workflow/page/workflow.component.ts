@@ -87,7 +87,7 @@ export class WorkflowComponent implements OnInit {
     private companyService: BusinessService,
     private workflowService: WorkflowService,
     private vars: GlobalVariableService,
-    private dialog: DialogService
+    private dialog: DialogService,
   ) {}
 
 
@@ -125,6 +125,7 @@ export class WorkflowComponent implements OnInit {
       this.timesCalled = 0;
       this.company = null;
       this.theresNoProjects = false;
+      this.append = undefined;
     }
   }
 
