@@ -51,13 +51,6 @@ export class RuleChipGroupComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.subs?.length) {
-      this.subs.forEach(sub => sub.unsubscribe());
-    }
-
-  }
-
   public init() {
     this._parse();
     this.impositive = this.chipLists.map(() => false);
