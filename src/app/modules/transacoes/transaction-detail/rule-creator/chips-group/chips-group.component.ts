@@ -35,8 +35,6 @@ export class RuleChipGroupComponent implements OnInit, OnDestroy {
   selecteds: { id: string, positions: number[] }[] = [];
   impositive: boolean[];
 
-  private subs: Subscription[];
-
   constructor(
     private service: ProposedRulesService
   ) {}
