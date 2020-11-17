@@ -111,3 +111,9 @@ export enum Condicao {
   IGUAL
 
 }
+
+export interface ProposedRule {
+  id: number;
+  contaMovimento: string;
+  camposRegras: string[];
+}

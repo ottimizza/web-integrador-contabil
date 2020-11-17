@@ -29,6 +29,7 @@ import { FormControl } from '@angular/forms';
 import { User } from '@shared/models/User';
 import { finalize } from 'rxjs/operators';
 import { GuidedTourService } from '@gobsio/ngx-guided-tour';
+import { TimeUtils } from '@shared/utils/time.utils';
 
 @Component({
   selector: 'app-tdetail',
@@ -63,6 +64,9 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   total = 'Calculando...';
 
   currentUser: User;
+
+  public showProposedRules = true;
+  public useAccountingIntelligenceInProposedRules = true;
 
   public tutorialInitSub: Subscription;
   public tutorialEndedSub: Subscription;
@@ -348,12 +352,22 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     this.account.setValue('');
   }
 
+  public async proposeRules() {
+    this._toast.showSimpleSnackBar('Obtendo regra sugerida...');
+    const account = await this._ruleService.proposeRules(this.entry.id, this.useAccountingIntelligenceInProposedRules);
+    this.account.setValue(account);
+    this._toast.hideSnack();
+  }
+
   public async requestEntry() {
     this.resetErrors();
 
     const rs = await this.fetch();
     this.entry = rs.records[0];
     this.pageInfo = rs.pageInfo;
+    if (this.entry && this.showProposedRules) {
+      await this.proposeRules();
+    }
 
     this.reConstruct();
 
@@ -368,9 +382,11 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   public async reConstruct() {
     for (let i = 1; i < 8; i++) {
       this.rebuild = i;
-      await new Promise(resolve => setTimeout(resolve, 1));
+      await TimeUtils.sleep(1);
     }
     this.rebuild = 0;
+    await TimeUtils.sleep(200);
+    this._ruleService.onReconstructionCompleted();
   }
 
   public async proceed() {
@@ -448,6 +464,10 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
       case TipoLancamento.RECEBIMENTOS: return 'Não é cliente'
       default:                          return 'Regra'
     }
+  }
+
+  public clean() {
+    this._ruleService.clean();
   }
 
   descricao(): RuleConfig {

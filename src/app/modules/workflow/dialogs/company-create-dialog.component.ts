@@ -46,7 +46,11 @@ export class CompanyCreateDialogComponent {
       this.errorText = 'CPF ou CNPJ inválido';
     } else {
       this.toast.showSnack('Analisando registros anteriores...');
-      const filter = { cnpj: DocUtils.cleanMask(this.cnpj.value), type: 2, organizationId: User.fromLocalStorage().organization.id, active: true };
+      const filter = {
+        cnpj: DocUtils.cleanMask(this.cnpj.value),
+        type: 2, organizationId: User.fromLocalStorage().organization.id,
+        active: true
+      };
       this.organizationService.fetch(filter).subscribe(rs => {
         this.toast.hideSnack();
         this.buildOrganization(rs.records[0]);

@@ -1,6 +1,10 @@
-import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { IChipGroupPattern, IChipGroupParcialPattern } from './patterns/IChipGroupPattern';
 import { ArrayUtils } from '@shared/utils/array.utils';
+import { Subscription } from 'rxjs';
+import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
+import { RxEvent } from '@app/services/rx-event.service';
+import { filter, map, take } from 'rxjs/operators';
 
 export class RuleConfig {
   title: string;
@@ -22,7 +26,7 @@ class ChipList {
   templateUrl: './chips-group.component.html',
   styleUrls: ['./chips-group.component.scss']
 })
-export class RuleChipGroupComponent implements OnInit {
+export class RuleChipGroupComponent implements OnInit, OnDestroy {
 
   @Input() config: RuleConfig;
   @Output() clicked = new EventEmitter();
@@ -31,8 +35,29 @@ export class RuleChipGroupComponent implements OnInit {
   selecteds: { id: string, positions: number[] }[] = [];
   impositive: boolean[];
 
+  private subs: Subscription[];
+
+  constructor(
+    private service: ProposedRulesService
+  ) {}
+
   ngOnInit(): void {
     this.init();
+    if (this.config.selectable) {
+      this.config.values.forEach((val, index) => {
+        this.service.ruleProposed(val.value, () => {
+          this.impositive[index] = false;
+          this.forceSelect(index);
+        });
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.subs?.length) {
+      this.subs.forEach(sub => sub.unsubscribe());
+    }
+
   }
 
   public init() {
@@ -88,26 +113,20 @@ export class RuleChipGroupComponent implements OnInit {
       this.selecteds[index].positions = positions;
     }
 
-    const map = this._map();
-    this.clicked.emit(map);
+    const mapping = this._map();
+    this.clicked.emit(mapping);
   }
 
   private _map() {
     return this.selecteds.map(sel => {
       const chipList = this.chipLists.filter(cl => cl.key === sel.id)[0];
       const selecteds = sel.positions.map(pos => chipList.chipValue[pos]);
-      return {
-        title: sel.id,
-        selecteds
-      };
+      return { title: sel.id, selecteds };
     })
       .map(item => {
         const chipList = this.chipLists.filter(cl => cl.key === item.title)[0];
         if (item.selecteds.length === chipList.chipValue.length) {
-          return {
-            title: item.title,
-            selecteds: [chipList.fullValue]
-          };
+          return { title: item.title, selecteds: [chipList.fullValue] };
         }
         return item;
       });
