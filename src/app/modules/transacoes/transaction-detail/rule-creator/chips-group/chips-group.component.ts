@@ -1,10 +1,7 @@
-import { Component, Input, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { IChipGroupPattern, IChipGroupParcialPattern } from './patterns/IChipGroupPattern';
 import { ArrayUtils } from '@shared/utils/array.utils';
-import { Subscription } from 'rxjs';
 import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
-import { RxEvent } from '@app/services/rx-event.service';
-import { filter, map, take } from 'rxjs/operators';
 
 export class RuleConfig {
   title: string;
@@ -26,7 +23,7 @@ class ChipList {
   templateUrl: './chips-group.component.html',
   styleUrls: ['./chips-group.component.scss']
 })
-export class RuleChipGroupComponent implements OnInit, OnDestroy {
+export class RuleChipGroupComponent implements OnInit {
 
   @Input() config: RuleConfig;
   @Output() clicked = new EventEmitter();
