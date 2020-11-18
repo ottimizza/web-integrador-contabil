@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
@@ -23,13 +24,11 @@ import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { FormattedHistoric } from '@shared/models/Historic';
 import { RuleService } from '@shared/services/rule.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
+import { TimeUtils } from '@shared/utils/time.utils';
 import { DateUtils } from '@shared/utils/date-utils';
 import { Empresa } from '@shared/models/Empresa';
 import { FormControl } from '@angular/forms';
 import { User } from '@shared/models/User';
-import { finalize } from 'rxjs/operators';
-import { GuidedTourService } from '@gobsio/ngx-guided-tour';
-import { TimeUtils } from '@shared/utils/time.utils';
 
 @Component({
   selector: 'app-tdetail',

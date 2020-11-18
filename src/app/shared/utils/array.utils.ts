@@ -161,4 +161,15 @@ export class ArrayUtils {
     return includes;
   }
 
+  public static doubleIncludes(array: string[], value: string, ignoreCase?: boolean) {
+    array.forEach(item => {
+      item = ignoreCase ? item.toUpperCase() : item;
+      value = ignoreCase ? value.toUpperCase() : value;
+      if (item.includes(value)) {
+        return true;
+      }
+    });
+    return false;
+  }
+
 }

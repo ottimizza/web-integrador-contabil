@@ -44,7 +44,7 @@ import { MatMenuModule } from '@angular/material/menu';
       MatSlideToggleModule,
       MatRippleModule,
       MatMenuModule,
-      MatRadioModule
+      MatRadioModule,
     ],
     entryComponents: [
       RuleGridComponent,

@@ -7,6 +7,7 @@ import { GenericResponse } from '@shared/models/GenericResponse';
 import { RxEvent } from '@app/services/rx-event.service';
 import { ProposedRule } from '@shared/models/Rule';
 import { User } from '@shared/models/User';
+import { ArrayUtils } from '@shared/utils/array.utils';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/regras`;
 
@@ -41,7 +42,11 @@ export class ProposedRulesService {
 
   public ruleProposed(value: string, handler: (value: unknown) => void) {
     this.event.use(
-      [filter(result => result.includes(value)), map(result => result.filter(rule => rule === value)[0]), take(1)],
+      [
+        filter((result: string[]) => ArrayUtils.doubleIncludes(result, value)),
+        map(result => result.filter(rule => rule === value)[0]),
+        take(1)
+      ],
       this.PROPOSED_RULES_KEY,
       handler
     );

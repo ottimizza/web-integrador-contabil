@@ -153,7 +153,7 @@
               [matTooltip]="info.provider"
             />
             <input
-              *ngIf="conditions.verify()"
+              [disabled]="!conditions.verify()"
               type="button"
               class="btn btn-outline-primary col mx-2"
               value="Ignorar"
