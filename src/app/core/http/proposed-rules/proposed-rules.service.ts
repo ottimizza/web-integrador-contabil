@@ -35,7 +35,7 @@ export class ProposedRulesService {
   }
 
   public clean() {
-    this.proposedRules = null;
+    this.proposedRules = [];
     this.onReconstructionCompleted();
   }
 

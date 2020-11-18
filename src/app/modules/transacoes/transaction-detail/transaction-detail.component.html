@@ -18,11 +18,11 @@
           <i class="ml-3 far fa-cog cursor-pointer" [matMenuTriggerFor]="menu"></i>
           <mat-menu #menu="matMenu">
             <mat-radio-group [value]="useAccountingIntelligenceInProposedRules" (change)="useAccountingIntelligenceInProposedRules = $event.value">
-              <div id="filter-type-1" mat-menu-item>
-                <mat-radio-button [value]="true">Utilizar inteligência Ottimizza</mat-radio-button>
-              </div>
               <div id="filter-type-2" mat-menu-item>
-                <mat-radio-button [value]="false">Utilizar inteligência interna</mat-radio-button>
+                <mat-radio-button [value]="false">Inteligência da contabilidade</mat-radio-button>
+              </div>
+              <div id="filter-type-1" mat-menu-item>
+                <mat-radio-button [value]="true">Inteligência da Ottimizza</mat-radio-button>
               </div>
             </mat-radio-group>
           </mat-menu>

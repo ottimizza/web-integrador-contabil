@@ -5,6 +5,28 @@
   --dark-legacy: #373435;
 }
 
+.mat-radio-outer-circle {
+.mat-radio-checked & {
+      border-color: var(--primary-color) !important;
+    }
+}
+
+.mat-radio-inner-circle {
+    background-color: var(--primary-color) !important;
+}
+
+.mat-radio-ripple .mat-ripple-element {
+    background-color: var(--primary-color);
+}
+
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: var(--primary-color);
+}
+
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: var(--primary-accent);
+}
+
 .mat-progress-bar-fill::after {
   background-color: var(--primary-color);
 }

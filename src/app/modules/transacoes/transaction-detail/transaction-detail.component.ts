@@ -66,7 +66,7 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   currentUser: User;
 
   public showProposedRules = true;
-  public useAccountingIntelligenceInProposedRules = true;
+  public useAccountingIntelligenceInProposedRules = false;
 
   public tutorialInitSub: Subscription;
   public tutorialEndedSub: Subscription;
