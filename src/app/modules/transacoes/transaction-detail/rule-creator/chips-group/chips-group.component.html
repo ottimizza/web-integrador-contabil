@@ -15,6 +15,7 @@
             [chip]="chip"
             [label]="chipList.label"
             [position]="i"
+            [divisors]="config.values[0].pattern.separators"
             [selectable]="chipList.selectable"
             [forceSelect]="getSelect(pos)"
             (select)="onDevolve($event)"

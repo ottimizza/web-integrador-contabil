@@ -25,6 +25,7 @@ export class RuleChipComponent implements OnChanges, OnInit {
   @Input() label: string;
   @Input() forceSelect: boolean;
   @Input() position: number;
+  @Input() divisors: string[];
 
   @Output() select: EventEmitter<{ label: string, isSelected: boolean, position: number }> = new EventEmitter();
 
@@ -33,7 +34,7 @@ export class RuleChipComponent implements OnChanges, OnInit {
   constructor(private service: ProposedRulesService) {}
 
   ngOnInit(): void {
-    this.service.ruleProposed(this.chip, () => {
+    this.service.ruleProposed(this.chip, this.divisors, () => {
       this.isSelected = false;
       this.selectThis();
     });

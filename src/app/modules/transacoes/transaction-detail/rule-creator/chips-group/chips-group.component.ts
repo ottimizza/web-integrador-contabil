@@ -38,14 +38,14 @@ export class RuleChipGroupComponent implements OnInit {
 
   ngOnInit(): void {
     this.init();
-    if (this.config.selectable) {
-      this.config.values.forEach((val, index) => {
-        this.service.ruleProposed(val.value, () => {
-          this.impositive[index] = false;
-          this.forceSelect(index);
-        });
-      });
-    }
+    // if (this.config.selectable) {
+    //   this.config.values.forEach((val, index) => {
+    //     this.service.ruleProposed(val.value, () => {
+    //       this.impositive[index] = false;
+    //       this.forceSelect(index);
+    //     });
+    //   });
+    // }
   }
 
   public init() {
