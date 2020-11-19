@@ -112,7 +112,8 @@
 
 
 
-
+            <paginator [pageSize]="1" [pageSizeOptions]="[1]" [length]="pageInfo.totalElements"
+            (page)="navigate($event.pageIndex > $event.previousPageIndex ? 'next' : 'previous')"></paginator>
 
 
 
@@ -161,7 +162,7 @@
               [matTooltip]="info.ignore"
               id="ignore-button"
             />
-            <div class="button-area col mx-2">
+            <!-- <div class="button-area col mx-2">
               <div class="row w-100 m-0">
 
                 <button [disabled]="!pageInfo.hasPrevious" class="btn btn-outline-info col" (click)="navigate('previous')" matTooltip="Lançamento anterior">
@@ -172,7 +173,7 @@
                 </button>
 
               </div>
-            </div>
+            </div> -->
             <input
               *ngIf="currentUser.type === 0"
               type="button"

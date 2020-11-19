@@ -22,6 +22,7 @@ import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-
 import { HistoricEditDialogModule } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.module';
 import { DesignSystemModule } from '@shared/components/ds.module';
 import { MatMenuModule } from '@angular/material/menu';
+import { PaginatorModule } from '@shared/components/paginator/paginator.module';
 
 @NgModule({
     declarations: [TransactionDetailComponent, ConfirmDeleteDialogComponent],
@@ -45,6 +46,7 @@ import { MatMenuModule } from '@angular/material/menu';
       MatRippleModule,
       MatMenuModule,
       MatRadioModule,
+      PaginatorModule
     ],
     entryComponents: [
       RuleGridComponent,
