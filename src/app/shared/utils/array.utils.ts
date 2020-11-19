@@ -162,14 +162,16 @@ export class ArrayUtils {
   }
 
   public static doubleIncludes(array: string[], value: string, ignoreCase?: boolean) {
-    array.forEach(item => {
+    let ok = false;
+    for (let item of array) {
       item = ignoreCase ? item.toUpperCase() : item;
       value = ignoreCase ? value.toUpperCase() : value;
       if (item.includes(value)) {
-        return true;
+        ok = true;
+        break;
       }
-    });
-    return false;
+    }
+    return ok;
   }
 
 }
