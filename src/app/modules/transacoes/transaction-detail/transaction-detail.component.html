@@ -12,15 +12,7 @@
 
     <div class="p-5 pt-0">
       <div class="row m-0 mt-3 mb-4 w-100">
-        <div class="col">
-          <text *ngIf="!entry">Total de lançamentos: {{ total }}</text>
-          <div *ngIf="impact > 0">
-            <text class="mt-3">Impacto: </text>
-            <text class="ml-1 cursor-pointer"(click)="openGrid()" color="danger" [matTooltip]="info.affecteds" bold="true" >{{ impact }}</text>
-            <text class="ml-1"(click)="openGrid()"> lançamentos.</text>
-            <icon class="ml-2" [matTooltip]="info.affectedsOrientation" name="question-circle"></icon>
-          </div>
-        </div>
+        <text class="col">Total de lançamentos: {{ total }}</text>
         <div class="col text-right">
           <mat-slide-toggle [checked]="true" (change)="showProposedRules = !showProposedRules; clean()">Sugerir Regras</mat-slide-toggle>
           <i class="ml-3 far fa-cog cursor-pointer" [matMenuTriggerFor]="menu"></i>
@@ -36,7 +28,7 @@
           </mat-menu>
         </div>
       </div>
-      <!-- <div class="row m-0 w-100 mb-4">
+      <div class="row m-0 w-100 mb-4">
         <div class="col" *ngIf="impact > 0">
           <text class="mt-3">Impacto: </text>
           <text class="ml-1 cursor-pointer"(click)="openGrid()" color="danger" [matTooltip]="info.affecteds" bold="true" >{{ impact }}</text>
@@ -48,7 +40,7 @@
 
 
 
-      </div> -->
+      </div>
       <card *ngIf="entry || isFetching" [main]="false">
         <card [main]="false">
           <card class="main-card">
