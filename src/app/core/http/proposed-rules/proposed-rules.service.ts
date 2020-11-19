@@ -40,10 +40,11 @@ export class ProposedRulesService {
     this.onReconstructionCompleted();
   }
 
-  public ruleProposed(value: string, handler: (value: unknown) => void) {
+  public ruleProposed(value: string, separators: string[], handler: (value: unknown) => void) {
     this.event.use(
       [
-        filter((result: string[]) => ArrayUtils.doubleIncludes(result, value)),
+        filter((result: string[]) =>
+          ArrayUtils.flat(result.map(val => ArrayUtils.magicSplit(val.toUpperCase(), ...separators))).includes(value.toUpperCase())),
         map(result => result.filter(rule => rule === value)[0]),
         take(1)
       ],
