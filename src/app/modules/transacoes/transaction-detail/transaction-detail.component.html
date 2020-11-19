@@ -12,7 +12,7 @@
 
     <div class="p-5 pt-0">
       <div class="row m-0 mt-3 w-100">
-        <text class="col">Total de lançamentos: {{ total }}</text>
+        <!-- <text class="col">Total de lançamentos: {{ total }}</text> -->
         <div class="col text-right">
           <mat-slide-toggle [checked]="true" (change)="showProposedRules = !showProposedRules; clean()">Sugerir Regras</mat-slide-toggle>
           <i class="ml-3 far fa-cog cursor-pointer" [matMenuTriggerFor]="menu"></i>
@@ -112,7 +112,7 @@
 
 
 
-            <paginator [pageSize]="1" [pageSizeOptions]="[1]" [length]="pageInfo.totalElements"
+            <paginator [pageSize]="1" [pageSizeOptions]="[1]" [length]="total"
             (page)="navigate($event.pageIndex > $event.previousPageIndex ? 'next' : 'previous')"></paginator>
 
 
