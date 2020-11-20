@@ -3,6 +3,7 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { FormControl } from '@angular/forms';
 
 import { HistoricEditDialogComponent } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.component';
 import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
@@ -27,7 +28,6 @@ import { ArrayUtils } from '@shared/utils/array.utils';
 import { TimeUtils } from '@shared/utils/time.utils';
 import { DateUtils } from '@shared/utils/date-utils';
 import { Empresa } from '@shared/models/Empresa';
-import { FormControl } from '@angular/forms';
 import { User } from '@shared/models/User';
 
 @Component({
