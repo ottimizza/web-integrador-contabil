@@ -320,7 +320,7 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  tabsPattern(tipoMovimento: string, tipoLancamentoName: string, isFirst: boolean) {
+  tabsPattern(tipoMovimento: 'PAG' | 'EXDEB' | 'REC' | 'EXCRE', tipoLancamentoName: string, isFirst: boolean) {
     if (!isFirst) {
       this.tabIsClicked = true;
     }
