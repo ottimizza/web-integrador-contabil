@@ -52,6 +52,8 @@ export class ProposedRulesService {
           if (!this.proposedRules) {
             this.proposedRules = result;
           }
+          console.log('Rules - ruleProposed:', this.proposedRules);
+          console.log('Selected Rule - ruleProposed:', rule)
           return rule;
         }),
         take(1)
@@ -67,11 +69,13 @@ export class ProposedRulesService {
 
   public onRuleUsed(rule: string) {
     let index = -1;
+    console.log('Rules - onRuleUsed:', this.proposedRules)
     this.proposedRules.forEach((proposedRule, i) => {
       if (proposedRule.includes(rule)) {
         index = i;
       }
     });
+    console.log('Index - onRuleUsed:', index)
     this.proposedRules[index] = this.proposedRules[index].replace(rule, '').trim();
   }
 
