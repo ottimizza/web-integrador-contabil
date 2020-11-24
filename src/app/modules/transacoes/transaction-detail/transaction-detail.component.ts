@@ -381,11 +381,11 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   public async reConstruct() {
     for (let i = 1; i < 8; i++) {
       this.rebuild = i;
-      await TimeUtils.sleep(1);
+      await TimeUtils.sleep(11);
+      this._ruleService.onReconstructionCompleted();
     }
     this.rebuild = 0;
-    await TimeUtils.sleep(200);
-    this._ruleService.onReconstructionCompleted();
+    // await TimeUtils.sleep(200);
   }
 
   public async proceed() {

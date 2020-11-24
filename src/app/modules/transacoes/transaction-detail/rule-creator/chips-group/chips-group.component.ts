@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { IChipGroupPattern, IChipGroupParcialPattern } from './patterns/IChipGroupPattern';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
@@ -47,6 +47,22 @@ export class RuleChipGroupComponent implements OnInit {
     //   });
     // }
   }
+
+  // public ngOnChanges(changes: SimpleChanges) {
+  //   for (const key in changes) {
+  //     if (changes.hasOwnProperty(key)) {
+  //       switch (key) {
+  //         case 'config':
+  //           console.log(this.config);
+  //           this.config.values.forEach(value => {
+  //             this.selecteds[value] = false;
+  //           });
+  //           this.config = changes[key].currentValue;
+  //           break;
+  //       }
+  //     }
+  //   }
+  // }
 
   public init() {
     this._parse();

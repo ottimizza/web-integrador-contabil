@@ -8,6 +8,7 @@ import { RxEvent } from '@app/services/rx-event.service';
 import { ProposedRule } from '@shared/models/Rule';
 import { User } from '@shared/models/User';
 import { ArrayUtils } from '@shared/utils/array.utils';
+import { TimeUtils } from '@shared/utils/time.utils';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/regras`;
 
@@ -40,20 +41,18 @@ export class ProposedRulesService {
     this.onReconstructionCompleted();
   }
 
-  public ruleProposed(value: string, separators: string[], handler: (value: unknown) => void) {
+
+  public ruleProposed(value: string, separators: string[], handler: (value: string) => void) {
     this.event.use(
       [
         filter((result: string[]) =>
           ArrayUtils.flat(result.map(val => ArrayUtils.magicSplit(val.toUpperCase(), ...separators))).includes(value.toUpperCase())),
         map((result: string[]) => {
-          const trueResult = result.filter((rule, index) => {
-            const ok = rule.toUpperCase().includes(value.toUpperCase());
-            if (ok) {
-              this.proposedRules[index] = this.proposedRules[index].replace(value, '');
-            }
-            return ok;
-          })[0];
-          return trueResult;
+          const rule = result.filter(a =>  a.toUpperCase().includes(value.toUpperCase()))[0];
+          if (!this.proposedRules) {
+            this.proposedRules = result;
+          }
+          return rule;
         }),
         take(1)
       ],
@@ -64,6 +63,10 @@ export class ProposedRulesService {
 
   public onReconstructionCompleted() {
     this.event.next(this.PROPOSED_RULES_KEY, this.proposedRules);
+  }
+
+  public onRuleUsed(rule: string) {
+    this.proposedRules.splice(this.proposedRules.indexOf(rule), 1);
   }
 
   private _suggestedRule(entryId: number, accountingFilter: boolean) {

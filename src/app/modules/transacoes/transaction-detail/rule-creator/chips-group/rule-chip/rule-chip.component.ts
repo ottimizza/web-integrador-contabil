@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
+import { RxEvent } from '@app/services/rx-event.service';
 
 @Component({
   selector: 'app-rule-chip',
@@ -27,16 +28,17 @@ export class RuleChipComponent implements OnChanges, OnInit {
   @Input() position: number;
   @Input() divisors: string[];
 
-  @Output() select: EventEmitter<{ label: string, isSelected: boolean, position: number }> = new EventEmitter();
+  @Output() select = new EventEmitter<{ label: string, isSelected: boolean, position: number }>();
 
   isSelected = false;
 
   constructor(private service: ProposedRulesService) {}
 
   ngOnInit(): void {
-    this.service.ruleProposed(this.chip, this.divisors, () => {
+    this.service.ruleProposed(this.chip, this.divisors, (rule) => {
       this.isSelected = false;
       this.selectThis();
+      this.service.onRuleUsed(rule);
     });
   }
 
