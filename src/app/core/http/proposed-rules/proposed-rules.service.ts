@@ -71,12 +71,15 @@ export class ProposedRulesService {
     let index = -1;
     console.log('Rules - onRuleUsed:', this.proposedRules)
     this.proposedRules.forEach((proposedRule, i) => {
+      console.log(proposedRule, rule);
       if (proposedRule.includes(rule)) {
         index = i;
       }
     });
-    console.log('Index - onRuleUsed:', index)
-    this.proposedRules[index] = this.proposedRules[index].replace(rule, '').trim();
+    if (index > -1) {
+      this.proposedRules[index] = this.proposedRules[index].replace(rule, '').trim();
+    }
+    this.proposedRules = this.proposedRules.filter(pr => !!pr);
   }
 
   private _suggestedRule(entryId: number, accountingFilter: boolean) {
