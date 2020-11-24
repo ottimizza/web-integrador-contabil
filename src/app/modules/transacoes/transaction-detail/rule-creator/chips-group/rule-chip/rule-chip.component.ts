@@ -38,7 +38,6 @@ export class RuleChipComponent implements OnChanges, OnInit {
   ngOnInit(): void {
     this.service.ruleProposed(this.chip, this.divisors, (rule) => {
       this.isSelected = false;
-      console.log(rule);
       this.selectThis();
       this.service.onRuleUsed(rule);
     });
