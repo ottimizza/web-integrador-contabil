@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
+import { ArrayUtils } from '@shared/utils/array.utils';
 
 @Component({
   selector: 'app-rule-chip',

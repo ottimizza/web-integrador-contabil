@@ -394,7 +394,6 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     this.isFetching = false;
   }
 
-
   public navigate(direction: 'next' | 'previous') {
     if (direction === 'next' && this.pageInfo.hasNext) {
       this.pageInfo.pageIndex++;
@@ -415,7 +414,7 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  fetch() {
+  async fetch() {
     let tipoLancamento = 1;
     if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE') {
       tipoLancamento = 2;

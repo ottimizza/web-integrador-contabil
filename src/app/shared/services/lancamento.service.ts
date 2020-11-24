@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Observable, from } from 'rxjs';
+import { Observable, from, forkJoin } from 'rxjs';
 import { environment } from '@env';
 
-import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
+import { GenericPageableResponse, PageInfo } from '@shared/models/GenericPageableResponse';
 import { HttpHandlerService } from '@app/services/http-handler.service';
 import { GenericResponse } from '@shared/models/GenericResponse';
 import { Lancamento } from '@shared/models/Lancamento';
 import { PostFormatRule } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
+import { KeyMap } from '@shared/models/KeyMap';
+import { catchError, switchMap } from 'rxjs/operators';
+import { User } from '@shared/models/User';
+import { ArrayUtils } from '@shared/utils/array.utils';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/lancamentos`;
 
@@ -46,7 +50,7 @@ export class LancamentoService {
     return this.patch(id, { tipoConta: 4 });
   }
 
-  public patch(id: number, body: any) {
+  public patch(id: number, body: KeyMap<Lancamento>) {
     const url = `${BASE_URL}/${id}`;
     return this.http.patch<Lancamento>(url, body, 'Falha ao vincular lançamento!');
   }
@@ -64,6 +68,50 @@ export class LancamentoService {
   public saveAsDePara(lancamento: Lancamento, account: string): Observable<Lancamento> {
     const url = `${BASE_URL}/${lancamento.id}/depara?contaMovimento=${account}`;
     return this.http.post<Lancamento>(url, {}, 'Falha ao vincular lançamento a uma conta de fornecedor!');
+  }
+
+  /**
+   * @deprecated
+   * Não está realmente deprecado, mas não utilize em produção :)
+   */
+  public async reset(company: Empresa) {
+    if (environment.production !== false || !window.confirm(`Tem certeza que deseja reiniciar os lançamentos da empresa ${company.razaoSocial}?`)) {
+      return;
+    }
+
+    console.warn(`Iniciando reset de lançamentos da empresa ${company.razaoSocial}`);
+
+    let records: Lancamento[] = [];
+    let pageInfo = new PageInfo({ pageIndex: 0, hasNext: true });
+
+    while (pageInfo.hasNext) {
+      console.warn(`Buscando lançamentos pela ${pageInfo.pageIndex + 1}ª vez...`);
+      const resultSet = await this.getLancamentos({
+        pageIndex: pageInfo.pageIndex,
+        pageSize: 100,
+        cnpjEmpresa: company.cnpj,
+        cnojContabilidade: User.fromLocalStorage().organization.cnpj,
+        ativo: false
+      }).toPromise();
+
+      console.warn('Lançamentos obtidos:', resultSet.records);
+
+      records = records.concat(resultSet.records);
+      pageInfo = resultSet.pageInfo;
+      pageInfo.pageIndex++;
+    }
+    console.warn(`${records.length} lançamentos obtidos com sucesso, iniciando atualização dos mesmos`);
+
+    const packages = ArrayUtils.package(records, 50);
+    let packageCount = 1;
+    for (const pack of packages) {
+      console.warn(`Atualizando ${packageCount}° pacote de 50 lançamentos`);
+      await forkJoin(pack.map(rec => {
+        return this.patch(rec.id, { tipoConta: 0, ativo: true, contaMovimento: null, regraId: null });
+      })).toPromise();
+      packageCount++;
+    }
+    console.warn('Lançamentos resetados com sucesso!');
   }
 
   /**

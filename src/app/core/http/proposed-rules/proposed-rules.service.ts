@@ -43,9 +43,18 @@ export class ProposedRulesService {
   public ruleProposed(value: string, separators: string[], handler: (value: unknown) => void) {
     this.event.use(
       [
-        filter((result: string[]) =>
-          ArrayUtils.flat(result.map(val => ArrayUtils.magicSplit(val.toUpperCase(), ...separators))).includes(value.toUpperCase())),
-        map(result => result.filter(rule => rule === value)[0]),
+        filter((result: () => string[]) =>
+          ArrayUtils.flat(result().map(val => ArrayUtils.magicSplit(val.toUpperCase(), ...separators))).includes(value.toUpperCase())),
+        map((result: () => string[]) => {
+          const trueResult = result().filter((rule, index) => {
+            const ok = rule.toUpperCase().includes(value.toUpperCase());
+            if (ok) {
+              this.proposedRules[index] = this.proposedRules[index].replace(value, '');
+            }
+            return ok;
+          })[0];
+          return trueResult;
+        }),
         take(1)
       ],
       this.PROPOSED_RULES_KEY,
@@ -54,7 +63,7 @@ export class ProposedRulesService {
   }
 
   public onReconstructionCompleted() {
-    this.event.next(this.PROPOSED_RULES_KEY, this.proposedRules);
+    this.event.next(this.PROPOSED_RULES_KEY, this.getProposedRules);
   }
 
   private _suggestedRule(entryId: number, accountingFilter: boolean) {
@@ -62,4 +71,7 @@ export class ProposedRulesService {
     const searchCriteria = { busca: accountingFilter ? 0 : 1, cnpjContabilidade: User.fromLocalStorage().organization.cnpj };
     return this.http.get<GenericResponse<ProposedRule>>([url, searchCriteria], 'Falha ao obter regra sugerida');
   }
+
+  private getProposedRules = () => this.proposedRules;
+
 }

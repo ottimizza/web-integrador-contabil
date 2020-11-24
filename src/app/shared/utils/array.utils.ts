@@ -174,4 +174,15 @@ export class ArrayUtils {
     return ok;
   }
 
+  public static package<T>(array: T[], size = 100): T[][] {
+    /*
+     * Divide um array em vários pacotes
+     */
+    const packages = [];
+    for (let i = 0; i < array.length; i = i + size) {
+      packages.push(array.slice(i, i + size));
+    }
+    return packages;
+  }
+
 }
