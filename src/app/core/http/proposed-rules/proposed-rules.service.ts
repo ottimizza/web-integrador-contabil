@@ -1,4 +1,4 @@
-import { filter, map, take } from 'rxjs/operators';
+import { delay, filter, map, take } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { environment } from '@env';
 
@@ -8,7 +8,6 @@ import { RxEvent } from '@app/services/rx-event.service';
 import { ProposedRule } from '@shared/models/Rule';
 import { User } from '@shared/models/User';
 import { ArrayUtils } from '@shared/utils/array.utils';
-import { TimeUtils } from '@shared/utils/time.utils';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/regras`;
 
@@ -52,11 +51,10 @@ export class ProposedRulesService {
           if (!this.proposedRules) {
             this.proposedRules = result;
           }
-          console.log('Rules - ruleProposed:', this.proposedRules);
-          console.log('Selected Rule - ruleProposed:', rule)
           return rule;
         }),
-        take(1)
+        take(1),
+        delay(150)
       ],
       this.PROPOSED_RULES_KEY,
       handler
@@ -69,9 +67,7 @@ export class ProposedRulesService {
 
   public onRuleUsed(rule: string) {
     let index = -1;
-    console.log('Rules - onRuleUsed:', this.proposedRules)
     this.proposedRules.forEach((proposedRule, i) => {
-      console.log(proposedRule, rule);
       if (proposedRule.includes(rule)) {
         index = i;
       }

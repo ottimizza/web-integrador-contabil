@@ -1,6 +1,6 @@
-import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnInit, NgZone } from '@angular/core';
 import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
-import { RxEvent } from '@app/services/rx-event.service';
+import { TimeUtils } from '@shared/utils/time.utils';
 
 @Component({
   selector: 'app-rule-chip',
@@ -32,11 +32,13 @@ export class RuleChipComponent implements OnChanges, OnInit {
 
   isSelected = false;
 
-  constructor(private service: ProposedRulesService) {}
+  constructor(private service: ProposedRulesService) {
+  }
 
   ngOnInit(): void {
     this.service.ruleProposed(this.chip, this.divisors, (rule) => {
       this.isSelected = false;
+      console.log(rule);
       this.selectThis();
       this.service.onRuleUsed(rule);
     });
