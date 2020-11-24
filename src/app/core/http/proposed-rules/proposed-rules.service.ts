@@ -43,10 +43,10 @@ export class ProposedRulesService {
   public ruleProposed(value: string, separators: string[], handler: (value: unknown) => void) {
     this.event.use(
       [
-        filter((result: () => string[]) =>
-          ArrayUtils.flat(result().map(val => ArrayUtils.magicSplit(val.toUpperCase(), ...separators))).includes(value.toUpperCase())),
-        map((result: () => string[]) => {
-          const trueResult = result().filter((rule, index) => {
+        filter((result: string[]) =>
+          ArrayUtils.flat(result.map(val => ArrayUtils.magicSplit(val.toUpperCase(), ...separators))).includes(value.toUpperCase())),
+        map((result: string[]) => {
+          const trueResult = result.filter((rule, index) => {
             const ok = rule.toUpperCase().includes(value.toUpperCase());
             if (ok) {
               this.proposedRules[index] = this.proposedRules[index].replace(value, '');
@@ -63,7 +63,7 @@ export class ProposedRulesService {
   }
 
   public onReconstructionCompleted() {
-    this.event.next(this.PROPOSED_RULES_KEY, this.getProposedRules);
+    this.event.next(this.PROPOSED_RULES_KEY, this.proposedRules);
   }
 
   private _suggestedRule(entryId: number, accountingFilter: boolean) {
@@ -72,6 +72,5 @@ export class ProposedRulesService {
     return this.http.get<GenericResponse<ProposedRule>>([url, searchCriteria], 'Falha ao obter regra sugerida');
   }
 
-  private getProposedRules = () => this.proposedRules;
 
 }
