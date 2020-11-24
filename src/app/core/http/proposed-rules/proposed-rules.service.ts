@@ -66,7 +66,13 @@ export class ProposedRulesService {
   }
 
   public onRuleUsed(rule: string) {
-    this.proposedRules.splice(this.proposedRules.indexOf(rule), 1);
+    let index = -1;
+    this.proposedRules.forEach((proposedRule, i) => {
+      if (proposedRule.includes(rule)) {
+        index = i;
+      }
+    });
+    this.proposedRules[index] = this.proposedRules[index].replace(rule, '').trim();
   }
 
   private _suggestedRule(entryId: number, accountingFilter: boolean) {
