@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
+import { FormControl } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { FormControl } from '@angular/forms';
 
 import { HistoricEditDialogComponent } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.component';
 import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
@@ -152,10 +152,10 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     const l: any = this.entry || {};
     const a = l.arquivo;
     return !!((l.complemento01 && a.labelComplemento01) ||
-      (l.complemento02 && a.labelComplemento02) ||
-      (l.complemento03 && a.labelComplemento03) ||
-      (l.complemento04 && a.labelComplemento04) ||
-      (l.complemento05 && a.labelComplemento05));
+              (l.complemento02 && a.labelComplemento02) ||
+              (l.complemento03 && a.labelComplemento03) ||
+              (l.complemento04 && a.labelComplemento04) ||
+              (l.complemento05 && a.labelComplemento05));
   }
 
   resetErrors(errors?: string[]) {
@@ -251,7 +251,6 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   }
 
   onDevolve(events: { title: string, selecteds: string[] }[]) {
-
     this.conditions.tipoPlanilha = [this.entry.tipoPlanilha];
     this.conditions.tipoMovimento = [this.entry.tipoMovimento];
 
@@ -384,7 +383,14 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
       this._ruleService.onReconstructionCompleted();
       await TimeUtils.sleep(1);
     }
+    this.onReconstructionCompleted()
+  }
+
+  public onReconstructionCompleted() {
     this.rebuild = 0;
+    if (this.showProposedRules) {
+      this._ruleService.onReconstructionEnded();
+    }
   }
 
   public async proceed() {

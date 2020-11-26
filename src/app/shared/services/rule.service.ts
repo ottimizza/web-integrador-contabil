@@ -15,9 +15,10 @@ const BASE_URL = `${environment.serviceUrl}`;
 })
 export class RuleService extends ProposedRulesService {
 
-  // constructor(private http: HttpHandlerService) { }
-
   createRule(rule: RuleCreateFormat): Observable<any> {
+    if (rule.reduce) {
+      rule.reduce();
+    }
     return this.http.post<GenericResponse<CompleteRule>>(`${BASE_URL}/api/v1/regras`, rule, 'Falha ao criar regra!');
   }
 

@@ -1,3 +1,4 @@
+import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
 import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnInit, NgZone } from '@angular/core';
 import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
 import { TimeUtils } from '@shared/utils/time.utils';
@@ -37,9 +38,9 @@ export class RuleChipComponent implements OnChanges, OnInit {
 
   ngOnInit(): void {
     this.service.ruleProposed(this.chip, this.divisors, (rule) => {
-      this.isSelected = false;
-      this.selectThis();
+      this.isSelected = true;
       this.service.onRuleUsed(rule);
+        // this.selectThis();
     });
   }
 

@@ -1,7 +1,8 @@
-import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { IChipGroupPattern, IChipGroupParcialPattern } from './patterns/IChipGroupPattern';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
+import { take } from 'rxjs/operators';
 
 export class RuleConfig {
   title: string;
@@ -23,10 +24,13 @@ class ChipList {
   templateUrl: './chips-group.component.html',
   styleUrls: ['./chips-group.component.scss']
 })
-export class RuleChipGroupComponent implements OnInit {
+export class RuleChipGroupComponent implements OnInit, AfterViewInit {
 
   @Input() config: RuleConfig;
   @Output() clicked = new EventEmitter();
+
+  @ViewChild('fakeInput')
+  public el: ElementRef<HTMLDivElement>;
 
   chipLists: ChipList[] = [];
   selecteds: { id: string, positions: number[] }[] = [];
@@ -38,31 +42,24 @@ export class RuleChipGroupComponent implements OnInit {
 
   ngOnInit(): void {
     this.init();
-    // if (this.config.selectable) {
-    //   this.config.values.forEach((val, index) => {
-    //     this.service.ruleProposed(val.value, () => {
-    //       this.impositive[index] = false;
-    //       this.forceSelect(index);
-    //     });
-    //   });
-    // }
   }
 
-  // public ngOnChanges(changes: SimpleChanges) {
-  //   for (const key in changes) {
-  //     if (changes.hasOwnProperty(key)) {
-  //       switch (key) {
-  //         case 'config':
-  //           console.log(this.config);
-  //           this.config.values.forEach(value => {
-  //             this.selecteds[value] = false;
-  //           });
-  //           this.config = changes[key].currentValue;
-  //           break;
-  //       }
-  //     }
-  //   }
-  // }
+  ngAfterViewInit() {
+    this.service.reconstructionEnded(() => {
+      const elements = this.el.nativeElement.querySelectorAll<HTMLDivElement>('.simple-chip');
+      let chips: { label: string, isSelected: boolean, position: number }[] = [];
+      elements.forEach(val => {
+        const label = val.id;
+        const isSelected = val.classList.contains('chip-selected') ;
+        let position = chips.map(chip => chip.label).lastIndexOf(label);
+        position = position > -1 ? position + 1 : 0;
+        chips.push({ label, isSelected, position });
+      });
+
+      chips = chips.filter(chip => chip.isSelected);
+      chips.forEach((chip) => this.onDevolve(chip));
+    });
+  }
 
   public init() {
     this._parse();

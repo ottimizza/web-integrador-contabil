@@ -87,7 +87,7 @@ export class BreadcrumbInputFilterComponent implements OnInit, AfterViewInit {
   }
 
   public getEmpresaDisplayCnpj(empresa: Empresa): string {
-    return DocUtils.isValid(empresa.cnpj) ? DocUtils.applyMask(empresa.cnpj) : empresa.cnpj;
+    return DocUtils.format(empresa.cnpj);
   }
 
   async change(word: string) {
