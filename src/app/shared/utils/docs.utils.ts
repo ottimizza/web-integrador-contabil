@@ -55,9 +55,6 @@ export class DocUtils {
       );
     } else if (this.validateCpf(cnpj)) {
       cnpj = cnpj.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g, '$1.$2.$3-$4');
-    } else {
-      // invalid CNPJ/CPF/CNO
-      cnpj = null;
     }
 
     return cnpj;

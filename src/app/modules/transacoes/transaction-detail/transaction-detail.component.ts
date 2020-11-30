@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
 
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
@@ -23,12 +25,10 @@ import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { FormattedHistoric } from '@shared/models/Historic';
 import { RuleService } from '@shared/services/rule.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
+import { TimeUtils } from '@shared/utils/time.utils';
 import { DateUtils } from '@shared/utils/date-utils';
 import { Empresa } from '@shared/models/Empresa';
-import { FormControl } from '@angular/forms';
 import { User } from '@shared/models/User';
-import { finalize } from 'rxjs/operators';
-import { GuidedTourService } from '@gobsio/ngx-guided-tour';
 
 @Component({
   selector: 'app-tdetail',
@@ -63,6 +63,9 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   total = 'Calculando...';
 
   currentUser: User;
+
+  public showProposedRules = true;
+  public useAccountingIntelligenceInProposedRules = false;
 
   public tutorialInitSub: Subscription;
   public tutorialEndedSub: Subscription;
@@ -149,10 +152,10 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     const l: any = this.entry || {};
     const a = l.arquivo;
     return !!((l.complemento01 && a.labelComplemento01) ||
-      (l.complemento02 && a.labelComplemento02) ||
-      (l.complemento03 && a.labelComplemento03) ||
-      (l.complemento04 && a.labelComplemento04) ||
-      (l.complemento05 && a.labelComplemento05));
+              (l.complemento02 && a.labelComplemento02) ||
+              (l.complemento03 && a.labelComplemento03) ||
+              (l.complemento04 && a.labelComplemento04) ||
+              (l.complemento05 && a.labelComplemento05));
   }
 
   resetErrors(errors?: string[]) {
@@ -248,7 +251,6 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   }
 
   onDevolve(events: { title: string, selecteds: string[] }[]) {
-
     this.conditions.tipoPlanilha = [this.entry.tipoPlanilha];
     this.conditions.tipoMovimento = [this.entry.tipoMovimento];
 
@@ -317,7 +319,7 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  tabsPattern(tipoMovimento: string, tipoLancamentoName: string, isFirst: boolean) {
+  tabsPattern(tipoMovimento: 'PAG' | 'EXDEB' | 'REC' | 'EXCRE', tipoLancamentoName: string, isFirst: boolean) {
     if (!isFirst) {
       this.tabIsClicked = true;
     }
@@ -348,12 +350,22 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     this.account.setValue('');
   }
 
+  public async proposeRules() {
+    this._toast.showSimpleSnackBar('Obtendo regra sugerida...');
+    const account = await this._ruleService.proposeRules(this.entry.id, this.useAccountingIntelligenceInProposedRules);
+    this.account.setValue(account);
+    this._toast.hideSnack();
+  }
+
   public async requestEntry() {
     this.resetErrors();
 
     const rs = await this.fetch();
     this.entry = rs.records[0];
     this.pageInfo = rs.pageInfo;
+    if (this.entry && this.showProposedRules) {
+      await this.proposeRules();
+    }
 
     this.reConstruct();
 
@@ -368,9 +380,17 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   public async reConstruct() {
     for (let i = 1; i < 8; i++) {
       this.rebuild = i;
-      await new Promise(resolve => setTimeout(resolve, 1));
+      this._ruleService.onReconstructionCompleted();
+      await TimeUtils.sleep(1);
     }
+    this.onReconstructionCompleted()
+  }
+
+  public onReconstructionCompleted() {
     this.rebuild = 0;
+    if (this.showProposedRules) {
+      this._ruleService.onReconstructionEnded();
+    }
   }
 
   public async proceed() {
@@ -378,7 +398,6 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     await this.requestEntry();
     this.isFetching = false;
   }
-
 
   public navigate(direction: 'next' | 'previous') {
     if (direction === 'next' && this.pageInfo.hasNext) {
@@ -400,7 +419,7 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  fetch() {
+  async fetch() {
     let tipoLancamento = 1;
     if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE') {
       tipoLancamento = 2;
@@ -448,6 +467,10 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
       case TipoLancamento.RECEBIMENTOS: return 'Não é cliente'
       default:                          return 'Regra'
     }
+  }
+
+  public clean() {
+    this._ruleService.clean();
   }
 
   descricao(): RuleConfig {

@@ -36,6 +36,7 @@ export class Lancamento {
   public ativo: boolean;
   public competencia: string;
   public competenciaAnterior: string;
+  public regraId?: number;
 }
 
 export class Arquivo {

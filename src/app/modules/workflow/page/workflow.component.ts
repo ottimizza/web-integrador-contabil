@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { PageEvent } from '@angular/material/paginator';
@@ -19,6 +19,8 @@ import { DocUtils } from '@shared/utils/docs.utils';
 import { Empresa } from '@shared/models/Empresa';
 import { Script } from '@shared/models/Script';
 import { User } from '@shared/models/User';
+import { TimeUtils } from '@shared/utils/time.utils';
+import { FormControl } from '@angular/forms';
 
 @Component({
   templateUrl: './workflow.component.html',
@@ -49,6 +51,7 @@ export class WorkflowComponent implements OnInit {
     }),
     ColumnDefinition.activeDefault('dataAtualizacao', 'Última alteração', val => momentjs(val).format('DD/MM/YYYY'))
   ];
+
 
   public timesCalled = 0;
   public reload = false;
@@ -89,7 +92,6 @@ export class WorkflowComponent implements OnInit {
     private vars: GlobalVariableService,
     private dialog: DialogService,
   ) {}
-
 
   ngOnInit() {
     this.currentUser = User.fromLocalStorage();

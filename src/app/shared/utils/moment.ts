@@ -1,4 +1,2 @@
-import * as moment from 'moment';
-
-const momentjs = moment.default;
-export { momentjs };
+import moment from 'moment';
+export const momentjs = moment;

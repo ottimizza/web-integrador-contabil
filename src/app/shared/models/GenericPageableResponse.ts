@@ -1,3 +1,5 @@
+import { KeyMap } from './KeyMap';
+
 export class PageInfo {
 
   hasNext: boolean;
@@ -9,7 +11,7 @@ export class PageInfo {
   totalPages: number;
   totalElements: number;
 
-  constructor(builder: any) {
+  constructor(builder: KeyMap<PageInfo>) {
     this.hasNext = builder.hasNext;
     this.hasPrevious = builder.hasPrevious;
     this.pageIndex = builder.pageIndex;

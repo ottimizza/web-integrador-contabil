@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject, Subscription, BehaviorSubject } from 'rxjs';
+import { Subject, Subscription, BehaviorSubject, OperatorFunction } from 'rxjs';
+import { pipeFromArray } from 'rxjs/internal/util/pipe';
 
 @Injectable({
   providedIn: 'root'
@@ -11,19 +12,18 @@ export class RxEvent {
   private immediate = true;
 
   next(name: string, data?: any) {
-    if (typeof this.subjects[name] === 'undefined') {
-      this.subjects[name] = (this.immediate ? new Subject() : new BehaviorSubject(null));
-    }
-    this.subjects[name].next(data);
+    return this.get(name).next(data);
   }
 
   subscribe(name: string, handler: any): Subscription {
-    if (typeof this.subjects[name] === 'undefined') {
-      this.subjects[name] = (this.immediate ? new Subject() : new BehaviorSubject(null));
-    }
-    return this.subjects[name].subscribe(handler);
+    return this.get(name).subscribe(handler);
   }
 
+  public use(operators: OperatorFunction<any, any>[], event: string, handler: (value: unknown) => void) {
+    return this.get(event)
+    .pipe(pipeFromArray(operators))
+    .subscribe(handler);
+  }
 
   dispose(name: string) {
     if (this.subjects[name]) {
@@ -41,5 +41,12 @@ export class RxEvent {
       }
     }
     this.subjects = {};
+  }
+
+  private get(name: string) {
+    if (this.subjects[name] === undefined) {
+      this.subjects[name] = (this.immediate ? new Subject() : new BehaviorSubject(null));
+    }
+    return this.subjects[name];
   }
 }

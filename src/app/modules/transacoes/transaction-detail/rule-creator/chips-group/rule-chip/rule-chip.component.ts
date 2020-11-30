@@ -1,4 +1,7 @@
-import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
+import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnInit, NgZone } from '@angular/core';
+import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
+import { TimeUtils } from '@shared/utils/time.utils';
 
 @Component({
   selector: 'app-rule-chip',
@@ -16,7 +19,7 @@ import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter } from
   }
   `]
 })
-export class RuleChipComponent implements OnChanges {
+export class RuleChipComponent implements OnChanges, OnInit {
 
   @Input() treatment: (chip: string) => string;
   @Input() selectable: boolean;
@@ -24,10 +27,22 @@ export class RuleChipComponent implements OnChanges {
   @Input() label: string;
   @Input() forceSelect: boolean;
   @Input() position: number;
+  @Input() divisors: string[];
 
-  @Output() select: EventEmitter<{ label: string, isSelected: boolean, position: number }> = new EventEmitter();
+  @Output() select = new EventEmitter<{ label: string, isSelected: boolean, position: number }>();
 
   isSelected = false;
+
+  constructor(private service: ProposedRulesService) {
+  }
+
+  ngOnInit(): void {
+    this.service.ruleProposed(this.chip, this.divisors, (rule) => {
+      this.isSelected = true;
+      this.service.onRuleUsed(rule);
+        // this.selectThis();
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     for (const key in changes) {

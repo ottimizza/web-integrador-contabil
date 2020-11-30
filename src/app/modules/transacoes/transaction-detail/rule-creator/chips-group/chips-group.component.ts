@@ -1,6 +1,8 @@
-import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { IChipGroupPattern, IChipGroupParcialPattern } from './patterns/IChipGroupPattern';
 import { ArrayUtils } from '@shared/utils/array.utils';
+import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
+import { take } from 'rxjs/operators';
 
 export class RuleConfig {
   title: string;
@@ -22,17 +24,41 @@ class ChipList {
   templateUrl: './chips-group.component.html',
   styleUrls: ['./chips-group.component.scss']
 })
-export class RuleChipGroupComponent implements OnInit {
+export class RuleChipGroupComponent implements OnInit, AfterViewInit {
 
   @Input() config: RuleConfig;
   @Output() clicked = new EventEmitter();
+
+  @ViewChild('fakeInput')
+  public el: ElementRef<HTMLDivElement>;
 
   chipLists: ChipList[] = [];
   selecteds: { id: string, positions: number[] }[] = [];
   impositive: boolean[];
 
+  constructor(
+    private service: ProposedRulesService
+  ) {}
+
   ngOnInit(): void {
     this.init();
+  }
+
+  ngAfterViewInit() {
+    this.service.reconstructionEnded(() => {
+      const elements = this.el.nativeElement.querySelectorAll<HTMLDivElement>('.simple-chip');
+      let chips: { label: string, isSelected: boolean, position: number }[] = [];
+      elements.forEach(val => {
+        const label = val.id;
+        const isSelected = val.classList.contains('chip-selected') ;
+        let position = chips.map(chip => chip.label).lastIndexOf(label);
+        position = position > -1 ? position + 1 : 0;
+        chips.push({ label, isSelected, position });
+      });
+
+      chips = chips.filter(chip => chip.isSelected);
+      chips.forEach((chip) => this.onDevolve(chip));
+    });
   }
 
   public init() {
@@ -88,26 +114,20 @@ export class RuleChipGroupComponent implements OnInit {
       this.selecteds[index].positions = positions;
     }
 
-    const map = this._map();
-    this.clicked.emit(map);
+    const mapping = this._map();
+    this.clicked.emit(mapping);
   }
 
   private _map() {
     return this.selecteds.map(sel => {
       const chipList = this.chipLists.filter(cl => cl.key === sel.id)[0];
       const selecteds = sel.positions.map(pos => chipList.chipValue[pos]);
-      return {
-        title: sel.id,
-        selecteds
-      };
+      return { title: sel.id, selecteds };
     })
       .map(item => {
         const chipList = this.chipLists.filter(cl => cl.key === item.title)[0];
         if (item.selecteds.length === chipList.chipValue.length) {
-          return {
-            title: item.title,
-            selecteds: [chipList.fullValue]
-          };
+          return { title: item.title, selecteds: [chipList.fullValue] };
         }
         return item;
       });

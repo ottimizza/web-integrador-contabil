@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { ChecklistAnswer, ChecklistInputType, ChecklistQuestion } from '@shared/models/Checklist';
+import { FormControl } from '@angular/forms';
+
 import { momentjs } from '@shared/utils/moment';
 
 @Component({

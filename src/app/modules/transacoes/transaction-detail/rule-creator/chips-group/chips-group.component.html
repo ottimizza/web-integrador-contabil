@@ -1,5 +1,5 @@
 <span class="ml-2">{{ config.title }}:</span>
-<div class="fake-input">
+<div class="fake-input" #fakeInput>
   <div *ngFor="let chipList of chipLists; let pos = index">
     <mat-chip-list *ngIf="chipList.fullValue">
 
@@ -15,6 +15,7 @@
             [chip]="chip"
             [label]="chipList.label"
             [position]="i"
+            [divisors]="config.values[0].pattern.separators"
             [selectable]="chipList.selectable"
             [forceSelect]="getSelect(pos)"
             (select)="onDevolve($event)"
