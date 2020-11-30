@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Checklist, ChecklistAnswer } from '@shared/models/Checklist';
+import { Checklist, ChecklistAnswer, ChecklistQuestion } from '@shared/models/Checklist';
 import { ArrayUtils } from '@shared/utils/array.utils';
 
 @Injectable({
@@ -10,39 +10,45 @@ export class ChecklistLogicService {
   public answer(checklist: Checklist, currentAnswer: ChecklistAnswer, oldAnswers: ChecklistAnswer[]) {
     const valid = (currentAnswer.resposta !== null && currentAnswer.resposta !== undefined && currentAnswer.resposta !== '');
 
+    let questionsToDisable: ChecklistQuestion[] = [];
+    let questionsToEnable: ChecklistQuestion[] = [];
+
+    const data = this._map(checklist, currentAnswer);
+
     if (valid) {
-      const answers = this._answer(checklist, currentAnswer);
-      oldAnswers.push(...answers);
+      oldAnswers.push(...data.answers);
+      questionsToDisable = data.disable ? data.children : [];
+      questionsToEnable = data.disable ? [] : data.children;
     } else {
       const index = oldAnswers.map(a => a.perguntaId).indexOf(currentAnswer.perguntaId);
       if (index >= 0) {
         oldAnswers.splice(index, 1);
       }
+      questionsToDisable = data.children;
     }
 
     const oldQuestionsIds = oldAnswers.map(oa => oa.perguntaId);
-    const newAnswers = oldAnswers.filter((value, index) => {
+    const answers = oldAnswers.filter((value, index) => {
       const lastIndex = oldQuestionsIds.lastIndexOf(value.perguntaId);
       return lastIndex === index;
     });
 
-    return newAnswers;
-
+    return { answers, questionsToDisable, questionsToEnable };
   }
 
-  private _answer(checklist: Checklist, answer: ChecklistAnswer) {
+  private _map(checklist: Checklist, answer: ChecklistAnswer) {
     let answers = [answer];
     const questions = ArrayUtils.flat(checklist.grupos.map(g => g.perguntas));
     const group = checklist.grupos.filter(grupo => grupo.perguntas.map(pergunta => pergunta.id).includes(answer.perguntaId))[0];
     const question = group.perguntas.filter(pergunta => pergunta.id === answer.perguntaId)[0];
-    // const children = !!question.perguntasRelacionadas
-    //                  ? group.perguntas.filter(pergunta => question.perguntasRelacionadas.includes(pergunta.id))
-    //                  : [];
+
     const children = !!question.perguntasRelacionadas
                      ? questions.filter(q => question.perguntasRelacionadas.includes(q.id))
                      : [];
 
-    if (children.length && question.opcoesResposta?.length && answer.resposta === question.opcoesResposta[0].valor) {
+    const disable = answer.resposta === question.opcoesResposta[0].valor;
+
+    if (children.length && question.opcoesResposta?.length && disable) {
       answers = answers.concat(children.map(child => ({
           perguntaId: child.id,
           resposta: !!child.opcoesResposta?.length
@@ -52,7 +58,7 @@ export class ChecklistLogicService {
           observacoes: null
       })));
     }
-    return answers;
+    return { answers, children, disable };
   }
 
 }

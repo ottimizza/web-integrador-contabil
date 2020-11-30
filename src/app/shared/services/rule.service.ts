@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@env';
-import { RuleCreateFormat, PostFormatRule, Rule } from '@shared/models/Rule';
+import { RuleCreateFormat, PostFormatRule } from '@shared/models/Rule';
 import { Observable } from 'rxjs';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
 import { CompleteRule } from '@shared/models/CompleteRule';
 import { GenericResponse } from '@shared/models/GenericResponse';
-import { HttpHandlerService } from '@app/services/http-handler.service';
 import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
 
 const BASE_URL = `${environment.serviceUrl}`;

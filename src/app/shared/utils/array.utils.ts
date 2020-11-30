@@ -20,25 +20,23 @@ export class ArrayUtils {
     return newArray.concat(arr);
   }
 
+  /**
+   * Compara dois arrays
+   */
   public static compare(array: any[], arr: any[]) {
-    /*
-     * Verifica se dois arrays são EXATAMENTE iguais em TODOS os aspectos
-     */
     let verify = true;
 
-    if (!array) {
+    if (!array || !arr) {
       verify = false;
     }
-    if (array.length !== arr.length) {
-      verify = false;
-    }
-    array.forEach(arrayItem => {
-      if (arr[array.indexOf(arrayItem)] !== arrayItem) {
+
+    array.forEach((item, index) => {
+      if (item !== arr[index]) {
         verify = false;
       }
     });
-    return verify;
 
+    return verify;
   }
 
   public static split(text: string, ...divisors: string[]) {
@@ -142,19 +140,19 @@ export class ArrayUtils {
   }
 
   /**
-   * Compara dois arrays e informar se algum item de um array está presente em outro
+   * Compara se dois arrays são iguais mas sem levar a ordem em conta
    */
   public static includes2d(array1: PrimitiveArray, array2: PrimitiveArray) {
-    let includes = false;
+    let includes = true;
 
     array1.forEach(arr => {
-      if (array2.includes(arr)) {
-        includes = true;
+      if (!array2.includes(arr)) {
+        includes = false;
       }
     });
     array2.forEach(arr => {
-      if (array1.includes(arr)) {
-        includes = true;
+      if (!array1.includes(arr)) {
+        includes = false;
       }
     });
 
