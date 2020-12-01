@@ -20,6 +20,9 @@ export class ChecklistItemComponent implements AfterViewInit, OnChanges {
   @Input()
   public answer: string;
 
+  @Input()
+  public disable: boolean;
+
   @Output()
   public ok = new EventEmitter<ChecklistAnswer>();
 
@@ -55,16 +58,24 @@ export class ChecklistItemComponent implements AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     for (const key in changes) {
-      if (changes.hasOwnProperty(key) && key === 'answer' && this.answer) {
-        if (this.question.tipoInput === ChecklistInputType.SELECT) {
-          const value = this.question.opcoesResposta.filter(opt => opt.valor === this.answer)[0];
-          this.ctrl.setValue(value);
-        } else if (this.question.tipoInput === ChecklistInputType.MULT_SELECT) {
-          const value = this.answer.split(';');
-          const values = this.question.opcoesResposta.filter(opt => value.includes(opt.valor as string));
-          this.ctrl.setValue(values);
-        } else {
-          this.ctrl.setValue(this.answer);
+      if (changes.hasOwnProperty(key)) {
+        if (key === 'answer' && this.answer) {
+          if (this.question.tipoInput === ChecklistInputType.SELECT) {
+            const value = this.question.opcoesResposta.filter(opt => opt.valor === this.answer)[0];
+            this.ctrl.setValue(value);
+          } else if (this.question.tipoInput === ChecklistInputType.MULT_SELECT) {
+            const value = this.answer.split(';');
+            const values = this.question.opcoesResposta.filter(opt => value.includes(opt.valor as string));
+            this.ctrl.setValue(values);
+          } else {
+            this.ctrl.setValue(this.answer);
+          }
+        } else if (key === 'disable') {
+          if (this.disable && this.ctrl.enabled) {
+            this.ctrl.disable();
+          } else if (!this.disable && this.ctrl.disabled) {
+            this.ctrl.enable();
+          }
         }
       }
     }

@@ -29,6 +29,7 @@ export class ChecklistComponent implements OnInit {
   public isFinished = false;
 
   public answers: ChecklistAnswer[] = [];
+  public disabledQuestions: number[] = [];
 
   constructor(
     private service: ChecklistService,
@@ -46,7 +47,10 @@ export class ChecklistComponent implements OnInit {
   }
 
   public onQuestionOk(event: ChecklistAnswer) {
-    this.answers = this.logic.answer(this.checklist, event, this.answers);
+    const data = this.logic.answer(this.checklist, event, this.answers);
+    this.disabledQuestions = this.disabledQuestions.concat(data.questionsToDisable.map(question => question.id));
+    this.disabledQuestions = this.disabledQuestions.filter(question => !data.questionsToEnable.map(q => q.id).includes(question));
+    this.answers = data.answers;
     this.isFinished = this.finished();
   }
 
