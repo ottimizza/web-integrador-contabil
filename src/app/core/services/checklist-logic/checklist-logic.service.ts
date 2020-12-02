@@ -46,9 +46,9 @@ export class ChecklistLogicService {
                      ? questions.filter(q => question.perguntasRelacionadas.includes(q.id))
                      : [];
 
-    const disable = answer.resposta === question.opcoesResposta[0].valor;
+    const disable = question.opcoesResposta?.length && answer.resposta === question.opcoesResposta[0].valor;
 
-    if (children.length && question.opcoesResposta?.length && disable) {
+    if (children.length && disable) {
       answers = answers.concat(children.map(child => ({
           perguntaId: child.id,
           resposta: !!child.opcoesResposta?.length

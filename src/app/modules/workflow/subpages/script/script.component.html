@@ -25,7 +25,7 @@
       </div>
 
     </mat-step>
-    <mat-step label="Material" [completed]="currentScript?.urlArquivo" [editable]="false" id="script-stepper-material">
+    <mat-step label="Material" [completed]="currentScript?.urlArquivo" [editable]="!currentScript?.nome" id="script-stepper-material">
 
       <div class="m-4 mb-5 w-100 text-center">
         <ott-title>Subir Arquivo</ott-title>

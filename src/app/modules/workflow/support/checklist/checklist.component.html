@@ -1,8 +1,11 @@
 <div *ngIf="checklist">
-  <better-info type="warning" *ngIf="importantInfos">{{ importantInfos }}</better-info>
+
+  <div *ngIf="importantInfos">
+    <better-info type="warning" *ngFor="let info of importantInfos">{{ info }}</better-info>
+  </div>
 
   <div class="mt-4 mb-4" *ngIf="notImportantInfos; else emptySpaces">
-    <better-info *ngIf="notImportantInfos">{{ notImportantInfos }}</better-info>
+    <better-info *ngFor="let info of notImportantInfos">{{ info }}</better-info>
   </div>
 
   <ng-template #emptySpaces>

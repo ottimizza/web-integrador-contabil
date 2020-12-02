@@ -121,6 +121,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
       let page = 0;
       if (this.currentScript.tipoRoteiro) {
         page = 1;
+        this.type = this.currentScript.tipoRoteiro;
       }
       if (this.currentScript.urlArquivo) {
         this.startChecklist();
@@ -150,7 +151,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
   async emitFile(file: File) {
     this.toast.showSnack('Enviando arquivo...');
     this.service.upload(this.currentScript.id, file, this.company.cnpj, this.currentUser.organization.cnpj, environment.storageApplicationId)
-    .subscribe(async resultSet => {
+    .subscribe(() => {
       this.toast.hideSnack();
       this.router.navigate(['/dashboard', 'workflow', this.currentScript.id]);
     });

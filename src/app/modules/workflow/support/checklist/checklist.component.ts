@@ -23,8 +23,8 @@ export class ChecklistComponent implements OnInit {
   @Output()
   public completed = new EventEmitter<Script>();
 
-  public importantInfos: string;
-  public notImportantInfos: string;
+  public importantInfos: string[];
+  public notImportantInfos: string[];
 
   public isFinished = false;
 
@@ -39,11 +39,9 @@ export class ChecklistComponent implements OnInit {
 
   ngOnInit(): void {
     this.importantInfos = this.checklist.observacoes.filter(obs => obs.importante)
-      .map(obs => obs.descricao)
-      .join(' ');
+      .map(obs => obs.descricao);
     this.notImportantInfos = this.checklist.observacoes.filter(obs => !obs.importante)
-      .map(obs => obs.descricao)
-      .join(' ');
+      .map(obs => obs.descricao);
   }
 
   public onQuestionOk(event: ChecklistAnswer) {

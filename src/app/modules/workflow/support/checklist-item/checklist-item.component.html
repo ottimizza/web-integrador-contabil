@@ -2,7 +2,6 @@
 
   <div class="row w-100 m-0">
 
-
     <div class="col-lg-8" [ngSwitch]="question.tipoInput">
       <ott-input
         [id]="'checklist-item-' + question.id"
@@ -44,9 +43,11 @@
 
     <div class="col-md mt-2 mt-lg-0">
       <ott-input
-        deep="position: relative; bottom: 0"
+        deep="position: relative; bottom: 0; resize: none"
+        type="textarea"
         [id]="'checklist-observation-' + question.id"
         label="Observações"
+        [placeholder]="question.sugestao || ''"
         [control]="observation"
         (input)="submit()"
         (submit)="submit()"

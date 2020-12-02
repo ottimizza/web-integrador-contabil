@@ -21,10 +21,13 @@ export class FileUploadComponent {
   // Referência de origem do arquivo
   @ViewChild('fileInput') inputRef: ElementRef<HTMLInputElement>;
 
-  constructor (private toast: ToastService) {}
+  constructor(private toast: ToastService) {}
 
   handleFileInput(files: FileList) {
-    const fileToUpload = files.item(0);
+    const fileToUpload = files?.item(0);
+    if (!fileToUpload) {
+      return;
+    }
     const ok = this.allowedTypes ? this.allowedTypes.includes(this.getFileExtension(fileToUpload)) : true;
     if (ok) {
       this.fileToUpload = fileToUpload;
