@@ -84,6 +84,7 @@ export class ChecklistComponent implements OnInit {
       this.toast.showSnack('Registrando respostas...');
       this.service.sendAnswers(this.scriptId, this.answers).subscribe(result => {
         this.toast.show('Respostas registradas com sucesso!', 'success');
+        this.completed.emit(result.record);
       });
     }
   }
