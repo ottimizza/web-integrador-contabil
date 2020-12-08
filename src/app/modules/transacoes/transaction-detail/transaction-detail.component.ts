@@ -65,7 +65,9 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   currentUser: User;
 
   public showProposedRules = true;
+  public legacyShowProposedRules = true;
   public useAccountingIntelligenceInProposedRules = false;
+  public proposedRuleId: number;
 
   public tutorialInitSub: Subscription;
   public tutorialEndedSub: Subscription;
@@ -182,13 +184,24 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     );
   }
 
+  get ruleAddiotionalInformation() {
+    let sugerir: 0 | 1 | 2 = 2;
+    if (this.legacyShowProposedRules) {
+      sugerir = this.useAccountingIntelligenceInProposedRules ? 1 : 0;
+    }
+    return {
+      sugerir,
+      regraSugerida: this.proposedRuleId
+    }
+  }
+
   regra() {
     if (this.ruleCreateFormat.regras.length > 6) {
       this.errorText = 'Você não pode salvar uma regra com mais de 4 cláusulas!';
       return;
     }
     const regra = this.ruleCreateFormat;
-    const observable = this._ruleService.createRule(regra);
+    const observable = this._ruleService.createRule(regra, this.ruleAddiotionalInformation);
     const verifications = [!!this.account?.value?.length, this.conditions.verify()];
     const errors = [
       'Para salvar uma regra você deve informar uma conta contábil.',
@@ -204,7 +217,7 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     }
     const regra = this.ruleCreateFormat;
     regra.contaMovimento = 'IGNORAR';
-    const observable = this._ruleService.createRule(regra);
+    const observable = this._ruleService.createRule(regra, this.ruleAddiotionalInformation);
     const verification = this.conditions.verify();
     const error = ['Para salvar uma regra de ignorar, você deve informar as condições da regra.'];
     this._savePattern(observable, [verification], error);
@@ -352,8 +365,9 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
 
   public async proposeRules() {
     this._toast.showSimpleSnackBar('Obtendo regra sugerida...');
-    const account = await this._ruleService.proposeRules(this.entry.id, this.useAccountingIntelligenceInProposedRules);
-    this.account.setValue(account);
+    const data = await this._ruleService.proposeRules(this.entry.id, this.useAccountingIntelligenceInProposedRules);
+    this.account.setValue(data.account);
+    this.proposedRuleId = data.id;
     this._toast.hideSnack();
   }
 
@@ -363,6 +377,7 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     const rs = await this.fetch();
     this.entry = rs.records[0];
     this.pageInfo = rs.pageInfo;
+    this.legacyShowProposedRules = this.showProposedRules;
     if (this.entry && this.showProposedRules) {
       await this.proposeRules();
     }

@@ -14,11 +14,12 @@ const BASE_URL = `${environment.serviceUrl}`;
 })
 export class RuleService extends ProposedRulesService {
 
-  createRule(rule: RuleCreateFormat): Observable<any> {
+  createRule(rule: RuleCreateFormat, additionalInformation: { sugerir: 0 | 1 | 2, regraSugerida: number }): Observable<any> {
     if (rule.reduce) {
       rule.reduce();
     }
-    return this.http.post<GenericResponse<CompleteRule>>(`${BASE_URL}/api/v1/regras`, rule, 'Falha ao criar regra!');
+    const url = `${BASE_URL}/api/v1/regras`
+    return this.http.post<GenericResponse<CompleteRule>>([url, additionalInformation], rule, 'Falha ao criar regra!');
   }
 
   getAllIds(cnpjEmpresa: string, cnpjContabilidade: string, tipoLancamento: number) {

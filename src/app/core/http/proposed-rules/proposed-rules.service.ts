@@ -39,10 +39,10 @@ export class ProposedRulesService {
     const result = await this._suggestedRule(entryId, !!accountingFilter).toPromise();
     if (result.record && result.record.camposRegras?.length) {
       this.proposedRules = result.record.camposRegras;
-      return result.record.contaMovimento ?? '';
+      return { id: result.record.id, account: result.record.contaMovimento ?? '' };
     }
     this.proposedRules = [];
-    return '';
+    return { id: result?.record?.id || null, account: '' };
   }
 
   public proposedRulesIncludes(value: string, separators: string[], array = this.proposedRules) {

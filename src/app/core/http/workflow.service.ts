@@ -65,7 +65,7 @@ export class WorkflowService {
     const searchCriteria = { cnpjEmpresa, cnpjContabilidade, applicationId: storageBucket };
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post<GenericResponse<Script>>([url, searchCriteria], formData, 'Falha ao enviar arquivo!');
+    return this.http.post<GenericResponse<Script>>([url, searchCriteria], formData, 'Falha ao enviar arquivo!', 'Enviando arquivo...');
   }
 
   public delete(id: number) {
