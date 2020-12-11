@@ -5,6 +5,7 @@ import { UpdateSerive } from '@app/services/update.service';
 import { MessagingService } from '@app/services/messaging.service';
 import { LoggerUtils } from '@shared/utils/logger.utills';
 import { environment } from '@env';
+import { ObjectUtils } from '@shared/utils/object.utils';
 
 @Component({
   selector: 'app-root',

@@ -29,6 +29,7 @@ import { TimeUtils } from '@shared/utils/time.utils';
 import { DateUtils } from '@shared/utils/date-utils';
 import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
+import { ObjectUtils } from '@shared/utils/object.utils';
 
 @Component({
   selector: 'app-tdetail',
@@ -395,8 +396,8 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   public async reConstruct() {
     for (let i = 1; i < 8; i++) {
       this.rebuild = i;
-      this._ruleService.onReconstructionCompleted();
       await TimeUtils.sleep(1);
+      this._ruleService.onReconstructionCompleted();
     }
     this.onReconstructionCompleted()
   }

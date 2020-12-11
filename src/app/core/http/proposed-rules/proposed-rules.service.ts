@@ -63,7 +63,6 @@ export class ProposedRulesService {
           if (!this.proposedRules) {
             this.proposedRules = result;
           }
-          // this.onRuleUsed(rule);
           return rule;
         }),
         take(1),
