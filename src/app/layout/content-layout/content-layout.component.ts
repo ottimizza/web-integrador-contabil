@@ -10,9 +10,9 @@ export class ContentLayoutComponent /* implements OnInit */ {
   // constructor(public route: ActivatedRoute) { }
 
   // public ngOnInit() {
-  //   this.route.queryParamMap.subscribe(queryParams => {
-  //     console.log(queryParams);
-  //   });
+  //   // this.route.queryParamMap.subscribe(queryParams => {
+  //   //   console.log(queryParams);
+  //   // });
   // }
 
 }

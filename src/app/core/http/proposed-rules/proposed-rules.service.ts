@@ -21,6 +21,7 @@ export class ProposedRulesService {
   private readonly RECONSTRUCTION_ENDED_KEY = 'event-reconstruction-ended';
 
   private proposedRules: string[];
+  public alreadyUsedRules: string[] = [];
 
   constructor(
     private event: RxEvent,
@@ -37,6 +38,7 @@ export class ProposedRulesService {
 
   public async proposeRules(entryId: number, accountingFilter?: boolean) {
     const result = await this._suggestedRule(entryId, !!accountingFilter).toPromise();
+    this.alreadyUsedRules = [];
     if (result.record && result.record.camposRegras?.length) {
       this.proposedRules = result.record.camposRegras;
       return { id: result.record.id, account: result.record.contaMovimento ?? '' };
@@ -58,6 +60,7 @@ export class ProposedRulesService {
     this.event.use(
       [
         filter((result: string[]) => this.proposedRulesIncludes(value, separators, result)),
+        take(1),
         map((result: string[]) => {
           const rule = result.filter(a =>  a.toUpperCase().includes(value.toUpperCase()))[0];
           if (!this.proposedRules) {
@@ -65,8 +68,7 @@ export class ProposedRulesService {
           }
           return rule;
         }),
-        take(1),
-        delay(150),
+        delay(150)
       ],
       this.PROPOSED_RULES_KEY,
       handler

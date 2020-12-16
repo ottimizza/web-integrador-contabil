@@ -30,6 +30,7 @@ import { DateUtils } from '@shared/utils/date-utils';
 import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
 import { ObjectUtils } from '@shared/utils/object.utils';
+import { KeyMap } from '@shared/models/KeyMap';
 
 @Component({
   selector: 'app-tdetail',
@@ -388,8 +389,13 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     this.calcPercentage();
 
     if (!this.entry) {
-      this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa.`]);
-      this.percentage = 100;
+      if (!this.pageInfo.hasPrevious) {
+        this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa.`]);
+        this.percentage = 100;
+      } else {
+        this.pageInfo.pageIndex--;
+        await this.requestEntry();
+      }
     }
   }
 

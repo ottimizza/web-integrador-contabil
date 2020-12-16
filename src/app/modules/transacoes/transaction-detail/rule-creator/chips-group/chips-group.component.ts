@@ -48,8 +48,15 @@ export class RuleChipGroupComponent implements OnInit, AfterViewInit {
       const elements = this.el.nativeElement.querySelectorAll<HTMLDivElement>('.simple-chip');
       let chips: { label: string, isSelected: boolean, position: number }[] = [];
       elements.forEach(val => {
+        const chipValue = val.innerText;
+        let isSelected = val.classList.contains('chip-selected');
+        if (isSelected && this.service.alreadyUsedRules.includes(chipValue)) {
+          val.classList.remove('chip-selected');
+          isSelected = false;
+        } else if (isSelected) {
+          this.service.alreadyUsedRules.push(chipValue);
+        }
         const label = val.id;
-        const isSelected = val.classList.contains('chip-selected') ;
         let position = chips.map(chip => chip.label).lastIndexOf(label);
         position = position > -1 ? position + 1 : 0;
         chips.push({ label, isSelected, position });
