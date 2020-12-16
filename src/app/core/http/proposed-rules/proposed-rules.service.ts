@@ -26,7 +26,9 @@ export class ProposedRulesService {
   constructor(
     private event: RxEvent,
     protected http: HttpHandlerService
-  ) { }
+  ) {
+    this.event.subscribe(this.RECONSTRUCTION_ENDED_KEY, () => this.alreadyUsedRules = []);
+  }
 
   public onReconstructionEnded() {
     this.event.next(this.RECONSTRUCTION_ENDED_KEY, true);
@@ -38,7 +40,6 @@ export class ProposedRulesService {
 
   public async proposeRules(entryId: number, accountingFilter?: boolean) {
     const result = await this._suggestedRule(entryId, !!accountingFilter).toPromise();
-    this.alreadyUsedRules = [];
     if (result.record && result.record.camposRegras?.length) {
       this.proposedRules = result.record.camposRegras;
       return { id: result.record.id, account: result.record.contaMovimento ?? '' };

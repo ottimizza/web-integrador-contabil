@@ -1,5 +1,8 @@
+<mat-menu #menu="matMenu">abcde</mat-menu>
+<button class="d-none" [matMenuTriggerFor]="menu" #trigger="matMenuTrigger"></button>
+
 <span class="ml-2">{{ config.title }}:</span>
-<div class="fake-input" #fakeInput>
+<div class="fake-input" #fakeInput (contextmenu)="onContextMenu($event)">
   <div *ngFor="let chipList of chipLists; let pos = index">
     <mat-chip-list *ngIf="chipList.fullValue">
 

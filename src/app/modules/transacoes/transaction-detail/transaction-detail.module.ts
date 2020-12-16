@@ -46,7 +46,7 @@ import { PaginatorModule } from '@shared/components/paginator/paginator.module';
       MatRippleModule,
       MatMenuModule,
       MatRadioModule,
-      PaginatorModule
+      PaginatorModule,
     ],
     entryComponents: [
       RuleGridComponent,

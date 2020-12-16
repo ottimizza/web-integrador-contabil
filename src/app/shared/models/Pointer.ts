@@ -1,6 +1,25 @@
+import { ObjectUtils } from '@shared/utils/object.utils';
+
 export abstract class Pointer {
 
   protected static data: any;
+
+  public static deleteBy(byWhat: { address?: string, pointer?: any }) {
+    if (byWhat.address) {
+      delete Pointer.data[byWhat.address];
+    } else if (byWhat.pointer !== null && byWhat.pointer !== undefined) {
+      delete Pointer.data[this.addressOf(byWhat.pointer)];
+    }
+  }
+
+  public static addressOf(pointer: any) {
+    for (const address of Object.keys(Pointer.data)) {
+      if (ObjectUtils.equals(Pointer.data[address], pointer)) {
+        return address;
+      }
+    }
+    return null;
+  }
 
   public static new<T>(objekt: T) {
     this._startData();

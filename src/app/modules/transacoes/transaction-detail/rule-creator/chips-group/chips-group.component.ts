@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef, 
 import { IChipGroupPattern, IChipGroupParcialPattern } from './patterns/IChipGroupPattern';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
+import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 
 export class RuleConfig {
   title: string;
@@ -30,6 +31,9 @@ export class RuleChipGroupComponent implements OnInit, AfterViewInit {
 
   @ViewChild('fakeInput')
   public el: ElementRef<HTMLDivElement>;
+
+  @ViewChild('trigger')
+  private trigger: MatMenuTrigger;
 
   chipLists: ChipList[] = [];
   selecteds: { id: string, positions: number[] }[] = [];
@@ -162,6 +166,12 @@ export class RuleChipGroupComponent implements OnInit, AfterViewInit {
         chipValue
       };
     });
+  }
+
+  public onContextMenu(e: MouseEvent) {
+    e.preventDefault();
+    console.log(e);
+    this.trigger.openMenu();
   }
 
 }

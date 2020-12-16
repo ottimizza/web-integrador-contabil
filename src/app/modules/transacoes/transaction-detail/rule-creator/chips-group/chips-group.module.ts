@@ -4,13 +4,15 @@ import { CommonModule } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RuleChipComponent } from './rule-chip/rule-chip.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [RuleChipGroupComponent, RuleChipComponent],
   imports: [
     CommonModule,
     MatTooltipModule,
-    MatChipsModule
+    MatChipsModule,
+    MatMenuModule
   ],
   exports: [RuleChipGroupComponent]
 })

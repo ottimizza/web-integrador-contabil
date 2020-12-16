@@ -6,13 +6,8 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './content-layout.component.html',
   styleUrls: ['./content-layout.component.scss']
 })
-export class ContentLayoutComponent /* implements OnInit */ {
+export class ContentLayoutComponent {
   // constructor(public route: ActivatedRoute) { }
 
-  // public ngOnInit() {
-  //   // this.route.queryParamMap.subscribe(queryParams => {
-  //   //   console.log(queryParams);
-  //   // });
-  // }
 
 }
