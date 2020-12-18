@@ -189,7 +189,7 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   get ruleAddiotionalInformation() {
     let sugerir: 0 | 1 | 2 = 2;
     if (this.legacyShowProposedRules) {
-      sugerir = this.useAccountingIntelligenceInProposedRules ? 1 : 0;
+      sugerir = this.useAccountingIntelligenceInProposedRules ? 0 : 1;
     }
     return {
       sugerir,

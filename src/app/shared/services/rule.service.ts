@@ -18,7 +18,7 @@ export class RuleService extends ProposedRulesService {
     if (rule.reduce) {
       rule.reduce();
     }
-    const url = `${BASE_URL}/api/v1/regras`
+    const url = `${BASE_URL}/api/v1/regras`;
     return this.http.post<GenericResponse<CompleteRule>>([url, additionalInformation], rule, 'Falha ao criar regra!');
   }
 
