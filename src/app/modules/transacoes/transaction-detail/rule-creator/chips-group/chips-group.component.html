@@ -4,7 +4,7 @@
     <span>Ignorar esta sugestão</span>
   </a>
 </mat-menu>
-<button class="d-none" [matMenuTriggerFor]="menu" #trigger="matMenuTrigger"></button>
+<button class="d-none" style="position: fixed;" #triggerButton [matMenuTriggerFor]="menu" #trigger="matMenuTrigger"></button>
 
 <span class="ml-2">{{ config.title }}:</span>
 <div class="fake-input" #fakeInput (contextmenu)="onContextMenu($event)">

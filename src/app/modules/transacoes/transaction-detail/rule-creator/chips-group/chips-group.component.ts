@@ -8,6 +8,7 @@ import { Pointer } from '@shared/models/Pointer';
 import { Lancamento } from '@shared/models/Lancamento';
 import { RuleService } from '@shared/services/rule.service';
 import { ToastService } from '@shared/services/toast.service';
+import { TimeUtils } from '@shared/utils/time.utils';
 
 export class RuleConfig {
   title: string;
@@ -39,6 +40,9 @@ export class RuleChipGroupComponent implements OnInit, AfterViewInit {
 
   @ViewChild('trigger')
   private trigger: MatMenuTrigger;
+
+  @ViewChild('triggerButton', { static: true })
+  private triggerButton: ElementRef<HTMLButtonElement>
 
   chipLists: ChipList[] = [];
   selecteds: { id: string, positions: number[] }[] = [];
@@ -177,10 +181,18 @@ export class RuleChipGroupComponent implements OnInit, AfterViewInit {
     });
   }
 
-  public onContextMenu(e: MouseEvent) {
+  public async onContextMenu(e: MouseEvent) {
     if (this.hasProposedRule) {
       e.preventDefault();
+      this.triggerButton.nativeElement.classList.remove('d-none');
+      this.triggerButton.nativeElement.style.left = e.offsetX + 'px';
+      this.triggerButton.nativeElement.style.top = e.offsetY + 'px';
+
+      await TimeUtils.sleep(0)
       this.trigger.openMenu();
+      await TimeUtils.sleep(0)
+
+      this.triggerButton.nativeElement.classList.add('d-none');
     }
   }
 
