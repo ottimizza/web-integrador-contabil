@@ -31,13 +31,14 @@ import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
 import { ObjectUtils } from '@shared/utils/object.utils';
 import { KeyMap } from '@shared/models/KeyMap';
+import { BeforeComponentDestroyed } from '@shared/operators/before-component-destroyed.operator';
 
 @Component({
   selector: 'app-tdetail',
   templateUrl: './transaction-detail.component.html',
   styleUrls: ['./transaction-detail.component.scss']
 })
-export class TransactionDetailComponent implements OnInit, OnDestroy {
+export class TransactionDetailComponent extends BeforeComponentDestroyed implements OnInit {
 
   @Output() tabSelect = new EventEmitter();
   @Input() business: Empresa;
@@ -71,8 +72,6 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   public useAccountingIntelligenceInProposedRules = false;
   public proposedRuleId: number;
 
-  public tutorialInitSub: Subscription;
-  public tutorialEndedSub: Subscription;
   public recoverState: Subject<any>;
 
   constructor(
@@ -84,11 +83,8 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     private _tutorialService: TutorialService,
     private _snapshotService: SnapshotService,
     public dialog: DialogService
-  ) { }
-
-  ngOnDestroy(): void {
-    this.tutorialInitSub.unsubscribe();
-    this.tutorialEndedSub.unsubscribe();
+  ) {
+    super();
   }
 
   ngOnInit(): void {
@@ -98,7 +94,9 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   }
 
   setTutorials() {
-    this.tutorialInitSub = this._tutorialService.afterTutorialStarted.subscribe(() => {
+    this._tutorialService.afterTutorialStarted
+    .pipe(this.takeUntil)
+    .subscribe(() => {
       this.recoverState = this._snapshotService.recycle(this, ['entry', 'errorText', 'errorText2', 'total', 'conditions'])
       this.errorText = null;
       this.errorText2 = null;
@@ -106,7 +104,8 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
       this.entry = FAKE_ENTRY;
       Object.assign(this.conditions, { verify: () => true });
     });
-    this.tutorialEndedSub = this._tutorialService.afterTutorialClosed.subscribe(() => {
+    this._tutorialService.afterTutorialClosed
+    .pipe(this.takeUntil).subscribe(() => {
       this.recoverState.next();
     });
   }

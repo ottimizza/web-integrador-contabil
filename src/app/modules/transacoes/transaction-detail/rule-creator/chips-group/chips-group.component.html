@@ -1,4 +1,9 @@
-<mat-menu #menu="matMenu">abcde</mat-menu>
+<mat-menu #menu="matMenu">
+  <a mat-menu-item (click)="ignoreSuggestion()">
+    <i class="fas fa-forward" aria-hidden="true"></i>&nbsp;&nbsp;
+    <span>Ignorar esta sugestão</span>
+  </a>
+</mat-menu>
 <button class="d-none" [matMenuTriggerFor]="menu" #trigger="matMenuTrigger"></button>
 
 <span class="ml-2">{{ config.title }}:</span>
@@ -33,3 +38,4 @@
     </mat-chip-list>
   </div>
 </div>
+<!-- /api/v1/regras/sugerir/ignorar -->

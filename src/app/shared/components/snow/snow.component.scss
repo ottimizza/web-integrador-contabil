@@ -1,0 +1,33 @@
+@keyframes snowflake-fall {
+  0% {
+    top: -15%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+@keyframes snowflake-move {
+  0% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(75px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+.snowflake {
+  color: white;
+  font-size: 1.4em;
+  text-shadow: 0 0 1px #00bcd4;
+  position: fixed;
+  top: -15%;
+  z-index: 9999;
+  cursor: default;
+  animation-name: snowflake-fall, snowflake-move;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+}

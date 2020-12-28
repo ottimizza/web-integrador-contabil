@@ -4,24 +4,11 @@ export abstract class Pointer {
 
   protected static data: any;
 
-  public static deleteBy(byWhat: { address?: string, pointer?: any }) {
-    if (byWhat.address) {
-      delete Pointer.data[byWhat.address];
-    } else if (byWhat.pointer !== null && byWhat.pointer !== undefined) {
-      delete Pointer.data[this.addressOf(byWhat.pointer)];
-    }
+  public static delete(address: string) {
+    delete Pointer.data[address];
   }
 
-  public static addressOf(pointer: any) {
-    for (const address of Object.keys(Pointer.data)) {
-      if (ObjectUtils.equals(Pointer.data[address], pointer)) {
-        return address;
-      }
-    }
-    return null;
-  }
-
-  public static new<T>(objekt: T) {
+  public static new<T>(objekt: object & T) {
     this._startData();
     const address = this._createAddress();
 
@@ -38,7 +25,8 @@ export abstract class Pointer {
       };
       classess.push(Clazz);
     }
-    return new classess[classess.length - 1]() as T;
+    const object = new classess[classess.length - 1]() as T;
+    return Object.assign(object, { pointerAddress: address });
   }
 
   private static _startData() {

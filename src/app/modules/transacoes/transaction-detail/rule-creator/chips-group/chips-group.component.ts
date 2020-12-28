@@ -1,8 +1,13 @@
-import { Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit, NgZone } from '@angular/core';
 import { IChipGroupPattern, IChipGroupParcialPattern } from './patterns/IChipGroupPattern';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
+import { ProposedRule } from '@shared/models/Rule';
+import { Pointer } from '@shared/models/Pointer';
+import { Lancamento } from '@shared/models/Lancamento';
+import { RuleService } from '@shared/services/rule.service';
+import { ToastService } from '@shared/services/toast.service';
 
 export class RuleConfig {
   title: string;
@@ -39,8 +44,11 @@ export class RuleChipGroupComponent implements OnInit, AfterViewInit {
   selecteds: { id: string, positions: number[] }[] = [];
   impositive: boolean[];
 
+  public hasProposedRule = false;
+
   constructor(
-    private service: ProposedRulesService
+    private service: RuleService,
+    private toast: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -69,6 +77,7 @@ export class RuleChipGroupComponent implements OnInit, AfterViewInit {
       chips = chips.filter(chip => chip.isSelected);
       chips.forEach((chip) => this.onDevolve(chip));
     });
+    this.hasProposedRule = !!this.service.lastProposedRule?.id;
   }
 
   public init() {
@@ -169,9 +178,19 @@ export class RuleChipGroupComponent implements OnInit, AfterViewInit {
   }
 
   public onContextMenu(e: MouseEvent) {
-    e.preventDefault();
-    console.log(e);
-    this.trigger.openMenu();
+    if (this.hasProposedRule) {
+      e.preventDefault();
+      this.trigger.openMenu();
+    }
+  }
+
+  public ignoreSuggestion() {
+    if (this.hasProposedRule) {
+      this.service.ignoreSuggestion(this.service.lastProposedRule)
+      .subscribe(() => {
+        this.toast.show('Ótimo, esta sugestão não será mais apresentada à sua contabilidade', 'success')
+      });
+    }
   }
 
 }

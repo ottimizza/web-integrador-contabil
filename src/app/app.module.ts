@@ -22,6 +22,7 @@ import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component'
 import { AvatarModule } from '@shared/components/avatar/avatar.module';
 import { BrandModule } from '@shared/components/brand/brand.module';
 import { CoreModule } from '@app/core.module';
+import { SnowModule } from '@shared/components/snow/snow.module';
 
 const socketConfig: SocketIoConfig = { url: environment.serviceUrl, options: {} };
 
@@ -60,6 +61,7 @@ const socketConfig: SocketIoConfig = { url: environment.serviceUrl, options: {} 
     // Firebase Notifications
     AngularFireMessagingModule,
     AngularFireModule.initializeApp(environment.firebase),
+
   ],
   providers: [
     GlobalHttpInterceptorProvider

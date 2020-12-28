@@ -1,5 +1,5 @@
 import { delay, filter, map, take } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { environment } from '@env';
 
 import { HttpHandlerService } from '@app/services/http-handler.service';
@@ -8,7 +8,6 @@ import { RxEvent } from '@app/services/rx-event.service';
 import { ProposedRule } from '@shared/models/Rule';
 import { User } from '@shared/models/User';
 import { ArrayUtils } from '@shared/utils/array.utils';
-import { BehaviorSubject, Subject } from 'rxjs';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/regras`;
 
@@ -23,11 +22,18 @@ export class ProposedRulesService {
   private proposedRules: string[];
   public alreadyUsedRules: string[] = [];
 
+  public lastProposedRule: ProposedRule;
+
   constructor(
     private event: RxEvent,
-    protected http: HttpHandlerService
+    protected http: HttpHandlerService,
   ) {
     this.event.subscribe(this.RECONSTRUCTION_ENDED_KEY, () => this.alreadyUsedRules = []);
+  }
+
+  public ignoreSuggestion(rule: ProposedRule) {
+    const url = `${BASE_URL}/sugerir/ignorar`;
+    return this.http.post(url, rule, 'Falha ao ignorar sugestão de regra');
   }
 
   public onReconstructionEnded() {
@@ -40,6 +46,7 @@ export class ProposedRulesService {
 
   public async proposeRules(entryId: number, accountingFilter?: boolean) {
     const result = await this._suggestedRule(entryId, !!accountingFilter).toPromise();
+    this.lastProposedRule = result.record;
     if (result.record && result.record.camposRegras?.length) {
       this.proposedRules = result.record.camposRegras;
       return { id: result.record.id, account: result.record.contaMovimento ?? '' };
