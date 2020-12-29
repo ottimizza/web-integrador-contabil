@@ -381,6 +381,8 @@ export class TransactionDetailComponent extends BeforeComponentDestroyed impleme
     this.legacyShowProposedRules = this.showProposedRules;
     if (this.entry && this.showProposedRules) {
       await this.proposeRules();
+    } else {
+      this._ruleService.lastProposedRule = null;
     }
 
     this.reConstruct();

@@ -9,7 +9,7 @@ import { Lancamento } from '@shared/models/Lancamento';
 import { PostFormatRule } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
 import { KeyMap } from '@shared/models/KeyMap';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { User } from '@shared/models/User';
 import { ArrayUtils } from '@shared/utils/array.utils';
 
