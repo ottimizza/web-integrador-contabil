@@ -23,6 +23,7 @@ import { NormalizedLayoutModule } from 'app/layout/normalized-layout/normalized-
 import { RuleDeleteConfirmDialogComponent } from './rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
 import { ActionButtonsModule } from '@shared/components/action-buttons/action-buttons.module';
 import { RuleListRoutingModule } from './rule-list.routing';
+import { OptionsMenuModule } from '@shared/components/options-menu/options-menu.module';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { RuleListRoutingModule } from './rule-list.routing';
     BreadcrumbModule,
     ActionButtonsModule,
     MatProgressBarModule,
-    NormalizedLayoutModule
+    NormalizedLayoutModule,
+    OptionsMenuModule
   ],
   entryComponents: [
     RuleEditModalComponent,

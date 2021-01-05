@@ -1,29 +1,34 @@
-import { ObjectUtils } from '@shared/utils/object.utils';
-
 export abstract class Pointer {
 
-  protected static data: any;
+  private static data: any;
+
+  public static exists(address: string) {
+    return this.data[address] && typeof this.data[address] === 'object';
+  }
 
   public static delete(address: string) {
     delete Pointer.data[address];
   }
 
-  public static new<T>(objekt: object & T) {
+  public static new<T>(objekt: object & T, addressByteLenght = 8) {
     this._startData();
-    const address = this._createAddress();
+    const address = this._createAddress(addressByteLenght);
 
     Pointer.data[address] = objekt;
     const classess: any[] = [class {}];
     for (const key of Object.keys(objekt)) {
-      const Clazz = class extends classess[classess.length - 1] {
+      class PointerData extends classess[classess.length - 1] {
         get [key]() {
-          return Pointer.data[address][key];
+          const data = Pointer.data[address] || {};
+          return data[key];
         }
         set [key](value: any) {
-          Pointer.data[address][key] = value;
+          if (Pointer.data[address]) {
+            Pointer.data[address][key] = value;
+          }
         }
-      };
-      classess.push(Clazz);
+      }
+      classess.push(PointerData);
     }
     const object = new classess[classess.length - 1]() as T;
     return Object.assign(object, { pointerAddress: address });
@@ -33,13 +38,13 @@ export abstract class Pointer {
     this.data = this.data || {};
   }
 
-  private static _createAddress(): string {
-    let state = '';
+  private static _createAddress(lenght: number): string {
+    let state = '&';
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < lenght - 1; i++) {
       state += possible.charAt(Math.floor(Math.random() * possible.length));
     }
-    return Object.keys(this.data).includes(state) ? this._createAddress() : state;
+    return Object.keys(this.data).includes(state) ? this._createAddress(lenght) : state;
   }
 
 }

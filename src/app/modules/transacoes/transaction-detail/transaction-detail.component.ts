@@ -1,12 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Observable, Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
 import { HistoricEditDialogComponent } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.component';
 import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
+import { BeforeComponentDestroyed } from '@shared/operators/before-component-destroyed.operator';
 import { DEFAULT_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DEFAULT_CHIP_PATTERN';
 import { VALUE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/VALUE_CHIP_PATTERN';
 import { DATE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DATE_CHIP_PATTERN';
@@ -29,9 +30,6 @@ import { TimeUtils } from '@shared/utils/time.utils';
 import { DateUtils } from '@shared/utils/date-utils';
 import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
-import { ObjectUtils } from '@shared/utils/object.utils';
-import { KeyMap } from '@shared/models/KeyMap';
-import { BeforeComponentDestroyed } from '@shared/operators/before-component-destroyed.operator';
 
 @Component({
   selector: 'app-tdetail',

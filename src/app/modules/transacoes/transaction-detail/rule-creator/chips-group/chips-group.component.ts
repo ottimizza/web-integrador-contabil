@@ -4,7 +4,6 @@ import { ArrayUtils } from '@shared/utils/array.utils';
 import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { ProposedRule } from '@shared/models/Rule';
-import { Pointer } from '@shared/models/Pointer';
 import { Lancamento } from '@shared/models/Lancamento';
 import { RuleService } from '@shared/services/rule.service';
 import { ToastService } from '@shared/services/toast.service';
@@ -42,7 +41,7 @@ export class RuleChipGroupComponent implements OnInit, AfterViewInit {
   private trigger: MatMenuTrigger;
 
   @ViewChild('triggerButton', { static: true })
-  private triggerButton: ElementRef<HTMLButtonElement>
+  private triggerButton: ElementRef<HTMLButtonElement>;
 
   chipLists: ChipList[] = [];
   selecteds: { id: string, positions: number[] }[] = [];
@@ -188,9 +187,9 @@ export class RuleChipGroupComponent implements OnInit, AfterViewInit {
       this.triggerButton.nativeElement.style.left = e.offsetX + 'px';
       this.triggerButton.nativeElement.style.top = e.offsetY + 'px';
 
-      await TimeUtils.sleep(0)
+      await TimeUtils.sleep(0);
       this.trigger.openMenu();
-      await TimeUtils.sleep(0)
+      await TimeUtils.sleep(0);
 
       this.triggerButton.nativeElement.classList.add('d-none');
     }
@@ -200,7 +199,7 @@ export class RuleChipGroupComponent implements OnInit, AfterViewInit {
     if (this.hasProposedRule) {
       this.service.ignoreSuggestion(this.service.lastProposedRule)
       .subscribe(() => {
-        this.toast.show('Ótimo, esta sugestão não será mais apresentada à sua contabilidade', 'success')
+        this.toast.show('Ótimo, esta sugestão não será mais apresentada à sua contabilidade', 'success');
       });
     }
   }

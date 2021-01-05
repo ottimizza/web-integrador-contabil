@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { BeforeComponentDestroyed } from '@shared/operators/before-component-destroyed.operator';
 import { TimeUtils } from '@shared/utils/time.utils';
@@ -7,7 +7,6 @@ import { OptionsMenuService } from './options-menu.service';
 export class OptionMenuItem {
   icon?: string;
   text: string;
-  click: (e: MouseEvent) => void;
 }
 
 @Component({
@@ -20,11 +19,14 @@ export class OptionsMenuComponent extends BeforeComponentDestroyed implements On
   @Input()
   public items: OptionMenuItem[] = [];
 
+  @Output()
+  public itemSelected = new EventEmitter<{ item: OptionMenuItem, event: MouseEvent }>();
+
   @ViewChild('trigger')
   private trigger: MatMenuTrigger;
 
   @ViewChild('triggerButton', { static: true })
-  private triggerButton: ElementRef<HTMLButtonElement>
+  private triggerButton: ElementRef<HTMLButtonElement>;
 
   constructor(private service: OptionsMenuService) {
     super();
@@ -33,7 +35,7 @@ export class OptionsMenuComponent extends BeforeComponentDestroyed implements On
   ngOnInit(): void {
     this.service.menuOpened$
     .pipe(this.takeUntil)
-    .subscribe(result => this.show(result as any))
+    .subscribe(result => this.show(result as any));
   }
 
   private async show(position: { left: string, top: string }) {
@@ -41,9 +43,9 @@ export class OptionsMenuComponent extends BeforeComponentDestroyed implements On
     this.triggerButton.nativeElement.style.left = position.left;
     this.triggerButton.nativeElement.style.top = position.top;
 
-    await TimeUtils.sleep(0)
+    await TimeUtils.sleep(0);
     this.trigger.openMenu();
-    await TimeUtils.sleep(0)
+    await TimeUtils.sleep(0);
 
     this.triggerButton.nativeElement.style.display = 'none';
   }

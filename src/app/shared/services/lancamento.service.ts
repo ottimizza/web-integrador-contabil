@@ -12,11 +12,13 @@ import { KeyMap } from '@shared/models/KeyMap';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { User } from '@shared/models/User';
 import { ArrayUtils } from '@shared/utils/array.utils';
+import { LastValueOnly } from '@shared/decorators/last-value-only.decorator';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/lancamentos`;
 
 @Injectable({ providedIn: 'root' })
 export class LancamentoService {
+
 
   constructor(private http: HttpHandlerService) { }
 
@@ -55,6 +57,7 @@ export class LancamentoService {
     return this.http.patch<Lancamento>(url, body, 'Falha ao vincular lançamento!');
   }
 
+  @LastValueOnly
   public fetchByRule(rules: PostFormatRule[], searchCriteria: any): Observable<GenericPageableResponse<Lancamento>> {
     const url = `${BASE_URL}/regras`;
     return this.http.post<GenericPageableResponse<Lancamento>>([url, searchCriteria], rules, 'Falha ao obter lançamentos afetados!');

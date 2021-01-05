@@ -1,6 +1,6 @@
 <mat-menu #menu="matMenu">
   <ng-content></ng-content>
-  <a *ngFor="let item of items" mat-menu-item (click)="item.click($event)">
+  <a *ngFor="let item of items" mat-menu-item (click)="itemSelected.emit({ item: item, event: $event })">
     <i *ngIf="item.icon" [class]="item.icon" aria-hidden="true"></i>&nbsp;&nbsp;
     <span>{{ item.text }}</span>
   </a>
