@@ -89,4 +89,11 @@ export class ChecklistComponent implements OnInit {
     }
   }
 
+  public onDetailDefined(event: { id: number, observation: string }) {
+    const index = ArrayUtils.findIndex(this.answers, 'perguntaId', event.id);
+    if (index >= 0) {
+      this.answers[index].observacoes = event.observation;
+    }
+  }
+
 }

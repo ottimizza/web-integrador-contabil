@@ -183,4 +183,8 @@ export class ArrayUtils {
     return packages;
   }
 
+  public static findIndex<T>(array: T[], map: keyof T, data: any) {
+    return array.map(item => item[map]).indexOf(data);
+  }
+
 }

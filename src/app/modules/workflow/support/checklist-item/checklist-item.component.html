@@ -49,8 +49,8 @@
         label="Observações"
         [placeholder]="question.sugestao || ''"
         [control]="observation"
-        (input)="submit()"
-        (submit)="submit()"
+        (input)="sendDetails()"
+        (submit)="sendDetails()"
       ></ott-input>
     </div>
 

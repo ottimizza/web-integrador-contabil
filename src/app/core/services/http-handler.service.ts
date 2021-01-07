@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { catchError } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 
 import { AuthenticationService } from '@app/authentication/authentication.service';
 import { successOnly } from '@shared/operators/success.operator';
