@@ -5,8 +5,8 @@ import { Empresa } from './Empresa';
 export enum ScriptStatus {
 
   INICIANDO = 1,
+  TIPO_DEFINIDO,
   PROCESSANDO_PLANILHA,
-  ARQUIVO_OK,
   AGUARDANDO_MAPEAMENTO,
   AGUARDANDO_DETALHAMENTO,
   AGUARDANDO_CONFIRMACAO,
@@ -64,8 +64,8 @@ export class Script {
   public statusDescription() {
     switch (this.status) {
       case ScriptStatus.INICIANDO:                    return '1 / 7 - INICIADO';
-      case ScriptStatus.PROCESSANDO_PLANILHA:         return '2 / 7 - PROCESSANDO PLANILHA';
-      case ScriptStatus.ARQUIVO_OK:                   return '3 / 7 - ARQUIVO PROCESSADO, PRONTO PARA PROSSEGUIR';
+      case ScriptStatus.TIPO_DEFINIDO:                return '2 / 7 - TIPO DEFINIDO';
+      case ScriptStatus.PROCESSANDO_PLANILHA:         return '3 / 7 - PROCESSANDO PLANILHA';
       case ScriptStatus.AGUARDANDO_MAPEAMENTO:        return '4 / 7 - AGUARDANDO MAPEAMENTO';
       case ScriptStatus.AGUARDANDO_DETALHAMENTO:      return '5 / 7 - AGUARDANDO PREENCHIMENTO DE DETALHES';
       case ScriptStatus.AGUARDANDO_CONFIRMACAO:       return '6 / 7 - AGUARDANDO CONFIRMAÇÃO';

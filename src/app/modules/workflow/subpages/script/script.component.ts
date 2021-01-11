@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
 import { switchMap } from 'rxjs/operators';
 import { environment } from '@env';
 
@@ -7,9 +8,10 @@ import { PageEvent } from '@angular/material/paginator';
 
 import { SCRIPT_COMPLEX_FILTER_OPTIONS } from '@modules/workflow/support/complex-filter/script-complex-filter';
 import { CompanyCreateDialogComponent } from '@modules/workflow/dialogs/company-create-dialog.component';
-import { ActionButton, HexColor } from '@shared/components/action-buttons/action-buttons.component';
+import { ActionButton } from '@shared/components/action-buttons/action-buttons.component';
 import { ColumnDefinition } from '@shared/components/async-table/models/ColumnDefinition';
 import { SCRIPT_TUTORIAL, setIds } from '@modules/workflow/tutorials/script.tutorial';
+import { GlobalVariableService } from '@app/services/global-variables.service';
 import { SearchOption } from '@shared/components/search/models/SearchOption';
 import { BusinessService } from '@shared/services/business.service';
 import { SearchCriteria } from '@shared/models/SearchCriteria';
@@ -18,12 +20,11 @@ import { refresh, TimeUtils } from '@shared/utils/time.utils';
 import { ToastService } from '@shared/services/toast.service';
 import { WorkflowService } from '@app/http/workflow.service';
 import { DialogService } from '@app/services/dialog.service';
+import { Script, ScriptStatus } from '@shared/models/Script';
 import { LazyLoader } from '@shared/models/LazyLoader';
 import { Checklist } from '@shared/models/Checklist';
 import { Empresa } from '@shared/models/Empresa';
-import { Script } from '@shared/models/Script';
 import { User } from '@shared/models/User';
-import { DOCUMENT } from '@angular/common';
 
 @Component({
   templateUrl: './script.component.html',
@@ -40,7 +41,6 @@ export class ScriptComponent implements OnInit, AfterViewInit {
 
   public breadcrumbAppend = { label: 'Roteiro' };
   public buttons: ActionButton[] = [
-    { icon: 'fad fa-plus-square', id: 'new-company', label: 'Nova Empresa', color: new HexColor(environment.theme.primaryColor) },
     { icon: 'fad fa-times-square', id: 'cancel', label: 'Cancelar', color: 'btn-light' }
   ];
 
@@ -49,10 +49,11 @@ export class ScriptComponent implements OnInit, AfterViewInit {
   public reload = false;
 
   public company: Empresa;
-  public type: 'REC' | 'PAG';
 
   public selectedIndex = 0;
   public currentScript: Script;
+
+  public type: 'PAG' | 'REC';
 
   public checklist = new LazyLoader<Checklist>();
 
@@ -70,6 +71,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     private dialog: DialogService,
     private toast: ToastService,
     private companyService: BusinessService,
+    private vars: GlobalVariableService,
     @Inject(DOCUMENT) private doc: Document
   ) {}
 
@@ -98,6 +100,11 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     this.currentUser = User.fromLocalStorage();
     if (this.routes.snapshot.params.id) {
       this.load();
+    } else {
+      this.company = this.vars.routeData as any;
+      if (!this.company?.id) {
+        this.router.navigate(['/dashboard', 'workflow']);
+      }
     }
   }
 
@@ -114,16 +121,17 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     }))
     .subscribe(async result => {
       this.company = result.record;
-      let page = 1;
+      let page = 0;
+      if (this.currentScript.tipoRoteiro) {
+        page = 1;
+        this.type = this.currentScript.tipoRoteiro;
+      }
       if (this.currentScript.urlArquivo) {
+        this.startChecklist();
         page = 2;
       }
-      if (this.currentScript.tipoRoteiro) {
-        this.startChecklist();
-        page = 3;
-      }
       if (this.currentScript.checklist) {
-        page = 4;
+        page = 3;
       }
       await refresh();
       this.navigate(page);
@@ -135,15 +143,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
     this.currentScript = event;
     this.currentScript.checklist = true;
     await refresh();
-    this.navigate(4);
-  }
-
-  async onCompanySelect(event: Empresa) {
-    this.company = event;
-    if (this.company) {
-      await refresh();
-      this.selectedIndex = 1;
-    }
+    this.navigate(3);
   }
 
   navigate(page: number) {
@@ -151,17 +151,9 @@ export class ScriptComponent implements OnInit, AfterViewInit {
   }
 
   async emitFile(file: File) {
-    this.toast.showSnack('Enviando arquivo...');
-    if (!this.currentScript) {
-      const rs = await this.create();
-      this.currentScript = rs.record;
-    }
     this.service.upload(this.currentScript.id, file, this.company.cnpj, this.currentUser.organization.cnpj, environment.storageApplicationId)
-    .subscribe(async resultSet => {
-      this.currentScript = resultSet.record;
-      this.toast.hideSnack();
-      await refresh();
-      this.selectedIndex = 2;
+    .subscribe(() => {
+      this.router.navigate(['/dashboard', 'workflow', this.currentScript.id]);
     });
   }
 
@@ -172,12 +164,16 @@ export class ScriptComponent implements OnInit, AfterViewInit {
 
   async confirmType() {
     this.toast.showSnack('Definindo tipo...');
-    const rs = await this.service.patch(this.currentScript.id, { tipoRoteiro: this.type, status: 5 }).toPromise();
+    if (!this.currentScript) {
+      const response = await this.create();
+      this.currentScript = response.record;
+    }
+    const rs = await this.service.patch(this.currentScript.id, { tipoRoteiro: this.type, status: ScriptStatus.TIPO_DEFINIDO }).toPromise();
     this.currentScript = rs.record;
     this.startChecklist();
     this.toast.hideSnack();
     await refresh();
-    this.selectedIndex = 3;
+    this.selectedIndex = 1;
   }
 
   public onFilterChanged(event: any) {

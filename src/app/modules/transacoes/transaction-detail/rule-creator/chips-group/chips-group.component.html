@@ -1,5 +1,13 @@
+<mat-menu #menu="matMenu">
+  <a mat-menu-item (click)="ignoreSuggestion()">
+    <i class="fas fa-forward" aria-hidden="true"></i>&nbsp;&nbsp;
+    <span>Ignorar esta sugestão</span>
+  </a>
+</mat-menu>
+<button class="d-none" style="position: fixed;" #triggerButton [matMenuTriggerFor]="menu" #trigger="matMenuTrigger"></button>
+
 <span class="ml-2">{{ config.title }}:</span>
-<div class="fake-input">
+<div class="fake-input" #fakeInput (contextmenu)="onContextMenu($event)">
   <div *ngFor="let chipList of chipLists; let pos = index">
     <mat-chip-list *ngIf="chipList.fullValue">
 
@@ -15,6 +23,7 @@
             [chip]="chip"
             [label]="chipList.label"
             [position]="i"
+            [divisors]="config.values[0].pattern.separators"
             [selectable]="chipList.selectable"
             [forceSelect]="getSelect(pos)"
             (select)="onDevolve($event)"
@@ -29,3 +38,4 @@
     </mat-chip-list>
   </div>
 </div>
+<!-- /api/v1/regras/sugerir/ignorar -->

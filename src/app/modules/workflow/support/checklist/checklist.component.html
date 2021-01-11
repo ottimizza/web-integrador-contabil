@@ -1,8 +1,11 @@
 <div *ngIf="checklist">
-  <better-info type="warning" *ngIf="importantInfos">{{ importantInfos }}</better-info>
+
+  <div *ngIf="importantInfos">
+    <better-info type="warning" *ngFor="let info of importantInfos">{{ info }}</better-info>
+  </div>
 
   <div class="mt-4 mb-4" *ngIf="notImportantInfos; else emptySpaces">
-    <better-info *ngIf="notImportantInfos">{{ notImportantInfos }}</better-info>
+    <better-info *ngFor="let info of notImportantInfos">{{ info }}</better-info>
   </div>
 
   <ng-template #emptySpaces>
@@ -12,7 +15,15 @@
   <form>
 
     <ott-fieldset *ngFor="let group of checklist.grupos; let i = index" [legend]="group.titulo">
-      <checklist-item *ngFor="let question of group.perguntas" [scriptId]="scriptId" [question]="question" (ok)="onQuestionOk($event)"></checklist-item>
+      <checklist-item
+        *ngFor="let question of group.perguntas"
+        [disable]="disabledQuestions.includes(question.id)"
+        [scriptId]="scriptId"
+        [question]="question"
+        [answer]="findAnswer(question.id)"
+        (ok)="onQuestionOk($event)"
+        (details)="onDetailDefined($event)"
+      ></checklist-item>
     </ott-fieldset>
 
     <div class="w-100 text-center">

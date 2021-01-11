@@ -1,3 +1,5 @@
+export type PrimitiveArray = Array<number | string | boolean>;
+
 export class ArrayUtils {
 
   public static sum(array: any[], arr: any[]) {
@@ -18,25 +20,23 @@ export class ArrayUtils {
     return newArray.concat(arr);
   }
 
+  /**
+   * Compara dois arrays
+   */
   public static compare(array: any[], arr: any[]) {
-    /*
-     * Verifica se dois arrays são EXATAMENTE iguais em TODOS os aspectos
-     */
     let verify = true;
 
-    if (!array) {
+    if (!array || !arr) {
       verify = false;
     }
-    if (array.length !== arr.length) {
-      verify = false;
-    }
-    array.forEach(arrayItem => {
-      if (arr[array.indexOf(arrayItem)] !== arrayItem) {
+
+    array.forEach((item, index) => {
+      if (item !== arr[index]) {
         verify = false;
       }
     });
-    return verify;
 
+    return verify;
   }
 
   public static split(text: string, ...divisors: string[]) {
@@ -66,27 +66,19 @@ export class ArrayUtils {
 
   }
 
+  /**
+   * Realiza um split com mais de um divisor, mantendo este divisor
+   */
   public static magicSplit(text: string, ...divisors: string[]) {
-    /*
-     * Realiza um split com mais de um divisor, mantendo este divisor (pq deus?)
-     */
-
-    let originalIndexes = text.split('').map((byte, index) => {
+    let indexes = text.split('').map((byte, index) => {
       if (divisors.includes(byte)) {
         return index;
       }
     });
-    originalIndexes = originalIndexes.filter(oi => (!!oi || oi === 0));
-
-    let indexes: number[] = [];
-    originalIndexes.forEach(index => {
-      indexes.push(index);
-      indexes.push(index + 1);
-    });
-    indexes.push(0);
-
-    indexes = this.preventRepeat<number>(indexes);
-    indexes = indexes.sort((a, b) => a - b);
+    indexes = indexes.filter(oi => (!!oi || oi === 0));
+    indexes = this.flat(indexes.map(index => [index, index + 1]));
+    indexes.unshift(0);
+    indexes = this.preventRepeat(indexes);
 
     return indexes.map((start, index) => {
       const end = indexes[index + 1] || text.length;
@@ -100,7 +92,6 @@ export class ArrayUtils {
    */
   public static verify<T>(array: T[]): boolean {
     return array.filter(item => !item).length === 0;
-
   }
 
   static concatDifferentiatingProperty(array1: any[], array2: any[], property: string) {
@@ -142,10 +133,58 @@ export class ArrayUtils {
    * @param arrays array bidimensional a ser planificado
    * @returns um array plano
    */
-  public static reduce<T>(arrays: T[][]) {
+  public static flat<T>(arrays: T[][]) {
     const result: T[] = [];
     arrays.forEach(arr => arr.forEach(item => result.push(item)));
     return result;
+  }
+
+  /**
+   * Compara se dois arrays são iguais mas sem levar a ordem em conta
+   */
+  public static includes2d(array1: PrimitiveArray, array2: PrimitiveArray) {
+    let includes = true;
+
+    array1.forEach(arr => {
+      if (!array2.includes(arr)) {
+        includes = false;
+      }
+    });
+    array2.forEach(arr => {
+      if (!array1.includes(arr)) {
+        includes = false;
+      }
+    });
+
+    return includes;
+  }
+
+  public static doubleIncludes(array: string[], value: string, ignoreCase?: boolean) {
+    let ok = false;
+    for (let item of array) {
+      item = ignoreCase ? item.toUpperCase() : item;
+      value = ignoreCase ? value.toUpperCase() : value;
+      if (item.includes(value)) {
+        ok = true;
+        break;
+      }
+    }
+    return ok;
+  }
+
+  public static package<T>(array: T[], size = 100): T[][] {
+    /*
+     * Divide um array em vários pacotes
+     */
+    const packages = [];
+    for (let i = 0; i < array.length; i = i + size) {
+      packages.push(array.slice(i, i + size));
+    }
+    return packages;
+  }
+
+  public static findIndex<T>(array: T[], map: keyof T, data: any) {
+    return array.map(item => item[map]).indexOf(data);
   }
 
 }

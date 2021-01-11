@@ -1,10 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Observable, Subject } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
 import { HistoricEditDialogComponent } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.component';
 import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
+import { BeforeComponentDestroyed } from '@shared/operators/before-component-destroyed.operator';
 import { DEFAULT_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DEFAULT_CHIP_PATTERN';
 import { VALUE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/VALUE_CHIP_PATTERN';
 import { DATE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DATE_CHIP_PATTERN';
@@ -23,19 +26,17 @@ import { Rule, RuleCreateFormat } from '@shared/models/Rule';
 import { FormattedHistoric } from '@shared/models/Historic';
 import { RuleService } from '@shared/services/rule.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
+import { TimeUtils } from '@shared/utils/time.utils';
 import { DateUtils } from '@shared/utils/date-utils';
 import { Empresa } from '@shared/models/Empresa';
-import { FormControl } from '@angular/forms';
 import { User } from '@shared/models/User';
-import { finalize } from 'rxjs/operators';
-import { GuidedTourService } from '@gobsio/ngx-guided-tour';
 
 @Component({
   selector: 'app-tdetail',
   templateUrl: './transaction-detail.component.html',
   styleUrls: ['./transaction-detail.component.scss']
 })
-export class TransactionDetailComponent implements OnInit, OnDestroy {
+export class TransactionDetailComponent extends BeforeComponentDestroyed implements OnInit {
 
   @Output() tabSelect = new EventEmitter();
   @Input() business: Empresa;
@@ -64,8 +65,11 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
 
   currentUser: User;
 
-  public tutorialInitSub: Subscription;
-  public tutorialEndedSub: Subscription;
+  public showProposedRules = true;
+  public legacyShowProposedRules = true;
+  public useAccountingIntelligenceInProposedRules = false;
+  public proposedRuleId: number;
+
   public recoverState: Subject<any>;
 
   constructor(
@@ -77,11 +81,8 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     private _tutorialService: TutorialService,
     private _snapshotService: SnapshotService,
     public dialog: DialogService
-  ) { }
-
-  ngOnDestroy(): void {
-    this.tutorialInitSub.unsubscribe();
-    this.tutorialEndedSub.unsubscribe();
+  ) {
+    super();
   }
 
   ngOnInit(): void {
@@ -91,7 +92,9 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   }
 
   setTutorials() {
-    this.tutorialInitSub = this._tutorialService.afterTutorialStarted.subscribe(() => {
+    this._tutorialService.afterTutorialStarted
+    .pipe(this.takeUntil)
+    .subscribe(() => {
       this.recoverState = this._snapshotService.recycle(this, ['entry', 'errorText', 'errorText2', 'total', 'conditions'])
       this.errorText = null;
       this.errorText2 = null;
@@ -99,7 +102,8 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
       this.entry = FAKE_ENTRY;
       Object.assign(this.conditions, { verify: () => true });
     });
-    this.tutorialEndedSub = this._tutorialService.afterTutorialClosed.subscribe(() => {
+    this._tutorialService.afterTutorialClosed
+    .pipe(this.takeUntil).subscribe(() => {
       this.recoverState.next();
     });
   }
@@ -149,10 +153,10 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     const l: any = this.entry || {};
     const a = l.arquivo;
     return !!((l.complemento01 && a.labelComplemento01) ||
-      (l.complemento02 && a.labelComplemento02) ||
-      (l.complemento03 && a.labelComplemento03) ||
-      (l.complemento04 && a.labelComplemento04) ||
-      (l.complemento05 && a.labelComplemento05));
+              (l.complemento02 && a.labelComplemento02) ||
+              (l.complemento03 && a.labelComplemento03) ||
+              (l.complemento04 && a.labelComplemento04) ||
+              (l.complemento05 && a.labelComplemento05));
   }
 
   resetErrors(errors?: string[]) {
@@ -179,13 +183,24 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     );
   }
 
+  get ruleAddiotionalInformation() {
+    let sugerir: 0 | 1 | 2 = 2;
+    if (this.legacyShowProposedRules) {
+      sugerir = this.useAccountingIntelligenceInProposedRules ? 0 : 1;
+    }
+    return {
+      sugerir,
+      regraSugerida: this.proposedRuleId
+    }
+  }
+
   regra() {
     if (this.ruleCreateFormat.regras.length > 6) {
       this.errorText = 'Você não pode salvar uma regra com mais de 4 cláusulas!';
       return;
     }
     const regra = this.ruleCreateFormat;
-    const observable = this._ruleService.createRule(regra);
+    const observable = this._ruleService.createRule(regra, this.ruleAddiotionalInformation);
     const verifications = [!!this.account?.value?.length, this.conditions.verify()];
     const errors = [
       'Para salvar uma regra você deve informar uma conta contábil.',
@@ -201,7 +216,7 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     }
     const regra = this.ruleCreateFormat;
     regra.contaMovimento = 'IGNORAR';
-    const observable = this._ruleService.createRule(regra);
+    const observable = this._ruleService.createRule(regra, this.ruleAddiotionalInformation);
     const verification = this.conditions.verify();
     const error = ['Para salvar uma regra de ignorar, você deve informar as condições da regra.'];
     this._savePattern(observable, [verification], error);
@@ -248,7 +263,6 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   }
 
   onDevolve(events: { title: string, selecteds: string[] }[]) {
-
     this.conditions.tipoPlanilha = [this.entry.tipoPlanilha];
     this.conditions.tipoMovimento = [this.entry.tipoMovimento];
 
@@ -317,7 +331,7 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  tabsPattern(tipoMovimento: string, tipoLancamentoName: string, isFirst: boolean) {
+  tabsPattern(tipoMovimento: 'PAG' | 'EXDEB' | 'REC' | 'EXCRE', tipoLancamentoName: string, isFirst: boolean) {
     if (!isFirst) {
       this.tabIsClicked = true;
     }
@@ -348,29 +362,56 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     this.account.setValue('');
   }
 
+  public async proposeRules() {
+    this._toast.showSimpleSnackBar('Obtendo regra sugerida...');
+    const data = await this._ruleService.proposeRules(this.entry.id, this.useAccountingIntelligenceInProposedRules);
+    this.account.setValue(data.account);
+    this.proposedRuleId = data.id;
+    this._toast.hideSnack();
+  }
+
   public async requestEntry() {
     this.resetErrors();
 
     const rs = await this.fetch();
     this.entry = rs.records[0];
     this.pageInfo = rs.pageInfo;
+    this.legacyShowProposedRules = this.showProposedRules;
+    if (this.entry && this.showProposedRules) {
+      await this.proposeRules();
+    } else {
+      this._ruleService.lastProposedRule = null;
+    }
 
     this.reConstruct();
 
     this.calcPercentage();
 
     if (!this.entry) {
-      this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa.`]);
-      this.percentage = 100;
+      if (!this.pageInfo.hasPrevious) {
+        this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa.`]);
+        this.percentage = 100;
+      } else {
+        this.pageInfo.pageIndex--;
+        await this.requestEntry();
+      }
     }
   }
 
   public async reConstruct() {
     for (let i = 1; i < 8; i++) {
       this.rebuild = i;
-      await new Promise(resolve => setTimeout(resolve, 1));
+      await TimeUtils.sleep(1);
+      this._ruleService.onReconstructionCompleted();
     }
+    this.onReconstructionCompleted()
+  }
+
+  public onReconstructionCompleted() {
     this.rebuild = 0;
+    if (this.showProposedRules) {
+      this._ruleService.onReconstructionEnded();
+    }
   }
 
   public async proceed() {
@@ -378,7 +419,6 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     await this.requestEntry();
     this.isFetching = false;
   }
-
 
   public navigate(direction: 'next' | 'previous') {
     if (direction === 'next' && this.pageInfo.hasNext) {
@@ -400,7 +440,7 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  fetch() {
+  async fetch() {
     let tipoLancamento = 1;
     if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE') {
       tipoLancamento = 2;
@@ -448,6 +488,10 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
       case TipoLancamento.RECEBIMENTOS: return 'Não é cliente'
       default:                          return 'Regra'
     }
+  }
+
+  public clean() {
+    this._ruleService.clean();
   }
 
   descricao(): RuleConfig {

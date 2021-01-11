@@ -20,7 +20,10 @@
         <li *ngIf="append" class="p-2 mt-1 text-left d-none d-md-block">
           <a [routerLink]="append?.url">
             <span class="d-md-inline-block">
-              / {{ append.label }}
+              /
+            </span>
+            <span class="d-md-inline-block ml-3">
+              {{ append.label }}
             </span>
           </a>
         </li>

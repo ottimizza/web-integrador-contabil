@@ -1,6 +1,13 @@
-import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit, NgZone } from '@angular/core';
 import { IChipGroupPattern, IChipGroupParcialPattern } from './patterns/IChipGroupPattern';
 import { ArrayUtils } from '@shared/utils/array.utils';
+import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
+import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
+import { ProposedRule } from '@shared/models/Rule';
+import { Lancamento } from '@shared/models/Lancamento';
+import { RuleService } from '@shared/services/rule.service';
+import { ToastService } from '@shared/services/toast.service';
+import { TimeUtils } from '@shared/utils/time.utils';
 
 export class RuleConfig {
   title: string;
@@ -22,17 +29,58 @@ class ChipList {
   templateUrl: './chips-group.component.html',
   styleUrls: ['./chips-group.component.scss']
 })
-export class RuleChipGroupComponent implements OnInit {
+export class RuleChipGroupComponent implements OnInit, AfterViewInit {
 
   @Input() config: RuleConfig;
   @Output() clicked = new EventEmitter();
+
+  @ViewChild('fakeInput')
+  public el: ElementRef<HTMLDivElement>;
+
+  @ViewChild('trigger')
+  private trigger: MatMenuTrigger;
+
+  @ViewChild('triggerButton', { static: true })
+  private triggerButton: ElementRef<HTMLButtonElement>;
 
   chipLists: ChipList[] = [];
   selecteds: { id: string, positions: number[] }[] = [];
   impositive: boolean[];
 
+  public hasProposedRule = false;
+
+  constructor(
+    private service: RuleService,
+    private toast: ToastService
+  ) {}
+
   ngOnInit(): void {
     this.init();
+  }
+
+  ngAfterViewInit() {
+    this.service.reconstructionEnded(() => {
+      const elements = this.el.nativeElement.querySelectorAll<HTMLDivElement>('.simple-chip');
+      let chips: { label: string, isSelected: boolean, position: number }[] = [];
+      elements.forEach(val => {
+        const chipValue = val.innerText;
+        let isSelected = val.classList.contains('chip-selected');
+        if (isSelected && this.service.alreadyUsedRules.includes(chipValue)) {
+          val.classList.remove('chip-selected');
+          isSelected = false;
+        } else if (isSelected) {
+          this.service.alreadyUsedRules.push(chipValue);
+        }
+        const label = val.id;
+        let position = chips.map(chip => chip.label).lastIndexOf(label);
+        position = position > -1 ? position + 1 : 0;
+        chips.push({ label, isSelected, position });
+      });
+
+      chips = chips.filter(chip => chip.isSelected);
+      chips.forEach((chip) => this.onDevolve(chip));
+    });
+    this.hasProposedRule = !!this.service.lastProposedRule?.id;
   }
 
   public init() {
@@ -88,26 +136,20 @@ export class RuleChipGroupComponent implements OnInit {
       this.selecteds[index].positions = positions;
     }
 
-    const map = this._map();
-    this.clicked.emit(map);
+    const mapping = this._map();
+    this.clicked.emit(mapping);
   }
 
   private _map() {
     return this.selecteds.map(sel => {
       const chipList = this.chipLists.filter(cl => cl.key === sel.id)[0];
       const selecteds = sel.positions.map(pos => chipList.chipValue[pos]);
-      return {
-        title: sel.id,
-        selecteds
-      };
+      return { title: sel.id, selecteds };
     })
       .map(item => {
         const chipList = this.chipLists.filter(cl => cl.key === item.title)[0];
         if (item.selecteds.length === chipList.chipValue.length) {
-          return {
-            title: item.title,
-            selecteds: [chipList.fullValue]
-          };
+          return { title: item.title, selecteds: [chipList.fullValue] };
         }
         return item;
       });
@@ -136,6 +178,30 @@ export class RuleChipGroupComponent implements OnInit {
         chipValue
       };
     });
+  }
+
+  public async onContextMenu(e: MouseEvent) {
+    if (this.hasProposedRule) {
+      e.preventDefault();
+      this.triggerButton.nativeElement.classList.remove('d-none');
+      this.triggerButton.nativeElement.style.left = e.offsetX + 'px';
+      this.triggerButton.nativeElement.style.top = e.offsetY + 'px';
+
+      await TimeUtils.sleep(0);
+      this.trigger.openMenu();
+      await TimeUtils.sleep(0);
+
+      this.triggerButton.nativeElement.classList.add('d-none');
+    }
+  }
+
+  public ignoreSuggestion() {
+    if (this.hasProposedRule) {
+      this.service.ignoreSuggestion(this.service.lastProposedRule)
+      .subscribe(() => {
+        this.toast.show('Ótimo, esta sugestão não será mais apresentada à sua contabilidade', 'success');
+      });
+    }
   }
 
 }

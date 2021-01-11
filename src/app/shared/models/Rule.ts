@@ -24,6 +24,19 @@ export class RuleCreateFormat {
     public contaMovimento: string
   ) { }
 
+  public reduce() {
+    const rules = this.regras.map((rule, id) => Object.assign(rule, { id }));
+    this.regras = rules.filter(rule => {
+      const sameRule = rules.filter(r => r.campo === rule.campo && r.condicao === rule.condicao && r.valor === rule.valor);
+      return (sameRule.length === 1 || sameRule[0].id === rule.id);
+    });
+    this.regras = this.regras.map(rule => {
+      const id = 'id';
+      delete rule[id];
+      return rule;
+    });
+  }
+
 }
 
 export class Rule {
@@ -110,4 +123,10 @@ export enum Condicao {
   COMECAO_COM,
   IGUAL
 
+}
+
+export interface ProposedRule {
+  id: number;
+  contaMovimento: string;
+  camposRegras: string[];
 }

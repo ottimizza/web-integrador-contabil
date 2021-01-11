@@ -6,10 +6,11 @@ import { capitalize } from 'lodash';
 
 import { OrganizationService } from '@app/http/organizations.service';
 import { BusinessService } from '@shared/services/business.service';
+import { appDocValidator } from '@shared/validators/doc.validator';
 import { ToastService } from '@shared/services/toast.service';
 import { Organization } from '@shared/models/Organization';
 import { StringUtils } from '@shared/utils/string.utils';
-import { CNPJUtils } from '@shared/utils/docs.utils';
+import { DocUtils } from '@shared/utils/docs.utils';
 import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
 
@@ -22,7 +23,7 @@ export class CompanyCreateDialogComponent {
   isCreating = false;
 
   form = new FormGroup({
-    cnpj: new FormControl('', Validators.required),
+    cnpj: new FormControl('', [Validators.required, appDocValidator]),
     name: new FormControl({ value: '', disabled: true }, Validators.required),
     erp: new FormControl({ value: '', disabled: true }, Validators.required),
     nick: new FormControl({ value: '', disabled: true }, [Validators.required, Validators.maxLength(30), Validators.pattern('[a-zA-Z]*')])
@@ -42,10 +43,14 @@ export class CompanyCreateDialogComponent {
 
   import() {
     if (this.cnpj.invalid) {
-      this.errorText = 'CPF ou CNPJ é obrigatório';
+      this.errorText = 'CPF ou CNPJ inválido';
     } else {
       this.toast.showSnack('Analisando registros anteriores...');
-      const filter = { cnpj: CNPJUtils.cleanMask(this.cnpj.value), type: 2, organizationId: User.fromLocalStorage().organization.id, active: true };
+      const filter = {
+        cnpj: DocUtils.cleanMask(this.cnpj.value),
+        type: 2, organizationId: User.fromLocalStorage().organization.id,
+        active: true
+      };
       this.organizationService.fetch(filter).subscribe(rs => {
         this.toast.hideSnack();
         this.buildOrganization(rs.records[0]);
@@ -55,7 +60,7 @@ export class CompanyCreateDialogComponent {
 
   buildOrganization(company: Organization) {
     if (company?.cnpj) {
-      this.cnpj.setValue(CNPJUtils.applyMask(company.cnpj));
+      this.cnpj.setValue(DocUtils.applyMask(company.cnpj));
       this.cnpj.disable();
     }
     if (company?.name) {
@@ -107,7 +112,7 @@ export class CompanyCreateDialogComponent {
       .replace(/ /g, '');
 
     const company = new Empresa();
-    company.cnpj = CNPJUtils.cleanMask(this.cnpj.value);
+    company.cnpj = DocUtils.cleanMask(this.cnpj.value);
     company.nomeResumido = StringUtils.normalize(capitalize(nomeResumido));
     company.razaoSocial = this.name.value;
     company.codigoERP = this.erp.value;

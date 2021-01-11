@@ -25,12 +25,13 @@ import { TutorialService } from '@app/services/tutorial.service';
 import { momentjs } from '@shared/utils/moment';
 import getTutorial from './guided-tour/rule-list.tutorial';
 import { Subscription } from 'rxjs';
+import { BeforeComponentDestroyed } from '@shared/operators/before-component-destroyed.operator';
 
 @Component({
   templateUrl: './rule-list.component.html',
   styleUrls: ['./rule-list.component.scss']
 })
-export class RuleListComponent implements OnInit, OnDestroy {
+export class RuleListComponent extends BeforeComponentDestroyed implements OnInit {
 
   rows: CompleteRule[] = [];
   business: Empresa;
@@ -49,9 +50,6 @@ export class RuleListComponent implements OnInit, OnDestroy {
   tabWasSelected: boolean;
   oldCompany: Empresa;
 
-  onTutorialInit: Subscription;
-  onTutorialEnd: Subscription;
-
   constructor(
     @Inject(DOCUMENT) public doc: Document,
     public dialog: DialogService,
@@ -60,16 +58,13 @@ export class RuleListComponent implements OnInit, OnDestroy {
     public exportService: ExportService,
     public logicService: RuleLogicService,
     private tutorialService: TutorialService
-  ) {}
-
-  ngOnInit(): void {
-    this.currentUser = User.fromLocalStorage();
-    this.prepareTutorial();
+  ) {
+    super();
   }
 
-  ngOnDestroy(): void {
-    this.onTutorialEnd.unsubscribe();
-    this.onTutorialInit.unsubscribe();
+ngOnInit(): void {
+    this.currentUser = User.fromLocalStorage();
+    this.prepareTutorial();
   }
 
   async onButton(id: string) {
@@ -258,7 +253,9 @@ export class RuleListComponent implements OnInit, OnDestroy {
   }
 
   private prepareTutorial() {
-    this.onTutorialInit = this.tutorialService.afterTutorialStarted.subscribe(() => {
+    this.tutorialService.afterTutorialStarted
+    .pipe(this.takeUntil)
+    .subscribe(() => {
       this.tabWasSelected = this.tabIsSelected;
       this.tabIsSelected = true;
       this.rows.unshift({
@@ -279,7 +276,9 @@ export class RuleListComponent implements OnInit, OnDestroy {
       this.business = {} as any;
     });
 
-    this.onTutorialEnd = this.tutorialService.afterTutorialClosed.subscribe(() => {
+    this.tutorialService.afterTutorialClosed
+    .pipe(this.takeUntil)
+    .subscribe(() => {
       this.rows = this.rows.filter(rule => rule.id > 0);
       this.tabIsSelected = this.tabWasSelected;
       this.business = this.oldCompany;

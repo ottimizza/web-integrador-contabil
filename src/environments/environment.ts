@@ -1,8 +1,8 @@
 export const environment = {
   production: false,
-  oauthBaseUrl: 'https://staging-oauth-server.herokuapp.com',
+  oauthBaseUrl: 'https://development-oauth-server.herokuapp.com',
   oauthClientId: '858f84ff24730d133a63',
-  serviceUrl: 'https://staging-integrador-contabil.herokuapp.com',
+  serviceUrl: 'https://develop-integrador-contabil.herokuapp.com',
   storageApplicationId: 'armazem-arquivos',
   portalBaseUrl: 'https://staging-accounts.ottimizza.com.br',
   supportUrl: 'https://suporte.ottimizza.com.br',

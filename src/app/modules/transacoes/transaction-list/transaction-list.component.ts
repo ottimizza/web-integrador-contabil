@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Empresa } from '@shared/models/Empresa';
 import { BreadCrumb } from '@shared/components/breadcrumb/breadcrumb.component';
-import { GuidedTour, GuidedTourService } from '@gobsio/ngx-guided-tour';
-import { User } from '@shared/models/User';
+import { GuidedTour } from '@gobsio/ngx-guided-tour';
 import { TUTORIAL } from './tutorial/transaction-list.tutorial';
 
 @Component({
   templateUrl: './transaction-list.component.html',
-  styleUrls: ['./transaction-list.component.scss']
+  styleUrls: ['./transaction-list.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class TransactionListComponent {
 

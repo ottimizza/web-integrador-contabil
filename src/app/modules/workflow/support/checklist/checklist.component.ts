@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
+import { ChecklistLogicService } from '@app/services/checklist-logic/checklist-logic.service';
 import { Checklist, ChecklistAnswer } from '@shared/models/Checklist';
 import { ChecklistService } from '@app/http/checklist.service';
 import { ToastService } from '@shared/services/toast.service';
@@ -13,51 +14,51 @@ import { Script } from '@shared/models/Script';
 })
 export class ChecklistComponent implements OnInit {
 
-  @Input() checklist: Checklist;
-  @Input() scriptId: number;
+  @Input()
+  public checklist: Checklist;
 
-  @Output() completed = new EventEmitter<Script>();
+  @Input()
+  public scriptId: number;
 
-  importantInfos: string;
-  notImportantInfos: string;
+  @Output()
+  public completed = new EventEmitter<Script>();
 
-  isFinished = false;
+  public importantInfos: string[];
+  public notImportantInfos: string[];
 
-  answers: ChecklistAnswer[] = [];
+  public isFinished = false;
+
+  public answers: ChecklistAnswer[] = [];
+  public disabledQuestions: number[] = [];
 
   constructor(
     private service: ChecklistService,
+    private logic: ChecklistLogicService,
     private toast: ToastService
   ) {}
 
   ngOnInit(): void {
     this.importantInfos = this.checklist.observacoes.filter(obs => obs.importante)
-      .map(obs => obs.descricao)
-      .join(' ');
+      .map(obs => obs.descricao);
     this.notImportantInfos = this.checklist.observacoes.filter(obs => !obs.importante)
-      .map(obs => obs.descricao)
-      .join(' ');
+      .map(obs => obs.descricao);
   }
 
   public onQuestionOk(event: ChecklistAnswer) {
-    this.apply(event);
+    const data = this.logic.answer(this.checklist, event, this.answers);
+    this.disabledQuestions = this.disabledQuestions.concat(data.questionsToDisable.map(question => question.id));
+    this.disabledQuestions = this.disabledQuestions.filter(question => !data.questionsToEnable.map(q => q.id).includes(question));
+    this.answers = data.answers;
     this.isFinished = this.finished();
   }
 
-  public apply(answer: ChecklistAnswer) {
-    const valid = (answer.resposta !== null && answer.resposta !== undefined && answer.resposta !== '');
-    const index = this.answers.map(a => a.perguntaId).indexOf(answer.perguntaId);
-    if (index < 0 && valid) {
-      this.answers.push(answer);
-    } else if (index >= 0 && !valid) {
-      this.answers.splice(index, 1);
-    } else if (valid) {
-      this.answers[index] = answer;
-    }
+  public findAnswer(questionId: number) {
+    const answer = this.answers.filter(a => a.perguntaId === questionId)[0];
+    return answer?.resposta;
   }
 
   public finished() {
-    const want = ArrayUtils.reduce(this.checklist.grupos.map(group => group.perguntas.map(question => question.id)));
+    const want = ArrayUtils.flat(this.checklist.grupos.map(group => group.perguntas.map(question => question.id)));
     const have = this.answers.map(answer => answer.perguntaId);
 
     let ok = true;
@@ -85,6 +86,13 @@ export class ChecklistComponent implements OnInit {
         this.toast.show('Respostas registradas com sucesso!', 'success');
         this.completed.emit(result.record);
       });
+    }
+  }
+
+  public onDetailDefined(event: { id: number, observation: string }) {
+    const index = ArrayUtils.findIndex(this.answers, 'perguntaId', event.id);
+    if (index >= 0) {
+      this.answers[index].observacoes = event.observation;
     }
   }
 

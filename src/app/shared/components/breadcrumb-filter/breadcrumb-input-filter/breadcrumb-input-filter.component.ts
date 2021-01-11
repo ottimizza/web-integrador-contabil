@@ -5,7 +5,7 @@ import { ToastService } from '@shared/services/toast.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { CNPJUtils } from '@shared/utils/docs.utils';
+import { DocUtils } from '@shared/utils/docs.utils';
 import { GlobalVariableService } from '@app/services/global-variables.service';
 import { User } from '@shared/models/User';
 
@@ -87,7 +87,7 @@ export class BreadcrumbInputFilterComponent implements OnInit, AfterViewInit {
   }
 
   public getEmpresaDisplayCnpj(empresa: Empresa): string {
-    return CNPJUtils.isValid(empresa.cnpj) ? CNPJUtils.applyMask(empresa.cnpj) : empresa.cnpj;
+    return DocUtils.format(empresa.cnpj);
   }
 
   async change(word: string) {

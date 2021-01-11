@@ -12,6 +12,7 @@ import { WorkflowService } from '@app/http/workflow.service';
 import { Script, ScriptStatus } from '@shared/models/Script';
 import { LazyLoader } from '@shared/models/LazyLoader';
 import { Empresa } from '@shared/models/Empresa';
+import { DocUtils } from '@shared/utils/docs.utils';
 
 @Component({
   selector: 'script-project-confirmation',
@@ -42,7 +43,9 @@ export class ProjectConfirmationComponent implements OnInit {
     } else {
       this.name.setValue(`${this.script.tipoRoteiro === 'REC' ? 'RECEBIMENTOS' : 'PAGAMENTOS'} - ${this.company.razaoSocial.toUpperCase()}`);
     }
-    this.data.call(this.checklistService.getCompletedForm(2, this.script.id), 'records');
+    this.toast.showSnack('Capturando respostas...');
+    this.data.call(this.checklistService.getCompletedForm(2, this.script.id), 'records')
+    .then(() => this.toast.hideSnack());
   }
 
   public checkAnswer(question: ChecklistQuestion & ChecklistAnswer): string {
@@ -91,6 +94,10 @@ export class ProjectConfirmationComponent implements OnInit {
         this.router.navigate(['/workflow']);
       });
     });
+  }
+
+  public get doc() {
+    return DocUtils.format(this.company.cnpj);
   }
 
 }

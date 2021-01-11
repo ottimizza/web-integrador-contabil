@@ -5,33 +5,6 @@
   </div>
 
   <mat-horizontal-stepper [linear]="true" [selectedIndex]="selectedIndex" (selectionChange)="selectedIndex = $event.selectedIndex">
-    <mat-step label="Empresa" [completed]="company" [editable]="false" id="script-stepper-empresa">
-
-      <div class="mt-5 mb-3">
-        <default-filter
-          [value]="fakeFilter"
-          [options]="filterOptions"
-          (filterChanged)="onFilterChanged($event)"
-        ></default-filter>
-      </div>
-
-      <async-table
-        [reload]="reload"
-        [origin]="getCompanies"
-        [definition]="columns"
-        (rowSelected)="onCompanySelect($event)"
-      ></async-table>
-
-    </mat-step>
-    <mat-step label="Material" [completed]="currentScript?.urlArquivo" [editable]="false" id="script-stepper-material">
-
-      <div class="m-4 mb-5 w-100 text-center">
-        <ott-title>Subir Arquivo</ott-title>
-      </div>
-
-      <file-upload (fileChange)="emitFile($event)"></file-upload>
-
-    </mat-step>
     <mat-step label="Tipo" [completed]="currentScript?.tipoRoteiro" [editable]="!currentScript?.nome" id="script-stepper-tipo">
 
       <div class="m-4 mb-5 w-100 text-center">
@@ -50,6 +23,15 @@
       <div class="w-100 text-center mt-3" *ngIf="type">
         <ott-button (pressed)="confirmType()">Confirmar Tipo</ott-button>
       </div>
+
+    </mat-step>
+    <mat-step label="Material" [completed]="currentScript?.urlArquivo" [editable]="!currentScript?.nome" id="script-stepper-material">
+
+      <div class="m-4 mb-5 w-100 text-center">
+        <ott-title>Subir Arquivo</ott-title>
+      </div>
+
+      <file-upload (fileChange)="emitFile($event)"></file-upload>
 
     </mat-step>
     <mat-step label="Definições" [completed]="currentScript?.checklist" [editable]="!currentScript?.nome" id="script-stepper-checklist">
@@ -73,7 +55,7 @@
       </div>
 
       <script-project-confirmation
-        *ngIf="selectedIndex === 4"
+        *ngIf="selectedIndex === 3 && currentScript.checklist"
         [script]="currentScript"
         [company]="company"
       ></script-project-confirmation>

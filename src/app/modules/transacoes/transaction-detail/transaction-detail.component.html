@@ -1,5 +1,7 @@
 <form autocomplete="off">
   <div class="card">
+
+
     <mat-progress-bar [value]="percentage" class="progress-bar"  [matTooltip]="percentage + '%'"></mat-progress-bar>
     <mat-tab-group mat-align-tabs="center" (selectedTabChange)="onTab($event, false)">
       <mat-tab label="Pagamentos"></mat-tab>
@@ -8,10 +10,23 @@
       <mat-tab label="Extrato Créditos"></mat-tab>
     </mat-tab-group>
 
-
     <div class="p-5 pt-0">
-      <div class="row m-0 w-100">
+      <div class="row m-0 mt-3 mb-4 w-100">
         <text class="col">Total de lançamentos: {{ total }}</text>
+        <div class="col text-right">
+          <mat-slide-toggle [checked]="true" (change)="showProposedRules = !showProposedRules; clean()">Sugerir Regras</mat-slide-toggle>
+          <i class="ml-3 far fa-cog cursor-pointer" [matMenuTriggerFor]="menu"></i>
+          <mat-menu #menu="matMenu">
+            <mat-radio-group [value]="useAccountingIntelligenceInProposedRules" (change)="useAccountingIntelligenceInProposedRules = $event.value">
+              <div id="filter-type-2" mat-menu-item>
+                <mat-radio-button [value]="false">Inteligência da contabilidade</mat-radio-button>
+              </div>
+              <div id="filter-type-1" mat-menu-item>
+                <mat-radio-button [value]="true">Inteligência da Ottimizza</mat-radio-button>
+              </div>
+            </mat-radio-group>
+          </mat-menu>
+        </div>
       </div>
       <div class="row m-0 w-100 mb-4">
         <div class="col" *ngIf="impact > 0">
@@ -97,7 +112,8 @@
 
 
 
-
+            <paginator [pageSize]="1" [pageSizeOptions]="[1]" [length]="pageInfo?.totalPages" *ngIf="total !== 'Calculando...'"
+            (page)="navigate($event.pageIndex > $event.previousPageIndex ? 'next' : 'previous')"></paginator>
 
 
 
@@ -138,7 +154,7 @@
               [matTooltip]="info.provider"
             />
             <input
-              *ngIf="conditions.verify()"
+              [disabled]="!conditions.verify()"
               type="button"
               class="btn btn-outline-primary col mx-2"
               value="Ignorar"
@@ -146,7 +162,7 @@
               [matTooltip]="info.ignore"
               id="ignore-button"
             />
-            <div class="button-area col mx-2">
+            <!-- <div class="button-area col mx-2">
               <div class="row w-100 m-0">
 
                 <button [disabled]="!pageInfo.hasPrevious" class="btn btn-outline-info col" (click)="navigate('previous')" matTooltip="Lançamento anterior">
@@ -157,7 +173,7 @@
                 </button>
 
               </div>
-            </div>
+            </div> -->
             <input
               *ngIf="currentUser.type === 0"
               type="button"

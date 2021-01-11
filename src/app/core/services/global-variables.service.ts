@@ -1,15 +1,22 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class GlobalVariableService {
 
   private vars: any = {};
-  private BACKUP_KEY = `global-variables:backup`;
+  private BACKUP_KEY = '_global-variables:backup';
+  private ROUTER_KEY = '_globa-variables:routerData';
 
-  constructor() {
+  constructor(
+    private router: Router,
+  ) {
     this.vars = this._restore();
   }
 
+  /**
+   * @deprecated
+   */
   public async setUniqueVariable(name: string, value: any, backup = false) {
     if (!this.has(name)) {
       return this.setVariable(name, value, backup);
@@ -40,6 +47,9 @@ export class GlobalVariableService {
     return [index >= 0, key || null];
   }
 
+  /**
+   * @deprecated
+   */
   public async setAnonymousVariable(value: any, backup = false): Promise<string> {
     const key = this._generateAnonymousKey();
     if (await this.setUniqueVariable(key, value, backup)) {
@@ -76,6 +86,16 @@ export class GlobalVariableService {
       key += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return key;
+  }
+
+  public async navigateWithData(commands: any[], data: any) {
+    await this.setVariable(this.ROUTER_KEY, data);
+    await this.router.navigate(commands);
+    return true;
+  }
+
+  public get routeData() {
+    return this.getVariable(this.ROUTER_KEY);
   }
 
 }
