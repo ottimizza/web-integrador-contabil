@@ -3,6 +3,9 @@ import { ChecklistAnswer, ChecklistInputType, ChecklistQuestion } from '@shared/
 import { FormControl } from '@angular/forms';
 
 import { momentjs } from '@shared/utils/moment';
+import { RxEvent } from '@app/services/rx-event.service';
+import { Observable, PartialObserver } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 @Component({
   selector: 'checklist-item',

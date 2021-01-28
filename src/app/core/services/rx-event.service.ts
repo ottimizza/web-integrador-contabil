@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, Subscription, BehaviorSubject, OperatorFunction } from 'rxjs';
+import { Subject, Subscription, BehaviorSubject, OperatorFunction, PartialObserver } from 'rxjs';
 import { pipeFromArray } from 'rxjs/internal/util/pipe';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class RxEvent {
     return this.get(name).subscribe(handler);
   }
 
-  public use(operators: OperatorFunction<any, any>[], event: string, handler: (value: unknown) => void) {
+  public use(operators: OperatorFunction<any, any>[], event: string, handler: PartialObserver<any>) {
     return this.get(event)
     .pipe(pipeFromArray(operators))
     .subscribe(handler);
