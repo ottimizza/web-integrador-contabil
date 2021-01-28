@@ -79,7 +79,7 @@ export class ProposedRulesService {
         delay(150)
       ],
       this.PROPOSED_RULES_KEY,
-      handler
+      handler as any
     );
   }
 
