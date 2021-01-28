@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { finalize, map, switchMap } from 'rxjs/operators';
 
 import { MatTabChangeEvent } from '@angular/material/tabs';
@@ -204,7 +204,7 @@ export class TransactionDetailComponent extends BeforeComponentDestroyed impleme
     .pipe(
       switchMap(() => this._historicService.getHistoric(this.business, this.account.value, this.entry.tipoLancamento)),
       map(result => !!result.records.length),
-      switchMap(hasHistoric => hasHistoric ? null : this.openHistoric())
+      switchMap(hasHistoric => hasHistoric ? of(null) : this.openHistoric())
     );
     const verifications = [!!this.account?.value?.length, this.conditions.verify()];
     const errors = [
