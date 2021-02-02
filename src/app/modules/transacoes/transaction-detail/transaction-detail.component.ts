@@ -297,8 +297,8 @@ export class TransactionDetailComponent extends BeforeComponentDestroyed impleme
     }
 
     const entry: any = this.entry;
-    Object.assign(entry, { competencia: DateUtils.ymdToCompetence(entry.dataMovimento) });
-    Object.assign(entry, { competenciaAnterior: DateUtils.lastCompetence(entry.competencia) })
+    entry.competencia = DateUtils.ymdToCompetence(entry.dataMovimento);
+    entry.competenciaAnterior = DateUtils.lastCompetence(entry.competencia);
 
     const reference = new FormattedHistoric('', this.account.value, tipoLancamento, entry.idRoteiro, entry.cnpjEmpresa, entry.cnpjContabilidade);
     return this.dialog.openComplexDialog(HistoricEditDialogComponent, DialogWidth.LARGE, {
@@ -436,7 +436,14 @@ export class TransactionDetailComponent extends BeforeComponentDestroyed impleme
       tipoLancamento = 2;
     }
 
-    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: 0, ativo: true, cnpjContabilidade: this.currentUser.organization.cnpj };
+    const filter = {
+      cnpjEmpresa: this.business.cnpj,
+      tipoLancamento,
+      tipoMovimento: this.tipoMovimento,
+      tipoConta: 0,
+      ativo: true,
+      cnpjContabilidade: this.currentUser.organization.cnpj
+    };
     const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: 1 };
     Object.assign(filter, pageCriteria);
 

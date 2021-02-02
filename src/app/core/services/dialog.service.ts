@@ -39,8 +39,7 @@ export class DialogService {
     Object.assign(config, optionalConfigs);
 
     const dialogRef = this.dialog.open(dialog, config);
-    this.refs.push(dialogRef);
-    const index = this.refs.length - 1;
+    const index = this.refs.push(dialogRef) - 1;
 
     return dialogRef.afterClosed()
     .pipe(finalize(() => {
