@@ -1,9 +1,12 @@
+import { fromJson } from '@shared/mixins/from-json.mixin';
+
 export const TipoLancamento = {
   PAGAMENTOS: 1,
   RECEBIMENTOS: 2
 };
 
 export class Lancamento {
+  public static fromJson = fromJson<Lancamento>(Lancamento);
 
   public competenciaAnterior: string;
   public contaContraPartida: string;

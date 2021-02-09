@@ -17,7 +17,7 @@ export class HistoricService {
 
   constructor(private _http: HttpHandlerService) { }
 
-  public getHistoric(empresa: Empresa, conta: string, tipoLancamento: number): any {
+  public getHistoric(empresa: Empresa, conta: string, tipoLancamento: number) {
     const url = `${BASE_URL}/api/v1/historicos?cnpjEmpresa=${empresa.cnpj}&contaMovimento=${conta}&tipoLancamento=${tipoLancamento}`;
     return this._http.get<GenericPageableResponse<any>>(url, 'Falha ao verificar a existência de histórico!');
   }

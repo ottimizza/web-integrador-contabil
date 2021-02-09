@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import { finalize, map, switchMap } from 'rxjs/operators';
 
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
@@ -200,13 +200,18 @@ export class TransactionDetailComponent extends BeforeComponentDestroyed impleme
       return;
     }
     const regra = this.ruleCreateFormat;
-    const observable = this._ruleService.createRule(regra, this.ruleAddiotionalInformation);
+    const observable = this._ruleService.createRule(regra, this.ruleAddiotionalInformation)
+    .pipe(
+      switchMap(() => this._historicService.getHistoric(this.business, this.account.value, this.entry.tipoLancamento)),
+      map(result => !!result.records.length),
+      switchMap(hasHistoric => hasHistoric ? of(null) : this.openHistoric())
+    );
     const verifications = [!!this.account?.value?.length, this.conditions.verify()];
     const errors = [
       'Para salvar uma regra você deve informar uma conta contábil.',
       'Para salvar uma regra você deve informar as condições da regra.'
     ];
-    this._savePattern(observable, verifications, errors, true);
+    this._savePattern(observable, verifications, errors);
   }
 
   ignorar() {
@@ -229,24 +234,12 @@ export class TransactionDetailComponent extends BeforeComponentDestroyed impleme
     this._savePattern(observable, [verification], error);
   }
 
-  private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[], rule?: boolean) {
+  private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[]) {
 
     const verify = ArrayUtils.verify(verifications);
 
     if (verify) {
-      if (rule) {
-        this._historicService
-          .getHistoric(this.business, this.account.value, this.entry.tipoLancamento)
-          .subscribe(data => {
-            if (!data.records.length) {
-              this.openHistoric(obs);
-            } else {
-              this._subsAndDisable(obs);
-            }
-          });
-      } else {
-        this._subsAndDisable(obs);
-      }
+      this._subsAndDisable(obs);
     } else if ((verifications.length === 1) || (verifications.length > 1 && !verifications[0] && verifications[1])) {
       this.resetErrors([errors[0]]);
     } else if (verifications.length > 1 && verifications[0] && !verifications[1]) {
@@ -297,25 +290,22 @@ export class TransactionDetailComponent extends BeforeComponentDestroyed impleme
       .subscribe();
   }
 
-  openHistoric(obs: Observable<Lancamento>): void {
+  openHistoric(): Observable<any> {
     let tipoLancamento = 1;
     if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE') {
       tipoLancamento = 2;
     }
 
     const entry: any = this.entry;
-    Object.assign(entry, { competencia: DateUtils.ymdToCompetence(entry.dataMovimento) });
-    Object.assign(entry, { competenciaAnterior: DateUtils.lastCompetence(entry.competencia) })
+    entry.competencia = DateUtils.ymdToCompetence(entry.dataMovimento);
+    entry.competenciaAnterior = DateUtils.lastCompetence(entry.competencia);
 
     const reference = new FormattedHistoric('', this.account.value, tipoLancamento, entry.idRoteiro, entry.cnpjEmpresa, entry.cnpjContabilidade);
-    this.dialog.openComplexDialog(HistoricEditDialogComponent, DialogWidth.LARGE, {
+    return this.dialog.openComplexDialog(HistoricEditDialogComponent, DialogWidth.LARGE, {
       type: 'post',
       reference,
       entry
     })
-      .subscribe(() => {
-        this._subsAndDisable(obs);
-      });
   }
 
   onTab(event: MatTabChangeEvent, isFirst: boolean) {
@@ -446,7 +436,14 @@ export class TransactionDetailComponent extends BeforeComponentDestroyed impleme
       tipoLancamento = 2;
     }
 
-    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: 0, ativo: true, cnpjContabilidade: this.currentUser.organization.cnpj };
+    const filter = {
+      cnpjEmpresa: this.business.cnpj,
+      tipoLancamento,
+      tipoMovimento: this.tipoMovimento,
+      tipoConta: 0,
+      ativo: true,
+      cnpjContabilidade: this.currentUser.organization.cnpj
+    };
     const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: 1 };
     Object.assign(filter, pageCriteria);
 

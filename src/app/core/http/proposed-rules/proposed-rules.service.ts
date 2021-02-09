@@ -1,5 +1,5 @@
 import { delay, filter, map, take } from 'rxjs/operators';
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from '@env';
 
 import { HttpHandlerService } from '@app/services/http-handler.service';
@@ -79,7 +79,7 @@ export class ProposedRulesService {
         delay(150)
       ],
       this.PROPOSED_RULES_KEY,
-      handler
+      handler as any
     );
   }
 
@@ -105,6 +105,5 @@ export class ProposedRulesService {
     const searchCriteria = { busca: accountingFilter ? 0 : 1, cnpjContabilidade: User.fromLocalStorage().organization.cnpj };
     return this.http.get<GenericResponse<ProposedRule>>([url, searchCriteria], 'Falha ao obter regra sugerida');
   }
-
 
 }
