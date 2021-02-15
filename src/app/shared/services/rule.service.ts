@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@env';
-import { RuleCreateFormat, PostFormatRule } from '@shared/models/Rule';
 import { Observable } from 'rxjs';
-import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
-import { CompleteRule } from '@shared/models/CompleteRule';
-import { GenericResponse } from '@shared/models/GenericResponse';
+
 import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
+import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
+import { RuleCreateFormat, PostFormatRule } from '@shared/models/Rule';
+import { GenericResponse } from '@shared/models/GenericResponse';
+import { CompleteRule } from '@shared/models/CompleteRule';
 
 const BASE_URL = `${environment.serviceUrl}`;
 
@@ -18,12 +19,16 @@ export class RuleService extends ProposedRulesService {
     if (rule.reduce) {
       rule.reduce();
     }
+    if (additionalInformation.regraSugerida === undefined) {
+      delete additionalInformation.regraSugerida;
+    }
     const url = `${BASE_URL}/api/v1/regras`;
     return this.http.post<GenericResponse<CompleteRule>>([url, additionalInformation], rule, 'Falha ao criar regra!');
   }
 
   getAllIds(cnpjEmpresa: string, cnpjContabilidade: string, tipoLancamento: number) {
-    const url = `${BASE_URL}/api/v1/salesforce/id?cnpjEmpresa=${cnpjEmpresa}&tipoLancamento=${tipoLancamento}&cnpjContabilidade=${cnpjContabilidade}`;
+    const url =
+    `${BASE_URL}/api/v1/salesforce/id?cnpjEmpresa=${cnpjEmpresa}&tipoLancamento=${tipoLancamento}&cnpjContabilidade=${cnpjContabilidade}`;
     return this.http.get<number[]>(url, 'Falha ao obter lista completa de regras!');
   }
 
@@ -73,4 +78,5 @@ export class RuleService extends ProposedRulesService {
     const url = `${BASE_URL}/api/v1/regras/${id}/posicao/final`;
     return this.http.put(url, {}, 'Falha ao mover regra para o final!');
   }
+
 }

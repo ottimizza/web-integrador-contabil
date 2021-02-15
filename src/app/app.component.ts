@@ -1,9 +1,10 @@
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
-import { RxEvent } from '@app/services/rx-event.service';
 import { DOCUMENT } from '@angular/common';
-import { UpdateSerive } from '@app/services/update.service';
-import { MessagingService } from '@app/services/messaging.service';
 import { environment } from '@env';
+
+import { MessagingService } from '@app/services/messaging.service';
+import { UpdateSerive } from '@app/services/update.service';
+import { RxEvent } from '@app/services/rx-event.service';
 
 @Component({
   selector: 'app-root',

@@ -1,6 +1,5 @@
 <form autocomplete="off">
-  <div class="card">
-
+ <div class="card">
 
     <mat-progress-bar [value]="percentage" class="progress-bar"  [matTooltip]="percentage + '%'"></mat-progress-bar>
     <mat-tab-group mat-align-tabs="center" (selectedTabChange)="onTab($event, false)">
@@ -24,7 +23,7 @@
               <div id="filter-type-1" mat-menu-item>
                 <mat-radio-button [value]="true">Inteligência da Ottimizza</mat-radio-button>
               </div>
-            </mat-radio-group>
+             </mat-radio-group>
           </mat-menu>
         </div>
       </div>
@@ -35,9 +34,6 @@
           <text class="ml-1"(click)="openGrid()"> lançamentos.</text>
           <icon class="ml-2" [matTooltip]="info.affectedsOrientation" name="question-circle"></icon>
         </div>
-
-
-
 
 
       </div>
@@ -109,7 +105,6 @@
                 class="col-md"
               ></app-chips-group>
             </div>
-
 
 
             <paginator [pageSize]="1" [pageSizeOptions]="[1]" [length]="pageInfo?.totalPages" *ngIf="total !== 'Calculando...'"
