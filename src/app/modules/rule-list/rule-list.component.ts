@@ -219,6 +219,7 @@ ngOnInit(): void {
     const sorting = { sortBy: 'posicao', sortOrder: 'asc' };
     const filter = {
       cnpjEmpresa: this.business.cnpj,
+      cnpjContabilidade: this.currentUser.organization.cnpj,
       tipoLancamento: this.tipoLancamento
     };
     Object.assign(filter, pageCriteria, sorting);
