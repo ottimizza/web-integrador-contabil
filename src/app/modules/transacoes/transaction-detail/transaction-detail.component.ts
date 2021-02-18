@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { Observable, of, Subject } from 'rxjs';
 import { finalize, map, switchMap } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
@@ -54,6 +54,7 @@ export class TransactionDetailComponent extends BeforeComponentDestroyed impleme
   errorText: string;
 
   tabIsClicked = false;
+  tabIsNotClicked = !this.tabIsClicked;
 
   impact = 0;
   percentage = 0;

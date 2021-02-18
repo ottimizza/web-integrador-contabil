@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
+
+import { HistoricService } from '@shared/services/historic.service';
 import { SalesforceService } from '@app/http/salesforce.service';
 import { RuleService } from '@shared/services/rule.service';
-import { HistoricService } from '@shared/services/historic.service';
+import { ToastService } from '@shared/services/toast.service';
+import { TimeUtils } from '@shared/utils/time.utils';
 
 @Injectable({ providedIn: 'root' })
 export class ExportService {
@@ -9,7 +12,8 @@ export class ExportService {
   constructor(
     private salesforce: SalesforceService,
     private rules: RuleService,
-    private historic: HistoricService
+    private historic: HistoricService,
+    private toast: ToastService
   ) {}
 
   public async exportAllRules(
@@ -42,6 +46,27 @@ export class ExportService {
     }
 
     return true;
+  }
+
+  public async exportAll(
+    cnpjEmpresa: string,
+    cnpjContabilidade: string,
+    tipoLancamento: number,
+    callbackFn: (exported: number, total: number) => void
+  ) {
+    this.toast.showSnack('Exportando regras, isto pode demorar um pouco...');
+    await this.exportAllRules(cnpjEmpresa, cnpjContabilidade, tipoLancamento, callbackFn);
+
+    this.toast.showSnack('Exportando históricos, isto pode demorar um pouco...');
+    await this.exportAllHistorics(cnpjEmpresa, cnpjContabilidade, tipoLancamento, callbackFn);
+
+    this.toast.show('Redirecionando para página de confirmação...');
+    await TimeUtils.sleep(2000);
+    const scriptId = 'a0A1C000011Z4iy';
+    const company = 'OLYNTHO+OFTALMO.CENTER+-+EIRELI';
+    const type = 'Contas+PAGAS';
+    const url = `http://s1.ottimizza.com.br:8475/contabil-server/roteiro.jsp?idRoteiro=${scriptId}&codigoRoteiro=ROT-2020-1010483&empresa=${company}&tipo=${type}&path=Deploy"`;
+    window.open(url, '_blank');
   }
 
 }
