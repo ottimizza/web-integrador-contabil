@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -22,11 +22,13 @@ export class ProjectConfirmationComponent implements OnInit {
 
   @Input() script: Script;
   @Input() company: Empresa;
+  @Output() backpage = new EventEmitter<boolean>();
 
   public data = new LazyLoader<(ChecklistAnswer & ChecklistQuestion)[]>();
   public name = new FormControl('', Validators.required);
 
   public isSaving = false;
+  public isConfirmed = false;
   public error: string;
 
   constructor(
@@ -40,6 +42,7 @@ export class ProjectConfirmationComponent implements OnInit {
     if (this.script.nome) {
       this.name.setValue(this.script.nome);
       this.name.disable();
+      this.isConfirmed = true;
     } else {
       this.name.setValue(`${this.script.tipoRoteiro === 'REC' ? 'RECEBIMENTOS' : 'PAGAMENTOS'} - ${this.company.razaoSocial.toUpperCase()}`);
     }
@@ -98,6 +101,10 @@ export class ProjectConfirmationComponent implements OnInit {
 
   public get doc() {
     return DocUtils.format(this.company.cnpj);
+  }
+
+  public back() {
+    this.backpage.emit(true);
   }
 
 }

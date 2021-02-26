@@ -86,6 +86,9 @@
     </ott-fieldset>
 
     <div class="w-100 text-center mt-4">
+      <ott-button *ngIf="!isConfirmed" (pressed)="back()" color="var(--secondary-color)">
+        Editar
+      </ott-button>
       <ott-button [disabled]="name.invalid || isSaving || script.nome" (pressed)="confirm()">
         Confirmar
       </ott-button>
