@@ -78,7 +78,7 @@ export class ArrayUtils {
     indexes = indexes.filter(oi => (!!oi || oi === 0));
     indexes = this.flat(indexes.map(index => [index, index + 1]));
     indexes.unshift(0);
-    indexes = this.preventRepeat<number>(indexes);
+    indexes = this.preventRepeat(indexes);
 
     return indexes.map((start, index) => {
       const end = indexes[index + 1] || text.length;
@@ -181,6 +181,10 @@ export class ArrayUtils {
       packages.push(array.slice(i, i + size));
     }
     return packages;
+  }
+
+  public static findIndex<T>(array: T[], map: keyof T, data: any) {
+    return array.map(item => item[map]).indexOf(data);
   }
 
 }

@@ -1,7 +1,13 @@
-import { Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit, NgZone } from '@angular/core';
 import { IChipGroupPattern, IChipGroupParcialPattern } from './patterns/IChipGroupPattern';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
+import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
+import { ProposedRule } from '@shared/models/Rule';
+import { Lancamento } from '@shared/models/Lancamento';
+import { RuleService } from '@shared/services/rule.service';
+import { ToastService } from '@shared/services/toast.service';
+import { TimeUtils } from '@shared/utils/time.utils';
 
 export class RuleConfig {
   title: string;
@@ -31,12 +37,21 @@ export class RuleChipGroupComponent implements OnInit, AfterViewInit {
   @ViewChild('fakeInput')
   public el: ElementRef<HTMLDivElement>;
 
+  @ViewChild('trigger')
+  private trigger: MatMenuTrigger;
+
+  @ViewChild('triggerButton', { static: true })
+  private triggerButton: ElementRef<HTMLButtonElement>;
+
   chipLists: ChipList[] = [];
   selecteds: { id: string, positions: number[] }[] = [];
   impositive: boolean[];
 
+  public hasProposedRule = false;
+
   constructor(
-    private service: ProposedRulesService
+    private service: RuleService,
+    private toast: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -48,8 +63,15 @@ export class RuleChipGroupComponent implements OnInit, AfterViewInit {
       const elements = this.el.nativeElement.querySelectorAll<HTMLDivElement>('.simple-chip');
       let chips: { label: string, isSelected: boolean, position: number }[] = [];
       elements.forEach(val => {
+        const chipValue = val.innerText;
+        let isSelected = val.classList.contains('chip-selected');
+        if (isSelected && this.service.alreadyUsedRules.includes(chipValue)) {
+          val.classList.remove('chip-selected');
+          isSelected = false;
+        } else if (isSelected) {
+          this.service.alreadyUsedRules.push(chipValue);
+        }
         const label = val.id;
-        const isSelected = val.classList.contains('chip-selected') ;
         let position = chips.map(chip => chip.label).lastIndexOf(label);
         position = position > -1 ? position + 1 : 0;
         chips.push({ label, isSelected, position });
@@ -58,6 +80,7 @@ export class RuleChipGroupComponent implements OnInit, AfterViewInit {
       chips = chips.filter(chip => chip.isSelected);
       chips.forEach((chip) => this.onDevolve(chip));
     });
+    this.hasProposedRule = !!this.service.lastProposedRule?.id;
   }
 
   public init() {
@@ -155,6 +178,30 @@ export class RuleChipGroupComponent implements OnInit, AfterViewInit {
         chipValue
       };
     });
+  }
+
+  public async onContextMenu(e: MouseEvent) {
+    if (this.hasProposedRule) {
+      e.preventDefault();
+      this.triggerButton.nativeElement.classList.remove('d-none');
+      this.triggerButton.nativeElement.style.left = e.offsetX + 'px';
+      this.triggerButton.nativeElement.style.top = e.offsetY + 'px';
+
+      await TimeUtils.sleep(0);
+      this.trigger.openMenu();
+      await TimeUtils.sleep(0);
+
+      this.triggerButton.nativeElement.classList.add('d-none');
+    }
+  }
+
+  public ignoreSuggestion() {
+    if (this.hasProposedRule) {
+      this.service.ignoreSuggestion(this.service.lastProposedRule)
+      .subscribe(() => {
+        this.toast.show('Ótimo, esta sugestão não será mais apresentada à sua contabilidade', 'success');
+      });
+    }
   }
 
 }

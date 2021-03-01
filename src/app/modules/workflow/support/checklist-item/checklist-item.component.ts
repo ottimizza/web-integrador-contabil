@@ -3,6 +3,9 @@ import { ChecklistAnswer, ChecklistInputType, ChecklistQuestion } from '@shared/
 import { FormControl } from '@angular/forms';
 
 import { momentjs } from '@shared/utils/moment';
+import { RxEvent } from '@app/services/rx-event.service';
+import { Observable, PartialObserver } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 @Component({
   selector: 'checklist-item',
@@ -26,6 +29,9 @@ export class ChecklistItemComponent implements AfterViewInit, OnChanges {
   @Output()
   public ok = new EventEmitter<ChecklistAnswer>();
 
+  @Output()
+  public details = new EventEmitter<{ id: number, observation: string }>();
+
   public type = ChecklistInputType;
   public ctrl = new FormControl();
 
@@ -46,6 +52,10 @@ export class ChecklistItemComponent implements AfterViewInit, OnChanges {
 
   public submit() {
     this.ok.emit({ perguntaId: this.question.id, resposta: this.value, observacoes: this.observation.value, roteiroId: this.scriptId });
+  }
+
+  public sendDetails() {
+    this.details.emit({ id: this.question.id, observation: this.observation.value });
   }
 
   public parse = (src: any) => src.descricao;

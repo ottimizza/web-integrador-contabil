@@ -3,6 +3,7 @@
   <div class="row w-100 p-0 m-0">
     <div class="col p-0">
       <input
+        *ngIf="type !== 'textarea'"
         class="form-control"
         [ngClass]="{'right-radius': type === 'text' }"
         autocomplete="off"
@@ -13,6 +14,16 @@
         [style]="deep"
         (input)="emitInput($event)"
         (keyup.enter)="emitSubmit($event)">
+        <textarea
+          *ngIf="type === 'textarea'"
+          class="form-control"
+          autocomplete="off"
+          [id]="id"
+          [placeholder]="placeholder"
+          [formControl]="control"
+          [style]="deep"
+          (input)="emitInput($event)">
+        </textarea>
     </div>
     <div class="col-2 p-0 text-left" *ngIf="type === 'search'">
       <button class="search-button bg-white" [disabled]="control.disabled" (click)="emitSubmit()" matTooltip="Pesquisar">

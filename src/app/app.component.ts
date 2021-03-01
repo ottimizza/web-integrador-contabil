@@ -1,10 +1,10 @@
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
-import { RxEvent } from '@app/services/rx-event.service';
 import { DOCUMENT } from '@angular/common';
-import { UpdateSerive } from '@app/services/update.service';
-import { MessagingService } from '@app/services/messaging.service';
-import { LoggerUtils } from '@shared/utils/logger.utills';
 import { environment } from '@env';
+
+import { MessagingService } from '@app/services/messaging.service';
+import { UpdateSerive } from '@app/services/update.service';
+import { RxEvent } from '@app/services/rx-event.service';
 
 @Component({
   selector: 'app-root',
@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
 
   public ngOnInit() {
     this.messagingService.receiveMessage();
-    this.messagingService.currentMessage.subscribe(msg => LoggerUtils.log(msg));
+    this.messagingService.currentMessage.subscribe(msg => console.log(msg));
     this.setVariables();
   }
 

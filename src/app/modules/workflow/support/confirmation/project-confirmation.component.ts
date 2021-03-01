@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -12,6 +12,7 @@ import { WorkflowService } from '@app/http/workflow.service';
 import { Script, ScriptStatus } from '@shared/models/Script';
 import { LazyLoader } from '@shared/models/LazyLoader';
 import { Empresa } from '@shared/models/Empresa';
+import { DocUtils } from '@shared/utils/docs.utils';
 
 @Component({
   selector: 'script-project-confirmation',
@@ -21,11 +22,13 @@ export class ProjectConfirmationComponent implements OnInit {
 
   @Input() script: Script;
   @Input() company: Empresa;
+  @Output() backpage = new EventEmitter<boolean>();
 
   public data = new LazyLoader<(ChecklistAnswer & ChecklistQuestion)[]>();
   public name = new FormControl('', Validators.required);
 
   public isSaving = false;
+  public isConfirmed = false;
   public error: string;
 
   constructor(
@@ -39,10 +42,13 @@ export class ProjectConfirmationComponent implements OnInit {
     if (this.script.nome) {
       this.name.setValue(this.script.nome);
       this.name.disable();
+      this.isConfirmed = true;
     } else {
       this.name.setValue(`${this.script.tipoRoteiro === 'REC' ? 'RECEBIMENTOS' : 'PAGAMENTOS'} - ${this.company.razaoSocial.toUpperCase()}`);
     }
-    this.data.call(this.checklistService.getCompletedForm(2, this.script.id), 'records');
+    this.toast.showSnack('Capturando respostas...');
+    this.data.call(this.checklistService.getCompletedForm(2, this.script.id), 'records')
+    .then(() => this.toast.hideSnack());
   }
 
   public checkAnswer(question: ChecklistQuestion & ChecklistAnswer): string {
@@ -91,6 +97,14 @@ export class ProjectConfirmationComponent implements OnInit {
         this.router.navigate(['/workflow']);
       });
     });
+  }
+
+  public get doc() {
+    return DocUtils.format(this.company.cnpj);
+  }
+
+  public back() {
+    this.backpage.emit(true);
   }
 
 }

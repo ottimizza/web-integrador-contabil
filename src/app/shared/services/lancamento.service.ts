@@ -9,18 +9,20 @@ import { Lancamento } from '@shared/models/Lancamento';
 import { PostFormatRule } from '@shared/models/Rule';
 import { Empresa } from '@shared/models/Empresa';
 import { KeyMap } from '@shared/models/KeyMap';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { User } from '@shared/models/User';
 import { ArrayUtils } from '@shared/utils/array.utils';
+import { lastValueOnly } from '@shared/operators/last-value-only.operator';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/lancamentos`;
 
 @Injectable({ providedIn: 'root' })
 export class LancamentoService {
 
+
   constructor(private http: HttpHandlerService) { }
 
-  public getLancamentos(searchCriteria: any): Observable<GenericPageableResponse<Lancamento>> {
+  public getLancamentos(searchCriteria: any) {
     return this.http.get<GenericPageableResponse<Lancamento>>([BASE_URL, searchCriteria], 'Falha ao obter lançamentos!');
   }
 
@@ -57,7 +59,9 @@ export class LancamentoService {
 
   public fetchByRule(rules: PostFormatRule[], searchCriteria: any): Observable<GenericPageableResponse<Lancamento>> {
     const url = `${BASE_URL}/regras`;
-    return this.http.post<GenericPageableResponse<Lancamento>>([url, searchCriteria], rules, 'Falha ao obter lançamentos afetados!');
+    return this.http.post<GenericPageableResponse<Lancamento>>
+    ([url, searchCriteria], rules, 'Falha ao obter lançamentos afetados!')
+    .pipe(lastValueOnly(url));
   }
 
   public ignoreLancamento(lancamento: Lancamento): Observable<Lancamento> {

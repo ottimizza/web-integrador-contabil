@@ -36,10 +36,10 @@ export class SnapshotService {
    * @param currentState this
    * @param keys propriedades a serem salvas
    */
-  public recycle(currentState: any, keys: string[]) {
-    this.register(...keys);
+  public recycle<T>(currentState: T, keys: Array<keyof T>) {
+    this.register(...keys as string[]);
     this.print(currentState);
-    const sub = new Subject<undefined>();
+    const sub = new Subject<void>();
     sub.pipe(take(1)).subscribe(() => {
       this.restore(currentState);
       this.clean();

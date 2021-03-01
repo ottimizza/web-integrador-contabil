@@ -23,8 +23,8 @@ export class ChecklistComponent implements OnInit {
   @Output()
   public completed = new EventEmitter<Script>();
 
-  public importantInfos: string;
-  public notImportantInfos: string;
+  public importantInfos: string[];
+  public notImportantInfos: string[];
 
   public isFinished = false;
 
@@ -39,11 +39,9 @@ export class ChecklistComponent implements OnInit {
 
   ngOnInit(): void {
     this.importantInfos = this.checklist.observacoes.filter(obs => obs.importante)
-      .map(obs => obs.descricao)
-      .join(' ');
+      .map(obs => obs.descricao);
     this.notImportantInfos = this.checklist.observacoes.filter(obs => !obs.importante)
-      .map(obs => obs.descricao)
-      .join(' ');
+      .map(obs => obs.descricao);
   }
 
   public onQuestionOk(event: ChecklistAnswer) {
@@ -86,7 +84,15 @@ export class ChecklistComponent implements OnInit {
       this.toast.showSnack('Registrando respostas...');
       this.service.sendAnswers(this.scriptId, this.answers).subscribe(result => {
         this.toast.show('Respostas registradas com sucesso!', 'success');
+        this.completed.emit(result.record);
       });
+    }
+  }
+
+  public onDetailDefined(event: { id: number, observation: string }) {
+    const index = ArrayUtils.findIndex(this.answers, 'perguntaId', event.id);
+    if (index >= 0) {
+      this.answers[index].observacoes = event.observation;
     }
   }
 

@@ -1,12 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { finalize, map, switchMap } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { finalize } from 'rxjs/operators';
 
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
 import { HistoricEditDialogComponent } from '@modules/historic/dialogs/historic-edit-dialog/historic-edit-dialog.component';
 import { ConfirmDeleteDialogComponent } from '../dialogs/confirm-delete/confirm-delete-dialog.component';
+import { BeforeComponentDestroyed } from '@shared/operators/before-component-destroyed.operator';
 import { DEFAULT_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DEFAULT_CHIP_PATTERN';
 import { VALUE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/VALUE_CHIP_PATTERN';
 import { DATE_CHIP_PATTERN } from './rule-creator/chips-group/patterns/DATE_CHIP_PATTERN';
@@ -35,7 +36,7 @@ import { User } from '@shared/models/User';
   templateUrl: './transaction-detail.component.html',
   styleUrls: ['./transaction-detail.component.scss']
 })
-export class TransactionDetailComponent implements OnInit, OnDestroy {
+export class TransactionDetailComponent extends BeforeComponentDestroyed implements OnInit {
 
   @Output() tabSelect = new EventEmitter();
   @Input() business: Empresa;
@@ -53,6 +54,7 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   errorText: string;
 
   tabIsClicked = false;
+  tabIsNotClicked = !this.tabIsClicked;
 
   impact = 0;
   percentage = 0;
@@ -65,10 +67,10 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   currentUser: User;
 
   public showProposedRules = true;
+  public legacyShowProposedRules = true;
   public useAccountingIntelligenceInProposedRules = false;
+  public proposedRuleId: number;
 
-  public tutorialInitSub: Subscription;
-  public tutorialEndedSub: Subscription;
   public recoverState: Subject<any>;
 
   constructor(
@@ -80,11 +82,8 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     private _tutorialService: TutorialService,
     private _snapshotService: SnapshotService,
     public dialog: DialogService
-  ) { }
-
-  ngOnDestroy(): void {
-    this.tutorialInitSub.unsubscribe();
-    this.tutorialEndedSub.unsubscribe();
+  ) {
+    super();
   }
 
   ngOnInit(): void {
@@ -94,7 +93,9 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
   }
 
   setTutorials() {
-    this.tutorialInitSub = this._tutorialService.afterTutorialStarted.subscribe(() => {
+    this._tutorialService.afterTutorialStarted
+    .pipe(this.takeUntil)
+    .subscribe(() => {
       this.recoverState = this._snapshotService.recycle(this, ['entry', 'errorText', 'errorText2', 'total', 'conditions'])
       this.errorText = null;
       this.errorText2 = null;
@@ -102,7 +103,8 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
       this.entry = FAKE_ENTRY;
       Object.assign(this.conditions, { verify: () => true });
     });
-    this.tutorialEndedSub = this._tutorialService.afterTutorialClosed.subscribe(() => {
+    this._tutorialService.afterTutorialClosed
+    .pipe(this.takeUntil).subscribe(() => {
       this.recoverState.next();
     });
   }
@@ -182,19 +184,35 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     );
   }
 
+  get ruleAddiotionalInformation() {
+    let sugerir: 0 | 1 | 2 = 2;
+    if (this.legacyShowProposedRules) {
+      sugerir = this.useAccountingIntelligenceInProposedRules ? 0 : 1;
+    }
+    return {
+      sugerir,
+      regraSugerida: this.proposedRuleId
+    }
+  }
+
   regra() {
     if (this.ruleCreateFormat.regras.length > 6) {
       this.errorText = 'Você não pode salvar uma regra com mais de 4 cláusulas!';
       return;
     }
     const regra = this.ruleCreateFormat;
-    const observable = this._ruleService.createRule(regra);
+    const observable = this._ruleService.createRule(regra, this.ruleAddiotionalInformation)
+    .pipe(
+      switchMap(() => this._historicService.getHistoric(this.business, this.account.value, this.entry.tipoLancamento)),
+      map(result => !!result.records.length),
+      switchMap(hasHistoric => hasHistoric ? of(null) : this.openHistoric())
+    );
     const verifications = [!!this.account?.value?.length, this.conditions.verify()];
     const errors = [
       'Para salvar uma regra você deve informar uma conta contábil.',
       'Para salvar uma regra você deve informar as condições da regra.'
     ];
-    this._savePattern(observable, verifications, errors, true);
+    this._savePattern(observable, verifications, errors);
   }
 
   ignorar() {
@@ -204,7 +222,7 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     }
     const regra = this.ruleCreateFormat;
     regra.contaMovimento = 'IGNORAR';
-    const observable = this._ruleService.createRule(regra);
+    const observable = this._ruleService.createRule(regra, this.ruleAddiotionalInformation);
     const verification = this.conditions.verify();
     const error = ['Para salvar uma regra de ignorar, você deve informar as condições da regra.'];
     this._savePattern(observable, [verification], error);
@@ -217,24 +235,12 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     this._savePattern(observable, [verification], error);
   }
 
-  private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[], rule?: boolean) {
+  private _savePattern(obs: Observable<Lancamento>, verifications: boolean[], errors: string[]) {
 
     const verify = ArrayUtils.verify(verifications);
 
     if (verify) {
-      if (rule) {
-        this._historicService
-          .getHistoric(this.business, this.account.value, this.entry.tipoLancamento)
-          .subscribe(data => {
-            if (!data.records.length) {
-              this.openHistoric(obs);
-            } else {
-              this._subsAndDisable(obs);
-            }
-          });
-      } else {
-        this._subsAndDisable(obs);
-      }
+      this._subsAndDisable(obs);
     } else if ((verifications.length === 1) || (verifications.length > 1 && !verifications[0] && verifications[1])) {
       this.resetErrors([errors[0]]);
     } else if (verifications.length > 1 && verifications[0] && !verifications[1]) {
@@ -285,25 +291,22 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  openHistoric(obs: Observable<Lancamento>): void {
+  openHistoric(): Observable<any> {
     let tipoLancamento = 1;
     if (this.tipoMovimento === 'REC' || this.tipoMovimento === 'EXCRE') {
       tipoLancamento = 2;
     }
 
     const entry: any = this.entry;
-    Object.assign(entry, { competencia: DateUtils.ymdToCompetence(entry.dataMovimento) });
-    Object.assign(entry, { competenciaAnterior: DateUtils.lastCompetence(entry.competencia) })
+    entry.competencia = DateUtils.ymdToCompetence(entry.dataMovimento);
+    entry.competenciaAnterior = DateUtils.lastCompetence(entry.competencia);
 
     const reference = new FormattedHistoric('', this.account.value, tipoLancamento, entry.idRoteiro, entry.cnpjEmpresa, entry.cnpjContabilidade);
-    this.dialog.openComplexDialog(HistoricEditDialogComponent, DialogWidth.LARGE, {
+    return this.dialog.openComplexDialog(HistoricEditDialogComponent, DialogWidth.LARGE, {
       type: 'post',
       reference,
       entry
     })
-      .subscribe(() => {
-        this._subsAndDisable(obs);
-      });
   }
 
   onTab(event: MatTabChangeEvent, isFirst: boolean) {
@@ -352,8 +355,9 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
 
   public async proposeRules() {
     this._toast.showSimpleSnackBar('Obtendo regra sugerida...');
-    const account = await this._ruleService.proposeRules(this.entry.id, this.useAccountingIntelligenceInProposedRules);
-    this.account.setValue(account);
+    const data = await this._ruleService.proposeRules(this.entry.id, this.useAccountingIntelligenceInProposedRules);
+    this.account.setValue(data.account);
+    this.proposedRuleId = data.id;
     this._toast.hideSnack();
   }
 
@@ -363,8 +367,11 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     const rs = await this.fetch();
     this.entry = rs.records[0];
     this.pageInfo = rs.pageInfo;
+    this.legacyShowProposedRules = this.showProposedRules;
     if (this.entry && this.showProposedRules) {
       await this.proposeRules();
+    } else {
+      this._ruleService.lastProposedRule = null;
     }
 
     this.reConstruct();
@@ -372,16 +379,21 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
     this.calcPercentage();
 
     if (!this.entry) {
-      this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa.`]);
-      this.percentage = 100;
+      if (!this.pageInfo.hasPrevious) {
+        this.resetErrors([`Você concluiu todos os ${this.tipoLancamentoName} desta empresa.`]);
+        this.percentage = 100;
+      } else {
+        this.pageInfo.pageIndex--;
+        await this.requestEntry();
+      }
     }
   }
 
   public async reConstruct() {
     for (let i = 1; i < 8; i++) {
       this.rebuild = i;
-      this._ruleService.onReconstructionCompleted();
       await TimeUtils.sleep(1);
+      this._ruleService.onReconstructionCompleted();
     }
     this.onReconstructionCompleted()
   }
@@ -425,7 +437,14 @@ export class TransactionDetailComponent implements OnInit, OnDestroy {
       tipoLancamento = 2;
     }
 
-    const filter = { cnpjEmpresa: this.business.cnpj, tipoLancamento, tipoMovimento: this.tipoMovimento, tipoConta: 0, ativo: true, cnpjContabilidade: this.currentUser.organization.cnpj };
+    const filter = {
+      cnpjEmpresa: this.business.cnpj,
+      tipoLancamento,
+      tipoMovimento: this.tipoMovimento,
+      tipoConta: 0,
+      ativo: true,
+      cnpjContabilidade: this.currentUser.organization.cnpj
+    };
     const pageCriteria = { pageIndex: this.pageInfo.pageIndex, pageSize: 1 };
     Object.assign(filter, pageCriteria);
 

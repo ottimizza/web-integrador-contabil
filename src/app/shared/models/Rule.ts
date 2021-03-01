@@ -6,11 +6,9 @@ export enum RuleType {
 }
 
 export interface PostFormatRule {
-
     campo: string;
     condicao: Condicao;
     valor: string;
-
 }
 
 export class RuleCreateFormat {
@@ -101,7 +99,7 @@ export class Rule {
           this._newRule(keys[i], values[i]);
         }
       }
-      return this._rules;
+      return this._rules.filter(r => r.campo && r.valor && r.condicao);
     }
 
     private _newRule(name: string, values: any[]) {

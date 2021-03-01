@@ -16,21 +16,27 @@ export class ToastService {
 
   constructor(public snackbar: MatSnackBar) { }
 
+  public readonly DEFAULT_DURATION = 3000;
+
   public show(
     message: string,
     color?: 'primary' | 'success' | 'danger' | 'warning'
   ) {
     return this.snackbar.open(message, '', {
-      duration: 3000,
+      duration: this.DEFAULT_DURATION,
       verticalPosition: 'top',
       horizontalPosition: 'right',
       panelClass: this.selectColor(color)
     }).afterDismissed();
   }
 
+  public get isOpened() {
+    return !!this.snackbar._openedSnackBarRef;
+  }
+
   public showSimpleSnackBar(message: string): void {
     this.snackbar.open(message, '', {
-      duration: 3000,
+      duration: this.DEFAULT_DURATION,
       verticalPosition: 'bottom',
       horizontalPosition: 'left'
     });

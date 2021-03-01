@@ -8,7 +8,6 @@ import { RxEvent } from '@app/services/rx-event.service';
 import { ProposedRule } from '@shared/models/Rule';
 import { User } from '@shared/models/User';
 import { ArrayUtils } from '@shared/utils/array.utils';
-import { BehaviorSubject, Subject } from 'rxjs';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/regras`;
 
@@ -21,11 +20,21 @@ export class ProposedRulesService {
   private readonly RECONSTRUCTION_ENDED_KEY = 'event-reconstruction-ended';
 
   private proposedRules: string[];
+  public alreadyUsedRules: string[] = [];
+
+  public lastProposedRule: ProposedRule;
 
   constructor(
     private event: RxEvent,
-    protected http: HttpHandlerService
-  ) { }
+    protected http: HttpHandlerService,
+  ) {
+    this.event.subscribe(this.RECONSTRUCTION_ENDED_KEY, () => this.alreadyUsedRules = []);
+  }
+
+  public ignoreSuggestion(rule: ProposedRule) {
+    const url = `${BASE_URL}/sugerir/ignorar`;
+    return this.http.post(url, rule, 'Falha ao ignorar sugestão de regra');
+  }
 
   public onReconstructionEnded() {
     this.event.next(this.RECONSTRUCTION_ENDED_KEY, true);
@@ -37,12 +46,13 @@ export class ProposedRulesService {
 
   public async proposeRules(entryId: number, accountingFilter?: boolean) {
     const result = await this._suggestedRule(entryId, !!accountingFilter).toPromise();
+    this.lastProposedRule = result.record;
     if (result.record && result.record.camposRegras?.length) {
       this.proposedRules = result.record.camposRegras;
-      return result.record.contaMovimento ?? '';
+      return { id: result.record.id, account: result.record.contaMovimento ?? '' };
     }
     this.proposedRules = [];
-    return '';
+    return { id: result?.record?.id || null, account: '' };
   }
 
   public proposedRulesIncludes(value: string, separators: string[], array = this.proposedRules) {
@@ -58,19 +68,18 @@ export class ProposedRulesService {
     this.event.use(
       [
         filter((result: string[]) => this.proposedRulesIncludes(value, separators, result)),
+        take(1),
         map((result: string[]) => {
           const rule = result.filter(a =>  a.toUpperCase().includes(value.toUpperCase()))[0];
           if (!this.proposedRules) {
             this.proposedRules = result;
           }
-          // this.onRuleUsed(rule);
           return rule;
         }),
-        take(1),
-        delay(150),
+        delay(150)
       ],
       this.PROPOSED_RULES_KEY,
-      handler
+      handler as any
     );
   }
 
@@ -96,6 +105,5 @@ export class ProposedRulesService {
     const searchCriteria = { busca: accountingFilter ? 0 : 1, cnpjContabilidade: User.fromLocalStorage().organization.cnpj };
     return this.http.get<GenericResponse<ProposedRule>>([url, searchCriteria], 'Falha ao obter regra sugerida');
   }
-
 
 }

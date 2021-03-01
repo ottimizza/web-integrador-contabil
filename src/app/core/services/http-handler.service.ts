@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AuthenticationService } from '@app/authentication/authentication.service';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+
+import { AuthenticationService } from '@app/authentication/authentication.service';
+import { successOnly } from '@shared/operators/success.operator';
 import { ToastService } from '@shared/services/toast.service';
 
 @Injectable({ providedIn: 'root' })
@@ -20,33 +22,38 @@ export class HttpHandlerService {
     }).join('&');
   }
 
-  public get<T>(url: string | any[], errorMessage: string, headers: any = this._headers): Observable<T> {
+  public get<T>(url: string | any[], errorMessage: string, loadingMessage?: string, headers: any = this._headers): Observable<T> {
     url = this._urlHandle(url);
-    const obs$ = this.http.get(url, headers);
+    let obs$ = this.http.get(url, headers);
+    obs$ = this._loadingHandle(obs$, loadingMessage, errorMessage);
     return this._errorHandle(obs$, errorMessage);
   }
 
-  public post<T>(url: string | any[], body: any, errorMessage: string, headers: any = this._headers): Observable<T> {
+  public post<T>(url: string | any[], body: any, errorMessage: string, loadingMessage?: string, headers: any = this._headers): Observable<T> {
     url = this._urlHandle(url);
-    const obs$ = this.http.post(url, body, headers);
+    let obs$ = this.http.post(url, body, headers);
+    obs$ = this._loadingHandle(obs$, loadingMessage, errorMessage);
     return this._errorHandle(obs$, errorMessage);
   }
 
-  public put<T>(url: string | any[], body: any, errorMessage: string, headers: any = this._headers): Observable<T> {
+  public put<T>(url: string | any[], body: any, errorMessage: string, loadingMessage?: string, headers: any = this._headers): Observable<T> {
     url = this._urlHandle(url);
-    const obs$ = this.http.put(url, body, headers);
+    let obs$ = this.http.put(url, body, headers);
+    obs$ = this._loadingHandle(obs$, loadingMessage, errorMessage);
     return this._errorHandle(obs$, errorMessage);
   }
 
-  public patch<T>(url: string | any[], body: any, errorMessage: string, headers: any = this._headers): Observable<T> {
+  public patch<T>(url: string | any[], body: any, errorMessage: string, loadingMessage?: string, headers: any = this._headers): Observable<T> {
     url = this._urlHandle(url);
-    const obs$ = this.http.patch(url, body, headers);
+    let obs$ = this.http.patch(url, body, headers);
+    obs$ = this._loadingHandle(obs$, loadingMessage, errorMessage);
     return this._errorHandle(obs$, errorMessage);
   }
 
-  public delete<T>(url: string | any[], errorMessage: string, headers: any = this._headers): Observable<T> {
+  public delete<T>(url: string | any[], errorMessage: string, loadingMessage?: string, headers: any = this._headers): Observable<T> {
     url = this._urlHandle(url);
-    const obs$ = this.http.delete(url, headers);
+    let obs$ = this.http.delete(url, headers);
+    obs$ = this._loadingHandle(obs$, loadingMessage, errorMessage);
     return this._errorHandle(obs$, errorMessage);
   }
 
@@ -54,7 +61,7 @@ export class HttpHandlerService {
     return observable$.pipe(catchError(err => {
       if (errorMessage && errorMessage.length) { this.toastService.show(errorMessage, 'danger'); }
       console.error(err);
-      throw err;
+      return throwError(err);
     }));
   }
 
@@ -66,6 +73,16 @@ export class HttpHandlerService {
     } else {
       return url;
     }
+  }
+
+  private _loadingHandle(observable: Observable<any>, message: string, errorMessage: string) {
+    if (message && errorMessage) {
+      this.toastService.showSnack(message);
+      observable = observable.pipe(
+        successOnly(() => this.toastService.hideSnack())
+      );
+    }
+    return observable;
   }
 
   private get _headers() {

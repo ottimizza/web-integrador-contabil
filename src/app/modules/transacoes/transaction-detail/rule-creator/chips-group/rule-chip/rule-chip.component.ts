@@ -1,7 +1,5 @@
-import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
-import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnInit, NgZone } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnInit } from '@angular/core';
 import { ProposedRulesService } from '@app/http/proposed-rules/proposed-rules.service';
-import { TimeUtils } from '@shared/utils/time.utils';
 
 @Component({
   selector: 'app-rule-chip',
@@ -21,13 +19,26 @@ import { TimeUtils } from '@shared/utils/time.utils';
 })
 export class RuleChipComponent implements OnChanges, OnInit {
 
-  @Input() treatment: (chip: string) => string;
-  @Input() selectable: boolean;
-  @Input() chip: string;
-  @Input() label: string;
-  @Input() forceSelect: boolean;
-  @Input() position: number;
-  @Input() divisors: string[];
+  @Input()
+  public treatment: (chip: string) => string;
+
+  @Input()
+  public selectable: boolean;
+
+  @Input()
+  public chip: string;
+
+  @Input()
+  public label: string;
+
+  @Input()
+  public forceSelect: boolean;
+
+  @Input()
+  public position: number;
+
+  @Input()
+  public divisors: string[];
 
   @Output() select = new EventEmitter<{ label: string, isSelected: boolean, position: number }>();
 
@@ -37,11 +48,13 @@ export class RuleChipComponent implements OnChanges, OnInit {
   }
 
   ngOnInit(): void {
-    this.service.ruleProposed(this.chip, this.divisors, (rule) => {
-      this.isSelected = true;
-      this.service.onRuleUsed(rule);
-        // this.selectThis();
-    });
+    const exceptions = ['Banco'];
+    if (!exceptions.includes(this.label)) {
+      this.service.ruleProposed(this.chip, this.divisors, (rule) => {
+        this.isSelected = true;
+        this.service.onRuleUsed(rule);
+      });
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
