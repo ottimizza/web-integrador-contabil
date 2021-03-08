@@ -58,6 +58,7 @@
         *ngIf="selectedIndex === 3 && currentScript.checklist"
         [script]="currentScript"
         [company]="company"
+        (backpage)="selectedIndex = 2"
       ></script-project-confirmation>
 
     </mat-step>

@@ -26,6 +26,9 @@
       ></checklist-item>
     </ott-fieldset>
 
+    <div *ngIf="!isFinished">
+      <h3 class="text-danger">Preencha todas as perguntas</h3>
+    </div>
     <div class="w-100 text-center">
       <ott-button [disabled]="!isFinished" (pressed)="submit()">Enviar</ott-button>
     </div>
