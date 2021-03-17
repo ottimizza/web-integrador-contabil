@@ -108,7 +108,7 @@
 
 
             <paginator [pageSize]="1" [pageSizeOptions]="[1]" [length]="pageInfo?.totalPages" *ngIf="total !== 'Calculando...'"
-            (page)="navigate($event.pageIndex > $event.previousPageIndex ? 'next' : 'previous')"></paginator>
+            (page)="navigate($event.pageIndex > $event.previousPageIndex ? 'next' : 'previous')" [disabled]="isFetching"></paginator>
 
 
 
