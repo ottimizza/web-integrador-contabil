@@ -412,6 +412,7 @@ export class TransactionDetailComponent extends BeforeComponentDestroyed impleme
   }
 
   public navigate(direction: 'next' | 'previous') {
+    if (this.isFetching) { return; }
     if (direction === 'next' && this.pageInfo.hasNext) {
       this.pageInfo.pageIndex++;
       this.impact = 0;
