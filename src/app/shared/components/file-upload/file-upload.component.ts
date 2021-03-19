@@ -30,7 +30,6 @@ export class FileUploadComponent {
       return;
     }
     fileToUpload = new File([fileToUpload.slice(0, fileToUpload.size, fileToUpload.type)], StringUtils.normalize(fileToUpload.name), { type: fileToUpload.type });
-    // fileToUpload.name = StringUtils.normalize(fileToUpload.name);
     const ok = this.allowedTypes ? this.allowedTypes.includes(this.getFileExtension(fileToUpload)) : true;
     if (ok) {
       this.fileToUpload = fileToUpload;
