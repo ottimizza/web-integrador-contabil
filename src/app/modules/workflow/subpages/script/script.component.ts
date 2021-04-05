@@ -153,7 +153,13 @@ export class ScriptComponent implements OnInit, AfterViewInit {
   async emitFile(file: File) {
     this.service.upload(this.currentScript.id, file, this.company.cnpj, this.currentUser.organization.cnpj, environment.storageApplicationId)
     .subscribe(() => {
-      this.router.navigate(['/dashboard', 'workflow', this.currentScript.id]);
+      const params = window.location.href.split('/');
+      const item = params[params.length - 1];
+      if (item === 'new') {
+        this.router.navigate(['/dashboard', 'workflow', this.currentScript.id]);
+      } else {
+        window.location.href = window.location.href;
+      }
     });
   }
 
