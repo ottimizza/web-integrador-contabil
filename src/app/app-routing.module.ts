@@ -36,7 +36,7 @@ const routes: Routes = [
       },
       {
         path: 'workflow',
-        canActivate: [AdminGuard],
+        // canActivate: [AdminGuard],
         data: {
           breadcrumb: 'Empresas'
         },
