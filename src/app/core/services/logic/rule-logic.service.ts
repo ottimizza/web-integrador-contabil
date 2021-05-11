@@ -3,7 +3,6 @@ import { CompleteRule } from '@shared/models/CompleteRule';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { RuleService } from '@shared/services/rule.service';
 import { ToastService } from '@shared/services/toast.service';
-import { RuleCreateFormat } from '@shared/models/Rule';
 
 export const ruleNumberError = () => {
   throw new Error('Não é possível trocar uma regra de posição com outra que tenha um número diferente de cláusulas!');

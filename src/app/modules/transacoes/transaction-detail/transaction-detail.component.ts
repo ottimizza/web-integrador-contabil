@@ -268,7 +268,6 @@ export class TransactionDetailComponent extends BeforeComponentDestroyed impleme
       this.conditions.tipoPlanilha = [];
       this.conditions.tipoMovimento = [];
     }
-
     this.getByRule();
   }
 

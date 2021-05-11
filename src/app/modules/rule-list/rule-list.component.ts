@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { finalize, catchError } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
 
@@ -7,6 +7,7 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 import { RuleDeleteConfirmDialogComponent } from './rule-delete-confirm-dialog/rule-delete-confirm-dialog.component';
 import { ExportConfirmModalComponent } from './export-confirm-modal/export-confirm-modal.component';
+import { BeforeComponentDestroyed } from '@shared/operators/before-component-destroyed.operator';
 import { ActionButton } from '@shared/components/action-buttons/action-buttons.component';
 import { RuleEditModalComponent } from './rule-edit-modal/rule-edit-modal.component';
 import { BreadCrumb } from '@shared/components/breadcrumb/breadcrumb.component';
@@ -14,18 +15,15 @@ import { DialogService, DialogWidth } from '@app/services/dialog.service';
 import { RuleLogicService } from '@app/services/logic/rule-logic.service';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
 import { RuleCreateFormat, RuleType } from '@shared/models/Rule';
+import { TutorialService } from '@app/services/tutorial.service';
 import { ToastService } from '@shared/services/toast.service';
 import { ExportService } from '@app/services/export.service';
 import { RuleService } from '@shared/services/rule.service';
+import getTutorial from './guided-tour/rule-list.tutorial';
 import { CompleteRule } from '@shared/models/CompleteRule';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
-import { TutorialService } from '@app/services/tutorial.service';
-import { momentjs } from '@shared/utils/moment';
-import getTutorial from './guided-tour/rule-list.tutorial';
-import { Subscription } from 'rxjs';
-import { BeforeComponentDestroyed } from '@shared/operators/before-component-destroyed.operator';
 
 @Component({
   templateUrl: './rule-list.component.html',
