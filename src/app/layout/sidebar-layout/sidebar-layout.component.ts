@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '@shared/models/User';
 
 export interface SidebarItem {
   id: string;
