@@ -1,0 +1,65 @@
+<h1 mat-dialog-title><i class="fad fa-plus-square"></i>&nbsp;&nbsp; Gerenciar Padrão de Integração
+<i *ngIf="originalValue?.id" (click)="delete()" matTooltip="Excluir" class="cursor-pointer fad fa-trash-alt fa-2x text-danger float-right"></i></h1>
+<div mat-dialog-content class="border-top border-bottom mb-2">
+
+  <form>
+
+    <div class="p-2 m-1">
+      <label>Descrição</label>
+      <input [(ngModel)]="descricaoDocumento" name="descricao" type="text" class="form-control">
+    </div>
+
+    <div class="p-2 m-1">
+      <label>Tipo</label>
+      <mat-radio-group name="tipoIntegracao" [(ngModel)]="tipoIntegracao">
+        <div class="row text-center">
+          <div class="col"><mat-radio-button [value]="0">Extrato</mat-radio-button></div>
+          <div class="col"><mat-radio-button [value]="1">Cartão</mat-radio-button></div>
+          <div class="col"><mat-radio-button [value]="2">ERP</mat-radio-button></div>
+        </div>
+      </mat-radio-group>
+    </div>
+
+    <div class="p-2 m-1">
+      <label>Aplicar para</label>
+      <div class="row text-center justify-content-around">
+        <mat-checkbox name="pagamentos" [(ngModel)]="pagamentos">Pagamento</mat-checkbox>
+        <mat-checkbox name="recebimentos" [(ngModel)]="recebimentos">Recebimento</mat-checkbox>
+      </div>
+    </div>
+
+    <div class="p-2 m-1">
+      <label>Palavras-chave</label>
+      <input type="text" class="form-control mb-1" name="tags1" [(ngModel)]="searchTerms" (keyup.enter)="addTag()">
+      <mat-chip-list #chipList>
+        <mat-chip class="mt-2" *ngFor="let tag of tags; let i = index" [selectable]="false" [removable]="true" (removed)="removeTag(index)">
+          {{ tag }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+
+    <div class="p-2 m-1">
+      <label>Arquivo</label>
+      <file-upload (fileChange)="uploadFile($event)"></file-upload>
+    </div>
+
+    <div class="p-2 m-1">
+      <label>Ícone</label>
+      <file-upload></file-upload>
+    </div>
+
+    <div class="p-2 m-1">
+      <label>Referência Salesforce</label>
+      <input [(ngModel)]="idSalesForce" name="salesforce" type="text" class="form-control">
+    </div>
+
+  </form>
+
+</div>
+<div mat-dialog-actions class="text-center">
+    <div class="container-fluid px-0 py-3 justify-content-between">
+      <button class="btn btn-light text-danger mx-2" mat-dialog-close>Cancelar</button>
+      <button class="btn btn-primary text-light mx-2" (click)="confirm()">Salvar</button>
+    </div>
+</div>

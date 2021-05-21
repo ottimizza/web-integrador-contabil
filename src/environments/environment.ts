@@ -4,6 +4,8 @@ export const environment = {
   oauthClientId: '858f84ff24730d133a63',
   serviceUrl: 'https://develop-integrador-contabil.herokuapp.com',
   storageApplicationId: 'armazem-arquivos',
+  storageBaseUrl: 'https://s3.tareffaapp.com.br:55325',
+  storageAccountingId: 'ottimizza',
   portalBaseUrl: 'https://staging-accounts.ottimizza.com.br',
   supportUrl: 'https://suporte.ottimizza.com.br',
   theme: {
