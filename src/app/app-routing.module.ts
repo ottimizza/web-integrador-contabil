@@ -36,11 +36,19 @@ const routes: Routes = [
       },
       {
         path: 'workflow',
-        canActivate: [AdminGuard],
+        // canActivate: [AdminGuard],
         data: {
           breadcrumb: 'Empresas'
         },
         loadChildren: () => import('@modules/workflow/workflow.module').then(m => m.WorkflowModule)
+      },
+      {
+        path: 'integrations',
+        canActivate: [AdminGuard],
+        data: {
+          breadcrumb: 'Padrões de Integração'
+        },
+        loadChildren: () => import('@modules/integrations/integrations.module').then(m => m.IntegrationsModule)
       },
       {
         path: 'rules',

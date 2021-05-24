@@ -1,0 +1,28 @@
+<app-layout [overwriteBreadcrumb]="true" [buttons]="buttons" (buttonClicked)="create()">
+  <div breadcrumb>
+    <app-breadcrumb></app-breadcrumb>
+  </div>
+
+  <strong>Pesquisa:</strong>
+  <input type="text" class="form-control mb-1" [(ngModel)]="searchTerms" (keyup.enter)="addTag()">
+  <mat-chip-list #chipList>
+    <mat-chip class="mt-2" *ngFor="let tag of tags; let i = index" [selectable]="false" [removable]="true" (removed)="remove(index)">
+      {{ tag }}
+      <mat-icon matChipRemove>cancel</mat-icon>
+    </mat-chip>
+  </mat-chip-list>
+
+  <div class="container mt-3" *ngIf="layouts">
+    <div class="row">
+
+      <div class="col-md-4 p-3 text-center" *ngFor="let layout of layouts" matTooltip="Alterar">
+        <div class="integration-item p-1" (click)="edit(layout)">
+          <img class="m-2 mt-3" [src]="layout.icone" [alt]="layout.descricaoDocumento" [width]="width" [height]="width / 2">
+          <h5>{{ layout.descricaoDocumento }}</h5>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</app-layout>

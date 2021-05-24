@@ -268,7 +268,6 @@ export class TransactionDetailComponent extends BeforeComponentDestroyed impleme
       this.conditions.tipoPlanilha = [];
       this.conditions.tipoMovimento = [];
     }
-
     this.getByRule();
   }
 
@@ -412,6 +411,7 @@ export class TransactionDetailComponent extends BeforeComponentDestroyed impleme
   }
 
   public navigate(direction: 'next' | 'previous') {
+    if (this.isFetching) { return; }
     if (direction === 'next' && this.pageInfo.hasNext) {
       this.pageInfo.pageIndex++;
       this.impact = 0;

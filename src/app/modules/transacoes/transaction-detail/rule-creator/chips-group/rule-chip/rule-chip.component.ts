@@ -51,7 +51,8 @@ export class RuleChipComponent implements OnChanges, OnInit {
     const exceptions = ['Banco'];
     if (!exceptions.includes(this.label)) {
       this.service.ruleProposed(this.chip, this.divisors, (rule) => {
-        this.isSelected = true;
+        this.selectThis();
+        // this.isSelected = true;
         this.service.onRuleUsed(rule);
       });
     }
@@ -59,6 +60,7 @@ export class RuleChipComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     for (const key in changes) {
+
       if (changes.hasOwnProperty(key) && key === 'forceSelect') {
         this.isSelected = this.forceSelect;
       }

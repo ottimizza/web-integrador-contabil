@@ -1,5 +1,7 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { ToastService } from '@shared/services/toast.service';
+import { FileUtils } from '@shared/utils/file.utils';
+import { StringUtils } from '@shared/utils/string.utils';
 
 @Component({
   selector: 'file-upload',
@@ -24,10 +26,11 @@ export class FileUploadComponent {
   constructor(private toast: ToastService) {}
 
   handleFileInput(files: FileList) {
-    const fileToUpload = files?.item(0);
+    let fileToUpload = files?.item(0);
     if (!fileToUpload) {
       return;
     }
+    fileToUpload = FileUtils.rename(fileToUpload, StringUtils.normalize(fileToUpload.name));
     const ok = this.allowedTypes ? this.allowedTypes.includes(this.getFileExtension(fileToUpload)) : true;
     if (ok) {
       this.fileToUpload = fileToUpload;

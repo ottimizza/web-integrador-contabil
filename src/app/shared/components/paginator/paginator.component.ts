@@ -10,6 +10,7 @@ export class PaginatorComponent {
   @Input() length = 0;
   @Input() pageSize = 0;
   @Input() pageSizeOptions = [5, 10, 20];
+  @Input() disabled = false;
 
   @Output() page = new EventEmitter<PageEvent>();
 

@@ -13,6 +13,7 @@ function createEnvironementFile() {
   serviceUrl: '${getEnvironmentVariable('SERVICE_URL')}',
   storageApplicationId: '${getEnvironmentVariable('STORAGE_APPLICATION_ID', 'accounts-avatar')}',
   storageAccountingId: '${getEnvironmentVariable('STORAGE_ACCOUNTING_ID', 'ottimizza')}',
+  storageBaseUrl: '${getEnvironmentVariable('STORAGE_URL')}',
   portalBaseUrl: '${getEnvironmentVariable('PORTAL_BASE_URL')}',
   supportUrl: '${getEnvironmentVariable('SUPPORT_URL', 'https://suporte.ottimizza.com.br')}',
   theme: ${getEnvironmentVariable('THEME', '{"primaryColor":"#004ecb","secondaryColor":"#ff8a00","primaryAccent":"#0081bf","dark":"#373435"}')},

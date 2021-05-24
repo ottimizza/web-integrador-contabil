@@ -4,14 +4,10 @@ import { User } from '@shared/models/User';
 import { AuthenticationService } from '@app/authentication/authentication.service';
 import { StorageService } from '@app/services/storage.service';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 import { MessagingService } from '@app/services/messaging.service';
 import { environment } from '@env';
 import { DialogService } from '@app/services/dialog.service';
 import { SigninAsDialogComponent } from '@shared/components/dialogs/signin-as-dialog/signin-as-dialog.component';
-// import { OverlayContainer } from '@angular/cdk/overlay';
-
-// import { ThemeService } from '@app/service/theme.service';
 
 @Component({
   selector: 'app-navbar-layout',

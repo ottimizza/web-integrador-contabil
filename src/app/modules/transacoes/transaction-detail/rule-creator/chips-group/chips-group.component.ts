@@ -29,7 +29,7 @@ class ChipList {
   templateUrl: './chips-group.component.html',
   styleUrls: ['./chips-group.component.scss']
 })
-export class RuleChipGroupComponent implements OnInit, AfterViewInit {
+export class RuleChipGroupComponent implements OnInit {
 
   @Input() config: RuleConfig;
   @Output() clicked = new EventEmitter();
@@ -58,30 +58,30 @@ export class RuleChipGroupComponent implements OnInit, AfterViewInit {
     this.init();
   }
 
-  ngAfterViewInit() {
-    this.service.reconstructionEnded(() => {
-      const elements = this.el.nativeElement.querySelectorAll<HTMLDivElement>('.simple-chip');
-      let chips: { label: string, isSelected: boolean, position: number }[] = [];
-      elements.forEach(val => {
-        const chipValue = val.innerText;
-        let isSelected = val.classList.contains('chip-selected');
-        if (isSelected && this.service.alreadyUsedRules.includes(chipValue)) {
-          val.classList.remove('chip-selected');
-          isSelected = false;
-        } else if (isSelected) {
-          this.service.alreadyUsedRules.push(chipValue);
-        }
-        const label = val.id;
-        let position = chips.map(chip => chip.label).lastIndexOf(label);
-        position = position > -1 ? position + 1 : 0;
-        chips.push({ label, isSelected, position });
-      });
-
-      chips = chips.filter(chip => chip.isSelected);
-      chips.forEach((chip) => this.onDevolve(chip));
-    });
-    this.hasProposedRule = !!this.service.lastProposedRule?.id;
-  }
+  // TODO: Código comentado em 11/05/2021, se até 11/05/2022 não houver nenhum erro, código poderá ser removido
+  // ngAfterViewInit() {
+  //   this.service.reconstructionEnded(() => {
+  //     const elements = this.el.nativeElement.querySelectorAll<HTMLDivElement>('.simple-chip');
+  //     let chips: { label: string, isSelected: boolean, position: number }[] = [];
+  //     elements.forEach(val => {
+  //       const chipValue = val.innerText;
+  //       let isSelected = val.classList.contains('chip-selected');
+  //       if (isSelected && this.service.alreadyUsedRules.includes(chipValue)) {
+  //         val.classList.remove('chip-selected');
+  //         isSelected = false;
+  //       } else if (isSelected) {
+  //         this.service.alreadyUsedRules.push(chipValue);
+  //       }
+  //       const label = val.id;
+  //       let position = chips.map(chip => chip.label).lastIndexOf(label);
+  //       position = position > -1 ? position + 1 : 0;
+  //       chips.push({ label, isSelected, position });
+  //     });
+  //     chips = chips.filter(chip => chip.isSelected);
+  //     chips.forEach((chip) => this.onDevolve(chip));
+  //   });
+  //   this.hasProposedRule = !!this.service.lastProposedRule?.id;
+  // }
 
   public init() {
     this._parse();
