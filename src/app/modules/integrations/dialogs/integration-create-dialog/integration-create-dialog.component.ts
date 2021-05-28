@@ -64,9 +64,9 @@ export class IntegrationCreateDialogComponent implements OnInit {
     const params = event.name.split('.');
     this.toast.showSnack('Enviando arquivo...');
     this.uploadService.store(event)
-    .pipe(switchMap(result => this.uploadService.getResourceURL(result.record.id)))
     .subscribe(result => {
-      this.linkReferencia = result;
+      this.linkReferencia = this.uploadService.getResourceURL(result.record.id);
+      console.log(this.linkReferencia);
       this.tipoArquivo = params[params.length - 1];
       this.toast.show('Arquivo enviado com sucesso!', 'success');
     });
@@ -75,9 +75,8 @@ export class IntegrationCreateDialogComponent implements OnInit {
   public uploadLogo(event: File) {
     this.toast.showSnack('Enviando ícone...');
     this.uploadService.store(event)
-    .pipe(switchMap(result => this.uploadService.getResourceURL(result.record.id)))
     .subscribe(result => {
-      this.icone = result;
+      this.icone = this.uploadService.getResourceURL(result.record.id);
       this.toast.show('Ícone enviada com sucesso!', 'success');
     });
   }
@@ -116,6 +115,8 @@ export class IntegrationCreateDialogComponent implements OnInit {
     layout.tipoArquivo = this.tipoArquivo;
     layout.icone = this.icone;
     layout.idSalesForce = this.idSalesForce;
+
+    console.log(this.linkReferencia, layout.linkReferencia);
 
     this.toast.showSnack('Salvando...');
     this.isSaving = true;
