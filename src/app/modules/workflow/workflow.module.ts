@@ -26,6 +26,7 @@ import { BreadcrumbModule } from '@shared/components/breadcrumb/breadcrumb.modul
 import { DefaultFilterModule } from '@shared/components/default-filter/default-filter.module';
 import { NgxGuidedTourModule } from '@gobsio/ngx-guided-tour';
 import { SlideCheckModule } from '@shared/components/slide-check/slide-check.module';
+import { SelectStandardIntegrationDialogComponent } from './dialogs/select-standard-integration-dialog/select-standard-integration-dialog.component';
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ import { SlideCheckModule } from '@shared/components/slide-check/slide-check.mod
     DefaultFilterModule,
     MatIconModule,
     MatButtonModule,
+    MatChipsModule,
     NgxGuidedTourModule.forRoot(),
     SlideCheckModule
   ],
@@ -57,7 +59,8 @@ import { SlideCheckModule } from '@shared/components/slide-check/slide-check.mod
     CompanyCreateDialogComponent,
     ChecklistComponent,
     ChecklistItemComponent,
-    ProjectConfirmationComponent
+    ProjectConfirmationComponent,
+    SelectStandardIntegrationDialogComponent
   ],
   entryComponents: [
     CompanyCreateDialogComponent

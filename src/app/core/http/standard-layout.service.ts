@@ -33,4 +33,9 @@ export class StandardLayoutService {
     return this.http.delete(url, 'Falha ao atualizar layout!');
   }
 
+  public layoutToScript(scriptId: number, layoutId: number) {
+    const url = `${environment.serviceUrl}/api/v1/roteiro_layout`;
+    return this.http.post(url, { roteiroId: scriptId, layoutId }, 'Falha ao criar integração!');
+  }
+
 }
