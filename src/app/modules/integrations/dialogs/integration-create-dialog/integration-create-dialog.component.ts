@@ -120,7 +120,7 @@ export class IntegrationCreateDialogComponent implements OnInit {
     this.toast.showSnack('Salvando...');
     this.isSaving = true;
 
-    if (this.originalValue) {
+    if (this.originalValue?.id) {
       this.service.update(this.originalValue.id, layout)
         .pipe(finalize(() => this.isSaving = false))
         .subscribe(() => {

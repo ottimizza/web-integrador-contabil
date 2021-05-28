@@ -1,9 +1,10 @@
-import { Component, HostListener, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { PageEvent } from '@angular/material/paginator';
 import { momentjs } from '@shared/utils/moment';
 
+import { SelectStandardIntegrationDialogComponent } from '../dialogs/select-standard-integration-dialog/select-standard-integration-dialog.component';
 import { WORKFLOW_COMPLEX_FILTER_OPTIONS } from '../support/complex-filter/workflow-complex-filter';
 import { ActionButton } from '@shared/components/action-buttons/action-buttons.component';
 import { ColumnDefinition } from '@shared/components/async-table/models/ColumnDefinition';
@@ -19,9 +20,6 @@ import { DocUtils } from '@shared/utils/docs.utils';
 import { Empresa } from '@shared/models/Empresa';
 import { Script } from '@shared/models/Script';
 import { User } from '@shared/models/User';
-import { TimeUtils } from '@shared/utils/time.utils';
-import { FormControl } from '@angular/forms';
-import { SelectStandardIntegrationDialogComponent } from '../dialogs/select-standard-integration-dialog/select-standard-integration-dialog.component';
 
 @Component({
   templateUrl: './workflow.component.html',

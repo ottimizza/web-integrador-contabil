@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpHandlerService } from '@app/services/http-handler.service';
 import { environment } from '@env';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
-import { GenericResponse } from '@shared/models/GenericResponse';
 import { KeyMap } from '@shared/models/KeyMap';
 import { Layout } from '@shared/models/Layout';
 
