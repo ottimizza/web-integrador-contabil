@@ -86,7 +86,7 @@ export class IntegrationCreateDialogComponent implements OnInit {
       this.toast.show('Informe uma descrição!', 'warning');
       return;
     }
-    if (!this.tipoIntegracao) {
+    if (![0, 1, 2].includes(this.tipoIntegracao)) {
       this.toast.show('Informe um tipo!', 'warning');
       return;
     }
