@@ -54,6 +54,7 @@ export class SelectStandardIntegrationDialogComponent implements OnInit {
 
   public remove(index: number) {
     this.tags.splice(index, 1);
+    this.fetch();
   }
 
   public async fetch() {
