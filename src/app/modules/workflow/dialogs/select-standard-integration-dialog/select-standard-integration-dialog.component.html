@@ -63,7 +63,7 @@
         <icon name="times-square"></icon>
         Cancelar
       </button>
-      <button class="btn btn-primary text-light mx-2" [disabled]="isConfirming || (!custom && !selecteds.length)" (click)="confirm()">
+      <button class="btn btn-primary text-light mx-2" [disabled]="isConfirming || (!custom && !selecteds.length && !omc)" (click)="confirm()">
         <icon name="save"></icon>
         Confirmar
       </button>

@@ -116,6 +116,8 @@ export class IntegrationCreateDialogComponent implements OnInit {
     layout.tipoArquivo = this.tipoArquivo;
     layout.icone = this.icone;
     layout.idSalesForce = this.idSalesForce;
+    layout.pagamentos = this.pagamentos;
+    layout.recebimentos = this.recebimentos;
 
     console.log(this.linkReferencia, layout.linkReferencia);
 
