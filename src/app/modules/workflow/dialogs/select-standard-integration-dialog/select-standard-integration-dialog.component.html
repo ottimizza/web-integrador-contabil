@@ -24,7 +24,7 @@
     <span>Extratos</span>
     <div class="row m-0 list-box">
       <div class="col-md-4" *ngFor="let item of extracts">
-        <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="8-" class="ml-2"></mat-checkbox>
+        <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="80" height="20" class="ml-2"></mat-checkbox>
         <button class="ml-1" matTootltip="Baixar layout" (click)="download(item)">
           <i class="fad fa-download"></i>
         </button>
@@ -36,7 +36,7 @@
     <span>Cartões</span>
     <div class="row m-0 list-box">
       <div class="col-md-4" *ngFor="let item of cards">
-        <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="80" class="ml-2"></mat-checkbox>
+        <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="80" height="20" class="ml-2"></mat-checkbox>
         <button class="ml-1" matTootltip="Baixar layout" (click)="download(item)">
           <i class="fad fa-download"></i>
         </button>
@@ -48,7 +48,7 @@
     <span>ERPs</span>
     <div class="row m-0 list-box">
       <div class="col-md-4" *ngFor="let item of erps">
-        <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="80" class="ml-2"></mat-checkbox>
+        <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="80" height="20" class="ml-2"></mat-checkbox>
         <button class="ml-1" matTootltip="Baixar layout" (click)="download(item)">
           <i class="fad fa-download"></i>
         </button>

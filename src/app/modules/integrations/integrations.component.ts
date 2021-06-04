@@ -57,10 +57,12 @@ export class IntegrationsComponent implements OnInit {
     const tags = ArrayUtils.split(this.searchTerms, ' ', ',', ';');
     this.tags = ArrayUtils.preventRepeat(this.tags.concat(tags)).map(tag => StringUtils.normalize(tag).toLowerCase());
     this.searchTerms = '';
+    this.fetch();
   }
 
   public remove(index: number) {
     this.tags.splice(index, 1);
+    this.fetch();
   }
 
   public create() {
