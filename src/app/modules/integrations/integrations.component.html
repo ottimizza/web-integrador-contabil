@@ -6,7 +6,7 @@
   <strong>Pesquisa:</strong>
   <input type="text" class="form-control mb-1" [(ngModel)]="searchTerms" (keyup.enter)="addTag()">
   <mat-chip-list #chipList>
-    <mat-chip class="mt-2" *ngFor="let tag of tags; let i = index" [selectable]="false" [removable]="true" (removed)="remove(index)">
+    <mat-chip class="mt-2" *ngFor="let tag of tags; let i = index" [selectable]="false" [removable]="true" (removed)="remove(i)">
       {{ tag }}
       <mat-icon matChipRemove>cancel</mat-icon>
     </mat-chip>
@@ -15,10 +15,10 @@
   <div class="container mt-3" *ngIf="layouts">
     <div class="row">
 
-      <div class="col-md-4 p-3 text-center" *ngFor="let layout of layouts" matTooltip="Alterar">
+      <div class="col-md-2 p-1 text-center" *ngFor="let layout of layouts" [matTooltip]="'Alterar ' + layout.descricaoDocumento">
         <div class="integration-item p-1" (click)="edit(layout)">
-          <img class="m-2 mt-3" [src]="layout.icone" [alt]="layout.descricaoDocumento" [width]="width" [height]="width / 2">
-          <h5>{{ layout.descricaoDocumento }}</h5>
+          <img class="m-1 mt-2" [src]="layout.icone" [alt]="layout.descricaoDocumento" [width]="width" [height]="width / 2">
+          <strong class="d-block text-truncate">{{ layout.descricaoDocumento }}</strong>
         </div>
       </div>
 

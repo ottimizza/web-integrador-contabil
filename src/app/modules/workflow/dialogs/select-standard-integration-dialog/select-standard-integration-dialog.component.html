@@ -1,12 +1,12 @@
 <h1 mat-dialog-title><i class="fad fa-plus-square"></i>&nbsp;&nbsp; Nova Integração</h1>
 <div mat-dialog-content class="border-top border-bottom p-4">
 
-  <better-info>Você está prestes a criar uma nova integração. Por favor, selecione os tipos de integração desejados</better-info>
+  <!-- <better-info>Você está prestes a criar uma nova integração. Por favor, selecione os tipos de integração desejados</better-info> -->
 
   <strong>Pesquisa:</strong>
   <input type="text" class="form-control mb-1" [(ngModel)]="searchTerms" (keyup.enter)="addTag()">
   <mat-chip-list #chipList>
-    <mat-chip class="mt-2" *ngFor="let tag of tags; let i = index" [selectable]="false" [removable]="true" (removed)="remove(index)">
+    <mat-chip class="mt-2" *ngFor="let tag of tags; let i = index" [selectable]="false" [removable]="true" (removed)="remove(i)">
       {{ tag }}
       <mat-icon matChipRemove>cancel</mat-icon>
     </mat-chip>
@@ -14,16 +14,20 @@
 
   <br>
 
-  <span>Integração Personalizada</span>
-  <div class="list-box">
-    <mat-checkbox [(ngModel)]="custom">Integração Personalizada</mat-checkbox>
+  <span>Integração Específicas</span>
+  <div class="row list-box">
+    <mat-checkbox class="col" [(ngModel)]="custom">Integração Personalizada</mat-checkbox>
+    <mat-checkbox class="col" [(ngModel)]="omc">Ottimizza Meu Caixa</mat-checkbox>
   </div>
 
   <div *ngIf="extracts.length">
     <span>Extratos</span>
     <div class="row m-0 list-box">
       <div class="col-md-4" *ngFor="let item of extracts">
-        <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="120" class="ml-2"></mat-checkbox>
+        <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="8-" class="ml-2"></mat-checkbox>
+        <button class="ml-1" matTootltip="Baixar layout" (click)="download(item)">
+          <i class="fad fa-download"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -32,7 +36,10 @@
     <span>Cartões</span>
     <div class="row m-0 list-box">
       <div class="col-md-4" *ngFor="let item of cards">
-        <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="120" class="ml-2"></mat-checkbox>
+        <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="80" class="ml-2"></mat-checkbox>
+        <button class="ml-1" matTootltip="Baixar layout" (click)="download(item)">
+          <i class="fad fa-download"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -41,7 +48,10 @@
     <span>ERPs</span>
     <div class="row m-0 list-box">
       <div class="col-md-4" *ngFor="let item of erps">
-        <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="120" class="ml-2"></mat-checkbox>
+        <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="80" class="ml-2"></mat-checkbox>
+        <button class="ml-1" matTootltip="Baixar layout" (click)="download(item)">
+          <i class="fad fa-download"></i>
+        </button>
       </div>
     </div>
   </div>

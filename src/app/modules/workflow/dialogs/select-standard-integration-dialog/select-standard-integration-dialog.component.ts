@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { StandardLayoutService } from '@app/http/standard-layout.service';
 import { WorkflowService } from '@app/http/workflow.service';
@@ -10,7 +9,7 @@ import { Script } from '@shared/models/Script';
 import { ToastService } from '@shared/services/toast.service';
 import { ArrayUtils } from '@shared/utils/array.utils';
 import { StringUtils } from '@shared/utils/string.utils';
-import { combineLatest, forkJoin } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { finalize, switchMap } from 'rxjs/operators';
 
 @Component({
@@ -29,7 +28,8 @@ export class SelectStandardIntegrationDialogComponent implements OnInit {
 
   public integrations = [];
   public custom = false;
-  public selecteds: number[] = [];
+  public omc = false;
+  public selecteds: Layout[] = [];
 
   public isConfirming = false;
 
@@ -83,28 +83,41 @@ export class SelectStandardIntegrationDialogComponent implements OnInit {
   }
 
   public select(event: Layout) {
-    const index = this.selecteds.indexOf(event.id);
+    const index = this.selecteds.map(lay => lay.id).indexOf(event.id);
     if (index < 0) {
-      this.selecteds.push(event.id);
+      this.selecteds.push(event);
     } else {
       this.selecteds.splice(index, 1);
     }
   }
 
   public confirm() {
+    if (!this.selecteds?.length && !this.omc) {
+      this.dialogRef.close(this.custom);
+      return;
+    }
     this.isConfirming = true;
     this.toast.showSnack('Preparando ambiente, isto pode demorar um pouco...');
-    const scripts = this.selecteds.map(() => Script.firstPart(this.company));
-    const observables$ = scripts.map((script, index) => {
-      return this.wfService.start(script)
-      .pipe(switchMap(result => this.slService.layoutToScript(result.record.id, this.selecteds[index])));
-    });
-    forkJoin(observables$)
+    // const scripts = this.selecteds.map(() => Script.firstPart(this.company));
+    // const observables$ = scripts.map((script, index) => {
+    //   return this.wfService.start(script)
+    //   .pipe(switchMap(result => this.slService.layoutToScript(result.record.id, this.selecteds[index])));
+    // });
+    // forkJoin(observables$)
+    const script = Script.firstPart(this.company);
+    script.tipoRoteiro = 'PAG;REC' as any;
+    script.utilizaOMC = this.omc;
+
+    this.wfService.setLayouts(script, this.selecteds || [])
     .pipe(finalize(() => this.isConfirming = false))
     .subscribe(() => {
       this.toast.hideSnack();
       this.dialogRef.close(this.custom);
-    })
+    });
+  }
+
+  public download(layout: Layout) {
+    window.open(`${layout.linkReferencia}/download`, '_blank');
   }
 
 }

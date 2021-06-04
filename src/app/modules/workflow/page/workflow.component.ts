@@ -127,9 +127,9 @@ export class WorkflowComponent implements OnInit {
         if (shouldCreateCustom) {
           this.vars.navigateWithData(['/dashboard', 'workflow', 'new'], this.company);
         } else {
-          this.reload = !this.reload;
+          this.router.navigate(['/dashboard', '/workflow']);
         }
-      })
+      });
     } else if (id === 'cancel') {
       this.timesCalled = 0;
       this.company = null;

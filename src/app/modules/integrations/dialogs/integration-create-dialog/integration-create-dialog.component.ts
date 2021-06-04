@@ -1,12 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FileStorageService } from '@app/http/file-storage.service';
+import { Component, Inject, OnInit } from '@angular/core';
+import { finalize, switchMap } from 'rxjs/operators';
+
 import { StandardLayoutService } from '@app/http/standard-layout.service';
 import { Layout, LayoutIntegrationType } from '@shared/models/Layout';
+import { FileStorageService } from '@app/http/file-storage.service';
 import { ToastService } from '@shared/services/toast.service';
-import { ArrayUtils } from '@shared/utils/array.utils';
 import { StringUtils } from '@shared/utils/string.utils';
-import { finalize, switchMap } from 'rxjs/operators';
+import { ArrayUtils } from '@shared/utils/array.utils';
 
 @Component({
   selector: 'app-integration-create-dialog',
@@ -30,7 +31,7 @@ export class IntegrationCreateDialogComponent implements OnInit {
   public tipoIntegracao: LayoutIntegrationType = LayoutIntegrationType.EXTRATOS;
   public pagamentos = false;
   public recebimentos = false;
-  public tags: string[] = []
+  public tags: string[] = [];
   public linkReferencia: string;
   public tipoArquivo: string;
   public icone: string;

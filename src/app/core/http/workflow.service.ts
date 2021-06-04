@@ -10,6 +10,7 @@ import { BusinessService } from '@shared/services/business.service';
 import { GenericResponse } from '@shared/models/GenericResponse';
 import { Script } from '@shared/models/Script';
 import { User } from '@shared/models/User';
+import { Layout } from '@shared/models/Layout';
 
 const BASE_URL = `${environment.serviceUrl}/api/v1/roteiros`;
 
@@ -71,6 +72,11 @@ export class WorkflowService {
   public delete(id: number) {
     const url = `${BASE_URL}/${id}`;
     return this.http.delete(url, 'Falha ao excluir projeto!');
+  }
+
+  public setLayouts(roteiro: Script, layouts: Layout[]) {
+    const url = `${BASE_URL}/layouts`;
+    return this.http.post(url, { roteiro, layouts }, 'Falha ao criar integrações!');
   }
 
 }
