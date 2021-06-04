@@ -20,7 +20,7 @@ export class IntegrationsComponent implements OnInit {
     private dialog: DialogService
   ) { }
 
-  public width = window.document.body.clientWidth / 6;
+  public width = window.document.body.clientWidth / 15;
   public buttons: ActionButton[] = [{
     icon: 'fad fa-plus-square',
     id: 'create',
@@ -74,7 +74,7 @@ export class IntegrationsComponent implements OnInit {
     this.dialog.openComplexDialog(IntegrationCreateDialogComponent, DialogWidth.DEFAULT, layout)
     .subscribe(() => {
       this.fetch();
-    })
+    });
   }
 
 }

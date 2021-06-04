@@ -32,7 +32,7 @@
       <label>Palavras-chave</label>
       <input type="text" class="form-control mb-1" name="tags1" [(ngModel)]="searchTerms" (keyup.enter)="addTag()">
       <mat-chip-list #chipList>
-        <mat-chip class="mt-2" *ngFor="let tag of tags; let i = index" [selectable]="false" [removable]="true" (removed)="removeTag(index)">
+        <mat-chip class="mt-2" *ngFor="let tag of tags; let i = index" [selectable]="false" [removable]="true" (removed)="removeTag(i)">
           {{ tag }}
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
@@ -46,7 +46,7 @@
 
     <div class="p-2 m-1">
       <label>Ícone</label>
-      <file-upload></file-upload>
+      <file-upload (fileChange)="uploadLogo($event)"></file-upload>
     </div>
 
     <div class="p-2 m-1">

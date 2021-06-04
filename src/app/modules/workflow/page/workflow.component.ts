@@ -1,9 +1,10 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { PageEvent } from '@angular/material/paginator';
 import { momentjs } from '@shared/utils/moment';
 
+import { SelectStandardIntegrationDialogComponent } from '../dialogs/select-standard-integration-dialog/select-standard-integration-dialog.component';
 import { WORKFLOW_COMPLEX_FILTER_OPTIONS } from '../support/complex-filter/workflow-complex-filter';
 import { ActionButton } from '@shared/components/action-buttons/action-buttons.component';
 import { ColumnDefinition } from '@shared/components/async-table/models/ColumnDefinition';
@@ -19,8 +20,6 @@ import { DocUtils } from '@shared/utils/docs.utils';
 import { Empresa } from '@shared/models/Empresa';
 import { Script } from '@shared/models/Script';
 import { User } from '@shared/models/User';
-import { TimeUtils } from '@shared/utils/time.utils';
-import { FormControl } from '@angular/forms';
 
 @Component({
   templateUrl: './workflow.component.html',
@@ -91,6 +90,7 @@ export class WorkflowComponent implements OnInit {
     private workflowService: WorkflowService,
     private vars: GlobalVariableService,
     private dialog: DialogService,
+    private zone: NgZone
   ) {}
 
   ngOnInit() {
@@ -122,7 +122,14 @@ export class WorkflowComponent implements OnInit {
     if (id === 'new-company') {
       this.openCompanyDialog();
     } else if (id === 'new-project') {
-      this.vars.navigateWithData(['/dashboard', 'workflow', 'new'], this.company);
+      this.dialog.open(SelectStandardIntegrationDialogComponent, this.company)
+      .subscribe(shouldCreateCustom => {
+        if (shouldCreateCustom) {
+          this.vars.navigateWithData(['/dashboard', 'workflow', 'new'], this.company);
+        } else {
+          this.router.navigate(['/dashboard', '/workflow']);
+        }
+      });
     } else if (id === 'cancel') {
       this.timesCalled = 0;
       this.company = null;

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpHandlerService } from '@app/services/http-handler.service';
 import { environment } from '@env';
 import { GenericPageableResponse } from '@shared/models/GenericPageableResponse';
-import { GenericResponse } from '@shared/models/GenericResponse';
 import { KeyMap } from '@shared/models/KeyMap';
 import { Layout } from '@shared/models/Layout';
 
@@ -31,6 +30,11 @@ export class StandardLayoutService {
   public delete(id: number) {
     const url = `${BASE_URL}/${id}`;
     return this.http.delete(url, 'Falha ao atualizar layout!');
+  }
+
+  public layoutToScript(scriptId: number, layoutId: number) {
+    const url = `${environment.serviceUrl}/api/v1/roteiro_layout`;
+    return this.http.post(url, { roteiroId: scriptId, layoutId }, 'Falha ao criar integração!');
   }
 
 }

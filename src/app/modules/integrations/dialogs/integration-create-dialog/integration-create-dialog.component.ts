@@ -1,12 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FileStorageService } from '@app/http/file-storage.service';
+import { Component, Inject, OnInit } from '@angular/core';
+import { finalize, switchMap } from 'rxjs/operators';
+
 import { StandardLayoutService } from '@app/http/standard-layout.service';
 import { Layout, LayoutIntegrationType } from '@shared/models/Layout';
+import { FileStorageService } from '@app/http/file-storage.service';
 import { ToastService } from '@shared/services/toast.service';
-import { ArrayUtils } from '@shared/utils/array.utils';
 import { StringUtils } from '@shared/utils/string.utils';
-import { finalize, switchMap } from 'rxjs/operators';
+import { ArrayUtils } from '@shared/utils/array.utils';
 
 @Component({
   selector: 'app-integration-create-dialog',
@@ -30,7 +31,7 @@ export class IntegrationCreateDialogComponent implements OnInit {
   public tipoIntegracao: LayoutIntegrationType = LayoutIntegrationType.EXTRATOS;
   public pagamentos = false;
   public recebimentos = false;
-  public tags: string[] = []
+  public tags: string[] = [];
   public linkReferencia: string;
   public tipoArquivo: string;
   public icone: string;
@@ -64,9 +65,9 @@ export class IntegrationCreateDialogComponent implements OnInit {
     const params = event.name.split('.');
     this.toast.showSnack('Enviando arquivo...');
     this.uploadService.store(event)
-    .pipe(switchMap(result => this.uploadService.getResourceURL(result.record.id)))
     .subscribe(result => {
-      this.linkReferencia = result;
+      this.linkReferencia = this.uploadService.getResourceURL(result.record.id);
+      console.log(this.linkReferencia);
       this.tipoArquivo = params[params.length - 1];
       this.toast.show('Arquivo enviado com sucesso!', 'success');
     });
@@ -75,9 +76,8 @@ export class IntegrationCreateDialogComponent implements OnInit {
   public uploadLogo(event: File) {
     this.toast.showSnack('Enviando ícone...');
     this.uploadService.store(event)
-    .pipe(switchMap(result => this.uploadService.getResourceURL(result.record.id)))
     .subscribe(result => {
-      this.icone = result;
+      this.icone = this.uploadService.getResourceURL(result.record.id);
       this.toast.show('Ícone enviada com sucesso!', 'success');
     });
   }
@@ -87,7 +87,7 @@ export class IntegrationCreateDialogComponent implements OnInit {
       this.toast.show('Informe uma descrição!', 'warning');
       return;
     }
-    if (!this.tipoIntegracao) {
+    if (![0, 1, 2].includes(this.tipoIntegracao)) {
       this.toast.show('Informe um tipo!', 'warning');
       return;
     }
@@ -117,10 +117,12 @@ export class IntegrationCreateDialogComponent implements OnInit {
     layout.icone = this.icone;
     layout.idSalesForce = this.idSalesForce;
 
+    console.log(this.linkReferencia, layout.linkReferencia);
+
     this.toast.showSnack('Salvando...');
     this.isSaving = true;
 
-    if (this.originalValue) {
+    if (this.originalValue?.id) {
       this.service.update(this.originalValue.id, layout)
         .pipe(finalize(() => this.isSaving = false))
         .subscribe(() => {
