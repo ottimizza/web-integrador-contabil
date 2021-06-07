@@ -78,7 +78,7 @@ export class IntegrationCreateDialogComponent implements OnInit {
     this.uploadService.store(event)
     .subscribe(result => {
       this.icone = this.uploadService.getResourceURL(result.record.id);
-      this.toast.show('Ícone enviada com sucesso!', 'success');
+      this.toast.show('Ícone enviado com sucesso!', 'success');
     });
   }
 

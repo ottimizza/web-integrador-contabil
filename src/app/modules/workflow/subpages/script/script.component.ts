@@ -165,6 +165,7 @@ export class ScriptComponent implements OnInit, AfterViewInit {
 
   create() {
     const script = Script.firstPart(this.company);
+    script.utilizaOMC = false;
     return this.service.start(script).toPromise();
   }
 
