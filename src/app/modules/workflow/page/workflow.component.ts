@@ -14,7 +14,7 @@ import { GlobalVariableService } from '@app/services/global-variables.service';
 import { BusinessService } from '@shared/services/business.service';
 import { WORKFLOW_TUTORIAL } from '../tutorials/workflow.tutorial';
 import { SearchCriteria } from '@shared/models/SearchCriteria';
-import { DialogService } from '@app/services/dialog.service';
+import { DialogService, DialogWidth } from '@app/services/dialog.service';
 import { WorkflowService } from '@app/http/workflow.service';
 import { DocUtils } from '@shared/utils/docs.utils';
 import { Empresa } from '@shared/models/Empresa';
@@ -122,7 +122,8 @@ export class WorkflowComponent implements OnInit {
     if (id === 'new-company') {
       this.openCompanyDialog();
     } else if (id === 'new-project') {
-      this.dialog.open(SelectStandardIntegrationDialogComponent, this.company)
+      // this.dialog.open(SelectStandardIntegrationDialogComponent, this.company)
+      this.dialog.openComplexDialog(SelectStandardIntegrationDialogComponent, DialogWidth.LARGE, this.company)
       .subscribe(shouldCreateCustom => {
         if (shouldCreateCustom) {
           this.vars.navigateWithData(['/dashboard', 'workflow', 'new'], this.company);

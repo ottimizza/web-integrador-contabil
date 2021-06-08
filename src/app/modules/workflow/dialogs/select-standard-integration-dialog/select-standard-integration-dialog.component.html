@@ -1,4 +1,4 @@
-<h1 mat-dialog-title><i class="fad fa-plus-square"></i>&nbsp;&nbsp; Nova Integração</h1>
+<h1 mat-dialog-title><i class="fal fa-plus-square"></i>&nbsp;&nbsp; Nova Integração</h1>
 <div mat-dialog-content class="border-top border-bottom p-4">
 
   <!-- <better-info>Você está prestes a criar uma nova integração. Por favor, selecione os tipos de integração desejados</better-info> -->
@@ -23,23 +23,39 @@
   <div *ngIf="extracts.length">
     <span>Extratos</span>
     <div class="row m-0 list-box">
-      <div class="col-md-4" *ngFor="let item of extracts">
-        <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="80" height="35" class="ml-2"></mat-checkbox>
-        <button class="ml-1" matTootltip="Baixar layout" (click)="download(item)">
-          <i class="fad fa-download"></i>
-        </button>
+      <div class="col-md-3 p-2" *ngFor="let item of extracts" (click)="select(item)">
+        <div class="item text-center p-1" [ngClass]="{ 'selected': selectedIds.includes(item.id) }">
+          <img [src]="item.icone" width="80" height="35" class="ml-2">
+          <button class="float-right m-1" matTootltip="Baixar layout" (click)="download(item)">
+            <i class="fal fa-arrow-to-bottom"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="cards.length">
+  <!-- <div *ngIf="cards.length">
     <span>Cartões</span>
     <div class="row m-0 list-box">
       <div class="col-md-4" *ngFor="let item of cards">
         <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="80" height="35" class="ml-2"></mat-checkbox>
         <button class="ml-1" matTootltip="Baixar layout" (click)="download(item)">
-          <i class="fad fa-download"></i>
+          <i class="fal fa-arrow-to-bottom"></i>
         </button>
+      </div>
+    </div>
+  </div> -->
+
+  <div *ngIf="cards.length">
+    <span>Cartões</span>
+    <div class="row m-0 list-box">
+      <div class="col-md-3 p-2" *ngFor="let item of cards" (click)="select(item)">
+        <div class="item text-center p-1" [ngClass]="{ 'selected': selectedIds.includes(item.id) }">
+          <img [src]="item.icone" width="80" height="35" class="ml-2">
+          <button class="float-right m-1" matTootltip="Baixar layout" (click)="download(item)">
+            <i class="fal fa-arrow-to-bottom"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -47,11 +63,13 @@
   <div *ngIf="erps.length">
     <span>ERPs</span>
     <div class="row m-0 list-box">
-      <div class="col-md-4" *ngFor="let item of erps">
-        <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="80" height="35" class="ml-2"></mat-checkbox>
-        <button class="ml-1" matTootltip="Baixar layout" (click)="download(item)">
-          <i class="fad fa-download"></i>
-        </button>
+      <div class="col-md-3 p-2" *ngFor="let item of erps" (click)="select(item)">
+        <div class="item text-center p-1" [ngClass]="{ 'selected': selectedIds.includes(item.id) }">
+          <img [src]="item.icone" width="80" height="35" class="ml-2">
+          <button class="float-right m-1" matTootltip="Baixar layout" (click)="download(item)">
+            <i class="fal fa-arrow-to-bottom"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>

@@ -30,6 +30,7 @@ export class SelectStandardIntegrationDialogComponent implements OnInit {
   public custom = false;
   public omc = false;
   public selecteds: Layout[] = [];
+  public selectedIds: number[] = [];
 
   public isConfirming = false;
 
@@ -60,6 +61,7 @@ export class SelectStandardIntegrationDialogComponent implements OnInit {
   public async fetch() {
     let pageInfo = new PageInfo({ pageIndex: -1, hasNext: true, pageSize: 20 });
     this.selecteds = [];
+    this.selectedIds = [];
     this.toast.showSnack('Buscando...');
 
     this.erps = [];
@@ -87,8 +89,10 @@ export class SelectStandardIntegrationDialogComponent implements OnInit {
     const index = this.selecteds.map(lay => lay.id).indexOf(event.id);
     if (index < 0) {
       this.selecteds.push(event);
+      this.selectedIds.push(event.id);
     } else {
       this.selecteds.splice(index, 1);
+      this.selectedIds.splice(index, 1);
     }
   }
 
