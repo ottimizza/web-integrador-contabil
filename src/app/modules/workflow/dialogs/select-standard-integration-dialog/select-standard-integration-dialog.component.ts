@@ -75,8 +75,32 @@ export class SelectStandardIntegrationDialogComponent implements OnInit {
 
       const records = rs.records.map(result => {
         result.icone = result.icone || 'https://ottimizza.com.br/wp-content/themes/ottimizza/images/logo.png';
+        // if (result.tipoArquivo === 'csv') {
+        //   result.extentionIcon = 'file-csv';
+        // } else if (result.tipoArquivo === 'xlsx') {
+        //   result.extentionIcon = 'file-excel';
+        // } else if (result.tipoArquivo === 'pdf') {
+        //   result.extentionIcon = 'file-pdf';
+        // } else if (result)
+        switch (result.tipoArquivo) {
+          case 'csv':
+            result.extentionIcon = 'fa-file-csv';
+            break;
+          case 'xlsx':
+            result.extentionIcon = 'fa-file-excel';
+            break;
+          case 'pdf':
+            result.extentionIcon = 'fa-file-pdf';
+            break;
+          case 'txt':
+            result.extentionIcon = 'fa-file-alt';
+            break;
+          default:
+            result.extentionIcon = 'fa-file-exclamation';
+        }
         return result;
       });
+
       this.erps = this.erps.concat(records.filter(result => result.tipoIntegracao === LayoutIntegrationType.ERPS));
       this.cards = this.cards.concat(records.filter(result => result.tipoIntegracao === LayoutIntegrationType.CARTOES));
       this.extracts = this.extracts.concat(records.filter(result => result.tipoIntegracao === LayoutIntegrationType.EXTRATOS));

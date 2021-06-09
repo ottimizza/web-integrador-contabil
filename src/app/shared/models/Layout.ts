@@ -15,6 +15,8 @@ export class Layout {
   tags: string[];
   tipoArquivo: string;
   tipoIntegracao: LayoutIntegrationType;
+
+  extentionIcon?: 'fa-file-csv' | 'fa-file-excel' | 'fa-file-pdf' | 'fa-file-alt' | 'fa-file-exclamation'; // Somente no front
 }
 
 
