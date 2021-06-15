@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+
+import { IntegrationCreateDialogComponent } from './dialogs/integration-create-dialog/integration-create-dialog.component';
+import { ActionButton } from '@shared/components/action-buttons/action-buttons.component';
 import { StandardLayoutService } from '@app/http/standard-layout.service';
 import { DialogService, DialogWidth } from '@app/services/dialog.service';
-import { ActionButton } from '@shared/components/action-buttons/action-buttons.component';
 import { PageInfo } from '@shared/models/GenericPageableResponse';
-import { Layout } from '@shared/models/Layout';
-import { ArrayUtils } from '@shared/utils/array.utils';
 import { StringUtils } from '@shared/utils/string.utils';
-import { IntegrationCreateDialogComponent } from './dialogs/integration-create-dialog/integration-create-dialog.component';
+import { ArrayUtils } from '@shared/utils/array.utils';
+import { Layout } from '@shared/models/Layout';
 
 @Component({
   selector: 'app-integrations',
