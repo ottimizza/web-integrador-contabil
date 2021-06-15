@@ -5,7 +5,7 @@ import { Empresa } from '@shared/models/Empresa';
 import { GuidedTour } from '@gobsio/ngx-guided-tour';
 
 @Component({
-  selector: 'layout',
+  selector: 'app-layout',
   templateUrl: './normalized-layout.component.html',
   styleUrls: ['./normalized-layout.component.scss']
 })

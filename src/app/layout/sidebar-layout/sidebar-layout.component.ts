@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '@shared/models/User';
 
 export interface SidebarItem {
   id: string;
@@ -22,7 +23,15 @@ export class SidebarLayoutComponent implements OnInit {
       { id: 'sidebar-item-fluxo-planilhas', icon: 'fad fa-industry-alt', label: 'Empresas', url: '/dashboard/workflow' },
       { id: 'sidebar-item-ultima-digitacao', icon: 'fad fa-typewriter', label: 'Última Digitação', url: '/dashboard/entrys' },
       { id: 'sidebar-item-regras', icon: 'fad fa-list-ol', label: 'Regras', url: '/dashboard/rules' },
-      { id: 'sidebar-item-historicos', icon: 'fad fa-history', label: 'Históricos', url: '/dashboard/historics'},
+      { id: 'sidebar-item-historicos', icon: 'fad fa-history', label: 'Históricos', url: '/dashboard/historics'}
     ];
+    if (User.fromLocalStorage().type === 0) {
+      this.items.push({
+        id: 'sidebar-item-padroes-integracao',
+        icon: 'fad fa-th-list',
+        label: 'Padrões',
+        url: '/dashboard/integrations'
+      });
+    }
   }
 }

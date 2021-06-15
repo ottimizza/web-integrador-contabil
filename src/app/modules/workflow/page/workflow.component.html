@@ -1,4 +1,4 @@
-<layout [buttons]="company ? projectButton : companyButton" (buttonClicked)="onButtonPressed($event)" [overwriteBreadcrumb]="true">
+<app-layout [buttons]="company ? projectButton : companyButton" (buttonClicked)="onButtonPressed($event)" [overwriteBreadcrumb]="true">
   <div breadcrumb>
     <app-breadcrumb [tutorial]="tutorial" [append]="append"></app-breadcrumb>
   </div>
@@ -42,4 +42,4 @@
     (iconPressed)="onButtonPressed('new-project')"
   ></empty-state>
 
-</layout>
+</app-layout>

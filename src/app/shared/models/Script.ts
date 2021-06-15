@@ -38,6 +38,8 @@ export class Script {
   public checklist: boolean;
   public tipoProjeto: ScriptType;
 
+  public utilizaOMC?: boolean;
+
   public static firstPart(company: Empresa) {
     const script = new Script();
     const currentAccounting = User.fromLocalStorage().organization;

@@ -24,6 +24,7 @@ import { RuleDeleteConfirmDialogComponent } from './rule-delete-confirm-dialog/r
 import { ActionButtonsModule } from '@shared/components/action-buttons/action-buttons.module';
 import { RuleListRoutingModule } from './rule-list.routing';
 import { OptionsMenuModule } from '@shared/components/options-menu/options-menu.module';
+import { BetterInfoModule } from '@shared/components/better-info/better-info.module';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { OptionsMenuModule } from '@shared/components/options-menu/options-menu.
     ActionButtonsModule,
     MatProgressBarModule,
     NormalizedLayoutModule,
-    OptionsMenuModule
+    OptionsMenuModule,
+    BetterInfoModule
   ],
   entryComponents: [
     RuleEditModalComponent,

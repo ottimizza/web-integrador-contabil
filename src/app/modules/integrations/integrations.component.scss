@@ -1,0 +1,12 @@
+.row {
+  margin-bottom: 0 !important;
+}
+
+.integration-item {
+  border: solid 1px lightgray;
+  border-radius: 5px;
+  &:hover {
+    border-color: rgb(0, 0, 255);
+    cursor: pointer;
+  }
+}
