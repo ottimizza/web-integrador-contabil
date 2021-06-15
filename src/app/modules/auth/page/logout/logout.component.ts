@@ -12,7 +12,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   templateUrl: './logout.component.html',
   styleUrls: ['./logout.component.scss']
 })
-export class AuthLogoutComponent implements OnInit {
+export class LogoutComponent implements OnInit {
   // cria um iframe para o oauth server poder excluir os cookies relacionados
   url = this.sanitizer.bypassSecurityTrustResourceUrl(
     `${environment.oauthBaseUrl}/logout`
