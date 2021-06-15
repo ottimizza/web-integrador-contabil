@@ -5,8 +5,22 @@
   margin-bottom: 4%;
 }
 
-button.ml-1 {
+button.float-right {
   border: none;
   background: none;
   outline: none;
+  height: 100%;
+}
+
+.item {
+  border-radius: 5px;
+  border: solid 1px rgb(233, 233, 233);
+  &.selected {
+    border: solid 2px var(--primary-color);
+    box-shadow: 1px 1px 10px 2px var(--primary-color);
+  }
+}
+
+i.fal {
+  font-size: 120%;
 }

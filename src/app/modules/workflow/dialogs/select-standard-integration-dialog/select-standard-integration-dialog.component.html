@@ -15,7 +15,7 @@
   <br>
 
   <span>Integração Específicas</span>
-  <div class="row list-box">
+  <div class="row m-0 list-box">
     <mat-checkbox class="col" [(ngModel)]="custom">Integração Personalizada</mat-checkbox>
     <mat-checkbox class="col" [(ngModel)]="omc">Ottimizza Meu Caixa</mat-checkbox>
   </div>
@@ -23,23 +23,40 @@
   <div *ngIf="extracts.length">
     <span>Extratos</span>
     <div class="row m-0 list-box">
-      <div class="col-md-4" *ngFor="let item of extracts">
-        <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="80" height="35" class="ml-2"></mat-checkbox>
-        <button class="ml-1" matTootltip="Baixar layout" (click)="download(item)">
-          <i class="fad fa-download"></i>
-        </button>
+      <div class="col-md-3 p-2" *ngFor="let item of extracts" (click)="select(item)">
+        <div class="item text-center p-1 cursor-pointer" [ngClass]="{ 'selected': selectedIds.includes(item.id) }" title="Clique no tipo do arquivo para baixar o exemplo">
+          <img [src]="item.icone" width="80" height="35" class="ml-2">
+          <button class="float-right m-1" matTootltip="Baixar layout" (click)="download(item)">
+            <!-- <i class="fad fa-arrow-to-bottom"></i> -->
+            <i class="fal" [class]="item.extentionIcon"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="cards.length">
+  <!-- <div *ngIf="cards.length">
     <span>Cartões</span>
     <div class="row m-0 list-box">
       <div class="col-md-4" *ngFor="let item of cards">
         <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="80" height="35" class="ml-2"></mat-checkbox>
         <button class="ml-1" matTootltip="Baixar layout" (click)="download(item)">
-          <i class="fad fa-download"></i>
+          <i class="fad fa-arrow-to-bottom"></i>
         </button>
+      </div>
+    </div>
+  </div> -->
+
+  <div *ngIf="cards.length">
+    <span>Cartões</span>
+    <div class="row m-0 list-box">
+      <div class="col-md-3 p-2" *ngFor="let item of cards" (click)="select(item)">
+        <div class="item text-center p-1 cursor-pointer" [ngClass]="{ 'selected': selectedIds.includes(item.id) }" title="Clique no tipo do arquivo para baixar o exemplo">
+          <img [src]="item.icone" width="80" height="35" class="ml-2">
+          <button class="float-right m-1" matTootltip="Baixar layout" (click)="download(item)">
+            <i class="fal" [class]="item.extentionIcon"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -47,11 +64,13 @@
   <div *ngIf="erps.length">
     <span>ERPs</span>
     <div class="row m-0 list-box">
-      <div class="col-md-4" *ngFor="let item of erps">
-        <mat-checkbox [value]="item" (change)="select(item)"><img [src]="item.icone" width="80" height="35" class="ml-2"></mat-checkbox>
-        <button class="ml-1" matTootltip="Baixar layout" (click)="download(item)">
-          <i class="fad fa-download"></i>
-        </button>
+      <div class="col-md-3 p-2" *ngFor="let item of erps" (click)="select(item)">
+        <div class="item text-center p-1 cursor-pointer" [ngClass]="{ 'selected': selectedIds.includes(item.id) }" title="Clique no tipo do arquivo para baixar o exemplo">
+          <img [src]="item.icone" width="80" height="35" class="ml-2">
+          <button class="float-right m-1" matTootltip="Baixar layout" (click)="download(item)">
+            <i class="fal" [class]="item.extentionIcon"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
