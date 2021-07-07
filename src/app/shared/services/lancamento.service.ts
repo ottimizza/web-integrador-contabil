@@ -74,6 +74,17 @@ export class LancamentoService {
     return this.http.post<Lancamento>(url, {}, 'Falha ao vincular lançamento a uma conta de fornecedor!');
   }
 
+  public question(entryId: number) {
+    if (!environment.production) {
+      entryId = 1024552;
+    }
+    const url = `${BASE_URL}/${entryId}/questionar`;
+    const param = {
+      url: window.location.origin + '/description/'
+    };
+    return this.http.post([url, param], {}, 'Falha ao questionar cliente!');
+  }
+
   /**
    * @deprecated
    * Não está realmente deprecado, mas não utilize em produção :)

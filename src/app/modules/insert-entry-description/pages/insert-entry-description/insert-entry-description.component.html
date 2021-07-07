@@ -1,0 +1,53 @@
+<app-layout [overwriteBreadcrumb]="true">
+  <app-breadcrumb breadcrumb></app-breadcrumb>
+
+  <better-info *ngIf="!hasCompleted">Nossa contabilidade gostaria que você detalhasse o {{ type }} abaixo. Poderia nos ajudar?</better-info>
+
+  <form class="container mt-3" *ngIf="entry && !hasCompleted" (submit)="confirm($event)">
+
+    <div class="row" *ngIf="entry.descricao || entry.portador">
+      <div class="col-md" *ngIf="entry.descricao">
+        <label>Descrição</label>
+        <input type="text" class="form-control" disabled [value]="entry.descricao">
+      </div>
+      <div class="col-md" *ngIf="entry.portador">
+        <label>Banco</label>
+        <input type="text" class="form-control" disabled [value]="entry.portador">
+      </div>
+    </div>
+
+    <div class="row mt-2" *ngIf="entry.dataMovimento || entry.valorOriginal || entry.documento">
+      <div class="col-md" *ngIf="entry.dataMovimento">
+        <label>Data</label>
+        <input type="text" class="form-control" disabled [value]="entry.dataMovimento">
+      </div>
+      <div class="col-md" *ngIf="entry.valorOriginal">
+        <label>Valor</label>
+        <input type="text" class="form-control" disabled [value]="entry.valorOriginal">
+      </div>
+      <div class="col-md" *ngIf="entry.documento">
+        <label>Documento</label>
+        <input type="text" class="form-control" disabled [value="entry.documento"]>
+      </div>
+    </div>
+
+    <div class="row mt-2" *ngIf="complements.length">
+      <div class="col">
+        <label>Complementos</label>
+        <input type="text" disabled class="form-control mb-1" *ngFor="let comp of complements" [value]="comp">
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col">
+        <label>Por favor, descreva mais detalhes sobre esse {{ type }}</label>
+        <textarea class="form-control d-block" name="descricaoUsuario" [(ngModel)]="descricaoUsuario"></textarea>
+      </div>
+    </div>
+    <button [disabled]="descricaoUsuario.length < 1" class="btn btn-success float-right mt-2" type="submit">Confirmar</button>
+
+  </form>
+
+  <better-info type="success" *ngIf="hasCompleted">Obrigado, agradecemos seu tempo e sua colaboração</better-info>
+
+</app-layout>

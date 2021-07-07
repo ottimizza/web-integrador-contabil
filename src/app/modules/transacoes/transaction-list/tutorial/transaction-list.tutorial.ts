@@ -102,6 +102,7 @@ const getUser = () => {
 };
 
 const FAKE_ENTRY: Lancamento = {
+  uuid: '123asd',
   arquivo: {
     cnpjContabilidade: getUser()?.organization?.cnpj,
     cnpjEmpresa: getUser()?.organization?.cnpj,

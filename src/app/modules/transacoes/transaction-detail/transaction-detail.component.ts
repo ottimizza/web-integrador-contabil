@@ -30,6 +30,7 @@ import { TimeUtils } from '@shared/utils/time.utils';
 import { DateUtils } from '@shared/utils/date-utils';
 import { Empresa } from '@shared/models/Empresa';
 import { User } from '@shared/models/User';
+import { CallAccountantDialogComponent } from '../dialogs/call-accountant-dialog/call-accountant-dialog.component';
 
 @Component({
   selector: 'app-tdetail',
@@ -254,6 +255,10 @@ export class TransactionDetailComponent extends BeforeComponentDestroyed impleme
     obs.subscribe(() => {
       this.disable();
     });
+  }
+
+  public questionAccountant() {
+    this.dialog.open(CallAccountantDialogComponent, this.entry);
   }
 
   onDevolve(events: { title: string, selecteds: string[] }[]) {

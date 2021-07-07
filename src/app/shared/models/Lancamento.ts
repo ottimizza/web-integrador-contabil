@@ -40,6 +40,7 @@ export class Lancamento {
   public portador: string;
   public ativo: boolean;
   public id: number;
+  public uuid: string;
 }
 
 export class Arquivo {

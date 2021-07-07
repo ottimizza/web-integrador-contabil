@@ -31,7 +31,7 @@ const socketConfig: SocketIoConfig = { url: environment.serviceUrl, options: {} 
     AppComponent,
     AuthLayoutComponent,
     ContentLayoutComponent,
-    SidebarLayoutComponent
+    SidebarLayoutComponent,
     // NavbarLayoutComponent
   ],
   imports: [

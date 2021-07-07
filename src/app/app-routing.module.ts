@@ -7,6 +7,7 @@ import { ContentLayoutComponent } from './layout/content-layout/content-layout.c
 import { AuthGuard } from '@app/guard/auth.guard';
 import { NoAuthGuard } from '@app/guard/no-auth.guard';
 import { AdminGuard } from '@app/guard/admin.guard';
+import { InsertEntryDescriptionComponent } from '@modules/insert-entry-description/pages/insert-entry-description/insert-entry-description.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,16 @@ const routes: Routes = [
     path: 'landpage',
     canActivate: [NoAuthGuard],
     loadChildren: () => import('@modules/land-page/land-page.module').then(m => m.LandPageModule)
+  },
+  {
+    path: 'description/:uid',
+    canActivate: [NoAuthGuard],
+    pathMatch: 'full',
+    data: {
+      breadcrumb: 'Dúvida'
+    },
+    component: InsertEntryDescriptionComponent,
+    loadChildren: () => import('@modules/insert-entry-description/insert-entry-description.module').then(m => m.InsertEntryDescriptionModule)
   },
   {
     path: 'dashboard',

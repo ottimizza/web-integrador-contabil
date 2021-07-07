@@ -11,7 +11,7 @@ import { ToastService } from '@shared/services/toast.service';
 export class HttpHandlerService {
 
   constructor(
-    private http: HttpClient,
+    public http: HttpClient,
     private authenticationService: AuthenticationService,
     private toastService: ToastService
   ) {}
